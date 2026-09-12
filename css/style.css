@@ -654,3 +654,111 @@ a {
 
 
 }
+
+/* ===================================
+   PROCESS SECTION
+=================================== */
+
+
+.process {
+
+  padding:120px 60px;
+
+}
+
+
+
+.process-grid {
+
+  max-width:1200px;
+
+  margin:auto;
+
+  display:grid;
+
+  grid-template-columns:repeat(4,1fr);
+
+  gap:30px;
+
+}
+
+
+
+.process-card {
+
+  padding:40px 30px;
+
+  border-radius:24px;
+
+  background:rgba(255,255,255,.04);
+
+  border:1px solid rgba(255,255,255,.1);
+
+  transition:.4s ease;
+
+}
+
+
+
+.process-card:hover {
+
+  transform:translateY(-10px);
+
+}
+
+
+
+.process-card span {
+
+  display:block;
+
+  font-size:45px;
+
+  font-weight:900;
+
+  margin-bottom:25px;
+
+  opacity:.35;
+
+}
+
+
+
+.process-card h3 {
+
+  font-size:22px;
+
+  margin-bottom:15px;
+
+}
+
+
+
+.process-card p {
+
+  color:rgba(255,255,255,.7);
+
+  line-height:1.7;
+
+}
+
+
+
+@media(max-width:800px){
+
+
+.process {
+
+  padding:80px 25px;
+
+}
+
+
+.process-grid {
+
+  grid-template-columns:1fr;
+
+}
+
+
+}

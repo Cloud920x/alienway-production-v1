@@ -1,1 +1,356 @@
+/* ===================================
+   ALIENWAY PRODUCTION V1
+   DESIGN FOUNDATION
+=================================== */
 
+
+/* RESET */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #090d14;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+
+/* ===================================
+   HEADER
+=================================== */
+
+.header {
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 22px 60px;
+
+  background: rgba(9,13,20,0.75);
+  backdrop-filter: blur(15px);
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+
+}
+
+
+
+.logo {
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+}
+
+
+.logo-mark {
+
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -2px;
+
+}
+
+
+
+.logo-text {
+
+  display: flex;
+  flex-direction: column;
+
+}
+
+
+.logo-text strong {
+
+  font-size: 18px;
+  letter-spacing: 2px;
+
+}
+
+
+.logo-text small {
+
+  font-size: 10px;
+  letter-spacing: 4px;
+  opacity: .7;
+
+}
+
+
+
+/* NAV */
+
+.nav {
+
+  display: flex;
+  gap: 35px;
+
+}
+
+
+.nav a {
+
+  font-size: 14px;
+  color: rgba(255,255,255,.75);
+
+  transition: .3s ease;
+
+}
+
+
+.nav a:hover {
+
+  color: white;
+
+}
+
+
+
+.nav-button {
+
+  padding: 12px 22px;
+
+  border: 1px solid rgba(255,255,255,.25);
+
+  border-radius: 50px;
+
+  font-size: 14px;
+
+  transition: .3s ease;
+
+}
+
+
+.nav-button:hover {
+
+  background: white;
+  color: black;
+
+}
+
+
+
+
+/* ===================================
+   HERO
+=================================== */
+
+.hero {
+
+  min-height: 90vh;
+
+  display: flex;
+  align-items: center;
+
+  padding: 80px 60px;
+
+  position: relative;
+
+  background:
+
+  linear-gradient(
+  120deg,
+  rgba(9,13,20,.95),
+  rgba(9,13,20,.65)
+  ),
+
+  url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=80")
+
+  center/cover;
+
+}
+
+
+
+.hero-content {
+
+  max-width: 850px;
+
+}
+
+
+
+.hero-tag {
+
+  font-size: 13px;
+
+  letter-spacing: 4px;
+
+  color: rgba(255,255,255,.65);
+
+  margin-bottom: 25px;
+
+}
+
+
+
+.hero h1 {
+
+  font-size: clamp(55px, 8vw, 100px);
+
+  line-height: .95;
+
+  font-weight: 900;
+
+  letter-spacing: -3px;
+
+  margin-bottom: 30px;
+
+}
+
+
+
+.hero-description {
+
+  max-width: 620px;
+
+  font-size: 20px;
+
+  line-height: 1.7;
+
+  color: rgba(255,255,255,.75);
+
+  margin-bottom: 40px;
+
+}
+
+
+
+/* BUTTONS */
+
+.hero-buttons {
+
+  display: flex;
+  gap: 20px;
+
+}
+
+
+
+.button {
+
+  padding: 16px 32px;
+
+  border-radius: 50px;
+
+  font-weight: bold;
+
+  transition: .3s ease;
+
+}
+
+
+
+.primary {
+
+  background: white;
+
+  color: black;
+
+}
+
+
+
+.primary:hover {
+
+  transform: translateY(-4px);
+
+}
+
+
+
+.secondary {
+
+  border: 1px solid rgba(255,255,255,.3);
+
+}
+
+
+
+.secondary:hover {
+
+  background:white;
+  color:black;
+
+}
+
+
+
+/* ===================================
+   MOBILE
+=================================== */
+
+
+@media(max-width:800px){
+
+
+.header {
+
+  padding:20px;
+
+}
+
+
+.nav {
+
+ display:none;
+
+}
+
+
+.hero {
+
+ padding:60px 25px;
+
+}
+
+
+.hero h1 {
+
+ letter-spacing:-2px;
+
+}
+
+
+.hero-description {
+
+ font-size:17px;
+
+}
+
+
+.hero-buttons {
+
+ flex-direction:column;
+
+ align-items:flex-start;
+
+}
+
+
+}

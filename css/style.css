@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700;900&display=swap');
+
 /* ===================================
    ALIENWAY PRODUCTION V1
    DESIGN FOUNDATION
@@ -3112,31 +3114,35 @@ letter-spacing:-1px;
 
 .section-tag {
 
-font-size:20px;
+font-family:'Fredoka', sans-serif;
+
+font-size:24px;
 
 font-weight:900;
 
-letter-spacing:4px;
+letter-spacing:2px;
 
 text-transform:uppercase;
+
+display:inline-block;
 
 background:
 
 linear-gradient(
 180deg,
-#ffffff 0%,
-#f4f1e8 45%,
-#38bdf8 100%
+#fff8e8,
+#fff8e8 35%,
+#4dd9ff 75%,
+#009dff
 );
 
 -webkit-background-clip:text;
 
 -webkit-text-fill-color:transparent;
 
-filter:
-drop-shadow(0 0 4px rgba(56,189,248,.25));
+text-shadow:
 
-margin-bottom:25px;
+0 4px 12px rgba(0,157,255,.35);
 
 }
 

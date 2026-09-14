@@ -2425,27 +2425,88 @@ gap:30px;
 
 
 
+/* ===================================
+   INDUSTRY DETAIL CARDS
+=================================== */
+
+
 .industry-detail-card {
 
-padding:45px 35px;
+padding:50px 40px;
 
-border-radius:30px;
+min-height:280px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:flex-start;
+
+border-radius:28px;
 
 background:
 
-rgba(255,255,255,.04);
+linear-gradient(
+145deg,
+rgba(255,255,255,.08),
+rgba(255,255,255,.03)
+);
 
-border:1px solid rgba(255,255,255,.1);
+border:1px solid rgba(255,255,255,.12);
 
-transition:.4s ease;
+position:relative;
+
+overflow:hidden;
+
+transition:.45s ease;
 
 }
 
 
 
+
+
+.industry-detail-card::before {
+
+content:"";
+
+position:absolute;
+
+width:120px;
+
+height:120px;
+
+top:-60px;
+
+right:-60px;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.08);
+
+transition:.45s ease;
+
+}
+
+
+
+
+
+.industry-detail-card:hover::before {
+
+transform:scale(3);
+
+opacity:.2;
+
+}
+
+
+
+
+
 .industry-detail-card:hover {
 
-transform:translateY(-10px);
+transform:translateY(-12px);
 
 border-color:rgba(255,255,255,.4);
 
@@ -2453,28 +2514,39 @@ border-color:rgba(255,255,255,.4);
 
 
 
+
+
 .industry-detail-card h3 {
 
-font-size:24px;
+position:relative;
 
-margin-bottom:20px;
+font-size:25px;
+
+line-height:1.2;
+
+margin-bottom:22px;
 
 font-weight:900;
 
+letter-spacing:-.5px;
+
 }
+
+
 
 
 
 .industry-detail-card p {
 
-color:rgba(255,255,255,.7);
+position:relative;
 
 font-size:17px;
 
-line-height:1.7;
+line-height:1.8;
+
+color:rgba(255,255,255,.72);
 
 }
-
 
 
 

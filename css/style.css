@@ -2818,3 +2818,34 @@ grid-template-columns:1fr;
 
 
 }
+
+/* ===================================
+   INDUSTRY HERO BUTTON FIX
+=================================== */
+
+
+.industry-hero .button {
+
+display:inline-flex;
+
+width:auto;
+
+padding:16px 32px;
+
+font-size:14px;
+
+letter-spacing:1px;
+
+border-radius:50px;
+
+margin-top:30px;
+
+}
+
+
+
+.industry-hero .button.primary {
+
+max-width:max-content;
+
+}

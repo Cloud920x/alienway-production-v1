@@ -2926,3 +2926,107 @@ z-index:2;
 scroll-margin-top:80px;
 
 }
+
+/* ===================================
+   PREMIUM CTA
+=================================== */
+
+
+.cta {
+
+padding:120px 60px;
+
+}
+
+
+
+.cta-box {
+
+max-width:1000px;
+
+margin:auto;
+
+padding:70px 50px;
+
+text-align:center;
+
+border-radius:35px;
+
+background:
+
+linear-gradient(
+145deg,
+rgba(255,255,255,.08),
+rgba(255,255,255,.03)
+);
+
+border:1px solid rgba(255,255,255,.15);
+
+}
+
+
+
+.cta-box h2 {
+
+font-size:clamp(35px,5vw,60px);
+
+line-height:1.05;
+
+letter-spacing:-2px;
+
+font-weight:900;
+
+margin:25px 0;
+
+}
+
+
+
+.cta-box p:not(.section-tag){
+
+max-width:650px;
+
+margin:0 auto 40px;
+
+font-size:18px;
+
+line-height:1.8;
+
+color:rgba(255,255,255,.75);
+
+}
+
+
+
+.cta-buttons {
+
+display:flex;
+
+justify-content:center;
+
+gap:20px;
+
+flex-wrap:wrap;
+
+}
+
+
+
+@media(max-width:700px){
+
+
+.cta {
+
+padding:80px 25px;
+
+}
+
+
+.cta-box {
+
+padding:45px 25px;
+
+}
+
+
+}

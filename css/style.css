@@ -2731,3 +2731,90 @@ transform:translateY(0);
 
 
 }
+
+/* ===================================
+   RESTAURANT MENU PREVIEW
+=================================== */
+
+
+.menu-layout {
+
+max-width:1100px;
+
+margin:auto;
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:30px;
+
+}
+
+
+
+
+.menu-card {
+
+padding:40px;
+
+border-radius:30px;
+
+background:rgba(255,255,255,.04);
+
+border:1px solid rgba(255,255,255,.12);
+
+}
+
+
+
+.menu-card h3 {
+
+font-size:24px;
+
+margin-bottom:30px;
+
+font-weight:900;
+
+}
+
+
+
+.menu-item {
+
+display:flex;
+
+justify-content:space-between;
+
+gap:20px;
+
+padding:18px 0;
+
+border-bottom:1px solid rgba(255,255,255,.1);
+
+color:rgba(255,255,255,.8);
+
+}
+
+
+
+.menu-item strong {
+
+color:white;
+
+}
+
+
+
+
+@media(max-width:900px){
+
+
+.menu-layout {
+
+grid-template-columns:1fr;
+
+}
+
+
+}

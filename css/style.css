@@ -3109,7 +3109,7 @@ letter-spacing:-1px;
 =================================== */
 
 /* ===================================
-   ALIENWAY SECTION LABEL TEXT
+   ALIENWAY CREAM BUBBLE LABELS
 =================================== */
 
 .section-tag {
@@ -3120,7 +3120,7 @@ font-size:24px;
 
 font-weight:900;
 
-letter-spacing:2px;
+letter-spacing:3px;
 
 text-transform:uppercase;
 
@@ -3130,10 +3130,9 @@ background:
 
 linear-gradient(
 180deg,
-#fff8e8,
-#fff8e8 35%,
-#4dd9ff 75%,
-#009dff
+#ffffff 0%,
+#fff8e8 45%,
+#e8dcc5 100%
 );
 
 -webkit-background-clip:text;
@@ -3142,7 +3141,10 @@ linear-gradient(
 
 text-shadow:
 
-0 4px 12px rgba(0,157,255,.35);
+0 3px 8px rgba(255,255,255,.18),
+0 8px 18px rgba(0,0,0,.35);
+
+margin-bottom:25px;
 
 }
 

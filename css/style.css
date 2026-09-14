@@ -2309,19 +2309,88 @@ grid-template-columns:1fr;
 
 
 
+/* ===================================
+   RESTAURANT HERO EXPERIENCE
+=================================== */
+
+
 .restaurant-hero {
+
+min-height:90vh;
+
+position:relative;
 
 background:
 
 linear-gradient(
-120deg,
-rgba(9,13,20,.95),
-rgba(9,13,20,.55)
+90deg,
+rgba(8,10,15,.96),
+rgba(8,10,15,.55),
+rgba(8,10,15,.85)
 ),
 
 url("https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1800&q=80")
 
 center/cover;
+
+}
+
+
+
+.restaurant-hero::after {
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:
+
+linear-gradient(
+0deg,
+rgba(8,10,15,1),
+transparent 40%
+);
+
+pointer-events:none;
+
+}
+
+
+
+.restaurant-hero > div {
+
+position:relative;
+
+z-index:2;
+
+}
+
+
+.restaurant-hero .hero-tag {
+
+letter-spacing:5px;
+
+font-size:13px;
+
+opacity:.75;
+
+}
+
+
+
+.restaurant-hero h1 {
+
+max-width:900px;
+
+}
+
+
+
+.restaurant-hero p:not(.hero-tag){
+
+max-width:620px;
 
 }
 

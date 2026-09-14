@@ -3106,7 +3106,6 @@ letter-spacing:-1px;
    ALIENWAY VISUAL SYSTEM V1
 =================================== */
 
-
 /* ===================================
    ALIENWAY SECTION HEADERS
 =================================== */
@@ -3128,25 +3127,28 @@ content:"";
 
 position:absolute;
 
-bottom:-12px;
-
 left:50%;
+
+bottom:-15px;
 
 transform:translateX(-50%);
 
-width:90px;
+width:120px;
 
-height:2px;
+height:3px;
 
 background:
 
 linear-gradient(
 90deg,
 transparent,
-rgba(255,255,255,.8),
+white,
 transparent
 );
 
-opacity:.8;
+border-radius:50px;
+
+box-shadow:
+0 0 15px rgba(255,255,255,.6);
 
 }

@@ -3154,33 +3154,47 @@ box-shadow:
 }
 
 /* ===================================
-   ALIENWAY SECTION LABELS
+   SECTION LABEL GREEN LINE
 =================================== */
 
 
 .section-tag {
 
-font-size:15px;
+position:relative;
 
-font-weight:900;
+display:inline-block;
 
-letter-spacing:4px;
+}
 
-text-transform:uppercase;
+
+.section-tag::after {
+
+content:"";
+
+position:absolute;
+
+left:50%;
+
+bottom:-10px;
+
+transform:translateX(-50%);
+
+width:90px;
+
+height:2px;
 
 background:
 
 linear-gradient(
 90deg,
+transparent,
 #39ff14,
-#7cff6b,
-#39ff14
+transparent
 );
 
--webkit-background-clip:text;
+border-radius:50px;
 
--webkit-text-fill-color:transparent;
-
-margin-bottom:18px;
+box-shadow:
+0 0 12px rgba(57,255,20,.5);
 
 }

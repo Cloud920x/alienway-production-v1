@@ -3112,11 +3112,11 @@ letter-spacing:-1px;
 
 .section-tag {
 
-font-size:26px;
+font-size:20px;
 
 font-weight:900;
 
-letter-spacing:5px;
+letter-spacing:4px;
 
 text-transform:uppercase;
 
@@ -3124,10 +3124,9 @@ background:
 
 linear-gradient(
 180deg,
-#fff8e7 0%,
-#fff8e7 45%,
-#35d9ff 75%,
-#008cff 100%
+#ffffff 0%,
+#f4f1e8 45%,
+#38bdf8 100%
 );
 
 -webkit-background-clip:text;
@@ -3135,7 +3134,7 @@ linear-gradient(
 -webkit-text-fill-color:transparent;
 
 filter:
-drop-shadow(0 0 8px rgba(0,140,255,.35));
+drop-shadow(0 0 4px rgba(56,189,248,.25));
 
 margin-bottom:25px;
 

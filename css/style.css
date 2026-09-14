@@ -3030,3 +3030,73 @@ padding:45px 25px;
 
 
 }
+
+/* ===================================
+   FINAL MOBILE POLISH
+=================================== */
+
+
+@media(max-width:900px){
+
+
+.industry-cards {
+
+gap:20px;
+
+}
+
+
+.industry-detail-card {
+
+padding:35px 25px;
+
+min-height:auto;
+
+}
+
+
+.industry-detail-card h3 {
+
+font-size:22px;
+
+}
+
+
+.industry-detail-card p {
+
+font-size:16px;
+
+line-height:1.7;
+
+}
+
+
+.section-heading h2 {
+
+letter-spacing:-1px;
+
+}
+
+
+.industry-hero h1 {
+
+letter-spacing:-2px;
+
+}
+
+
+.industry-hero p:not(.hero-tag){
+
+font-size:17px;
+
+}
+
+
+.cta-box h2 {
+
+letter-spacing:-1px;
+
+}
+
+
+}

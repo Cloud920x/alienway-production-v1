@@ -2906,3 +2906,23 @@ grid-template-columns:1fr;
 
 
 }
+
+/* ===================================
+   TRUST SECTION
+=================================== */
+
+
+.industry-section .section-heading {
+
+position:relative;
+
+z-index:2;
+
+}
+
+
+.industry-section {
+
+scroll-margin-top:80px;
+
+}

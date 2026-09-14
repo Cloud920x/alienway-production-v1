@@ -3107,6 +3107,41 @@ letter-spacing:-1px;
 =================================== */
 
 /* ===================================
+   ALIENWAY SECTION LABEL TEXT
+=================================== */
+
+.section-tag {
+
+font-size:26px;
+
+font-weight:900;
+
+letter-spacing:5px;
+
+text-transform:uppercase;
+
+background:
+
+linear-gradient(
+180deg,
+#fff8e7 0%,
+#fff8e7 45%,
+#35d9ff 75%,
+#008cff 100%
+);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+filter:
+drop-shadow(0 0 8px rgba(0,140,255,.35));
+
+margin-bottom:25px;
+
+}
+
+/* ===================================
    SECTION LABEL GREEN LINE
 =================================== */
 

@@ -2586,3 +2586,148 @@ font-size:50px;
 
 
 }
+
+/* ===================================
+   INDUSTRY PAGE POLISH
+=================================== */
+
+
+.industry-section {
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+
+
+.industry-section + .industry-section {
+
+padding-top:60px;
+
+}
+
+
+
+
+.section-heading {
+
+max-width:850px;
+
+margin:0 auto 70px;
+
+text-align:center;
+
+}
+
+
+
+.section-heading h2 {
+
+font-size:clamp(38px,5vw,65px);
+
+line-height:1.05;
+
+letter-spacing:-2px;
+
+font-weight:900;
+
+margin:25px 0;
+
+}
+
+
+
+.section-heading p:not(.section-tag){
+
+font-size:18px;
+
+line-height:1.8;
+
+color:rgba(255,255,255,.7);
+
+max-width:700px;
+
+margin:auto;
+
+}
+
+
+
+
+
+.section-tag {
+
+font-size:13px;
+
+letter-spacing:4px;
+
+font-weight:800;
+
+opacity:.7;
+
+}
+
+
+
+
+
+.industry-section::before {
+
+content:"";
+
+position:absolute;
+
+width:500px;
+
+height:500px;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.03);
+
+top:-200px;
+
+right:-200px;
+
+filter:blur(20px);
+
+pointer-events:none;
+
+}
+
+
+
+
+
+.industry-detail-card {
+
+animation:industryFade .8s ease both;
+
+}
+
+
+
+@keyframes industryFade {
+
+
+from {
+
+opacity:0;
+
+transform:translateY(30px);
+
+}
+
+
+to {
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+
+}

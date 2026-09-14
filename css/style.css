@@ -3152,3 +3152,35 @@ box-shadow:
 0 0 15px rgba(255,255,255,.6);
 
 }
+
+/* ===================================
+   ALIENWAY SECTION LABELS
+=================================== */
+
+
+.section-tag {
+
+font-size:18px;
+
+font-weight:900;
+
+letter-spacing:3px;
+
+text-transform:uppercase;
+
+background:
+
+linear-gradient(
+90deg,
+#39ff14,
+#00ff88,
+#39ff14
+);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+margin-bottom:18px;
+
+}

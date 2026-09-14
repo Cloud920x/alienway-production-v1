@@ -1712,3 +1712,134 @@ font-size:32px;
 
 
 }
+
+/* ===================================
+   ABOUT PAGE
+=================================== */
+
+
+.about-story {
+
+  max-width:1100px;
+
+  margin:auto;
+
+  padding:120px 60px;
+
+}
+
+
+
+.about-box {
+
+  padding:60px;
+
+  margin-bottom:35px;
+
+  border-radius:30px;
+
+  background:rgba(255,255,255,.04);
+
+  border:1px solid rgba(255,255,255,.1);
+
+  transition:.4s ease;
+
+}
+
+
+
+.about-box:hover {
+
+  transform:translateY(-8px);
+
+  border-color:rgba(255,255,255,.35);
+
+}
+
+
+
+.about-box h2 {
+
+  font-size:42px;
+
+  font-weight:900;
+
+  letter-spacing:-1px;
+
+  margin-bottom:25px;
+
+}
+
+
+
+.about-box p {
+
+  max-width:850px;
+
+  color:rgba(255,255,255,.75);
+
+  font-size:19px;
+
+  line-height:1.8;
+
+}
+
+
+
+/* ABOUT HERO IMAGE */
+
+.about-hero {
+
+background:
+
+linear-gradient(
+120deg,
+rgba(9,13,20,.95),
+rgba(9,13,20,.65)
+),
+
+url("https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1800&q=80")
+
+center/cover;
+
+}
+
+
+
+
+
+@media(max-width:800px){
+
+
+.about-story {
+
+padding:80px 25px;
+
+}
+
+
+
+.about-box {
+
+padding:35px 25px;
+
+}
+
+
+
+.about-box h2 {
+
+font-size:32px;
+
+}
+
+
+
+.about-box p {
+
+font-size:17px;
+
+}
+
+
+}

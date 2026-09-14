@@ -2251,3 +2251,197 @@ grid-template-columns:1fr;
 
 
 }
+
+/* ===================================
+   INDUSTRY PAGES SYSTEM
+=================================== */
+
+
+.industry-hero {
+
+  min-height:85vh;
+
+  display:flex;
+
+  align-items:center;
+
+  padding:100px 60px;
+
+}
+
+
+
+.industry-hero > div {
+
+  max-width:850px;
+
+}
+
+
+
+.industry-hero h1 {
+
+  font-size:clamp(55px,8vw,95px);
+
+  line-height:.95;
+
+  letter-spacing:-3px;
+
+  font-weight:900;
+
+  margin:25px 0;
+
+}
+
+
+
+.industry-hero p:not(.hero-tag) {
+
+  max-width:650px;
+
+  font-size:20px;
+
+  line-height:1.7;
+
+  color:rgba(255,255,255,.75);
+
+}
+
+
+
+.restaurant-hero {
+
+background:
+
+linear-gradient(
+120deg,
+rgba(9,13,20,.95),
+rgba(9,13,20,.55)
+),
+
+url("https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1800&q=80")
+
+center/cover;
+
+}
+
+
+
+
+
+.industry-section {
+
+max-width:1200px;
+
+margin:auto;
+
+padding:120px 60px;
+
+}
+
+
+
+
+.industry-cards {
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:30px;
+
+}
+
+
+
+
+
+.industry-detail-card {
+
+padding:45px 35px;
+
+border-radius:30px;
+
+background:
+
+rgba(255,255,255,.04);
+
+border:1px solid rgba(255,255,255,.1);
+
+transition:.4s ease;
+
+}
+
+
+
+.industry-detail-card:hover {
+
+transform:translateY(-10px);
+
+border-color:rgba(255,255,255,.4);
+
+}
+
+
+
+.industry-detail-card h3 {
+
+font-size:24px;
+
+margin-bottom:20px;
+
+font-weight:900;
+
+}
+
+
+
+.industry-detail-card p {
+
+color:rgba(255,255,255,.7);
+
+font-size:17px;
+
+line-height:1.7;
+
+}
+
+
+
+
+
+@media(max-width:900px){
+
+
+.industry-hero {
+
+padding:80px 25px;
+
+}
+
+
+
+.industry-section {
+
+padding:80px 25px;
+
+}
+
+
+
+.industry-cards {
+
+grid-template-columns:1fr;
+
+}
+
+
+
+.industry-hero h1 {
+
+font-size:50px;
+
+}
+
+
+}

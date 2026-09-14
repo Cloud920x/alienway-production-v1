@@ -3160,11 +3160,11 @@ box-shadow:
 
 .section-tag {
 
-font-size:18px;
+font-size:15px;
 
 font-weight:900;
 
-letter-spacing:3px;
+letter-spacing:4px;
 
 text-transform:uppercase;
 
@@ -3173,7 +3173,7 @@ background:
 linear-gradient(
 90deg,
 #39ff14,
-#00ff88,
+#7cff6b,
 #39ff14
 );
 

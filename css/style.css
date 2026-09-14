@@ -3107,53 +3107,6 @@ letter-spacing:-1px;
 =================================== */
 
 /* ===================================
-   ALIENWAY SECTION HEADERS
-=================================== */
-
-
-.section-heading h2 {
-
-position:relative;
-
-display:inline-block;
-
-}
-
-
-
-.section-heading h2::after {
-
-content:"";
-
-position:absolute;
-
-left:50%;
-
-bottom:-15px;
-
-transform:translateX(-50%);
-
-width:120px;
-
-height:3px;
-
-background:
-
-linear-gradient(
-90deg,
-transparent,
-white,
-transparent
-);
-
-border-radius:50px;
-
-box-shadow:
-0 0 15px rgba(255,255,255,.6);
-
-}
-
-/* ===================================
    SECTION LABEL GREEN LINE
 =================================== */
 

@@ -3783,3 +3783,25 @@ box-shadow:
 }
 
 }
+
+/* ===================================
+   ABOUT CTA BUTTON FIX
+=================================== */
+
+
+.about-cta .button {
+
+  margin-top:30px;
+
+  position:relative;
+
+  z-index:2;
+
+}
+
+
+.about-cta p:not(.hero-tag) {
+
+  margin-bottom:20px;
+
+}

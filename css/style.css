@@ -1818,51 +1818,177 @@ rgba(9,13,20,.95),
 rgba(9,13,20,.65)
 ),
 
-url("https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1800&q=80")
+/* ============================= */
+/* ABOUT PAGE — ALIENWAY STORY */
+/* ============================= */
 
-center/cover;
 
+/* ABOUT INTRO */
+
+.about-intro {
+    padding: 140px 8%;
+    display: grid;
+    grid-template-columns: 0.7fr 1.5fr;
+    gap: 80px;
+    max-width: 1400px;
+    margin: auto;
+}
+
+.about-intro-label {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.about-intro-label span {
+    margin-right: 15px;
+    opacity: 0.5;
+}
+
+.about-intro-content {
+    max-width: 850px;
+}
+
+.about-intro-content h2,
+.about-feature-content h2,
+.about-origin-content h2,
+.about-future-content h2 {
+    font-size: clamp(42px, 6vw, 82px);
+    line-height: 0.95;
+    margin: 0 0 40px;
+}
+
+.about-intro-content p,
+.about-feature-content p,
+.about-origin-content p,
+.about-future-content p {
+    font-size: 20px;
+    line-height: 1.8;
+    max-width: 750px;
+    opacity: 0.75;
+    margin-bottom: 25px;
+}
+
+.about-intro-content h3,
+.about-feature-content h3,
+.about-origin-content h3,
+.about-future-content h3 {
+    font-size: clamp(25px, 3vw, 42px);
+    line-height: 1.1;
+    margin: 35px 0;
 }
 
 
+/* ABOUT AI */
 
+.about-feature {
+    padding: 160px 8%;
+    background: rgba(255,255,255,0.025);
+}
 
-
-@media(max-width:800px){
-
-
-.about-story {
-
-padding:80px 25px;
-
+.about-feature-content {
+    max-width: 1100px;
+    margin: auto;
 }
 
 
+/* ABOUT ORIGIN */
 
-.about-box {
+.about-origin {
+    padding: 160px 8%;
+    max-width: 1400px;
+    margin: auto;
+}
 
-padding:35px 25px;
-
+.about-origin-content {
+    max-width: 1000px;
+    margin: 70px auto 0;
 }
 
 
+/* ABOUT FUTURE */
 
-.about-box h2 {
+.about-future {
+    padding: 160px 8%;
+    background: rgba(255,255,255,0.025);
+}
 
-font-size:32px;
-
+.about-future-content {
+    max-width: 1000px;
+    margin: 70px auto 0;
 }
 
 
+/* ABOUT PHILOSOPHY */
 
-.about-box p {
+.about-philosophy {
+    min-height: 80vh;
+    padding: 140px 8%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 
-font-size:17px;
+.about-philosophy h2 {
+    font-size: clamp(70px, 13vw, 190px);
+    line-height: 0.78;
+    margin: 40px 0;
+    letter-spacing: -5px;
+}
 
+.about-philosophy p:last-child {
+    font-size: 20px;
+    opacity: 0.7;
 }
 
 
+/* ABOUT MOBILE */
+
+@media (max-width: 800px) {
+
+    .about-intro {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 100px 24px;
+    }
+
+    .about-feature,
+    .about-origin,
+    .about-future {
+        padding: 100px 24px;
+    }
+
+    .about-origin-content,
+    .about-future-content {
+        margin-top: 50px;
+    }
+
+    .about-intro-content p,
+    .about-feature-content p,
+    .about-origin-content p,
+    .about-future-content p {
+        font-size: 17px;
+        line-height: 1.7;
+    }
+
+    .about-philosophy {
+        min-height: 70vh;
+        padding: 100px 24px;
+    }
+
+    .about-philosophy h2 {
+        letter-spacing: -2px;
+    }
+
 }
+
+/* ============================= */
+/* ABOUT PAGE END */
+/* ============================= */
 
 /* ===================================
    CONTACT PAGE

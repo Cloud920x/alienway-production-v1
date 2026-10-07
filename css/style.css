@@ -3630,3 +3630,70 @@ box-shadow:
 }
 
 }
+
+/* ===================================
+   ALIENWAY PHILOSOPHY FINAL
+=================================== */
+
+
+.about-philosophy {
+
+  position:relative;
+
+  padding-top:160px;
+
+  padding-bottom:160px;
+
+}
+
+
+.about-philosophy .hero-tag {
+
+  margin-bottom:40px;
+
+}
+
+
+.about-philosophy h2 {
+
+  text-shadow:
+  0 10px 40px rgba(255,255,255,.15);
+
+}
+
+
+.philosophy-line {
+
+  width:120px;
+
+  height:2px;
+
+  margin:40px auto;
+
+  background:rgba(255,255,255,.5);
+
+}
+
+
+.about-philosophy p {
+
+  max-width:650px;
+
+  margin:15px auto;
+
+  line-height:1.8;
+
+}
+
+
+@media(max-width:800px){
+
+.about-philosophy {
+
+  padding-top:100px;
+
+  padding-bottom:100px;
+
+}
+
+}

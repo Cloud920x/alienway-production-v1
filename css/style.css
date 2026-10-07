@@ -3847,3 +3847,68 @@ box-shadow:
   min-height:48px;
 
 }
+
+/* ===================================
+   FOOTER EASTER EGG
+=================================== */
+
+
+.footer-easter {
+
+  max-width:900px;
+
+  margin:0 auto 70px;
+
+  padding:45px 30px;
+
+  text-align:center;
+
+  border-radius:30px;
+
+  background:rgba(255,255,255,.03);
+
+  border:1px solid rgba(255,255,255,.08);
+
+}
+
+
+.footer-easter p {
+
+  font-size:14px;
+
+  letter-spacing:4px;
+
+  color:rgba(255,255,255,.55);
+
+  margin-bottom:20px;
+
+}
+
+
+.footer-easter h3 {
+
+  font-size:clamp(35px,5vw,55px);
+
+  font-weight:900;
+
+  letter-spacing:-2px;
+
+}
+
+
+@media(max-width:800px){
+
+.footer-easter {
+
+  padding:35px 20px;
+
+}
+
+
+.footer-easter h3 {
+
+  font-size:35px;
+
+}
+
+}

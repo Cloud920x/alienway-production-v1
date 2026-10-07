@@ -3564,3 +3564,37 @@ box-shadow:
 }
 
 }
+
+/* ===================================
+   ORIGIN INTRO
+=================================== */
+
+
+.origin-intro {
+
+  font-size:24px !important;
+
+  font-weight:700;
+
+  color:white !important;
+
+  max-width:650px;
+
+  letter-spacing:-.5px;
+
+  margin-bottom:35px !important;
+
+  opacity:.9;
+
+}
+
+
+@media(max-width:800px){
+
+.origin-intro {
+
+  font-size:20px !important;
+
+}
+
+}

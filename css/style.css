@@ -3598,3 +3598,35 @@ box-shadow:
 }
 
 }
+
+/* ===================================
+   FUTURE INTRO
+=================================== */
+
+
+.future-intro {
+
+  font-size:26px !important;
+
+  font-weight:800;
+
+  color:white !important;
+
+  max-width:700px;
+
+  letter-spacing:-.8px;
+
+  margin-bottom:35px !important;
+
+}
+
+
+@media(max-width:800px){
+
+.future-intro {
+
+  font-size:21px !important;
+
+}
+
+}

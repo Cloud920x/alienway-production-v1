@@ -3403,3 +3403,73 @@ box-shadow:
 }
 
 }
+
+/* ===================================
+   ABOUT ORIGIN POLISH
+=================================== */
+
+
+.about-origin {
+
+  position:relative;
+
+}
+
+
+.about-origin-content {
+
+  max-width:850px;
+
+}
+
+
+.about-origin h2 {
+
+  font-size:clamp(40px,6vw,60px);
+
+  line-height:1.05;
+
+  letter-spacing:-2px;
+
+}
+
+
+.about-origin h3 {
+
+  position:relative;
+
+  padding-left:25px;
+
+}
+
+
+.about-origin h3::before {
+
+  content:"";
+
+  position:absolute;
+
+  left:0;
+
+  top:8px;
+
+  width:4px;
+
+  height:80%;
+
+  background:rgba(255,255,255,.8);
+
+  border-radius:20px;
+
+}
+
+
+@media(max-width:800px){
+
+.about-origin h3 {
+
+  padding-left:20px;
+
+}
+
+}

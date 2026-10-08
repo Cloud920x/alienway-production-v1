@@ -1800,11 +1800,15 @@ font-size:19px;
 
 line-height:1.8;
 
-margin-bottom:25px;
+margin-bottom:15px;
 
 }
 
+.about-future-content p + p {
 
+margin-top:10px;
+
+}
 
 .about-intro h3,
 .about-origin h3,

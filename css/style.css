@@ -4025,3 +4025,11 @@ padding-bottom:40px;
 display:none;
 
 }
+
+/* REMOVE OLD ABOUT STORY MARKERS */
+
+.about-origin h3::before {
+
+display:none;
+
+}

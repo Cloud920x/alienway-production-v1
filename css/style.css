@@ -3560,55 +3560,6 @@ box-shadow:
 }
 
 /* ===================================
-   ABOUT STORY CHAPTERS
-=================================== */
-
-.about-intro,
-.about-feature,
-.about-origin,
-.about-future {
-
-  position:relative;
-
-}
-
-
-.about-intro::before,
-.about-feature::before,
-.about-origin::before,
-.about-future::before {
-
-  content:"";
-
-  position:absolute;
-
-  left:60px;
-
-  top:0;
-
-  width:1px;
-
-  height:80px;
-
-  background:rgba(255,255,255,.15);
-
-}
-
-
-@media(max-width:800px){
-
-.about-intro::before,
-.about-feature::before,
-.about-origin::before,
-.about-future::before {
-
-  left:24px;
-
-}
-
-}
-
-/* ===================================
    ABOUT HIGHLIGHT QUOTE
 =================================== */
 
@@ -4013,18 +3964,6 @@ padding-top:40px;
 
 padding-bottom:40px;
 
-}
-
-/* REMOVE OLD ABOUT CHAPTER LINES */
-
-.about-intro::before,
-.about-feature::before,
-.about-origin::before,
-.about-future::before {
-
-display:none;
-
-}
 
 /* REMOVE OLD ABOUT STORY MARKERS */
 

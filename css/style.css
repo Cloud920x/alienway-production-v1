@@ -1775,15 +1775,6 @@ padding:120px 60px;
 
 }
 
-.about-future {
-
-padding-top:40px;
-
-padding-bottom:80px;
-
-}
-
-
 
 .about-intro-content,
 .about-future-content,
@@ -4004,5 +3995,20 @@ box-shadow:
   font-size:35px;
 
 }
+
+}
+
+/* ABOUT FUTURE GAP FIX */
+
+.about-intro {
+
+padding-bottom:40px;
+
+}
+
+
+.about-future {
+
+padding-top:40px;
 
 }

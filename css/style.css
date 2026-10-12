@@ -1766,13 +1766,28 @@ center/cover no-repeat;
 /* STORY SECTIONS */
 
 .about-intro,
-.about-future,
 .about-origin,
 .about-ending {
 
 max-width:1100px;
 margin:auto;
-padding:60px 60px;
+padding:40px 60px;
+
+}
+
+
+.about-intro {
+
+padding-bottom:0;
+
+}
+
+
+.about-future {
+
+max-width:1100px;
+margin:auto;
+padding:0 60px;
 
 }
 
@@ -3541,13 +3556,4 @@ box-shadow:
 
 display:none;
 
-}
-
-.about-intro {
-    padding-bottom:0 !important;
-}
-
-.about-future {
-    padding-top:0 !important;
-    padding-bottom:0 !important;
 }

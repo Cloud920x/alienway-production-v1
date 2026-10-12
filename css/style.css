@@ -1758,6 +1758,10 @@ center/cover no-repeat;
 
 }
 
+.about-hero {
+  min-height:60vh;
+}
+
 
 /* STORY SECTIONS */
 
@@ -1802,7 +1806,7 @@ margin-bottom:20px;
 .about-origin h3,
 .about-ending h3 {
 
-font-size:30px;
+font-size:42px;
 line-height:1.3;
 font-weight:900;
 letter-spacing:-.5px;

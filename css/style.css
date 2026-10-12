@@ -3557,3 +3557,18 @@ box-shadow:
 display:none;
 
 }
+
+.about-future {
+    padding:0 !important;
+    margin:0 !important;
+}
+
+.about-intro {
+    padding-bottom:0 !important;
+    margin-bottom:0 !important;
+}
+
+.about-origin {
+    padding-top:0 !important;
+    margin-top:0 !important;
+}

@@ -3543,6 +3543,10 @@ display:none;
 
 }
 
+.about-intro {
+    padding-bottom:0 !important;
+}
+
 .about-future {
-    background: red;
+    padding-top:0 !important;
 }

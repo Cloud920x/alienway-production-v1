@@ -1802,6 +1802,13 @@ margin-bottom:20px;
 
 }
 
+.about-future-content p:first-child {
+font-size:42px;
+font-weight:900;
+color:white;
+line-height:1.2;
+}
+
 .about-intro h3,
 .about-origin h3,
 .about-ending h3 {

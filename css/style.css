@@ -3558,17 +3558,17 @@ display:none;
 
 }
 
-.about-future {
-    padding:0 !important;
-    margin:0 !important;
-}
-
 .about-intro {
     padding-bottom:0 !important;
-    margin-bottom:0 !important;
 }
 
+
+.about-future {
+    padding:40px 60px !important;
+    margin:auto !important;
+}
+
+
 .about-origin {
-    padding-top:0 !important;
-    margin-top:0 !important;
+    padding-top:40px !important;
 }

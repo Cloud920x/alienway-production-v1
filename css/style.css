@@ -1762,21 +1762,13 @@ center/cover no-repeat;
 /* STORY SECTIONS */
 
 .about-intro,
+.about-future,
 .about-origin,
 .about-ending {
 
 max-width:1100px;
 margin:auto;
-padding:40px 60px;
-
-}
-
-
-.about-future {
-
-max-width:1100px;
-margin:auto;
-padding:20px 60px 40px;
+padding:60px 60px;
 
 }
 
@@ -1802,7 +1794,7 @@ font-size:19px;
 
 line-height:1.8;
 
-margin-bottom:8px;
+margin-bottom:20px;
 
 }
 

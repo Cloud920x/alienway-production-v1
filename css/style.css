@@ -3181,52 +3181,46 @@ margin-bottom:25px;
 }
 
 /* ===================================
-   ABOUT PAGE
-   ALIENWAY STORY EXPERIENCE
+   ALIENWAY ABOUT PAGE FINAL POLISH
 =================================== */
 
 
-/* ABOUT HERO */
+/* HERO */
 
 .about-hero {
 
-    min-height:75vh;
+    min-height:80vh;
 
     background:
-
     linear-gradient(
     120deg,
-    rgba(9,13,20,.95),
+    rgba(9,13,20,.96),
     rgba(9,13,20,.65)
     ),
 
     url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=80")
-
-    center/cover no-repeat;
+    center/cover;
 
 }
 
 
 .about-hero h1 {
 
-    animation: aboutSlide 1s ease forwards;
+    font-size:clamp(55px,8vw,100px);
+
+    letter-spacing:-4px;
+
+    line-height:.95;
 
 }
 
 
-.about-hero p {
 
-    animation: aboutFade 1.2s ease forwards;
-
-}
-
-
-
-/* STORY CONTAINER */
+/* STORY */
 
 .about-story {
 
-    max-width:1100px;
+    max-width:1200px;
 
     margin:auto;
 
@@ -3236,19 +3230,45 @@ margin-bottom:25px;
 
 
 
-/* STORY BLOCKS */
-
 .about-story-block {
 
     max-width:850px;
 
-    margin-bottom:100px;
+    margin-bottom:110px;
 
-    animation: aboutReveal .8s ease both;
+    padding:55px;
+
+    border-radius:35px;
+
+    background:
+
+    linear-gradient(
+    145deg,
+    rgba(255,255,255,.06),
+    rgba(255,255,255,.02)
+    );
+
+    border:1px solid rgba(255,255,255,.1);
+
+    backdrop-filter:blur(10px);
+
+    transition:.4s ease;
 
 }
 
 
+
+.about-story-block:hover {
+
+    transform:translateY(-8px);
+
+    border-color:rgba(255,255,255,.3);
+
+}
+
+
+
+/* TEXT */
 
 .about-story-block p {
 
@@ -3264,17 +3284,15 @@ margin-bottom:25px;
 
 
 
-/* BIG STORY STATEMENTS */
-
 .about-story-block h2 {
 
-    font-size:clamp(35px,5vw,60px);
+    font-size:clamp(35px,5vw,65px);
 
-    line-height:1.05;
+    line-height:1;
+
+    letter-spacing:-3px;
 
     font-weight:900;
-
-    letter-spacing:-2px;
 
     margin:35px 0;
 
@@ -3294,9 +3312,13 @@ margin-bottom:25px;
 
     line-height:1.5 !important;
 
-    padding-left:25px;
+    padding:30px;
 
-    border-left:5px solid rgba(255,255,255,.8);
+    border-radius:25px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.12);
 
 }
 
@@ -3308,7 +3330,7 @@ margin-bottom:25px;
 
     text-align:center;
 
-    padding-top:40px;
+    padding:80px 20px;
 
 }
 
@@ -3316,15 +3338,13 @@ margin-bottom:25px;
 
 .about-story-ending h1 {
 
-    font-size:clamp(60px,10vw,110px);
+    font-size:clamp(65px,10vw,120px);
 
-    line-height:.9;
+    line-height:.85;
+
+    letter-spacing:-6px;
 
     font-weight:900;
-
-    letter-spacing:-5px;
-
-    margin-bottom:40px;
 
 }
 
@@ -3334,11 +3354,11 @@ margin-bottom:25px;
 
     font-size:clamp(35px,5vw,60px);
 
-    font-weight:900;
-
     letter-spacing:-2px;
 
-    margin:35px 0;
+    font-weight:900;
+
+    margin:40px 0;
 
 }
 
@@ -3346,11 +3366,9 @@ margin-bottom:25px;
 
 .about-story-ending p {
 
-    font-size:19px;
+    font-size:20px;
 
-    line-height:1.8;
-
-    color:rgba(255,255,255,.75);
+    color:rgba(255,255,255,.7);
 
 }
 
@@ -3360,21 +3378,21 @@ margin-bottom:25px;
 
 .about-cta {
 
-    max-width:1000px;
+    max-width:1050px;
 
     margin:80px auto;
 
-    padding:80px 60px;
+    padding:90px 60px;
 
     text-align:center;
 
-    border-radius:35px;
+    border-radius:40px;
 
     background:
 
     linear-gradient(
     145deg,
-    rgba(255,255,255,.08),
+    rgba(255,255,255,.09),
     rgba(255,255,255,.03)
     );
 
@@ -3386,13 +3404,13 @@ margin-bottom:25px;
 
 .about-cta h2 {
 
-    font-size:clamp(45px,7vw,80px);
+    font-size:clamp(50px,7vw,85px);
 
-    line-height:.95;
+    line-height:.9;
+
+    letter-spacing:-4px;
 
     font-weight:900;
-
-    letter-spacing:-3px;
 
     margin:30px 0;
 
@@ -3400,7 +3418,7 @@ margin-bottom:25px;
 
 
 
-.about-cta p:not(.hero-tag) {
+.about-cta p:not(.hero-tag){
 
     max-width:650px;
 
@@ -3416,7 +3434,14 @@ margin-bottom:25px;
 
 
 
-/* ANIMATIONS */
+/* ANIMATION */
+
+.about-story-block {
+
+    animation:aboutReveal .8s ease both;
+
+}
+
 
 @keyframes aboutReveal {
 
@@ -3440,46 +3465,6 @@ transform:translateY(0);
 
 
 
-@keyframes aboutSlide {
-
-from {
-
-opacity:0;
-
-transform:translateY(50px);
-
-}
-
-to {
-
-opacity:1;
-
-transform:translateY(0);
-
-}
-
-}
-
-
-
-@keyframes aboutFade {
-
-from {
-
-opacity:0;
-
-}
-
-to {
-
-opacity:1;
-
-}
-
-}
-
-
-
 /* MOBILE */
 
 @media(max-width:800px){
@@ -3487,53 +3472,39 @@ opacity:1;
 
 .about-story {
 
-padding:80px 25px;
+    padding:80px 25px;
 
 }
 
 
 .about-story-block {
 
-margin-bottom:70px;
+    padding:35px 25px;
+
+    margin-bottom:50px;
 
 }
 
 
 .about-story-block p {
 
-font-size:17px;
+    font-size:17px;
 
 }
 
 
 .highlight {
 
-font-size:20px !important;
-
-padding-left:18px;
-
-}
-
-
-.about-story-ending h1 {
-
-letter-spacing:-2px;
+    font-size:19px !important;
 
 }
 
 
 .about-cta {
 
-margin:50px 25px;
+    margin:50px 25px;
 
-padding:60px 25px;
-
-}
-
-
-.about-cta h2 {
-
-font-size:45px;
+    padding:60px 25px;
 
 }
 

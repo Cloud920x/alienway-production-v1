@@ -3279,52 +3279,6 @@ margin-bottom:25px;
 
 }
 
-/* ===================================
-   SECTION LABEL GREEN LINE
-=================================== */
-
-
-.section-tag {
-
-position:relative;
-
-display:inline-block;
-
-}
-
-
-.section-tag::after {
-
-content:"";
-
-position:absolute;
-
-left:50%;
-
-bottom:-10px;
-
-transform:translateX(-50%);
-
-width:90px;
-
-height:2px;
-
-background:
-
-linear-gradient(
-90deg,
-transparent,
-#39ff14,
-transparent
-);
-
-border-radius:50px;
-
-box-shadow:
-0 0 12px rgba(57,255,20,.5);
-
-}
-
 
 /* ===================================
    ABOUT ORIGIN POLISH

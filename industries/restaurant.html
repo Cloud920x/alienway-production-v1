@@ -109,153 +109,606 @@ CHOOSE YOUR TEMPLATE →
 
 </section>
 
+<!-- HERO END -->
+
+<!-- RESTAURANT TEMPLATE SHOWROOM START -->
+
+<style>
+.restaurant-showroom {
+    padding: 90px 6%;
+}
+
+.restaurant-showroom .showroom-heading {
+    text-align: center;
+    max-width: 750px;
+    margin: 0 auto 45px;
+}
+
+.restaurant-showroom .showroom-heading h2 {
+    font-size: clamp(28px, 5vw, 48px);
+    margin: 15px 0;
+}
+
+.restaurant-showroom .showroom-heading p {
+    line-height: 1.8;
+    opacity: .8;
+}
+
+.restaurant-template-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.restaurant-template {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.13);
+    border-radius: 22px;
+    background: rgba(255,255,255,.035);
+    transition: border-color .3s, transform .3s;
+}
+
+.restaurant-template:hover {
+    border-color: rgba(255,255,255,.4);
+    transform: translateY(-5px);
+}
+
+.template-preview {
+    min-height: 230px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.cafe-preview {
+    background: linear-gradient(145deg, #e8d5b7, #9b704d);
+    color: #302117;
+}
+
+.fast-preview {
+    background: linear-gradient(145deg, #ffcc46, #e94b32);
+    color: #28130c;
+}
+
+.dining-preview {
+    background: linear-gradient(145deg, #18271f, #53664c);
+    color: #fff5df;
+}
+
+.template-mini-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.template-mini-nav span:last-child {
+    font-size: 10px;
+    border: 1px solid currentColor;
+    padding: 6px 8px;
+}
+
+.template-preview h3 {
+    font-size: clamp(25px, 3vw, 36px);
+    line-height: 1.05;
+    margin: 25px 0 10px;
+}
+
+.template-preview p {
+    font-size: 12px;
+    line-height: 1.6;
+    max-width: 240px;
+}
+
+.template-preview .preview-label {
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.template-card-info {
+    padding: 22px;
+}
+
+.template-card-info .template-number {
+    font-size: 11px;
+    letter-spacing: 2px;
+    opacity: .65;
+}
+
+.template-card-info h3 {
+    margin: 10px 0;
+    font-size: 21px;
+}
+
+.template-card-info p {
+    font-size: 14px;
+    line-height: 1.7;
+    opacity: .75;
+}
+
+.template-expand-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 10px;
+    background: rgba(255,255,255,.06);
+    color: inherit;
+    font: inherit;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.template-expand-btn:hover {
+    background: rgba(255,255,255,.12);
+}
+
+.template-expanded {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows .45s ease, opacity .35s ease;
+}
+
+.template-expanded-inner {
+    overflow: hidden;
+    min-height: 0;
+}
+
+.restaurant-template.is-open .template-expanded {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+.template-expanded-content {
+    padding: 0 22px 24px;
+}
+
+.template-expanded-content h4 {
+    font-size: 15px;
+    margin: 18px 0 8px;
+}
+
+.template-expanded-content p,
+.template-expanded-content li {
+    font-size: 13px;
+    line-height: 1.8;
+    opacity: .8;
+}
+
+.template-expanded-content ul {
+    padding-left: 18px;
+}
+
+.template-sample-menu {
+    padding: 14px;
+    margin: 15px 0;
+    border: 1px solid rgba(255,255,255,.13);
+    border-radius: 12px;
+}
+
+.template-sample-menu div {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 12px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+.template-sample-menu div:last-child {
+    border-bottom: 0;
+}
+
+.template-choose-btn {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 18px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #f5b400;
+    color: #111 !important;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+@media (max-width: 850px) {
+    .restaurant-template-grid {
+        grid-template-columns: 1fr;
+        max-width: 520px;
+    }
+
+    .template-preview {
+        min-height: 250px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .restaurant-template,
+    .template-expanded {
+        transition: none;
+    }
+}
+</style>
+
+
+<section class="restaurant-showroom" id="restaurant-templates">
+
+    <div class="showroom-heading">
+
+        <p class="section-tag">FIND YOUR STYLE</p>
+
+        <h2>THREE DESIGNS. THREE DIFFERENT EXPERIENCES.</h2>
+
+        <p>
+            Explore our restaurant website concepts. Tap a design to
+            open its preview and discover how it could work for your business.
+        </p>
+
+    </div>
+
+
+    <div class="restaurant-template-grid">
+
+
+        <!-- TEMPLATE 01: CAFE -->
+
+        <article class="restaurant-template">
 
-  <!-- RESTAURANT SOLUTIONS START -->
+            <div class="template-preview cafe-preview">
 
+                <div class="template-mini-nav">
+                    <span>THE DAILY CUP</span>
+                    <span>OUR MENU ↗</span>
+                </div>
 
-<section class="industry-section">
+                <div>
+                    <p class="preview-label">COFFEE • SLOW MORNINGS</p>
+                    <h3>Your little<br>escape.</h3>
+                    <p>Good coffee. Fresh bakes. Better mornings.</p>
+                </div>
 
+                <div class="template-mini-nav">
+                    <span>MADE WITH CARE</span>
+                    <span>EST. 2026</span>
+                </div>
 
-<div class="section-heading">
+            </div>
 
 
-<p class="section-tag">
-DIGITAL TOOLS FOR RESTAURANTS
-</p>
+            <div class="template-card-info">
 
+                <span class="template-number">TEMPLATE 01</span>
 
-<h2>
-MORE THAN A WEBSITE.
-A COMPLETE CUSTOMER EXPERIENCE.
-</h2>
+                <h3>Café & Coffee Shop</h3>
 
+                <p>
+                    Warm colours, relaxed layouts and a welcoming
+                    experience for cafés, bakeries and coffee shops.
+                </p>
 
-<p>
-We create digital systems that help restaurants attract customers,
-simplify ordering and build stronger relationships.
-</p>
+                <button class="template-expand-btn"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="cafe-details">
+                    EXPLORE DESIGN ＋
+                </button>
 
+            </div>
 
-</div>
 
+            <div class="template-expanded" id="cafe-details">
 
+                <div class="template-expanded-inner">
 
+                    <div class="template-expanded-content">
 
+                        <h4>THE EXPERIENCE</h4>
 
-<div class="industry-cards">
+                        <p>
+                            A cosy digital storefront designed to showcase
+                            your atmosphere, coffee, baked goods and menu.
+                        </p>
 
+                        <div class="template-sample-menu">
 
+                            <div>
+                                <span>Flat White</span>
+                                <strong>R38</strong>
+                            </div>
 
-<div class="industry-detail-card">
+                            <div>
+                                <span>Fresh Croissant</span>
+                                <strong>R32</strong>
+                            </div>
 
-<h3>
-🍽 INTERACTIVE MENU EXPERIENCE
-</h3>
+                            <div>
+                                <span>Iced Latte</span>
+                                <strong>R45</strong>
+                            </div>
 
-<p>
-Give customers a modern way to explore your menu with categories,
-food images, descriptions, prices and special offers.
-</p>
+                        </div>
 
-</div>
+                        <h4>DESIGN INCLUDES</h4>
 
+                        <ul>
+                            <li>Café introduction and branding</li>
+                            <li>Sample menu layout</li>
+                            <li>Food and coffee gallery</li>
+                            <li>Location and contact details</li>
+                            <li>WhatsApp enquiry option</li>
+                        </ul>
 
+                        <a class="template-choose-btn"
+                           href="../contact.html?template=Cafe%20and%20Coffee%20Shop">
+                            CHOOSE THIS TEMPLATE →
+                        </a>
 
+                    </div>
 
+                </div>
 
-<div class="industry-detail-card">
+            </div>
 
-<h3>
-📅 ONLINE RESERVATIONS
-</h3>
+        </article>
 
-<p>
-Make booking simple with reservation features that allow customers
-to plan their visit without unnecessary calls.
-</p>
 
-</div>
 
+        <!-- TEMPLATE 02: FAST FOOD -->
 
+        <article class="restaurant-template">
 
+            <div class="template-preview fast-preview">
 
+                <div class="template-mini-nav">
+                    <span>BITE CLUB</span>
+                    <span>ORDER ↗</span>
+                </div>
 
-<div class="industry-detail-card">
+                <div>
+                    <p class="preview-label">BIG FLAVOUR. ZERO BORING.</p>
+                    <h3>Cravings<br>handled.</h3>
+                    <p>Burgers, loaded fries and serious flavour.</p>
+                </div>
 
-<h3>
-📲 DIRECT CUSTOMER ORDERS
-</h3>
+                <div class="template-mini-nav">
+                    <span>FRESH OFF THE GRILL</span>
+                    <span>LET'S EAT!</span>
+                </div>
 
-<p>
-Connect customers directly through WhatsApp ordering or online
-ordering systems designed around your restaurant.
-</p>
+            </div>
 
-</div>
 
+            <div class="template-card-info">
 
+                <span class="template-number">TEMPLATE 02</span>
 
+                <h3>Fast Food & Takeaways</h3>
 
+                <p>
+                    Bold colours, punchy headlines and an energetic
+                    layout built around food and easy ordering.
+                </p>
 
-<div class="industry-detail-card">
+                <button class="template-expand-btn"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="fast-details">
+                    EXPLORE DESIGN ＋
+                </button>
 
-<h3>
-💳 DIGITAL PAYMENTS
-</h3>
+            </div>
 
-<p>
-Create smoother customer experiences with online payment options
-for orders, bookings or deposits.
-</p>
 
-</div>
+            <div class="template-expanded" id="fast-details">
 
+                <div class="template-expanded-inner">
 
+                    <div class="template-expanded-content">
 
+                        <h4>THE EXPERIENCE</h4>
 
+                        <p>
+                            Put your best sellers, meal deals and ordering
+                            options front and centre so customers know
+                            exactly what they can get.
+                        </p>
 
-<div class="industry-detail-card">
+                        <div class="template-sample-menu">
 
-<h3>
-⭐ TRUST & REVIEWS
-</h3>
+                            <div>
+                                <span>Classic Smash Burger</span>
+                                <strong>R89</strong>
+                            </div>
 
-<p>
-Showcase customer feedback, ratings and experiences to help new
-customers choose your restaurant.
-</p>
+                            <div>
+                                <span>Loaded Fries</span>
+                                <strong>R65</strong>
+                            </div>
 
-</div>
+                            <div>
+                                <span>Chicken Combo</span>
+                                <strong>R99</strong>
+                            </div>
 
+                        </div>
 
+                        <h4>DESIGN INCLUDES</h4>
 
+                        <ul>
+                            <li>Featured meals and specials</li>
+                            <li>Menu and price displays</li>
+                            <li>Food photography sections</li>
+                            <li>WhatsApp ordering link</li>
+                            <li>Collection and location details</li>
+                        </ul>
 
+                        <a class="template-choose-btn"
+                           href="../contact.html?template=Fast%20Food%20and%20Takeaways">
+                            CHOOSE THIS TEMPLATE →
+                        </a>
 
-<div class="industry-detail-card">
+                    </div>
 
-<h3>
-📈 CUSTOMER INSIGHTS
-</h3>
+                </div>
 
-<p>
-Understand customer behaviour and improve your online strategy
-with useful website performance data.
-</p>
+            </div>
 
-</div>
+        </article>
 
 
 
+        <!-- TEMPLATE 03: MODERN DINING -->
 
-</div>
+        <article class="restaurant-template">
 
+            <div class="template-preview dining-preview">
+
+                <div class="template-mini-nav">
+                    <span>OLIVE & OAK</span>
+                    <span>RESERVE ↗</span>
+                </div>
+
+                <div>
+                    <p class="preview-label">AN EVENING TO REMEMBER</p>
+                    <h3>Dining,<br>reimagined.</h3>
+                    <p>Seasonal ingredients. Thoughtful cooking.</p>
+                </div>
+
+                <div class="template-mini-nav">
+                    <span>OUR TABLE AWAITS</span>
+                    <span>EST. 2026</span>
+                </div>
+
+            </div>
+
+
+            <div class="template-card-info">
+
+                <span class="template-number">TEMPLATE 03</span>
+
+                <h3>Modern Dining</h3>
+
+                <p>
+                    Refined typography, spacious layouts and a polished
+                    experience for contemporary restaurants.
+                </p>
+
+                <button class="template-expand-btn"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="dining-details">
+                    EXPLORE DESIGN ＋
+                </button>
+
+            </div>
+
+
+            <div class="template-expanded" id="dining-details">
+
+                <div class="template-expanded-inner">
+
+                    <div class="template-expanded-content">
+
+                        <h4>THE EXPERIENCE</h4>
+
+                        <p>
+                            A more refined presentation for signature dishes,
+                            chef's specials, restaurant atmosphere and
+                            table reservation enquiries.
+                        </p>
+
+                        <div class="template-sample-menu">
+
+                            <div>
+                                <span>Seasonal Starter</span>
+                                <strong>R95</strong>
+                            </div>
+
+                            <div>
+                                <span>Signature Main</span>
+                                <strong>R220</strong>
+                            </div>
+
+                            <div>
+                                <span>Chef's Dessert</span>
+                                <strong>R85</strong>
+                            </div>
+
+                        </div>
+
+                        <h4>DESIGN INCLUDES</h4>
+
+                        <ul>
+                            <li>Elegant restaurant introduction</li>
+                            <li>Signature menu presentation</li>
+                            <li>Atmosphere and food gallery</li>
+                            <li>Reservation enquiry option</li>
+                            <li>Location and contact information</li>
+                        </ul>
+
+                        <a class="template-choose-btn"
+                           href="../contact.html?template=Modern%20Dining">
+                            CHOOSE THIS TEMPLATE →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+    </div>
 
 </section>
 
 
-<!-- RESTAURANT SOLUTIONS END -->
+<script>
+(function () {
 
+    const showroom = document.querySelector('.restaurant-showroom');
 
+    if (!showroom || showroom.dataset.ready === 'true') return;
+
+    showroom.dataset.ready = 'true';
+
+    showroom.querySelectorAll('.template-expand-btn').forEach(function (button) {
+
+        button.addEventListener('click', function () {
+
+            const card = button.closest('.restaurant-template');
+            const isOpen = card.classList.contains('is-open');
+
+            card.classList.toggle('is-open', !isOpen);
+
+            button.setAttribute('aria-expanded', String(!isOpen));
+
+            button.textContent = isOpen
+                ? 'EXPLORE DESIGN ＋'
+                : 'CLOSE PREVIEW −';
+
+        });
+
+    });
+
+})();
+</script>
+
+<!-- RESTAURANT TEMPLATE SHOWROOM END -->
 
 
 <!-- PREMIUM CTA START -->

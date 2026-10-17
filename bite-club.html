@@ -13,6 +13,30 @@
 
     
     <style>
+
+        /* BITE CLUB — MILKSHAKE MOTION */
+.milkshake-image {
+    animation: milkshakeMove 2.8s ease-in-out infinite alternate;
+    transform-origin: center;
+}
+
+@keyframes milkshakeMove {
+    from {
+        transform: translateX(-8px) scale(1.08);
+    }
+
+    to {
+        transform: translateX(8px) scale(1.08);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .milkshake-image {
+        animation: none;
+        transform: none;
+    }
+}
+        
         :root {
             --ink: #171512;
             --paper: #fff8ed;

@@ -659,34 +659,50 @@
 
         .gallery-grid {
     display: grid;
-    grid-template-columns: 1.15fr .85fr 1fr;
-    grid-template-rows: 220px 220px;
-    gap: 15px;
+    grid-template-columns: 1.15fr 0.85fr;
+    grid-template-rows: 240px 240px auto;
+    gap: 16px;
     margin-bottom: 30px;
-        }
+}
 
+.gallery-item {
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+}
 
-        .gallery-item {
-            overflow: hidden;
-            border-radius: 5px;
-        }
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
 
-        .gallery-item img {
-            height: 100%;
-            transition: transform .5s ease;
-        }
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
 
-        .gallery-item:hover img {
-            transform: scale(1.06);
-        }
+.gallery-item:first-child {
+    grid-column: 1;
+    grid-row: 1 / 3;
+}
 
-        .gallery-item:first-child {
-            grid-row: span 2;
-        }
+.gallery-item:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+}
 
-        .gallery-item:nth-child(4) {
-            grid-column: span 2;
-        }
+.gallery-item:nth-child(3) {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.gallery-item:nth-child(4) {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    height: 280px;
+}
 
         .visit-panel {
             display: grid;
@@ -837,11 +853,25 @@
             .story-image { height: 350px; }
             .story-number { right: -5px; }
             .gallery-grid {
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: 230px 160px 160px;
-            }
-            .gallery-item:first-child { grid-row: span 1; }
-            .gallery-item:nth-child(4) { grid-column: span 2; }
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 220px 150px;
+    gap: 12px;
+}
+
+.gallery-item:first-child {
+    grid-column: 1 / -1;
+    grid-row: 1;
+}
+
+.gallery-item:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.gallery-item:nth-child(3) {
+    grid-column: 2;
+    grid-row: 2;
+}
             .visit-panel { grid-template-columns: 1fr; padding: 30px 23px; }
             .footer-main { align-items: flex-start; flex-direction: column; }
             .footer-bottom { flex-direction: column; }

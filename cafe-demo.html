@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Daily Cup | Coffee, Comfort & Good Company</title>
+<meta name="description" content="Discover The Daily Cup — freshly brewed coffee, delicious pastries and good company. Explore our menu and get in touch.">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+:root {
+    --cream: #f8f5ef;
+    --dark: #22251f;
+    --green: #354b3b;
+    --gold: #c69b60;
+    --muted: #77776e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button, a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+}
+
+.announcement {
+    background: var(--green);
+    color: white;
+    text-align: center;
+    padding: 9px 15px;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+header {
+    height: 82px;
+    padding: 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    background: rgba(248, 245, 239, .96);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(34, 37, 31, .09);
+    backdrop-filter: blur(14px);
+}
+
+.brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 25px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.brand span {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--green);
+    margin-top: -3px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 27px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+nav a:not(.nav-cta):hover {
+    color: var(--gold);
+}
+
+.nav-cta, .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 21px;
+    background: var(--green);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: .25s ease;
+}
+
+.nav-cta:hover, .button:hover {
+    background: var(--gold);
+    color: var(--dark);
+    transform: translateY(-2px);
+}
+
+.menu-toggle {
+    display: none;
+    border: 0;
+    background: none;
+    color: var(--dark);
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.hero {
+    min-height: 650px;
+    height: 84vh;
+    max-height: 850px;
+    display: flex;
+    align-items: center;
+    padding: 80px 8%;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(90deg, rgba(19, 25, 20, .82), rgba(19, 25, 20, .24)),
+        url('https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=2200&q=85')
+        center/cover;
+}
+
+.hero-content {
+    max-width: 680px;
+    animation: rise .9s ease both;
+}
+
+.eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+    color: var(--gold);
+}
+
+.hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 7.5vw, 94px);
+    line-height: 1.04;
+    font-weight: 500;
+    letter-spacing: -2px;
+    margin-bottom: 25px;
+}
+
+.hero h1 em {
+    color: #e0bd88;
+    font-weight: 500;
+}
+
+.hero p {
+    max-width: 450px;
+    color: rgba(255,255,255,.84);
+    font-size: 15px;
+    margin-bottom: 32px;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px;
+}
+
+.button.light {
+    background: var(--cream);
+    color: var(--dark);
+}
+
+.button.outline {
+    border: 1px solid rgba(255,255,255,.6);
+    background: transparent;
+    color: white;
+}
+
+.button.outline:hover {
+    background: white;
+    color: var(--dark);
+}
+
+.hero-note {
+    position: absolute;
+    right: 7%;
+    bottom: 35px;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,.75);
+}
+
+.section {
+    padding: 100px 8%;
+}
+
+.section-heading {
+    max-width: 650px;
+    margin: 0 auto 48px;
+    text-align: center;
+}
+
+.section-heading .eyebrow {
+    color: var(--green);
+    margin-bottom: 13px;
+}
+
+.section-heading h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(34px, 5vw, 55px);
+    line-height: 1.15;
+    font-weight: 500;
+    margin-bottom: 17px;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 65px;
+    align-items: center;
+}
+
+.intro-image {
+    position: relative;
+}
+
+.intro-image img {
+    height: 470px;
+    object-fit: cover;
+}
+
+.image-label {
+    position: absolute;
+    right: -18px;
+    bottom: 25px;
+    background: var(--gold);
+    padding: 17px 22px;
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+}
+
+.intro-copy .eyebrow {
+    color: var(--green);
+}
+
+.intro-copy h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(35px, 4.5vw, 55px);
+    line-height: 1.15;
+    font-weight: 500;
+    margin-bottom: 22px;
+}
+
+.intro-copy p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+.text-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--gold);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.menu-section {
+    background: #eeebe3;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 23px;
+}
+
+.menu-card {
+    background: var(--cream);
+    overflow: hidden;
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.menu-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 20px 40px rgba(0,0,0,.08);
+}
+
+.menu-card img {
+    height: 235px;
+    transition: transform .6s ease;
+}
+
+.menu-card:hover img {
+    transform: scale(1.04);
+}
+
+.menu-card-content {
+    padding: 24px;
+}
+
+.menu-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.menu-card p {
+    color: var(--muted);
+    font-size: 12px;
+    min-height: 40px;
+}
+
+.menu-price {
+    display: block;
+    margin-top: 17px;
+    color: var(--green);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.menu-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 28px;
+}
+
+.feature-band {
+    background: var(--green);
+    color: white;
+    padding: 65px 8%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+    text-align: center;
+}
+
+.feature-item .icon {
+    font-size: 27px;
+    margin-bottom: 13px;
+}
+
+.feature-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.feature-item p {
+    color: rgba(255,255,255,.7);
+    font-size: 12px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    grid-template-rows: 230px 230px;
+    gap: 14px;
+}
+
+.gallery-grid img {
+    height: 100%;
+    min-height: 0;
+}
+
+.gallery-grid img:first-child {
+    grid-row: span 2;
+}
+
+.gallery-grid img {
+    transition: filter .3s ease;
+}
+
+.gallery-grid img:hover {
+    filter: brightness(.8);
+}
+
+.quote-section {
+    background: #e4dfd4;
+    text-align: center;
+    padding: 95px 8%;
+}
+
+.quote-mark {
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 70px;
+    line-height: 1;
+}
+
+.quote-section h2 {
+    max-width: 750px;
+    margin: 10px auto 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 5vw, 53px);
+    line-height: 1.2;
+    font-weight: 500;
+}
+
+.quote-section p {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.visit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.visit-grid img {
+    height: 390px;
+}
+
+.visit-copy h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 52px);
+    line-height: 1.15;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.visit-copy p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 18px;
+}
+
+.visit-details {
+    border-top: 1px solid #dedbd3;
+    margin-top: 25px;
+    padding-top: 20px;
+}
+
+.visit-details strong {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.visit-details span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 17px;
+}
+
+.final-cta {
+    padding: 80px 8%;
+    text-align: center;
+    background: var(--green);
+    color: white;
+}
+
+.final-cta h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(35px, 5vw, 58px);
+    font-weight: 500;
+    margin-bottom: 14px;
+}
+
+.final-cta p {
+    color: rgba(255,255,255,.75);
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+footer {
+    padding: 30px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: #22251f;
+    color: white;
+}
+
+.footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px;
+}
+
+footer p, footer a {
+    color: rgba(255,255,255,.65);
+    font-size: 11px;
+}
+
+footer a:hover {
+    color: var(--gold);
+}
+
+.whatsapp-float {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 120;
+    width: 57px;
+    height: 57px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #237b4b;
+    color: white;
+    font-size: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.2);
+    transition: transform .25s ease;
+}
+
+.whatsapp-float:hover {
+    transform: translateY(-4px) scale(1.04);
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity .7s ease, transform .7s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (max-width: 900px) {
+    header {
+        padding: 0 5%;
+    }
+
+    nav {
+        gap: 15px;
+    }
+
+    nav a {
+        font-size: 10px;
+    }
+
+    .section {
+        padding: 75px 6%;
+    }
+
+    .intro-grid, .visit-grid {
+        gap: 35px;
+    }
+
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gallery-grid {
+        grid-template-rows: 190px 190px;
+    }
+}
+
+@media (max-width: 680px) {
+    .announcement {
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+    header {
+        height: 72px;
+    }
+
+    .brand {
+        font-size: 22px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    nav {
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        padding: 20px 6% 25px;
+        background: var(--cream);
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        border-bottom: 1px solid #ddd8cd;
+    }
+
+    nav.open {
+        display: flex;
+    }
+
+    nav a {
+        padding: 13px 0;
+        font-size: 12px;
+    }
+
+    nav .nav-cta {
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .hero {
+        min-height: 620px;
+        height: 78vh;
+        padding: 70px 7%;
+        background-position: 58% center;
+    }
+
+    .hero h1 {
+        font-size: clamp(46px, 12vw, 68px);
+        letter-spacing: -1.5px;
+    }
+
+    .hero p {
+        font-size: 13px;
+    }
+
+    .hero-note {
+        right: auto;
+        left: 7%;
+        bottom: 20px;
+        font-size: 8px;
+        letter-spacing: 2px;
+    }
+
+    .section {
+        padding: 65px 7%;
+    }
+
+    .intro-grid, .visit-grid {
+        grid-template-columns: 1fr;
+        gap: 38px;
+    }
+
+    .intro-image img {
+        height: 340px;
+    }
+
+    .image-label {
+        right: -7px;
+    }
+
+    .intro-copy h2 {
+        font-size: 40px;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .menu-card img {
+        height: 250px;
+    }
+
+    .menu-card p {
+        min-height: 0;
+    }
+
+    .feature-band {
+        grid-template-columns: 1fr;
+        padding: 55px 9%;
+        gap: 38px;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 230px 160px 160px;
+        gap: 9px;
+    }
+
+    .gallery-grid img:first-child {
+        grid-column: span 2;
+        grid-row: auto;
+    }
+
+    .gallery-grid img {
+        height: 100%;
+    }
+
+    .visit-grid img {
+        height: 300px;
+    }
+
+    .final-cta {
+        padding: 65px 7%;
+    }
+
+    footer {
+        flex-direction: column;
+        text-align: center;
+        padding: 28px 7%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="announcement">
+    GOOD COFFEE. GOOD PEOPLE. GOOD DAYS.
+</div>
+
+<header>
+    <a href="#home" class="brand">
+        The Daily Cup
+        <span>COFFEE · COMFORT · COMPANY</span>
+    </a>
+
+    <button class="menu-toggle"
+            id="menuToggle"
+            aria-label="Open navigation"
+            aria-expanded="false"
+            aria-controls="mainNav">
+        ☰
+    </button>
+
+    <nav id="mainNav">
+        <a href="#home">HOME</a>
+        <a href="#story">OUR STORY</a>
+        <a href="#menu">MENU</a>
+        <a href="#gallery">GALLERY</a>
+        <a href="#visit">FIND US</a>
+        <a class="nav-cta" href="#visit">COME SAY HELLO ↗</a>
+    </nav>
+</header>
+
+<main>
+
+<section class="hero" id="home">
+    <div class="hero-content">
+        <div class="eyebrow">YOUR NEIGHBOURHOOD COFFEE SPOT</div>
+
+        <h1>
+            A little<br>
+            coffee.<br>
+            <em>A lot of love.</em>
+        </h1>
+
+        <p>
+            Your favourite corner for freshly brewed coffee,
+            something delicious and those moments you wish
+            could last a little longer.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#menu" class="button light">EXPLORE OUR MENU ↗</a>
+            <a href="#story" class="button outline">OUR STORY</a>
+        </div>
+    </div>
+
+    <div class="hero-note">SLOW MORNINGS START HERE</div>
+</section>
+
+<section class="section" id="story">
+    <div class="intro-grid">
+        <div class="intro-image reveal">
+            <img
+                src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=1100&q=85"
+                alt="Freshly brewed coffee being prepared">
+            <div class="image-label">Made with love.</div>
+        </div>
+
+        <div class="intro-copy reveal">
+            <div class="eyebrow">MORE THAN JUST COFFEE</div>
+
+            <h2>Your everyday escape, one cup at a time.</h2>
+
+            <p>
+                Some places just feel right. The smell of freshly
+                ground coffee, a warm pastry and a familiar face
+                behind the counter.
+            </p>
+
+            <p>
+                The Daily Cup is a café concept built around the
+                little things that make an ordinary day feel special.
+                Come for your coffee, stay for the atmosphere.
+            </p>
+
+            <a href="#visit" class="text-link">PLAN YOUR VISIT ↗</a>
+        </div>
+    </div>
+</section>
+
+<section class="section menu-section" id="menu">
+    <div class="section-heading reveal">
+        <div class="eyebrow">THE GOOD STUFF</div>
+        <h2>Your next favourite is on the menu.</h2>
+        <p>
+            From your morning caffeine fix to a little afternoon
+            treat, there's something here for every kind of day.
+        </p>
+    </div>
+
+    <div class="menu-grid">
+        <article class="menu-card reveal">
+            <img
+                src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=900&q=85"
+                alt="Creamy flat white coffee">
+            <div class="menu-card-content">
+                <h3>The Flat White</h3>
+                <p>Rich espresso, silky steamed milk and a smooth finish.</p>
+                <span class="menu-price">R38</span>
+            </div>
+        </article>
+
+        <article class="menu-card reveal">
+            <img
+                src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=900&q=85"
+                alt="Freshly baked golden croissants">
+            <div class="menu-card-content">
+                <h3>Fresh Croissant</h3>
+                <p>Golden, flaky layers made for slow mornings.</p>
+                <span class="menu-price">R32</span>
+            </div>
+        </article>
+
+        <article class="menu-card reveal">
+            <img
+                src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=900&q=85"
+                alt="Iced coffee served in a glass">
+            <div class="menu-card-content">
+                <h3>Iced Latte</h3>
+                <p>Espresso, chilled milk and a refreshing coffee kick.</p>
+                <span class="menu-price">R45</span>
+            </div>
+        </article>
+    </div>
+
+    <p class="menu-note">
+        DEMO MENU · SAMPLE ITEMS AND PRICES · SUBJECT TO CHANGE
+    </p>
+</section>
+
+<section class="feature-band">
+    <div class="feature-item reveal">
+        <div class="icon">☕</div>
+        <h3>Good Coffee</h3>
+        <p>Made for the first sip, the second cup and everything in between.</p>
+    </div>
+
+    <div class="feature-item reveal">
+        <div class="icon">🥐</div>
+        <h3>Little Treats</h3>
+        <p>Something sweet, something savoury, something just because.</p>
+    </div>
+
+    <div class="feature-item reveal">
+        <div class="icon">♡</div>
+        <h3>Good Company</h3>
+        <p>A welcoming place to catch up, slow down or simply be.</p>
+    </div>
+</section>
+
+<section class="section" id="gallery">
+    <div class="section-heading reveal">
+        <div class="eyebrow">A TASTE OF THE ATMOSPHERE</div>
+        <h2>Take a little look around.</h2>
+        <p>
+            Coffee moments, cosy corners and the simple pleasure
+            of finding your kind of place.
+        </p>
+    </div>
+
+    <div class="gallery-grid reveal">
+        <img
+            src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=1000&q=85"
+            alt="Cosy café interior">
+        <img
+            src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=85"
+            alt="Coffee and café essentials">
+        <img
+            src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=85"
+            alt="Warm and welcoming coffee shop">
+        <img
+            src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=85"
+            alt="Freshly prepared coffee">
+        <img
+            src="https://images.unsplash.com/photo-1493857671505-72967e2e2760?auto=format&fit=crop&w=800&q=85"
+            alt="Coffee shop atmosphere">
+    </div>
+</section>
+
+<section class="quote-section">
+    <div class="quote-mark">“</div>
+    <h2>Life's too short for bad coffee and rushed mornings.</h2>
+    <p>TAKE A BREATH. TAKE A SIP. STAY A WHILE.</p>
+</section>
+
+<section class="section" id="visit">
+    <div class="visit-grid">
+        <img
+            class="reveal"
+            src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=85"
+            alt="Inviting café seating and interior">
+
+        <div class="visit-copy reveal">
+            <div class="eyebrow">YOUR TABLE IS WAITING</div>
+
+            <h2>Let's make your next coffee date happen.</h2>
+
+            <p>
+                Meeting a friend? Taking a break? Looking for a
+                new favourite coffee spot? We'd love to welcome you.
+            </p>
+
+            <div class="visit-details">
+                <strong>WHERE TO FIND US</strong>
+                <span>Demo address · Cape Town, South Africa</span>
+
+                <strong>WHEN TO VISIT</strong>
+                <span>Demo hours · Update for the real business</span>
+
+                <strong>QUESTIONS OR ENQUIRIES?</strong>
+                <span>Send us a message and say hello.</span>
+            </div>
+
+            <a
+                class="button"
+                href="https://wa.me/27000000000?text=Hi%20The%20Daily%20Cup!%20I%20have%20an%20enquiry."
+                target="_blank"
+                rel="noopener noreferrer">
+                CHAT TO US ON WHATSAPP ↗
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="final-cta">
+    <h2>Your cup of happiness awaits.</h2>
+    <p>Good coffee, warm welcomes and a little time for yourself.</p>
+    <a href="#menu" class="button light">FIND YOUR FAVOURITE ↗</a>
+</section>
+
+</main>
+
+<footer>
+    <div>
+        <div class="footer-brand">The Daily Cup.</div>
+        <p>COFFEE · COMFORT · COMPANY</p>
+    </div>
+
+    <p>DEMO WEBSITE CONCEPT · CREATED BY ALIENWAY PRODUCTION</p>
+
+    <a href="../index.html">POWERED BY ALIENWAY PRODUCTION ↗</a>
+</footer>
+
+<a
+    class="whatsapp-float"
+    href="https://wa.me/27000000000?text=Hi%20The%20Daily%20Cup!"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Contact The Daily Cup on WhatsApp">
+    ☎
+</a>
+
+<script>
+const menuToggle = document.getElementById('menuToggle');
+const mainNav = document.getElementById('mainNav');
+
+menuToggle.addEventListener('click', () => {
+    const isOpen = mainNav.classList.toggle('open');
+
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    menuToggle.setAttribute(
+        'aria-label',
+        isOpen ? 'Close navigation' : 'Open navigation'
+    );
+
+    menuToggle.textContent = isOpen ? '×' : '☰';
+});
+
+mainNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        mainNav.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Open navigation');
+        menuToggle.textContent = '☰';
+    });
+});
+
+const revealElements = document.querySelectorAll('.reveal');
+
+if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.12
+    });
+
+    revealElements.forEach(element => observer.observe(element));
+} else {
+    revealElements.forEach(element => element.classList.add('visible'));
+}
+</script>
+
+</body>
+  </html>

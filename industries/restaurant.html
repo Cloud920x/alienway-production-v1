@@ -311,16 +311,31 @@ CHOOSE YOUR TEMPLATE →
 }
 
 .template-choose-btn {
-    display: block;
+    display: flex;
+    width: 100%;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     text-decoration: none;
-    margin-top: 18px;
-    padding: 14px;
-    border-radius: 10px;
+    margin-top: 14px;
+    padding: 15px 18px;
+    border: 2px solid #f5b400;
+    border-radius: 12px;
     background: #f5b400;
     color: #111 !important;
     font-size: 12px;
     font-weight: 800;
+    letter-spacing: 1px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: background .25s ease, transform .25s ease;
+}
+
+.template-choose-btn:hover {
+    background: #ffd04a;
+    border-color: #ffd04a;
+    transform: translateY(-2px);
 }
 
 @media (max-width: 850px) {

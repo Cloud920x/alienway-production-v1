@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automotive Website Templates | Alienway Production</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+:root{--auto-accent:#c8ff35;--auto-ink:#10120d;--auto-muted:rgba(255,255,255,.7)}
+.auto-hero{min-height:72vh;display:flex;align-items:center;padding:100px 7%;position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(7,10,12,.94),rgba(7,10,12,.62)),url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2000&q=85') center/cover}
+.auto-hero:after{content:"";position:absolute;inset:auto -10% -180px 45%;height:320px;border:1px solid rgba(200,255,53,.22);border-radius:50%;transform:rotate(-14deg);pointer-events:none}
+.auto-hero-content{max-width:820px;position:relative;z-index:1}
+.auto-kicker{font-size:11px;letter-spacing:4px;color:var(--auto-accent);font-weight:800}
+.auto-hero h1{font-size:clamp(46px,8vw,94px);line-height:.94;letter-spacing:-3px;margin:22px 0}
+.auto-hero p:not(.auto-kicker){max-width:620px;font-size:17px;line-height:1.8;color:var(--auto-muted)}
+.auto-hero .button{display:inline-flex;margin-top:28px}
+.auto-showroom{padding:95px 6%}
+.auto-heading{text-align:center;max-width:760px;margin:0 auto 48px}
+.auto-heading h2{font-size:clamp(30px,5vw,52px);line-height:1.02;margin:14px 0}
+.auto-heading p:last-child{color:var(--auto-muted);line-height:1.8}
+.auto-grid{max-width:1250px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.auto-card{border:1px solid rgba(255,255,255,.13);border-radius:22px;overflow:hidden;background:rgba(255,255,255,.035);transition:transform .3s,border-color .3s}
+.auto-card:hover{transform:translateY(-6px);border-color:rgba(200,255,53,.65)}
+.auto-card-art{min-height:255px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;background-position:center;background-size:cover;position:relative;isolation:isolate}
+.auto-card-art:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.22),rgba(0,0,0,.78));z-index:-1}
+.auto-card-art.cheap{background-image:url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1000&q=80')}
+.auto-card-art.medium{background-image:url('https://images.unsplash.com/photo-1614200187524-dc4b892acf16?auto=format&fit=crop&w=1000&q=80')}
+.auto-card-art.premium{background-image:url('https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1000&q=80')}
+.auto-mini-nav{display:flex;justify-content:space-between;gap:12px;font-size:10px;letter-spacing:1.5px;font-weight:800}
+.auto-mini-nav span:last-child{border:1px solid rgba(255,255,255,.65);padding:7px 9px}
+.auto-card-art h3{font-size:clamp(27px,3vw,39px);line-height:1;margin:0 0 8px}
+.auto-card-art p{font-size:12px;line-height:1.6;max-width:240px;color:rgba(255,255,255,.85)}
+.auto-card-body{padding:24px}
+.auto-level{display:inline-block;color:var(--auto-accent);font-size:10px;font-weight:900;letter-spacing:2px}
+.auto-card-body h3{font-size:23px;margin:11px 0}
+.auto-card-body>p{font-size:14px;line-height:1.75;color:var(--auto-muted);min-height:74px}
+.auto-features{padding:0 0 0 18px;margin:18px 0;color:rgba(255,255,255,.8);font-size:13px;line-height:1.9}
+.auto-action{display:flex;width:100%;min-height:48px;align-items:center;justify-content:center;padding:13px 16px;margin-top:12px;border:1px solid var(--auto-accent);border-radius:10px;background:var(--auto-accent);color:#10120d;font-size:11px;font-weight:900;letter-spacing:1px;text-align:center}
+.auto-action.secondary{background:transparent;color:var(--auto-accent)}
+.auto-action.soon{border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.65);background:rgba(255,255,255,.04);cursor:default}
+.auto-note{max-width:900px;margin:38px auto 0;padding:20px 24px;border:1px solid rgba(200,255,53,.25);border-radius:14px;color:var(--auto-muted);line-height:1.7;text-align:center}
+@media(max-width:900px){.auto-grid{grid-template-columns:1fr;max-width:560px}.auto-card-art{min-height:280px}.auto-hero{padding:80px 25px}.auto-hero h1{letter-spacing:-1.5px}.auto-showroom{padding:75px 22px}}
+@media(prefers-reduced-motion:reduce){.auto-card{transition:none}}
+</style>
+</head>
+<body>
+<header class="header">
+<a href="../index.html" class="logo"><span class="logo-mark">AW</span><div class="logo-text"><strong>ALIENWAY</strong><small>PRODUCTION</small></div></a>
+<nav class="nav"><a href="../index.html">Home</a><a href="../services.html">Services</a><a href="../portfolio.html">Work</a><a href="../contact.html">Contact</a></nav>
+<a href="../contact.html" class="nav-button">START PROJECT →</a>
+</header>
+<main>
+<section class="auto-hero">
+<div class="auto-hero-content">
+<p class="auto-kicker">AUTOMOTIVE WEBSITE COLLECTION</p>
+<h1>BUILT TO<br>MOVE YOU.</h1>
+<p>Three automotive website experiences. Start with a sharp, practical online showroom, then explore more advanced designs as the collection grows.</p>
+<a href="#automotive-templates" class="button primary">EXPLORE THE TEMPLATES ↓</a>
+</div>
+</section>
+<section class="auto-showroom" id="automotive-templates">
+<div class="auto-heading">
+<p class="section-tag">THE AUTOMOTIVE COLLECTION</p>
+<h2>THREE LEVELS.<br>ONE POWERFUL PRESENCE.</h2>
+<p>Choose the level that fits your business. Each template will have its own complete website, design identity and customer journey.</p>
+</div>
+<div class="auto-grid">
+<article class="auto-card">
+<div class="auto-card-art cheap"><div class="auto-mini-nav"><span>DRIVE / SELECT</span><span>VIEW STOCK ↗</span></div><div><h3>Find your<br>next drive.</h3><p>Good cars. Clear details. A simpler way to enquire.</p></div><div class="auto-mini-nav"><span>CHEAP TEMPLATE</span><span>01 / 03</span></div></div>
+<div class="auto-card-body"><span class="auto-level">TEMPLATE 01 · CHEAP</span><h3>Essential Auto</h3><p>A clean, professional dealership website focused on showcasing vehicles and making enquiries easy.</p><ul class="auto-features"><li>Vehicle showcase cards</li><li>Essential vehicle information</li><li>Mobile-friendly layout</li><li>Direct enquiry links</li></ul><a class="auto-action" href="../automotive/cheap/index.html">VIEW CHEAP WEBSITE →</a></div>
+</article>
+<article class="auto-card">
+<div class="auto-card-art medium"><div class="auto-mini-nav"><span>APEX AUTOMOTIVE</span><span>DISCOVER ↗</span></div><div><h3>More choice.<br>More control.</h3><p>A richer browsing experience built around the buyer.</p></div><div class="auto-mini-nav"><span>MEDIUM TEMPLATE</span><span>02 / 03</span></div></div>
+<div class="auto-card-body"><span class="auto-level">TEMPLATE 02 · MEDIUM</span><h3>Auto Plus</h3><p>A more advanced automotive experience with expanded browsing tools and richer vehicle presentation.</p><ul class="auto-features"><li>More detailed vehicle pages</li><li>Enhanced inventory browsing</li><li>Richer galleries and interactions</li><li>More developed enquiry journey</li></ul><span class="auto-action soon">NEXT IN BUILD ORDER</span></div>
+</article>
+<article class="auto-card">
+<div class="auto-card-art premium"><div class="auto-mini-nav"><span>NOIR MOTOR HOUSE</span><span>THE COLLECTION ↗</span></div><div><h3>Driven by<br>distinction.</h3><p>A bold digital stage for exceptional machines.</p></div><div class="auto-mini-nav"><span>PREMIUM TEMPLATE</span><span>03 / 03</span></div></div>
+<div class="auto-card-body"><span class="auto-level">TEMPLATE 03 · PREMIUM</span><h3>Automotive Signature</h3><p>A high-end digital experience with cinematic storytelling and sophisticated presentation.</p><ul class="auto-features"><li>Distinctive visual identity</li><li>Premium vehicle storytelling</li><li>Sophisticated motion and detail</li><li>Advanced customer experience</li></ul><span class="auto-action soon">COMING AFTER MEDIUM</span></div>
+</article>
+</div>
+<p class="auto-note">We are completing the templates in order: Cheap first, then Medium, then Premium. The first website is available to explore; the other two will be built next.</p>
+</section>
+</main>
+<section class="cta"><div class="cta-box"><p class="section-tag">YOUR BUSINESS. YOUR NEXT MOVE.</p><h2>READY TO TAKE YOUR AUTOMOTIVE BRAND FURTHER?</h2><p>Tell us what you need and we can shape the right website around your stock, services and customers.</p><div class="cta-buttons"><a href="../contact.html?template=Automotive" class="button primary">START YOUR PROJECT →</a><a href="../index.html" class="button secondary">BACK TO ALIENWAY</a></div></div></section>
+<footer class="footer"><div class="footer-bottom"><p>© 2026 Alienway Production. All rights reserved.</p></div></footer>
+</body>
+</html>

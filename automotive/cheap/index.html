@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A clean, easy-to-use vehicle showroom demonstration by Alienway Production.">
+<title>Drive Select | Vehicle Showroom Demo</title>
+<style>
+:root{--ink:#101416;--panel:#171d20;--muted:#aab4b8;--line:rgba(255,255,255,.12);--lime:#c8ff35;--white:#f7f8f5}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--white);font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}a{color:inherit;text-decoration:none}button,select{font:inherit}.topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:17px 6%;background:rgba(16,20,22,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.brand{font-size:18px;font-weight:900;letter-spacing:1px}.brand span{color:var(--lime)}.navlinks{display:flex;gap:24px;font-size:12px;color:#d7ddde}.navlinks a:hover{color:var(--lime)}.nav-cta,.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;background:var(--lime);color:#11160c;border-radius:5px;font-size:11px;font-weight:900;letter-spacing:1px;border:1px solid var(--lime);cursor:pointer}.hero{min-height:76vh;display:flex;align-items:center;padding:85px 7%;position:relative;background:linear-gradient(90deg,rgba(7,10,11,.95) 0%,rgba(7,10,11,.76) 48%,rgba(7,10,11,.2) 100%),url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2000&q=85') center/cover}.hero-copy{max-width:760px}.eyebrow{font-size:10px;letter-spacing:4px;color:var(--lime);font-weight:900}.hero h1{font-size:clamp(48px,8.7vw,102px);line-height:.9;letter-spacing:-4px;margin:22px 0}.hero p:not(.eyebrow){max-width:570px;color:#d0d6d7;line-height:1.8;font-size:16px}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}.btn.outline{background:transparent;color:var(--white);border-color:rgba(255,255,255,.4)}.quickfacts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-block:1px solid var(--line)}.fact{background:#121719;padding:25px 7%;}.fact strong{display:block;font-size:23px;color:var(--lime);margin-bottom:5px}.fact span{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}.section{padding:85px 6%}.section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;max-width:1200px;margin:0 auto 32px}.section-head .eyebrow{margin-bottom:12px}.section-head h2{font-size:clamp(32px,5vw,55px);line-height:.98;letter-spacing:-2px;margin:0}.section-head p{max-width:420px;color:var(--muted);line-height:1.7;font-size:14px}.filters{max-width:1200px;margin:0 auto 25px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}.filter-btn{padding:11px 15px;border:1px solid var(--line);background:transparent;color:#e9eded;border-radius:4px;font-size:11px;cursor:pointer}.filter-btn.active,.filter-btn:hover{background:var(--lime);color:#111;border-color:var(--lime)}.car-grid{max-width:1200px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.car-card{background:var(--panel);border:1px solid var(--line);border-radius:9px;overflow:hidden;transition:transform .25s,border-color .25s}.car-card:hover{transform:translateY(-5px);border-color:rgba(200,255,53,.55)}.car-card[hidden]{display:none}.car-photo{height:210px;background-size:cover;background-position:center;position:relative}.stock-tag{position:absolute;left:13px;top:13px;background:var(--lime);color:#111;padding:7px 9px;font-size:9px;font-weight:900;letter-spacing:1px}.car-content{padding:20px}.car-type{font-size:9px;color:var(--lime);font-weight:900;letter-spacing:2px}.car-content h3{font-size:20px;margin:9px 0}.car-price{font-size:22px;font-weight:900;margin:12px 0}.car-specs{display:flex;gap:12px;flex-wrap:wrap;border-block:1px solid var(--line);padding:13px 0;color:var(--muted);font-size:11px}.car-content p{font-size:12px;color:var(--muted);line-height:1.7;min-height:40px}.car-content .btn{width:100%;margin-top:8px}.empty-state{display:none;max-width:1200px;margin:20px auto;color:var(--muted);padding:20px;border:1px dashed var(--line);text-align:center}.empty-state.show{display:block}.value-strip{background:#d7ff75;color:#11170d;padding:55px 7%;display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:25px;align-items:center}.value-strip h2{font-size:clamp(26px,4vw,42px);line-height:1;margin:0}.value-strip p{font-size:13px;line-height:1.7}.value-item{border-left:1px solid rgba(0,0,0,.2);padding-left:20px}.value-item strong{display:block;font-size:13px;margin-bottom:7px}.value-item span{font-size:12px;line-height:1.6}.contact-section{padding:85px 6%;background:linear-gradient(120deg,#171e20,#0d1113)}.contact-box{max-width:1150px;margin:auto;display:grid;grid-template-columns:1.1fr .9fr;gap:45px;align-items:center}.contact-box h2{font-size:clamp(36px,6vw,68px);line-height:.96;letter-spacing:-2px;margin:15px 0}.contact-box p{color:var(--muted);line-height:1.8}.contact-panel{padding:26px;background:#111719;border:1px solid var(--line);border-radius:10px}.contact-panel h3{margin-top:0}.contact-panel p{font-size:13px}.contact-panel .btn{width:100%;margin-top:10px}.footer{padding:25px 6%;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:var(--muted);font-size:11px;border-top:1px solid var(--line)}.footer a{color:var(--lime)}@media(max-width:850px){.car-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-head{display:block}.section-head p{margin-top:15px}.value-strip{grid-template-columns:1fr 1fr}.value-strip h2{grid-column:1/-1}.contact-box{grid-template-columns:1fr}.hero{min-height:70vh;padding:75px 6%}}@media(max-width:560px){.topbar{padding:15px 5%}.navlinks{display:none}.nav-cta{padding:11px 12px;font-size:9px}.hero h1{letter-spacing:-2px}.quickfacts{grid-template-columns:1fr}.fact{padding:17px 6%}.section{padding:65px 5%}.car-grid{grid-template-columns:1fr}.car-photo{height:230px}.value-strip{grid-template-columns:1fr;padding:40px 6%}.value-strip h2{grid-column:auto}.value-item{border-left:0;border-top:1px solid rgba(0,0,0,.2);padding:18px 0 0}.contact-section{padding:65px 5%}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.car-card{transition:none}}
+</style>
+</head>
+<body>
+<header class="topbar">
+<a class="brand" href="#top">DRIVE<span>/</span>SELECT</a>
+<nav class="navlinks" aria-label="Main navigation"><a href="#stock">OUR STOCK</a><a href="#why-us">WHY US</a><a href="#contact">CONTACT</a></nav>
+<a class="nav-cta" href="#stock">FIND YOUR CAR ↗</a>
+</header>
+<main id="top">
+<section class="hero">
+<div class="hero-copy">
+<p class="eyebrow">A BETTER WAY TO FIND YOUR NEXT CAR</p>
+<h1>YOUR NEXT<br>DRIVE STARTS HERE.</h1>
+<p>Explore a hand-picked collection of vehicles with clear details and a simple way to enquire. No guesswork. Just get closer to your next set of keys.</p>
+<div class="hero-actions"><a class="btn" href="#stock">EXPLORE THE STOCK ↓</a><a class="btn outline" href="#contact">TALK TO OUR TEAM ↗</a></div>
+</div>
+</section>
+<section class="quickfacts" aria-label="Showroom highlights"><div class="fact"><strong>01</strong><span>Simple vehicle browsing</span></div><div class="fact"><strong>02</strong><span>Clear vehicle details</span></div><div class="fact"><strong>03</strong><span>Easy enquiries</span></div></section>
+<section class="section" id="stock">
+<div class="section-head"><div><p class="eyebrow">THE CURRENT LINE-UP</p><h2>FIND YOUR<br>OWN KIND OF DRIVE.</h2></div><p>Browse our sample inventory. Use the category filters to narrow the selection, then open an enquiry for the vehicle you like.</p></div>
+<div class="filters" role="group" aria-label="Filter vehicles"><button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">ALL VEHICLES</button><button class="filter-btn" type="button" data-filter="sedan" aria-pressed="false">SEDANS</button><button class="filter-btn" type="button" data-filter="suv" aria-pressed="false">SUVS</button><button class="filter-btn" type="button" data-filter="sport" aria-pressed="false">SPORT</button></div>
+<div class="car-grid" id="carGrid">
+<article class="car-card" data-category="sport"><div class="car-photo" style="background-image:url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1000&q=80')"><span class="stock-tag">FEATURED</span></div><div class="car-content"><span class="car-type">SPORT · COUPE</span><h3>Porsche 911 Carrera</h3><div class="car-price">R 1,499,000</div><div class="car-specs"><span>2022</span><span>Petrol</span><span>Automatic</span></div><p>Iconic shape, driver-focused character and everyday usability.</p><a class="btn" href="../../contact.html?template=Automotive%20Cheap&vehicle=Porsche%20911%20Carrera">ENQUIRE ABOUT THIS CAR →</a></div></article>
+<article class="car-card" data-category="suv"><div class="car-photo" style="background-image:url('https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1000&q=80')"><span class="stock-tag">FAMILY PICK</span></div><div class="car-content"><span class="car-type">SUV · FAMILY</span><h3>BMW X3</h3><div class="car-price">R 689,000</div><div class="car-specs"><span>2021</span><span>Diesel</span><span>Automatic</span></div><p>Everyday comfort with practical space for your next journey.</p><a class="btn" href="../../contact.html?template=Automotive%20Cheap&vehicle=BMW%20X3">ENQUIRE ABOUT THIS CAR →</a></div></article>
+<article class="car-card" data-category="sedan"><div class="car-photo" style="background-image:url('https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1000&q=80')"><span class="stock-tag">DAILY DRIVE</span></div><div class="car-content"><span class="car-type">SEDAN · EVERYDAY</span><h3>Mercedes-Benz C-Class</h3><div class="car-price">R 559,000</div><div class="car-specs"><span>2020</span><span>Petrol</span><span>Automatic</span></div><p>A refined cabin and confident road presence for daily driving.</p><a class="btn" href="../../contact.html?template=Automotive%20Cheap&vehicle=Mercedes-Benz%20C-Class">ENQUIRE ABOUT THIS CAR →</a></div></article>
+</div>
+<p class="empty-state" id="emptyState">No vehicles match this category right now. Choose another filter to keep exploring.</p>
+</section>
+<section class="value-strip" id="why-us"><h2>STRAIGHTFORWARD<br>FROM START TO DRIVE.</h2><div class="value-item"><strong>THE DETAILS YOU NEED</strong><span>Vehicle information is easy to find, so you can compare options with confidence.</span></div><div class="value-item"><strong>NO COMPLICATED STEPS</strong><span>Found something you like? Send an enquiry and start the conversation.</span></div></section>
+<section class="contact-section" id="contact"><div class="contact-box"><div><p class="eyebrow">LET'S GET YOU MOVING</p><h2>THE RIGHT CAR<br>COULD BE ONE<br>MESSAGE AWAY.</h2><p>Have a question about a vehicle or want to arrange a viewing? Send an enquiry and tell us what you're looking for.</p></div><div class="contact-panel"><h3>Ready to find your next car?</h3><p>Choose a vehicle above or contact us with your budget, preferred model and any questions. This is a demonstration dealership website; the listed stock and prices are sample content.</p><a class="btn" href="../../contact.html?template=Automotive%20Cheap">SEND AN ENQUIRY →</a></div></div></section>
+</main>
+<footer class="footer"><span>DRIVE/SELECT · Automotive website concept</span><span>Designed by <a href="../../index.html">ALIENWAY PRODUCTION</a></span></footer>
+<script>
+(function(){
+  const buttons = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.car-card');
+  const empty = document.getElementById('emptyState');
+  buttons.forEach(function(button){
+    button.addEventListener('click',function(){
+      const filter = button.dataset.filter;
+      let visible = 0;
+      buttons.forEach(function(item){
+        const active = item === button;
+        item.classList.toggle('active',active);
+        item.setAttribute('aria-pressed',String(active));
+      });
+      cards.forEach(function(card){
+        const show = filter === 'all' || card.dataset.category === filter;
+        card.hidden = !show;
+        if(show) visible++;
+      });
+      empty.classList.toggle('show',visible === 0);
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -71,7 +71,7 @@ dialog{width:min(900px,92vw);max-height:88vh;border:1px solid #4b5049;background
 (()=>{
 const cards=[...document.querySelectorAll('.car-card')],search=document.getElementById('search'),bodyType=document.getElementById('bodyType'),maxPrice=document.getElementById('maxPrice'),sortBy=document.getElementById('sortBy'),chips=[...document.querySelectorAll('.chip')];
 let kind='all',saved=new Set();
-const money=n=>'R '+Math.round(n).toLocaleString('en-ZA');
+const money=n=>'R '+Math.round(n).toLocaleString('en-ZA').replace(/,/g,' ').replace(/[\u00a0\u202f]/g,' ');
 const name=c=>c.dataset.make+' '+c.dataset.model;
 function apply(){
  const term=search.value.trim().toLowerCase(),max=maxPrice.value==='all'?Infinity:Number(maxPrice.value);

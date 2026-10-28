@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Construction Website Templates | Alienway Production</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+:root{--site-blue:#477da5;--site-ink:#18232d;--site-muted:#65717b;--site-line:#dce3e8}
+body{background:#f5f7f8;color:var(--site-ink)}
+.construction-hero{min-height:64vh;padding:100px 7%;display:flex;align-items:center;background:linear-gradient(90deg,rgba(14,27,38,.92),rgba(14,27,38,.56)),url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=2000&q=85') center/cover;color:#fff}
+.construction-hero-inner{max-width:850px}
+.construction-kicker,.tier-tag{font-size:11px;font-weight:900;letter-spacing:3px;text-transform:uppercase}
+.construction-kicker{color:#a8d5f2}
+.construction-hero h1{font-size:clamp(43px,7vw,82px);line-height:.98;letter-spacing:-2px;margin:20px 0}
+.construction-hero p:not(.construction-kicker){max-width:650px;line-height:1.8;color:#e0e7ec;font-size:16px}
+.construction-hero .button{display:inline-flex;margin-top:20px}
+.construction-showroom{padding:82px 6% 95px}
+.construction-heading{text-align:center;max-width:760px;margin:0 auto 42px}
+.construction-heading .section-tag{color:#477da5}
+.construction-heading h2{font-size:clamp(29px,5vw,48px);line-height:1.05;margin:14px 0}
+.construction-heading>p:last-child{color:var(--site-muted);line-height:1.8}
+.build-grid{max-width:1240px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:start}
+.build-card{background:#fff;border:1px solid var(--site-line);border-radius:16px;overflow:hidden;box-shadow:0 12px 34px rgba(24,35,45,.06);transition:transform .25s,box-shadow .25s}
+.build-card:hover{transform:translateY(-5px);box-shadow:0 18px 42px rgba(24,35,45,.12)}
+.build-preview{min-height:245px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;position:relative;isolation:isolate;overflow:hidden}
+.build-preview:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(10,20,29,.05),rgba(10,20,29,.82))}
+.build-preview.cheap{background:linear-gradient(135deg,#b9d5e7,#477da5 58%,#233746);color:#fff}
+.build-preview.medium{background:linear-gradient(135deg,#f4e9db,#c56b3d 65%,#3d302a);color:#fff}
+.build-preview.premium{background:linear-gradient(135deg,#d8dfd2,#5a6c58 60%,#202d25);color:#fff}
+.preview-top,.preview-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:10px;font-weight:900;letter-spacing:1.5px}
+.preview-top span:last-child,.preview-bottom span:last-child{border:1px solid rgba(255,255,255,.7);padding:7px 8px}
+.build-preview h3{font-size:clamp(27px,3vw,38px);line-height:1;margin:20px 0 8px;letter-spacing:-.8px}
+.build-preview p{font-size:12px;line-height:1.6;max-width:235px;color:rgba(255,255,255,.9)}
+.build-info{padding:23px}
+.tier-tag{font-size:10px;color:#477da5;letter-spacing:2px}
+.build-info h3{font-size:23px;margin:10px 0}
+.build-info>p{font-size:14px;line-height:1.75;color:var(--site-muted);min-height:72px}
+.build-features{list-style:none;padding:0;margin:18px 0;color:#35434d;font-size:13px;line-height:1.9}
+.build-features li:before{content:"✓";color:#477da5;font-weight:900;margin-right:9px}
+.build-details{border-top:1px solid var(--site-line);padding-top:15px;margin-top:14px}
+.build-details summary{font-size:12px;font-weight:900;letter-spacing:.6px;cursor:pointer;padding:8px 0;color:#273b4a}
+.build-details p{font-size:13px;line-height:1.75;color:var(--site-muted)}
+.build-action{display:flex;min-height:48px;align-items:center;justify-content:center;text-align:center;padding:13px 15px;border-radius:9px;background:#477da5;color:#fff;font-size:11px;font-weight:900;letter-spacing:.7px;margin-top:18px}
+.build-action:hover{background:#315f82}
+.build-action.outline{background:#fff;color:#315f82;border:1px solid #477da5}
+.build-action.outline:hover{background:#eef5f9}
+.construction-note{max-width:850px;margin:34px auto 0;padding:17px 20px;border:1px solid #d8e2e8;border-radius:12px;background:#fff;color:#65717b;text-align:center;font-size:13px;line-height:1.75}
+@media(max-width:900px){.build-grid{grid-template-columns:1fr;max-width:560px}.build-preview{min-height:260px}.construction-hero{padding:78px 24px}.construction-showroom{padding:65px 20px}.construction-hero h1{letter-spacing:-1px}}
+@media(prefers-reduced-motion:reduce){.build-card{transition:none}}
+</style>
+</head>
+<body>
+<header class="header">
+<a href="../index.html" class="logo"><span class="logo-mark">AW</span><div class="logo-text"><strong>ALIENWAY</strong><small>PRODUCTION</small></div></a>
+<nav class="nav"><a href="../index.html">Home</a><a href="../services.html">Services</a><a href="../portfolio.html">Work</a><a href="../about.html">About</a><a href="../contact.html">Contact</a></nav>
+<a href="../contact.html" class="nav-button">START PROJECT →</a>
+</header>
+<main>
+<section class="construction-hero">
+<div class="construction-hero-inner">
+<p class="construction-kicker">CONSTRUCTION WEBSITE COLLECTION</p>
+<h1>BUILT AROUND<br>YOUR NEXT BIG JOB.</h1>
+<p>From a straightforward contractor website to a polished project portfolio or a high-end architectural presence, explore three construction website concepts built for different business needs.</p>
+<a href="#construction-templates" class="button primary">EXPLORE THE THREE DESIGNS ↓</a>
+</div>
+</section>
+<section class="construction-showroom" id="construction-templates">
+<div class="construction-heading">
+<p class="section-tag">THREE WEBSITE LEVELS</p>
+<h2>THE RIGHT FOUNDATION<br>FOR YOUR BUSINESS.</h2>
+<p>Each option has its own visual identity and feature set. Open the feature details to see what your business could get.</p>
+</div>
+<div class="build-grid">
+<article class="build-card">
+<div class="build-preview cheap">
+<div class="preview-top"><span>SITECRAFT CONSTRUCTION</span><span>01 / 03</span></div>
+<div><p class="tier-tag" style="color:#d8efff">ESSENTIAL BUILD</p><h3>Solid work.<br>Clear results.</h3><p>A practical, professional first impression.</p></div>
+<div class="preview-bottom"><span>CHEAP · STARTER</span><span>GET A QUOTE ↗</span></div>
+</div>
+<div class="build-info">
+<span class="tier-tag">TEMPLATE 01 · CHEAP</span>
+<h3>Essential Contractor</h3>
+<p>A clean, easy-to-use website for smaller contractors who need to show what they do and make it simple for customers to get in touch.</p>
+<ul class="build-features"><li>Service list and company introduction</li><li>Small project photo gallery</li><li>Mobile-friendly contact details</li><li>WhatsApp and basic quote enquiries</li></ul>
+<details class="build-details"><summary>SEE WHAT'S INCLUDED ＋</summary><p>Best for painters, renovators, handyman services and small building teams. The focus is on essential information, clear services, a simple project showcase and direct enquiries — without unnecessary complexity.</p></details>
+<a class="build-action" href="../construction/cheap/index.html">VIEW CHEAP WEBSITE →</a>
+<a class="build-action outline" href="../contact.html?template=Construction%20Essential%20Contractor">CHOOSE THIS PACKAGE →</a>
+</div>
+</article>
+<article class="build-card">
+<div class="build-preview medium">
+<div class="preview-top"><span>FORMFIELD BUILDERS</span><span>02 / 03</span></div>
+<div><p class="tier-tag" style="color:#ffe2cc">PROJECT-LED DESIGN</p><h3>Work worth<br>showing off.</h3><p>Put your projects and process in the spotlight.</p></div>
+<div class="preview-bottom"><span>MEDIUM · GROWTH</span><span>OUR PROJECTS ↗</span></div>
+</div>
+<div class="build-info">
+<span class="tier-tag">TEMPLATE 02 · MEDIUM</span>
+<h3>Project Showcase</h3>
+<p>A more visual, project-led experience for established builders who want to demonstrate quality, process and completed work.</p>
+<ul class="build-features"><li>Filterable project portfolio</li><li>Dedicated project detail sections</li><li>Testimonials and work process</li><li>Detailed quote request form</li><li>Subtle scroll and reveal animations</li></ul>
+<details class="build-details"><summary>SEE WHAT'S INCLUDED ＋</summary><p>Best for building companies, renovation specialists and growing contractors. Visitors can explore different project types, understand how work is delivered, read client feedback and send a more detailed enquiry. The layout uses editorial project blocks rather than the starter template's simple service-first structure.</p></details>
+<a class="build-action" href="../contact.html?template=Construction%20Project%20Showcase">DISCUSS MEDIUM WEBSITE →</a>
+</div>
+</article>
+<article class="build-card">
+<div class="build-preview premium">
+<div class="preview-top"><span>ATELIER STRUCTURES</span><span>03 / 03</span></div>
+<div><p class="tier-tag" style="color:#e1ebdc">ARCHITECTURE / DESIGN</p><h3>Built to<br>make a mark.</h3><p>An elevated digital portfolio for ambitious projects.</p></div>
+<div class="preview-bottom"><span>PREMIUM · SIGNATURE</span><span>DISCOVER ↗</span></div>
+</div>
+<div class="build-info">
+<span class="tier-tag">TEMPLATE 03 · PREMIUM</span>
+<h3>Architectural Signature</h3>
+<p>A distinctive, high-end digital presence for architectural builders and companies delivering complex, high-value projects.</p>
+<ul class="build-features"><li>Immersive, image-led opening</li><li>Detailed project case studies</li><li>Advanced image galleries</li><li>Refined motion and transitions</li><li>Premium consultation enquiries</li></ul>
+<details class="build-details"><summary>SEE WHAT'S INCLUDED ＋</summary><p>Best for custom home builders, architectural practices and premium construction brands. The experience is built around strong imagery, generous editorial layouts, project storytelling and a more considered consultation journey — a different design direction from both starter and medium.</p></details>
+<a class="build-action" href="../contact.html?template=Construction%20Architectural%20Signature">DISCUSS PREMIUM WEBSITE →</a>
+</div>
+</article>
+</div>
+<p class="construction-note">These are illustrative website concepts, not real construction companies or verified project portfolios. The medium and premium builds are feature plans at this stage; their full demo websites will be added as those templates are developed.</p>
+</section>
+</main>
+<section class="cta"><div class="cta-box"><p class="section-tag">YOUR NEXT PROJECT STARTS HERE</p><h2>LET'S BUILD A WEBSITE THAT WORKS AS HARD AS YOU DO.</h2><p>Choose a direction and we can shape the design around your services, projects and customers.</p><div class="cta-buttons"><a href="../contact.html?template=Construction" class="button primary">START YOUR PROJECT →</a><a href="../index.html" class="button secondary">BACK TO ALIENWAY</a></div></div></section>
+<footer class="footer"><div class="footer-bottom"><p>© 2026 Alienway Production. All rights reserved.</p></div></footer>
+</body>
+</html>

@@ -23,6 +23,25 @@ dialog{border:0;padding:0;width:min(600px,92%);max-height:85vh;background:var(--
 @media(max-width:650px){.topline .shell span:last-child{display:none}.nav{min-height:64px}.navlinks{display:none}.navcta{padding:11px}.hero{grid-template-columns:1fr}.hero-copy{padding:43px 5%}.hero h1{font-size:clamp(51px,14vw,74px);letter-spacing:-2px}.hero-art{min-height:255px;grid-row:1}.hero-art:after{background:linear-gradient(0deg,#0007,transparent 60%)}.hero-number{font-size:100px}.intro{display:block;padding:54px 0 24px}.intro>p{margin-top:14px}.toolbar{grid-template-columns:1fr 1fr;padding:12px}.field:first-child,.find{grid-column:1/-1}.inventory{grid-template-columns:1fr}.car-img{height:240px}.feature{margin-top:58px;padding:42px 0}.feature-grid,.process{grid-template-columns:1fr;gap:23px}.process{padding:54px 0}.contact .shell{align-items:flex-start;flex-direction:column}.contact{padding:38px 0}.meta{align-items:flex-start}.marquee{font-size:9px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.car{transition:none}}
 </style>
+<style id="alienway-exit-styles">
+.alienway-exit{position:fixed;right:22px;bottom:22px;z-index:9998;display:inline-flex;align-items:center;gap:10px;padding:9px 16px 9px 10px;border:1px solid rgba(255,255,255,.28);border-radius:17px;background:#171d18;color:#fffdf4;text-decoration:none;box-shadow:0 9px 0 #0a0e0b,0 15px 30px rgba(0,0,0,.24);font:900 11px/1.1 'DM Sans',Arial,sans-serif;letter-spacing:1.5px;isolation:isolate;transition:transform .22s cubic-bezier(.2,1.8,.4,1),box-shadow .22s,background .2s;will-change:transform}
+.alienway-exit:before{content:"";position:absolute;inset:-4px;border:1px solid rgba(213,250,85,.0);border-radius:20px;transition:inset .22s,border-color .22s;pointer-events:none}
+.alienway-exit:hover{transform:translateY(-3px) rotate(-1deg);box-shadow:0 12px 0 #0a0e0b,0 20px 36px rgba(0,0,0,.28);background:#222b22}
+.alienway-exit:hover:before{inset:-7px;border-color:rgba(213,250,85,.65)}
+.alienway-exit:active{transform:translateY(5px) scale(.94);box-shadow:0 3px 0 #0a0e0b,0 7px 16px rgba(0,0,0,.22)}
+.alienway-exit__mark{width:32px;height:32px;display:grid;place-items:center;flex:0 0 32px;border-radius:11px;background:#d5fa55;color:#182018;font-size:18px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.12);transition:transform .35s cubic-bezier(.2,1.8,.4,1)}
+.alienway-exit:hover .alienway-exit__mark{transform:rotate(-12deg) scale(1.08)}
+.alienway-exit__words{display:flex;flex-direction:column;gap:3px}
+.alienway-exit__label{font-size:12px;letter-spacing:2px}
+.alienway-exit__sub{font-size:7px;letter-spacing:1.35px;color:#d5fa55}
+.alienway-exit__burst{position:fixed;z-index:10000;left:0;top:0;width:7px;height:7px;border-radius:2px;pointer-events:none;background:var(--particle-color,#d5fa55);box-shadow:0 0 10px color-mix(in srgb,var(--particle-color,#d5fa55) 55%,transparent);animation:alienway-particle .82s cubic-bezier(.12,.7,.22,1) forwards}
+.alienway-exit.is-exploding{animation:alienway-squish .78s cubic-bezier(.2,1.5,.35,1) forwards;pointer-events:none}
+@keyframes alienway-squish{0%{transform:scale(1)}12%{transform:scale(1.18,.76) rotate(2deg)}24%{transform:scale(.82,1.18) rotate(-3deg)}38%{transform:scale(1.12,.9) rotate(2deg)}53%{transform:scale(.96,1.04)}68%{transform:scale(1.04,.97)}82%{transform:scale(.99,1.01)}100%{transform:scale(0);opacity:0}}
+@keyframes alienway-particle{0%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}72%{opacity:1}100%{opacity:0;transform:translate(var(--particle-x),var(--particle-y)) scale(0) rotate(var(--particle-rotation))}}
+.alienway-exit:focus-visible{outline:3px solid #d5fa55;outline-offset:5px}
+@media(max-width:600px){.alienway-exit{right:13px;bottom:14px;padding:8px 12px 8px 8px;gap:8px;border-radius:15px}.alienway-exit__mark{width:29px;height:29px;flex-basis:29px}.alienway-exit__label{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.alienway-exit,.alienway-exit:before,.alienway-exit__mark{transition:none}.alienway-exit__burst{animation-duration:.12s}.alienway-exit.is-exploding{animation:none;opacity:0}}
+</style>
 </head>
 <body>
 <div class="topline"><div class="shell"><span>APEX AUTOMOTIVE / INDEPENDENT SHOWROOM DEMO</span><span>GOOD CARS. BETTER DISCOVERY.</span></div></div>
@@ -58,5 +77,46 @@ document.getElementById('find').addEventListener('click',apply);[q,body,budget,s
 cars.forEach(c=>{c.querySelector('.quick').addEventListener('click',()=>{document.getElementById('dialogTitle').textContent=c.dataset.make+' '+c.dataset.model;document.getElementById('dialogbody').innerHTML='<p>'+c.dataset.desc+'</p><div class="specgrid"><div>Indicative price<b>'+money(c.dataset.price)+'</b></div><div>Model year<b>'+c.dataset.year+'</b></div><div>Odometer<b>'+Number(c.dataset.km).toLocaleString('en-ZA')+' km*</b></div><div>Transmission<b>'+c.dataset.gear+'</b></div><div>Fuel type<b>'+c.dataset.fuel+'</b></div><div>Stock reference<b>'+c.dataset.ref+'</b></div></div><p>Illustrative demo details only, not a verified listing.</p><a class="btn" href="../../contact.html?template=Automotive%20Medium&amp;vehicle='+encodeURIComponent(c.dataset.make+' '+c.dataset.model)+'">ENQUIRE ABOUT THIS CAR ↗</a>';dialog.showModal()});c.querySelector('.compare').addEventListener('click',()=>{if(chosen.has(c))chosen.delete(c);else if(chosen.size<2)chosen.add(c);else{msg.textContent='Maximum two vehicles — clear one first.';return}updateChosen()})});
 function updateChosen(){cars.forEach(c=>{const b=c.querySelector('.compare');b.textContent=chosen.has(c)?'✓ SELECTED':'+ COMPARE';b.style.background=chosen.has(c)?'var(--orange)':'transparent'});bar.classList.toggle('show',chosen.size>0);msg.textContent=chosen.size+' of 2 vehicles selected';comparison.classList.remove('show')}
 document.getElementById('compareNow').addEventListener('click',()=>{if(chosen.size!==2){msg.textContent='Select two vehicles to compare.';return}const list=[...chosen],rows=[['Price',c=>money(c.dataset.price)],['Year',c=>c.dataset.year],['Mileage',c=>Number(c.dataset.km).toLocaleString('en-ZA')+' km*'],['Body style',c=>c.dataset.body],['Fuel',c=>c.dataset.fuel],['Transmission',c=>c.dataset.gear]];comparison.innerHTML='<h3>Side-by-side comparison</h3><table><thead><tr><th>Details</th>'+list.map(c=>'<th>'+c.dataset.make+' '+c.dataset.model+'</th>').join('')+'</tr></thead><tbody>'+rows.map(([label,get])=>'<tr><th>'+label+'</th>'+list.map(c=>'<td>'+get(c)+'</td>').join('')+'</tr>').join('')+'</tbody></table><p class="note">Illustrative sample details only.</p>';comparison.classList.add('show');comparison.scrollIntoView({behavior:'smooth',block:'center'})});document.getElementById('clearCompare').addEventListener('click',()=>{chosen.clear();updateChosen();comparison.innerHTML=''});document.getElementById('close').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});apply()})();
+</script>
+<a class="alienway-exit" href="../../index.html" aria-label="EXIT and return to the Alienway Production website" title="Exit to Alienway Production">
+  <span class="alienway-exit__mark" aria-hidden="true">↗</span>
+  <span class="alienway-exit__words"><span class="alienway-exit__label">EXIT</span><span class="alienway-exit__sub">ALIENWAY PRODUCTION</span></span>
+</a>
+<script id="alienway-exit-script">
+(function(){
+  const exitButton=document.querySelector('.alienway-exit');
+  if(!exitButton)return;
+  let leaving=false;
+  exitButton.addEventListener('click',function(event){
+    if(leaving)return;
+    event.preventDefault();
+    leaving=true;
+    const bounds=exitButton.getBoundingClientRect();
+    const originX=bounds.left+bounds.width/2;
+    const originY=bounds.top+bounds.height/2;
+    const colors=['#d5fa55','#ff744f','#fffefa','#8ed6ff','#f5c65d','#b9a1ff'];
+    const count=window.matchMedia('(prefers-reduced-motion: reduce)').matches?8:34;
+    for(let i=0;i<count;i++){
+      const particle=document.createElement('span');
+      particle.className='alienway-exit__burst';
+      const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.24;
+      const distance=75+Math.random()*205;
+      particle.style.left=originX+'px';
+      particle.style.top=originY+'px';
+      particle.style.setProperty('--particle-x',(Math.cos(angle)*distance)+'px');
+      particle.style.setProperty('--particle-y',(Math.sin(angle)*distance)+'px');
+      particle.style.setProperty('--particle-rotation',(Math.random()*900-450)+'deg');
+      particle.style.setProperty('--particle-color',colors[Math.floor(Math.random()*colors.length)]);
+      particle.style.width=(3+Math.random()*6)+'px';
+      particle.style.height=(3+Math.random()*7)+'px';
+      particle.style.animationDelay=(Math.random()*.11)+'s';
+      document.body.appendChild(particle);
+      particle.addEventListener('animationend',()=>particle.remove(),{once:true});
+    }
+    exitButton.classList.add('is-exploding');
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.setTimeout(()=>{window.location.href=exitButton.href},reduced?150:850);
+  });
+})();
 </script>
 </body></html>

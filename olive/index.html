@@ -2329,6 +2329,25 @@ textarea:focus-visible {
     }
 }
 </style>
+<style id="alienway-exit-styles">
+.alienway-exit{position:fixed;right:22px;bottom:22px;z-index:9998;display:inline-flex;align-items:center;gap:10px;padding:9px 16px 9px 10px;border:1px solid rgba(255,255,255,.28);border-radius:17px;background:#171d18;color:#fffdf4;text-decoration:none;box-shadow:0 9px 0 #0a0e0b,0 15px 30px rgba(0,0,0,.24);font:900 11px/1.1 'DM Sans',Arial,sans-serif;letter-spacing:1.5px;isolation:isolate;transition:transform .22s cubic-bezier(.2,1.8,.4,1),box-shadow .22s,background .2s;will-change:transform}
+.alienway-exit:before{content:"";position:absolute;inset:-4px;border:1px solid rgba(213,250,85,.0);border-radius:20px;transition:inset .22s,border-color .22s;pointer-events:none}
+.alienway-exit:hover{transform:translateY(-3px) rotate(-1deg);box-shadow:0 12px 0 #0a0e0b,0 20px 36px rgba(0,0,0,.28);background:#222b22}
+.alienway-exit:hover:before{inset:-7px;border-color:rgba(213,250,85,.65)}
+.alienway-exit:active{transform:translateY(5px) scale(.94);box-shadow:0 3px 0 #0a0e0b,0 7px 16px rgba(0,0,0,.22)}
+.alienway-exit__mark{width:32px;height:32px;display:grid;place-items:center;flex:0 0 32px;border-radius:11px;background:#d5fa55;color:#182018;font-size:18px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.12);transition:transform .35s cubic-bezier(.2,1.8,.4,1)}
+.alienway-exit:hover .alienway-exit__mark{transform:rotate(-12deg) scale(1.08)}
+.alienway-exit__words{display:flex;flex-direction:column;gap:3px}
+.alienway-exit__label{font-size:12px;letter-spacing:2px}
+.alienway-exit__sub{font-size:7px;letter-spacing:1.35px;color:#d5fa55}
+.alienway-exit__burst{position:fixed;z-index:10000;left:0;top:0;width:7px;height:7px;border-radius:2px;pointer-events:none;background:var(--particle-color,#d5fa55);box-shadow:0 0 10px color-mix(in srgb,var(--particle-color,#d5fa55) 55%,transparent);animation:alienway-particle .82s cubic-bezier(.12,.7,.22,1) forwards}
+.alienway-exit.is-exploding{animation:alienway-squish .78s cubic-bezier(.2,1.5,.35,1) forwards;pointer-events:none}
+@keyframes alienway-squish{0%{transform:scale(1)}12%{transform:scale(1.18,.76) rotate(2deg)}24%{transform:scale(.82,1.18) rotate(-3deg)}38%{transform:scale(1.12,.9) rotate(2deg)}53%{transform:scale(.96,1.04)}68%{transform:scale(1.04,.97)}82%{transform:scale(.99,1.01)}100%{transform:scale(0);opacity:0}}
+@keyframes alienway-particle{0%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}72%{opacity:1}100%{opacity:0;transform:translate(var(--particle-x),var(--particle-y)) scale(0) rotate(var(--particle-rotation))}}
+.alienway-exit:focus-visible{outline:3px solid #d5fa55;outline-offset:5px}
+@media(max-width:600px){.alienway-exit{right:13px;bottom:14px;padding:8px 12px 8px 8px;gap:8px;border-radius:15px}.alienway-exit__mark{width:29px;height:29px;flex-basis:29px}.alienway-exit__label{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.alienway-exit,.alienway-exit:before,.alienway-exit__mark{transition:none}.alienway-exit__burst{animation-duration:.12s}.alienway-exit.is-exploding{animation:none;opacity:0}}
+</style>
 </head>
 
 <body>
@@ -3967,5 +3986,46 @@ reservationForm.addEventListener("submit", async function (event) {
 });
 </script>
 
+<a class="alienway-exit" href="../index.html" aria-label="EXIT and return to the Alienway Production website" title="Exit to Alienway Production">
+  <span class="alienway-exit__mark" aria-hidden="true">↗</span>
+  <span class="alienway-exit__words"><span class="alienway-exit__label">EXIT</span><span class="alienway-exit__sub">ALIENWAY PRODUCTION</span></span>
+</a>
+<script id="alienway-exit-script">
+(function(){
+  const exitButton=document.querySelector('.alienway-exit');
+  if(!exitButton)return;
+  let leaving=false;
+  exitButton.addEventListener('click',function(event){
+    if(leaving)return;
+    event.preventDefault();
+    leaving=true;
+    const bounds=exitButton.getBoundingClientRect();
+    const originX=bounds.left+bounds.width/2;
+    const originY=bounds.top+bounds.height/2;
+    const colors=['#d5fa55','#ff744f','#fffefa','#8ed6ff','#f5c65d','#b9a1ff'];
+    const count=window.matchMedia('(prefers-reduced-motion: reduce)').matches?8:34;
+    for(let i=0;i<count;i++){
+      const particle=document.createElement('span');
+      particle.className='alienway-exit__burst';
+      const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.24;
+      const distance=75+Math.random()*205;
+      particle.style.left=originX+'px';
+      particle.style.top=originY+'px';
+      particle.style.setProperty('--particle-x',(Math.cos(angle)*distance)+'px');
+      particle.style.setProperty('--particle-y',(Math.sin(angle)*distance)+'px');
+      particle.style.setProperty('--particle-rotation',(Math.random()*900-450)+'deg');
+      particle.style.setProperty('--particle-color',colors[Math.floor(Math.random()*colors.length)]);
+      particle.style.width=(3+Math.random()*6)+'px';
+      particle.style.height=(3+Math.random()*7)+'px';
+      particle.style.animationDelay=(Math.random()*.11)+'s';
+      document.body.appendChild(particle);
+      particle.addEventListener('animationend',()=>particle.remove(),{once:true});
+    }
+    exitButton.classList.add('is-exploding');
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.setTimeout(()=>{window.location.href=exitButton.href},reduced?150:850);
+  });
+})();
+</script>
 </body>
   </html>

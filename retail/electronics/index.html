@@ -30,6 +30,25 @@
 @media(max-width:950px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.category-grid{grid-template-columns:repeat(2,1fr)}.hero-product{right:4%;width:30%}.hero-copy{max-width:72%}.trust-item{padding:14px 10px}}
 @media(max-width:650px){.header{height:66px;padding:0 15px}.nav,.search-link{display:none}.logo{font-size:23px}.hero-wrap{padding:10px 10px 0}.hero{min-height:510px;border-radius:16px;align-items:flex-start}.hero:before{background:linear-gradient(90deg,#101a24f5,#101a24b8 75%),linear-gradient(0deg,#101a24aa,transparent)}.hero-copy{padding:36px 23px;max-width:100%}.hero h1{font-size:65px}.hero p{font-size:12px;max-width:340px}.hero-product{width:42%;right:2%;top:76%;opacity:.5}.hero-sticker{display:none}.trust-strip{margin:12px 10px 0;grid-template-columns:1fr 1fr}.trust-item{border-bottom:1px solid var(--line)}.trust-item:nth-child(2){border-right:0}.trust-item:nth-child(3),.trust-item:nth-child(4){border-bottom:0}.section{padding:60px 16px}.section-head{display:block}.section-head p{margin-top:13px}.category-grid{gap:9px}.category{min-height:160px;padding:14px}.category b{font-size:18px}.grid{gap:9px}.photo{height:155px}.product-info{padding:10px}.product h3{font-size:13px;min-height:34px}.controls{width:100%}.controls input{flex:1;min-width:0}.controls select{min-width:125px}.editorial{padding:0 16px 60px}.editorial-card{grid-template-columns:1fr}.editorial-image{min-height:230px;order:-1}.why-grid{grid-template-columns:1fr}.newsletter{display:block;padding:50px 18px}.newsletter form{margin-top:18px}.footer{display:block}.footer>*{display:block;margin:10px 0}.modal{grid-template-columns:1fr}.modal-img{min-height:210px;max-height:230px}.comparebar{align-items:flex-start;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* INTERACTIVE FOCUS CARDS + SUBTLE 3D */
+.product{transform-style:preserve-3d;transform:perspective(1100px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));transition:transform .18s cubic-bezier(.2,.75,.25,1),box-shadow .28s,border-color .28s}
+.photo:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(circle at var(--spot-x,50%) var(--spot-y,50%),#ffffff80,transparent 48%),linear-gradient(180deg,transparent 45%,#101a241c)}
+.photo img{will-change:transform,filter}
+.focus-reveal{position:absolute;z-index:3;inset:auto 0 0;padding:34px 14px 14px;color:#fff;background:linear-gradient(180deg,transparent,#101a24ed 38%);display:flex;flex-direction:column;align-items:flex-start;gap:5px;transform:translateY(102%);transition:transform .38s cubic-bezier(.2,.75,.25,1)}
+.focus-reveal span{font-size:8px;font-weight:900;letter-spacing:1.5px;color:var(--lime)}
+.focus-reveal b{font:700 16px 'Space Grotesk';text-shadow:0 2px 12px #0008}
+.focus-action{margin-top:5px;border:1px solid #ffffff9c;background:#ffffff17;color:#fff;border-radius:5px;padding:8px 10px;font-size:8px;font-weight:900;letter-spacing:.8px;backdrop-filter:blur(8px)}
+.product:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+@media(hover:hover) and (pointer:fine){
+ .product:hover{transform:perspective(1100px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)) translateY(-5px);box-shadow:0 22px 48px #17202a24;border-color:#aebfdf}
+ .product:hover .photo img{transform:scale(1.09);filter:blur(1px)}
+ .product:hover .photo:after{opacity:1}
+ .product:hover .focus-reveal,.product:focus-within .focus-reveal{transform:translateY(0)}
+}
+@media(max-width:650px){.product{transform:none!important;transition:box-shadow .2s,border-color .2s}.focus-reveal{display:none}}
+@media(prefers-reduced-motion:reduce){.product,.product *{transition:none!important;transform:none!important;filter:none!important}.photo:after{display:none}}
+
 </style></head><body>
 <div class="announcement"><b>COMPLIMENTARY DELIVERY</b> ON SELECTED ORDERS · YOUR NEXT UPGRADE STARTS HERE</div>
 <header class="header"><a class="logo" href="#">NEXT<span>/</span></a><nav class="nav"><a href="#shop">Shop all</a><a href="#categories">Categories</a><a href="#edit">The setup edit</a><a href="#why">Why NEXT</a></nav><div class="header-right"><a class="search-link" href="#shop">⌕ &nbsp; FIND YOUR TECH</a><button class="icon" id="wishOpen" aria-label="Open wishlist">♡</button><button class="icon" id="cartOpen" aria-label="Open cart">▣<span class="count" id="cartCount">0</span></button></div></header>
@@ -59,7 +78,7 @@ const items=[
 let cart=[],wish=[],selected=[],category="All";
 const $=id=>document.getElementById(id),money=n=>"R "+Number(n).toLocaleString("en-ZA");
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>$("toast").classList.remove("show"),2300)}
-function render(){let q=$("search").value.toLowerCase(),sort=$("sort").value;let list=items.filter(p=>(category==="All"||p.cat===category)&&(p.name+" "+p.cat+" "+p.desc).toLowerCase().includes(q));if(sort==="low")list.sort((a,b)=>a.price-b.price);if(sort==="high")list.sort((a,b)=>b.price-a.price);if(sort==="name")list.sort((a,b)=>a.name.localeCompare(b.name));$("products").innerHTML=list.map(p=>'<article class="product"><div class="photo"><img src="'+p.img+'" alt="'+p.name+'"><span class="badge">'+(p.badge||p.cat)+'</span><button class="heart" data-wish="'+p.id+'" aria-label="Add '+p.name+' to wishlist">'+(wish.includes(p.id)?"♥":"♡")+'</button></div><div class="product-info"><span class="type">'+p.cat+' / NEXT SELECT</span><h3>'+p.name+'</h3><div class="specline">'+(p.spec.Display||p.spec.Type||p.spec.Connection||"Explore product specifications")+'</div><div class="price-row"><span class="price">'+money(p.price)+'</span><span class="stock">● IN STOCK</span></div><div class="product-actions"><button class="btn" data-add="'+p.id+'">ADD TO BAG</button><button class="btn dark" data-view="'+p.id+'">DETAILS</button></div><label class="compare-check"><input type="checkbox" data-compare="'+p.id+'" '+(selected.includes(p.id)?"checked":"")+'> Add to compare</label></div></article>').join("");$("empty").style.display=list.length?"none":"block";$("comparebar").classList.toggle("show",selected.length>0);$("compareCount").textContent=selected.length+" product(s) selected"}
+function render(){let q=$("search").value.toLowerCase(),sort=$("sort").value;let list=items.filter(p=>(category==="All"||p.cat===category)&&(p.name+" "+p.cat+" "+p.desc).toLowerCase().includes(q));if(sort==="low")list.sort((a,b)=>a.price-b.price);if(sort==="high")list.sort((a,b)=>b.price-a.price);if(sort==="name")list.sort((a,b)=>a.name.localeCompare(b.name));$("products").innerHTML=list.map(p=>'<article class="product" tabindex="0"><div class="photo"><img src="'+p.img+'" alt="'+p.name+'"><span class="badge">'+(p.badge||p.cat)+'</span><button class="heart" data-wish="'+p.id+'" aria-label="Add '+p.name+' to wishlist">'+(wish.includes(p.id)?"♥":"♡")+'</button><div class="focus-reveal"><span> NEXT / DISCOVER </span><b>'+p.name+'</b><button type="button" class="focus-action" data-view="'+p.id+'">EXPLORE SPECS ↗</button></div></div><div class="product-info"><span class="type">'+p.cat+' / NEXT SELECT</span><h3>'+p.name+'</h3><div class="specline">'+(p.spec.Display||p.spec.Type||p.spec.Connection||"Explore product specifications")+'</div><div class="price-row"><span class="price">'+money(p.price)+'</span><span class="stock">● IN STOCK</span></div><div class="product-actions"><button class="btn" data-add="'+p.id+'">ADD TO BAG</button><button class="btn dark" data-view="'+p.id+'">DETAILS</button></div><label class="compare-check"><input type="checkbox" data-compare="'+p.id+'" '+(selected.includes(p.id)?"checked":"")+'> Add to compare</label></div></article>').join("");$("empty").style.display=list.length?"none":"block";$("comparebar").classList.toggle("show",selected.length>0);$("compareCount").textContent=selected.length+" product(s) selected"}
 function updateCount(){$("cartCount").textContent=cart.reduce((s,x)=>s+x.qty,0)}
 function add(id){let x=cart.find(x=>x.id===id);x?x.qty++:cart.push({id,qty:1});updateCount();toast("Added to your bag")}
 function openDrawer(mode){$("drawerTitle").textContent=mode==="wish"?"YOUR WISHLIST":"YOUR BAG";$("drawer").classList.add("open");$("overlay").classList.add("open");if(mode==="wish"){let arr=items.filter(p=>wish.includes(p.id));$("drawerBody").innerHTML=arr.length?arr.map(p=>'<div class="cartrow"><img src="'+p.img+'"><div><b>'+p.name+'</b><small>'+money(p.price)+'</small><button class="btn dark" data-add="'+p.id+'">ADD TO BAG</button></div><button class="close" data-unwish="'+p.id+'">×</button></div>').join(""):'<p class="empty">Your wishlist is empty.</p>';$("drawerFoot").innerHTML='<button class="btn secondary" id="continue">CONTINUE SHOPPING</button>'}else{renderCart()}}
@@ -73,5 +92,28 @@ $("cartOpen").onclick=()=>openDrawer("cart");$("wishOpen").onclick=()=>openDrawe
 $("products").addEventListener("change",e=>{if(e.target.matches("[data-compare]")){let id=Number(e.target.dataset.compare);selected=e.target.checked?[...selected,id]:selected.filter(x=>x!==id);if(selected.length>3){selected.pop();e.target.checked=false;toast("Compare up to 3 products at a time")}render()}});
 $("compareNow").onclick=()=>{if(selected.length<2){toast("Select at least 2 products to compare");return}let ps=selected.map(id=>items.find(p=>p.id===id));let keys=[...new Set(ps.flatMap(p=>Object.keys(p.spec)))];openModal('<button class="close modal-close" id="modalClose">×</button><div class="compare-wrap" style="grid-column:1/-1"><span class="eyebrow">SIDE-BY-SIDE</span><h2>COMPARE YOUR PICKS</h2><table class="compare-table"><tr><th>Specification</th>'+ps.map(p=>'<th>'+p.name+'</th>').join("")+'</tr>'+keys.map(k=>'<tr><td><b>'+k+'</b></td>'+ps.map(p=>'<td>'+(p.spec[k]||"—")+'</td>').join("")+'</tr><tr><td><b>Price</b></td>'+ps.map(p=>'<td>'+money(p.price)+'</td>').join("")+'</tr>').join("")+'</table></div>')};$("clearCompare").onclick=()=>{selected=[];render()};
 $("newsletter").onsubmit=e=>{e.preventDefault();toast("You're on the NEXT demo list. Thanks!");e.target.reset()};
+
+/* Desktop pointer tilt: touch devices keep the clean, stable card layout. */
+const productGrid=$("products");
+if(window.matchMedia("(hover:hover) and (pointer:fine)").matches&&!window.matchMedia("(prefers-reduced-motion:reduce)").matches){
+ productGrid.addEventListener("pointermove",e=>{
+  const card=e.target.closest(".product");
+  if(!card)return;
+  const r=card.getBoundingClientRect(),photo=card.querySelector(".photo"),pr=photo.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+  card.style.setProperty("--tilt-x",((.5-y)*7).toFixed(2)+"deg");
+  card.style.setProperty("--tilt-y",((x-.5)*7).toFixed(2)+"deg");
+  card.style.setProperty("--spot-x",((e.clientX-pr.left)/pr.width*100).toFixed(1)+"%");
+  card.style.setProperty("--spot-y",((e.clientY-pr.top)/pr.height*100).toFixed(1)+"%");
+ });
+ productGrid.addEventListener("pointerout",e=>{
+  const card=e.target.closest(".product");
+  if(card&&(!e.relatedTarget||!card.contains(e.relatedTarget))){
+   card.style.setProperty("--tilt-x","0deg");
+   card.style.setProperty("--tilt-y","0deg");
+  }
+ });
+}
+
 render();updateCount();
 </script></body></html>

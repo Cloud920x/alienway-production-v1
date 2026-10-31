@@ -16,7 +16,7 @@ body{background:var(--retail-paper);color:var(--retail-ink)}
 .retail-hero h1{font-size:clamp(48px,8vw,100px);line-height:.9;letter-spacing:-.065em;margin:20px 0}
 .retail-hero p:not(.retail-kicker){max-width:590px;color:#e6e3df;line-height:1.8;font-size:15px}
 .retail-hero .button{display:inline-flex;margin-top:18px}
-.retail-section{padding:82px 6% 96px}
+.retail-section{padding:82px 6% 96px;scroll-margin-top:90px}
 .retail-intro{text-align:center;max-width:760px;margin:0 auto 42px}
 .retail-intro .section-tag{color:#666}
 .retail-intro h2{font-size:clamp(32px,5vw,58px);letter-spacing:-.05em;line-height:.98;margin:14px 0}
@@ -72,5 +72,17 @@ body{background:var(--retail-paper);color:var(--retail-ink)}
 </main>
 <section class="cta"><div class="cta-box"><p class="section-tag">YOUR BUSINESS. YOUR WAY.</p><h2>LET'S BUILD A RETAIL EXPERIENCE THAT SELLS.</h2><p>From product discovery to connected operations, the right solution starts with understanding how your business works.</p><div class="cta-buttons"><a href="../contact.html?industry=Retail" class="button primary">START YOUR PROJECT →</a><a href="../index.html" class="button secondary">BACK TO ALIENWAY</a></div></div></section>
 <footer class="footer"><div class="footer-bottom"><p>© 2026 Alienway Production. All rights reserved.</p></div></footer>
+<script>
+/* Keep the Explore Fashion button anchored to its section, including with a sticky header. */
+document.querySelectorAll('a[href="#fashion-showcase"]').forEach(function(link){
+  link.addEventListener('click',function(event){
+    var target=document.getElementById('fashion-showcase');
+    if(!target)return;
+    event.preventDefault();
+    target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+    if(history.replaceState)history.replaceState(null,'','#fashion-showcase');
+  });
+});
+</script>
 </body>
 </html>

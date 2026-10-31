@@ -126,10 +126,46 @@ renderProducts();renderCart();
 </script>
 <a class="alienway-exit" href="../../index.html" aria-label="Exit demonstration and return to Alienway Production"><span class="alienway-exit__mark">↗</span><span class="alienway-exit__words"><span class="alienway-exit__label">EXIT DEMO</span><span class="alienway-exit__sub">BACK TO ALIENWAY</span></span></a>
 <script>
-(()=>{const b=document.querySelector(".alienway-exit");if(!b)return;b.addEventListener("click",e=>{if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;e.preventDefault();const r=b.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,colors=["#d5fa55","#f47a56","#ffffff","#a7d8ff"];b.classList.add("is-exploding");for(let i=0;i<22;i++){const p=document.createElement("i");p.className="alienway-exit__burst";p.style.left=x+"px";p.style.top=y+"px";p.style.setProperty("--particle-color",colors[i%colors.length]);const a=Math.PI*2*i/22,d=45+Math.random()*85;p.style.setProperty("--particle-x",Math.cos(a)*d+"px");p.style.setProperty("--particle-y",Math.sin(a)*d+"px");p.style.setProperty("--particle-rotation",(Math.random()*360)+"deg");document.body.appendChild(p);setTimeout(()=>p.remove(),900)}setTimeout(()=>location.href=b.href,850)})})();
+(()=> {
+  const button=document.querySelector(".alienway-exit");
+  if(!button)return;
+  button.addEventListener("click",event=>{
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+    event.preventDefault();
+    if(button.dataset.leaving==="true")return;
+    button.dataset.leaving="true";
+    const box=button.getBoundingClientRect();
+    const originX=box.left+box.width/2;
+    const originY=box.top+box.height/2;
+    const overlay=document.createElement("div");
+    overlay.className="alienway-explosion";
+    overlay.setAttribute("aria-hidden","true");
+    document.body.appendChild(overlay);
+    const fragments=["ALIENWAY","PRODUCTION","THERE'S ALWAYS A WAY.","AW","DIGITAL EXPERIENCES","↗","✦","✧","/","+"];
+    for(let i=0;i<52;i++){
+      const piece=document.createElement("span");
+      const isWord=i<fragments.length;
+      piece.className=isWord?"alienway-fragment alienway-fragment--word":"alienway-fragment alienway-fragment--spark";
+      piece.textContent=isWord?fragments[i]:"";
+      const angle=Math.random()*Math.PI*2;
+      const distance= Math.max(window.innerWidth,window.innerHeight)*(0.35+Math.random()*0.8);
+      piece.style.left=originX+"px";
+      piece.style.top=originY+"px";
+      piece.style.setProperty("--dx",Math.cos(angle)*distance+"px");
+      piece.style.setProperty("--dy",Math.sin(angle)*distance+"px");
+      piece.style.setProperty("--spin",(Math.random()*900-450)+"deg");
+      piece.style.setProperty("--delay",Math.random()*150+"ms");
+      piece.style.setProperty("--size",(isWord?10+Math.random()*10:5+Math.random()*12)+"px");
+      overlay.appendChild(piece);
+    }
+    button.classList.add("is-exploding");
+    overlay.classList.add("is-active");
+    setTimeout(()=>{window.location.href=button.href;},1250);
+  });
+})();
 </script>
 <style>
-.alienway-exit{position:fixed;right:20px;bottom:20px;z-index:99;display:inline-flex;align-items:center;gap:9px;padding:9px 14px 9px 9px;border:1px solid #ffffff35;border-radius:16px;background:#171d18;color:#fff;text-decoration:none;box-shadow:0 7px 0 #090c09,0 14px 28px #0003;font:900 10px 'DM Sans';letter-spacing:1.2px;transition:.2s}.alienway-exit:hover{transform:translateY(-3px)}.alienway-exit__mark{width:30px;height:30px;border-radius:10px;background:#d8ff3f;color:#171816;display:grid;place-items:center;font-size:17px}.alienway-exit__words{display:grid;gap:3px}.alienway-exit__sub{font-size:7px;color:#d8ff3f}.alienway-exit__burst{position:fixed;width:7px;height:7px;border-radius:2px;background:var(--particle-color);pointer-events:none;z-index:100;animation:exitParticle .82s ease-out forwards}@keyframes exitParticle{to{transform:translate(var(--particle-x),var(--particle-y)) rotate(var(--particle-rotation)) scale(0);opacity:0}}
+.alienway-exit{position:fixed;right:20px;bottom:20px;z-index:99;display:inline-flex;align-items:center;gap:9px;padding:9px 14px 9px 9px;border:1px solid #ffffff35;border-radius:16px;background:#171d18;color:#fff;text-decoration:none;box-shadow:0 7px 0 #090c09,0 14px 28px #0003;font:900 10px 'DM Sans';letter-spacing:1.2px;transition:.2s}.alienway-exit:hover{transform:translateY(-3px)}.alienway-exit__mark{width:30px;height:30px;border-radius:10px;background:#d8ff3f;color:#171816;display:grid;place-items:center;font-size:17px}.alienway-exit__words{display:grid;gap:3px}.alienway-exit__sub{font-size:7px;color:#d8ff3f}.alienway-exit__burst{display:none}.alienway-explosion{position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden}.alienway-fragment{position:absolute;display:grid;place-items:center;left:0;top:0;opacity:0;white-space:nowrap;transform:translate(-50%,-50%) scale(.4);animation:alienway-fragment-flight 1.12s cubic-bezier(.12,.7,.18,1) var(--delay) forwards}.alienway-fragment--word{font:900 var(--size)/1 'DM Sans',Arial,sans-serif;letter-spacing:.08em;color:#d8ff3f;text-shadow:0 2px 18px #d8ff3f66}.alienway-fragment--spark{width:var(--size);height:var(--size);background:linear-gradient(135deg,#d8ff3f,#fff);border-radius:2px;box-shadow:0 0 18px #d8ff3f99}.alienway-exit.is-exploding{animation:alienway-button-pop .28s ease forwards}@keyframes alienway-fragment-flight{0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(0)}12%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1) rotate(var(--spin))}}@keyframes alienway-button-pop{0%{transform:scale(1)}45%{transform:scale(1.22)}100%{transform:scale(0);opacity:0}}
 @media(max-width:600px){.alienway-exit{right:12px;bottom:12px}.ticker-track{animation-duration:40s}}
 </style>
 </body>

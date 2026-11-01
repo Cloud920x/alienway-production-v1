@@ -18,12 +18,12 @@ scene.fog = new THREE.FogExp2("#a9c4c8", 0.006);
 const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 500);
 camera.position.set(37, 22, 48);
 const isSmallScreen = window.matchMedia("(max-width: 700px)").matches;
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: !isSmallScreen, alpha: false, powerPreference: "high-performance" });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isSmallScreen ? 1 : 1.35));
-renderer.shadowMap.enabled = false;
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isSmallScreen ? 1.5 : 2));
+renderer.shadowMap.enabled = true;\nrenderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
+renderer.toneMappingExposure = 1.22;\nrenderer.useLegacyLights = false;
 
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
@@ -41,7 +41,7 @@ const hemi = new THREE.HemisphereLight("#d9efff", "#8b897c", 2.1);
 scene.add(hemi);
 const sun = new THREE.DirectionalLight("#fff0d2", 3.5);
 sun.position.set(-28, 42, 24);
-sun.castShadow = false;
+sun.castShadow = true;\nsun.shadow.mapSize.set(isSmallScreen ? 1024 : 2048, isSmallScreen ? 1024 : 2048);\nsun.shadow.camera.left = -48; sun.shadow.camera.right = 48; sun.shadow.camera.top = 42; sun.shadow.camera.bottom = -32;\nsun.shadow.camera.near = 1; sun.shadow.camera.far = 110; sun.shadow.bias = -0.00018;\nsun.shadow.normalBias = 0.025;
 scene.add(sun);
 const moon = new THREE.DirectionalLight("#9dbce8", 0.1);
 moon.position.set(20,30,-20); scene.add(moon);
@@ -277,12 +277,12 @@ function updateJourney(){
 }
 window.addEventListener("scroll",updateJourney,{passive:true});
 updateJourney();
-function resize(){const w=shell.clientWidth,h=shell.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,w<700?1:1.35));}
+function resize(){const w=shell.clientWidth,h=shell.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,w<700?1.5:2));}
 window.addEventListener("resize",resize,{passive:true});resize();
 
 const clock=new THREE.Clock();
 let frame=0,lastFrame=0;
-const frameInterval=1000/30;
+const frameInterval=1000/(isSmallScreen?30:45);
 function animate(now=0){
   requestAnimationFrame(animate);
   if(now-lastFrame<frameInterval)return;

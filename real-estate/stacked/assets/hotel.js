@@ -178,7 +178,7 @@ function applyCamera(){camera.position.set(cameraPath.x,cameraPath.y,cameraPath.
 let scrollTween=null;
 if(window.gsap&&window.ScrollTrigger){
   window.gsap.registerPlugin(window.ScrollTrigger);
-  scrollTween=window.gsap.to(cameraPath,{x:13,y:9,z:25,tx:0,ty:4,tz:1,ease:"none",scrollTrigger:{trigger:".hero",start:"top top",end:"+=115%",scrub:1.1,onUpdate:self=>{applyCamera();if(heroCopy){const p=self.progress;heroCopy.style.opacity=String(Math.max(0,1-p*3.2));heroCopy.style.transform="translate3d(0,"+(-42-p*35)+"%, "+(-p*110)+"px)";}}}});
+  scrollTween=window.gsap.to(cameraPath,{x:13,y:9,z:25,tx:0,ty:4,tz:1,ease:"none",scrollTrigger:{trigger:".hero",start:"top top",end:"+=115%",scrub:1.1,pin:".scene-shell",pinSpacing:true,anticipatePin:1,onUpdate:self=>{controls.autoRotate=self.progress<0.015;applyCamera();if(heroCopy){const p=self.progress;heroCopy.style.opacity=String(Math.max(0,1-p*3.2));heroCopy.style.transform="translate3d(0,"+(-42-p*35)+"%, "+(-p*110)+"px)";}}}});
   window.gsap.fromTo(".intro-grid > div",{y:45,opacity:0},{y:0,opacity:1,duration:1,ease:"power2.out",scrollTrigger:{trigger:".intro-grid",start:"top 78%"}});
   window.gsap.fromTo(".feature-copy",{y:35,opacity:0},{y:0,opacity:1,duration:1,ease:"power2.out",scrollTrigger:{trigger:".feature-copy",start:"top 78%"}});
 }

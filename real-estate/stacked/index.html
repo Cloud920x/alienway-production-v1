@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071a25">
+  <meta name="description" content="Explore Beza's Hotel, an imagined oceanfront sanctuary, through an interactive architectural experience.">
+  <title>Beza's Hotel — An Oceanfront Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script type="module" src="assets/hotel.js"></script>
+</head>
+<body>
+  <div class="preloader" id="preloader"><span class="preloader-mark">B</span><span>PREPARING YOUR ARRIVAL</span><i></i></div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Beza's Hotel home"><span class="brand-symbol">B</span><span class="brand-name">BEZA'S HOTEL<small>OCEANFRONT COLLECTION</small></span></a>
+    <nav class="desktop-nav" aria-label="Main navigation"><a href="#experience">The experience</a><a href="#residences">Suites</a><a href="#dining">Dining</a><a href="#contact">Contact</a></nav>
+    <a class="header-cta" href="#contact">ENQUIRE <span>↗</span></a>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="experience">
+      <div class="scene-shell" id="sceneShell">
+        <canvas id="hotelCanvas" aria-label="Interactive three-dimensional architectural view of Beza's Hotel"></canvas>
+        <div class="scene-vignette"></div>
+        <div class="scene-topline"><span><i class="live-dot"></i> AN OCEANFRONT SANCTUARY</span><span class="coordinates">33°55' S&nbsp; 18°25' E</span></div>
+        <div class="hero-copy" id="heroCopy">
+          <p class="eyebrow">A NEW PERSPECTIVE ON ESCAPE</p>
+          <h1>Where the<br><em>ocean</em> becomes<br>your horizon.</h1>
+          <p class="hero-description">A considered retreat shaped by light, water and the art of slowing down.</p>
+          <a class="hero-link" href="#journey">DISCOVER THE HOTEL <span>↓</span></a>
+        </div>
+        <div class="scene-controls">
+          <button class="time-toggle" id="timeToggle" type="button" aria-label="Switch to night view"><span class="sun-icon">☼</span><span class="toggle-label">DAYLIGHT</span><span class="toggle-track"><i></i></span><span class="moon-icon">☾</span></button>
+          <span class="drag-hint" id="dragHint">DRAG TO EXPLORE <b>↔</b></span>
+        </div>
+        <div class="scene-caption"><span>01 / 06</span><span>THE ARCHITECTURE</span></div>
+        <div class="scene-loader" id="sceneLoader"><span>COMPOSING THE VIEW</span><i></i></div>
+      </div>
+      <div class="scroll-cue"><span>SCROLL TO BEGIN YOUR ARRIVAL</span><i></i></div>
+    </section>
+
+    <section class="intro-section" id="journey">
+      <div class="section-index">01 — THE SETTING</div>
+      <div class="intro-grid">
+        <p class="eyebrow">A PLACE APART</p>
+        <div><h2>Arrive somewhere<br><em>extraordinary.</em></h2><p class="body-copy">Set between sculpted gardens and the endless blue, Beza's Hotel is imagined as a meeting of thoughtful architecture and effortless hospitality. Every line opens towards the water. Every detail invites you to stay a little longer.</p><a class="text-link" href="#residences">EXPLORE THE COLLECTION <span>↗</span></a></div>
+      </div>
+    </section>
+
+    <section class="feature-section residences" id="residences">
+      <div class="feature-image image-suite"><div class="image-label">THE PRIVATE COLLECTION <span>02 / 06</span></div></div>
+      <div class="feature-copy"><p class="eyebrow">ROOM TO BREATHE</p><h2>Suites with<br><em>the sea in sight.</em></h2><p class="body-copy">Quiet materials, generous light and uninterrupted ocean views. Discover spaces designed to make every arrival feel personal.</p><a class="text-link" href="#contact">DISCOVER THE SUITES <span>↗</span></a></div>
+    </section>
+
+    <section class="feature-section dining" id="dining">
+      <div class="feature-copy"><p class="eyebrow">A TASTE OF THE COAST</p><h2>Gather around<br><em>something special.</em></h2><p class="body-copy">Seasonal ingredients, thoughtful craft and tables that bring the coastline a little closer. An invitation to linger from first light to last call.</p><a class="text-link" href="#contact">EXPLORE DINING <span>↗</span></a></div>
+      <div class="feature-image image-dining"><div class="image-label">THE RESTAURANT <span>03 / 06</span></div></div>
+    </section>
+
+    <section class="pool-section">
+      <div class="pool-content"><p class="eyebrow">BEYOND THE EVERYDAY</p><h2>Time moves<br><em>differently here.</em></h2><p>Long afternoons. Salt in the air. A horizon that never asks you to hurry.</p><a class="light-link" href="#contact">MAKE AN ENQUIRY <span>↗</span></a></div>
+    </section>
+
+    <section class="contact-section" id="contact"><div><p class="eyebrow">YOUR STAY STARTS HERE</p><h2>Let the coast<br><em>call you home.</em></h2></div><a class="contact-button" href="mailto:stay@bezas.example?subject=Beza%27s%20Hotel%20enquiry">ENQUIRE ABOUT A STAY <span>↗</span></a></section>
+  </main>
+  <footer class="site-footer"><a class="brand footer-brand" href="#top"><span class="brand-symbol">B</span><span class="brand-name">BEZA'S HOTEL<small>OCEANFRONT COLLECTION</small></span></a><span>AN IMAGINED HOSPITALITY CONCEPT BY ALIENWAY PRODUCTION</span><a href="https://cloud920x.github.io/alienway-production-v1/">← BACK TO ALIENWAY</a></footer>
+  <div class="interaction-note" id="interactionNote" role="status" aria-live="polite"></div>
+</body>
+</html>

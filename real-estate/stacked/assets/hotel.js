@@ -78,6 +78,12 @@ function makeSurfaceMap(kind, base, seed=1) {
       ctx.lineWidth=1+random()*5;ctx.beginPath();
       ctx.moveTo(0,y);ctx.bezierCurveTo(130,y-8,350,y+10,512,y+(random()-.5)*22);ctx.stroke();
     }
+  } else if (kind === "wood") {
+    for(let i=0;i<115;i++){
+      const x=random()*512, alpha=.025+random()*.075;
+      ctx.strokeStyle=`rgba(65,43,25,${alpha})`;ctx.lineWidth=.5+random()*2;
+      ctx.beginPath();ctx.moveTo(x,0);ctx.bezierCurveTo(x-5,150,x+7,350,x+(random()-.5)*8,512);ctx.stroke();
+    }
   } else {
     for(let i=0;i<1800;i++){
       const x=random()*512,y=random()*512,r=.3+random()*1.4;
@@ -95,6 +101,7 @@ function makeSurfaceMap(kind, base, seed=1) {
 const limestoneMap = makeSurfaceMap("travertine","#e6dfd0",17);
 const paleStoneMap = makeSurfaceMap("travertine","#f0eadd",29);
 const sandMap = makeSurfaceMap("grain","#c9b99a",41);
+const oakMap = makeSurfaceMap("wood","#a9855e",53);
 const stone = new THREE.MeshStandardMaterial({color:"#ffffff",map:limestoneMap,roughness:.84,bumpMap:limestoneMap,bumpScale:.035});
 const paleStone = new THREE.MeshStandardMaterial({color:"#ffffff",map:paleStoneMap,roughness:.78,bumpMap:paleStoneMap,bumpScale:.025});
 const darkStone = mat("#8b8d83",0.78);
@@ -243,7 +250,7 @@ for(let i=0;i<18;i++){
 
 // A furnished ocean-facing suite, built as a dedicated interior walkthrough zone.
 const suite = new THREE.Group(); suite.position.set(0,0,-27); scene.add(suite);
-const wallWarm=mat("#e7dfd0",0.9), oak=mat("#a9855e",0.68), oakLight=mat("#c1a27a",0.72), sage=mat("#788879",0.78), quartz=mat("#e9e1d4",0.28), linen=mat("#d8cbb8",0.95), tile=mat("#d6c7ad",0.82), bronzeDetail=mat("#b89a6b",0.3,0.7);
+const wallWarm=mat("#e7dfd0",0.9), oak=new THREE.MeshStandardMaterial({color:"#ffffff",map:oakMap,roughness:.72,bumpMap:oakMap,bumpScale:.018}), oakLight=new THREE.MeshStandardMaterial({color:"#c1a27a",map:oakMap,roughness:.74,bumpMap:oakMap,bumpScale:.014}), sage=mat("#788879",0.78), quartz=mat("#e9e1d4",0.28), linen=mat("#d8cbb8",0.95), tile=mat("#d6c7ad",0.82), bronzeDetail=mat("#b89a6b",0.3,0.7);
 box(suite,18,.35,17,tile,0,.0,0,false);
 box(suite,18,.35,.35,wallWarm,0,3.7,-8.3,false);
 box(suite,.35,3.7,17,wallWarm,-8.8,1.85,0,false);

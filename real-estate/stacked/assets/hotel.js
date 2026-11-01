@@ -278,7 +278,7 @@ const galleryGlow=new THREE.PointLight("#f5d3a1",1.05,13,2);galleryGlow.position
 const restaurant=new THREE.Group();restaurant.position.set(-18,0,1);hotel.add(restaurant);
 box(restaurant,13,.22,10,paleStone,0,.05,0,false);
 box(restaurant,8,.85,1.1,dark,0,.55,-4.1);
-box(restaurant,8,.12,1.25,quartz,0,1.04,-4.1);
+box(restaurant,8,.12,1.25,paleStone,0,1.04,-4.1);
 for(const x of [-4.2,-1.4,1.4,4.2]){
   cylinder(restaurant,.72,.72,.12,paleStone,x,.85,1.5,24);
   cylinder(restaurant,.12,.16,.8,bronze,x,.42,1.5,16);

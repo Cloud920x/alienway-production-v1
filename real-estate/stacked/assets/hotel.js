@@ -251,6 +251,63 @@ for(let i=0;i<18;i++){
 }
 
 
+// Connected gallery and private hotel lounge between reception and the guest suite.
+const gallery = new THREE.Group(); hotel.add(gallery);
+box(gallery,7,.22,13,paleStone,0,.05,-12.5,false);
+box(gallery,.18,3.2,13,stone,-3.5,1.6,-12.5,false);
+box(gallery,.18,3.2,13,stone,3.5,1.6,-12.5,false);
+box(gallery,7,.18,13,dark,0,3.25,-12.5,false);
+for(const side of [-1,1]){
+  const sofa=new THREE.Group();gallery.add(sofa);sofa.position.set(side*1.75,.18,-12.7);sofa.rotation.y=side*.12;
+  box(sofa,2.35,.48,1.05,mat("#b7a58e",.92),0,.48,0);
+  box(sofa,2.35,.9,.22,mat("#d0c2ad",.95),0,.93,-.4);
+  for(const x of [-.92,.92])box(sofa,.12,.32,.12,bronze,x,.16,.34);
+}
+box(gallery,1.7,.12,1.25,oakLight,0,.65,-10.1);
+cylinder(gallery,.48,.48,.16,bronze,0,.78,-10.1,24);
+for(const x of [-2.55,2.55]){
+  cylinder(gallery,.38,.44,.6,dark,x,.42,-16.7,18);
+  for(let i=0;i<5;i++){
+    const leaf=box(gallery,.12,.08,1.25,green,x+Math.cos(i*1.25)*.45,1.15,-16.7+Math.sin(i*1.25)*.45,false);
+    leaf.rotation.y=i*1.25;leaf.rotation.x=-.3;
+  }
+}
+const galleryGlow=new THREE.PointLight("#f5d3a1",1.05,13,2);galleryGlow.position.set(0,2.8,-12.5);gallery.add(galleryGlow);
+
+// Private suite balcony: timber deck, glass balustrade, lounge chairs and side table.
+const suiteBalcony=new THREE.Group();suiteBalcony.position.set(0,0,-27);suite.add(suiteBalcony);
+box(suiteBalcony,16,.22,4.2,oakLight,0,.02,10.5,false);
+box(suiteBalcony,16,.08,.12,bronzeDetail,0,.32,12.55,false);
+for(let x=-7.5;x<=7.5;x+=1.5){
+  box(suiteBalcony,.07,1.05,.07,bronzeDetail,x,.82,12.55,false);
+  box(suiteBalcony,.045,1.05,.045,glass,x,.82,12.55,false);
+}
+box(suiteBalcony,16,.08,.08,bronzeDetail,0,1.38,12.55,false);
+for(const x of [-4.8,4.8]){
+  const seat=new THREE.Group();suiteBalcony.add(seat);seat.position.set(x,.18,10.5);seat.rotation.y=x<0?.12:-.12;
+  box(seat,1.7,.32,1.65,linen,0,.5,0);
+  box(seat,1.7,.9,.22,chairFabric,0,.98,-.68);
+  for(const lx of [-.68,.68])box(seat,.1,.42,.1,bronzeDetail,lx,.25,.62);
+}
+cylinder(suiteBalcony,.42,.42,.12,bronzeDetail,0,.55,10.6,24);
+cylinder(suiteBalcony,.36,.36,.08,quartz,0,.65,10.6,24);
+
+// Hotel restaurant terrace beside the main lobby: dining tables and a service bar.
+const restaurant=new THREE.Group();restaurant.position.set(-18,0,1);hotel.add(restaurant);
+box(restaurant,13,.22,10,paleStone,0,.05,0,false);
+box(restaurant,8,.85,1.1,dark,0,.55,-4.1);
+box(restaurant,8,.12,1.25,quartz,0,1.04,-4.1);
+for(const x of [-4.2,-1.4,1.4,4.2]){
+  cylinder(restaurant,.72,.72,.12,oakLight,x,.85,1.5,24);
+  cylinder(restaurant,.12,.16,.8,bronze,x,.42,1.5,16);
+  for(const a of [0,Math.PI/2,Math.PI,Math.PI*1.5]){
+    const cx=x+Math.cos(a)*1.05,cz=1.5+Math.sin(a)*1.05;
+    const chair=new THREE.Group();restaurant.add(chair);chair.position.set(cx,.1,cz);chair.rotation.y=-a;
+    box(chair,.72,.18,.72,chairFabric,0,.48,0);
+    box(chair,.72,.72,.12,chairFabric,0,.85,-.3);
+  }
+}
+
 // A furnished ocean-facing suite, built as a dedicated interior walkthrough zone.
 const suite = new THREE.Group(); suite.position.set(0,0,-27); scene.add(suite);
 const wallWarm=mat("#e7dfd0",0.9), oak=new THREE.MeshStandardMaterial({color:"#ffffff",map:oakMap,roughness:.72,bumpMap:oakMap,bumpScale:.018}), oakLight=new THREE.MeshStandardMaterial({color:"#c1a27a",map:oakMap,roughness:.74,bumpMap:oakMap,bumpScale:.014}), sage=mat("#788879",0.78), quartz=mat("#e9e1d4",0.28), linen=mat("#d8cbb8",0.95), tile=mat("#d6c7ad",0.82), bronzeDetail=mat("#b89a6b",0.3,0.7);
@@ -402,17 +459,24 @@ timeToggle.addEventListener("click",()=>setNight(!isNight));
 
 // Scroll chapters drive one continuous camera journey: arrival, lobby, suite, kitchen, bath.
 const chapters=[...document.querySelectorAll(".chapter")];
-const chapterNames=["THE ARRIVAL","THE LOBBY","THE SUITE","THE KITCHEN","THE BATHROOM"];
+const chapterNames=["THE ARRIVAL","THE LOBBY","THE LOUNGE","THE GUEST SUITE","THE KITCHEN","THE BATHROOM","THE BALCONY","THE POOL & TERRACE"];
 const chapterNumber=document.querySelector("#chapterNumber"),chapterName=document.querySelector("#chapterName");
 const cameraStops=[
+ // Exterior approach and arrival hall.
  {p:[37,22,48],t:[0,5,0]},
  {p:[0,4.2,15],t:[0,2.6,1]},
- // Pull back to show the full suite layout rather than framing only the bed.
- {p:[0,9,-9],t:[0,1.6,-27]},
- // Wider kitchen view: cabinetry, counter and dining area stay in frame.
- {p:[-4.8,7,-10],t:[-4.8,1.3,-23]},
- // Step back from the bathroom zone so the vanity and shower partition are visible.
- {p:[6,7,-16],t:[6,1.3,-28.5]}
+ // Move through the connecting gallery into the hotel's private lounge.
+ {p:[0,4.8,-8],t:[0,1.2,-13]},
+ // Enter the guest suite and reveal the complete bedroom.
+ {p:[0,5.2,-18],t:[1.2,1.4,-27]},
+ // Turn through the kitchenette and dining counter.
+ {p:[-8.2,4.4,-21],t:[-4.8,1.3,-23]},
+ // Continue into the bathroom zone.
+ {p:[8.5,4.2,-22],t:[6.4,1.3,-28.5]},
+ // Step out through the suite glazing onto the private balcony.
+ {p:[0,4.2,-13],t:[0,1.2,-18.5]},
+ // Finish outside at the infinity pool and ocean terrace.
+ {p:[0,9,31],t:[0,0.5,15]}
 ];
 function smooth(a,b,t){const q=Math.max(0,Math.min(1,t));return a+(b-a)*(q*q*(3-2*q));}
 let activeChapter=-1;

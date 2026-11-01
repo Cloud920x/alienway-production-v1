@@ -153,7 +153,7 @@ for(let i=0;i<18;i++){
 const beach=box(scene,100,0.4,20,sand,0,-1.25,29,false);
 const waterGeo=new THREE.PlaneGeometry(240,150,100,70);waterGeo.rotateX(-Math.PI/2);
 const water=new THREE.Mesh(waterGeo,new THREE.MeshPhysicalMaterial({color:"#2a7182",roughness:.25,metalness:.2,clearcoat:.8,transparent:false}));
-water.position.set(0,-1.2,-53);water.receiveShadow=true;scene.add(water);
+water.position.set(0,-1.2,95);water.receiveShadow=true;scene.add(water);
 const waveBase=waterGeo.attributes.position.array.slice();
 const sunOrb=new THREE.Mesh(new THREE.SphereGeometry(2.1,24,16),new THREE.MeshBasicMaterial({color:"#f4d7a0"}));sunOrb.position.set(-34,29,-40);scene.add(sunOrb);
 const moonOrb=new THREE.Mesh(new THREE.SphereGeometry(1.55,24,16),new THREE.MeshBasicMaterial({color:"#d7e5ef"}));moonOrb.position.set(-34,29,-40);moonOrb.visible=false;scene.add(moonOrb);

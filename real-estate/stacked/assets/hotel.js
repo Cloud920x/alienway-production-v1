@@ -41,8 +41,6 @@ controls.maxDistance = 65;
 controls.minPolarAngle = 0.35;
 controls.maxPolarAngle = 1.55;
 controls.target.set(0, 5, 0);
-controls.autoRotate = true;
-controls.autoRotateSpeed = 0.32;
 
 const hemi = new THREE.HemisphereLight("#d9efff", "#8b897c", 2.1);
 scene.add(hemi);
@@ -291,6 +289,95 @@ box(suite,3.1,.75,1.1,oak,6.5,.45,-1.5);
 box(suite,3.2,.12,1.2,quartz,6.5,.9,-1.5);
 box(suite,2.8,1.0,.08,glass,6.5,1.65,-2.3,false);
 box(suite,2.7,2.5,.12,mat("#d9cbb6",.8),6.5,1.25,-4.0,false);
+
+// Layered hospitality styling: soft furnishings, lighting, artwork and lived-in details.
+const rugMat = new THREE.MeshStandardMaterial({color:"#b7a48b",roughness:1});
+const rug = new THREE.Mesh(new THREE.BoxGeometry(6.8,.055,7.2),rugMat);
+rug.position.set(1.5,.205,-1.25);rug.receiveShadow=true;suite.add(rug);
+const rugBorder=mat("#d9c8ae",.98);
+for(const z of [-4.75,2.25]) box(suite,6.55,.018,.045,rugBorder,1.5,.24,z,false);
+for(const x of [-1.78,4.78]) box(suite,.045,.018,6.9,rugBorder,x,.24,-1.25,false);
+
+// Upholstered accent chair and ottoman by the glazing.
+const chairFabric=mat("#9b8975",.96);
+const chair=new THREE.Group();suite.add(chair);chair.position.set(4.65,.25,5.0);chair.rotation.y=-.28;
+box(chair,1.45,.34,1.35,chairFabric,0,.55,0);
+box(chair,1.45,1.15,.28,chairFabric,0,1.18,-.52);
+for(const x of [-.58,.58])box(chair,.12,.52,.12,bronzeDetail,x,.32,.48);
+box(suite,1.05,.36,.85,linen,3.35,.43,5.55);
+
+// Soft curtain panels with repeated folds framing the ocean glazing.
+const curtain=mat("#c9bba8",.98);
+for(const side of [-1,1]){
+  for(let i=0;i<7;i++){
+    const fold=box(suite,.16,3.35,.22,curtain,side*(3.62+i*.16),1.82,7.95,false);
+    fold.rotation.z=(i%2?-.025:.025);
+  }
+}
+box(suite,7.8,.12,.14,bronzeDetail,0,3.58,7.95,false);
+
+// Decorative wall art and a slim television feature on the bedroom wall.
+box(suite,2.15,1.35,.09,bronzeDetail,-4.8,2.45,-8.05,false);
+box(suite,1.98,1.18,.035,mat("#66766e",.88),-4.8,2.45,-7.98,false);
+box(suite,.12,.12,.08,bronzeDetail,-5.35,2.45,-7.94,false);
+box(suite,2.7,1.45,.10,dark,4.9,2.45,-8.05,false);
+box(suite,2.55,1.30,.035,mat("#202b30",.32,.18),4.9,2.45,-7.98,false);
+
+// Bedside lamp shades and warm pools of light.
+for(const x of [-1.25,4.45]){
+  cylinder(suite,.055,.07,.5,bronzeDetail,x,1.18,-3.5,12);
+  const shade=new THREE.Mesh(new THREE.CylinderGeometry(.16,.28,.32,20),linen);
+  shade.position.set(x,1.62,-3.5);shade.castShadow=true;suite.add(shade);
+  const glow=new THREE.PointLight("#ffd9a6",.75,5,2);
+  glow.position.set(x,1.7,-3.5);suite.add(glow);
+}
+
+// Ceiling downlights add focused pools instead of a uniformly lit clay-like room.
+for(const x of [-6,-2,2,6]){
+  for(const z of [-5,1,6]){
+    const trim=new THREE.Mesh(new THREE.CylinderGeometry(.16,.16,.045,20),bronzeDetail);
+    trim.position.set(x,3.48,z);suite.add(trim);
+    const bulb=new THREE.PointLight("#ffe6c2",.24,5,2);
+    bulb.position.set(x,3.15,z);suite.add(bulb);
+  }
+}
+
+// Bathroom: double basin details, mirror, walk-in shower and freestanding bath.
+const bathStone=mat("#c8bca9",.42),mirrorMat=new THREE.MeshPhysicalMaterial({color:"#dce5e4",metalness:.82,roughness:.12});
+box(suite,2.9,.12,1.0,bathStone,6.45,.98,-1.5);
+for(const x of [5.75,7.15]){
+  const basin=new THREE.Mesh(new THREE.SphereGeometry(.38,24,16,0,Math.PI*2,0,Math.PI*.48),quartz);
+  basin.scale.set(1,.34,.72);basin.position.set(x,1.08,-1.48);basin.castShadow=true;suite.add(basin);
+  cylinder(suite,.045,.045,.28,bronzeDetail,x,1.28,-1.5,12);
+}
+box(suite,2.75,1.15,.06,mirrorMat,6.45,2.0,-2.18,false);
+box(suite,2.9,.08,.08,bronzeDetail,6.45,2.62,-2.13,false);
+box(suite,2.9,.08,.08,bronzeDetail,6.45,1.38,-2.13,false);
+const showerGlass=new THREE.MeshPhysicalMaterial({color:"#c9dadd",roughness:.08,metalness:.12,transparent:true,opacity:.32,transmission:.45});
+box(suite,.08,2.65,3.0,showerGlass,8.05,1.38,3.55,false);
+box(suite,1.85,.58,3.25,quartz,6.25,.48,5.55);
+box(suite,1.72,.48,3.08,mat("#f0e9dd",.34),6.25,.78,5.55);
+cylinder(suite,.08,.08,.7,bronzeDetail,6.95,1.25,4.25,16);
+
+// A little greenery and countertop dressing make the suite feel inhabited.
+function indoorPlant(x,z){
+  cylinder(suite,.28,.34,.48,mat("#8b7861",.86),x,.48,z,16);
+  cylinder(suite,.035,.05,.85,mat("#52705b",.9),x,.98,z,8);
+  for(let i=0;i<7;i++){
+    const leaf=new THREE.Mesh(new THREE.SphereGeometry(.22,10,8),green);
+    const a=i*Math.PI*2/7;leaf.scale.set(.55,.16,1.25);
+    leaf.position.set(x+Math.cos(a)*.28,1.35+Math.sin(a*.7)*.12,z+Math.sin(a)*.28);
+    leaf.rotation.y=a;leaf.castShadow=true;suite.add(leaf);
+  }
+}
+indoorPlant(-7.45,6.5);indoorPlant(7.8,-6.6);
+const tray=mat("#8e795f",.55,.18);
+box(suite,1.1,.06,.62,tray,-4.9,1.2,4.0);
+for(const x of [-5.2,-4.75]){
+  const vessel=new THREE.Mesh(new THREE.CylinderGeometry(.12,.16,.28,16),quartz);
+  vessel.position.set(x,1.37,4);suite.add(vessel);
+}
+
 const suiteLight=new THREE.PointLight("#f8dfb5",1.2,22);suiteLight.position.set(0,3.2,0);suite.add(suiteLight);
 
 // Beach and ocean plane with restrained animated wave geometry.

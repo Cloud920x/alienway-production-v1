@@ -274,37 +274,19 @@ for(const x of [-2.55,2.55]){
 }
 const galleryGlow=new THREE.PointLight("#f5d3a1",1.05,13,2);galleryGlow.position.set(0,2.8,-12.5);gallery.add(galleryGlow);
 
-// Private suite balcony: timber deck, glass balustrade, lounge chairs and side table.
-const suiteBalcony=new THREE.Group();suiteBalcony.position.set(0,0,-27);suite.add(suiteBalcony);
-box(suiteBalcony,16,.22,4.2,oakLight,0,.02,10.5,false);
-box(suiteBalcony,16,.08,.12,bronzeDetail,0,.32,12.55,false);
-for(let x=-7.5;x<=7.5;x+=1.5){
-  box(suiteBalcony,.07,1.05,.07,bronzeDetail,x,.82,12.55,false);
-  box(suiteBalcony,.045,1.05,.045,glass,x,.82,12.55,false);
-}
-box(suiteBalcony,16,.08,.08,bronzeDetail,0,1.38,12.55,false);
-for(const x of [-4.8,4.8]){
-  const seat=new THREE.Group();suiteBalcony.add(seat);seat.position.set(x,.18,10.5);seat.rotation.y=x<0?.12:-.12;
-  box(seat,1.7,.32,1.65,linen,0,.5,0);
-  box(seat,1.7,.9,.22,chairFabric,0,.98,-.68);
-  for(const lx of [-.68,.68])box(seat,.1,.42,.1,bronzeDetail,lx,.25,.62);
-}
-cylinder(suiteBalcony,.42,.42,.12,bronzeDetail,0,.55,10.6,24);
-cylinder(suiteBalcony,.36,.36,.08,quartz,0,.65,10.6,24);
-
 // Hotel restaurant terrace beside the main lobby: dining tables and a service bar.
 const restaurant=new THREE.Group();restaurant.position.set(-18,0,1);hotel.add(restaurant);
 box(restaurant,13,.22,10,paleStone,0,.05,0,false);
 box(restaurant,8,.85,1.1,dark,0,.55,-4.1);
 box(restaurant,8,.12,1.25,quartz,0,1.04,-4.1);
 for(const x of [-4.2,-1.4,1.4,4.2]){
-  cylinder(restaurant,.72,.72,.12,oakLight,x,.85,1.5,24);
+  cylinder(restaurant,.72,.72,.12,paleStone,x,.85,1.5,24);
   cylinder(restaurant,.12,.16,.8,bronze,x,.42,1.5,16);
   for(const a of [0,Math.PI/2,Math.PI,Math.PI*1.5]){
     const cx=x+Math.cos(a)*1.05,cz=1.5+Math.sin(a)*1.05;
     const chair=new THREE.Group();restaurant.add(chair);chair.position.set(cx,.1,cz);chair.rotation.y=-a;
-    box(chair,.72,.18,.72,chairFabric,0,.48,0);
-    box(chair,.72,.72,.12,chairFabric,0,.85,-.3);
+    box(chair,.72,.18,.72,mat("#9b8975",.96),0,.48,0);
+    box(chair,.72,.72,.12,mat("#9b8975",.96),0,.85,-.3);
   }
 }
 
@@ -436,6 +418,26 @@ for(const x of [-5.2,-4.75]){
 }
 
 const suiteLight=new THREE.PointLight("#f8dfb5",1.2,22);suiteLight.position.set(0,3.2,0);suite.add(suiteLight);
+
+// Private suite balcony: timber deck, glass balustrade, lounge chairs and side table.
+const suiteBalcony=new THREE.Group();suiteBalcony.position.set(0,0,-27);suite.add(suiteBalcony);
+box(suiteBalcony,16,.22,4.2,oakLight,0,.02,10.5,false);
+box(suiteBalcony,16,.08,.12,bronzeDetail,0,.32,12.55,false);
+for(let x=-7.5;x<=7.5;x+=1.5){
+  box(suiteBalcony,.07,1.05,.07,bronzeDetail,x,.82,12.55,false);
+  box(suiteBalcony,.045,1.05,.045,glass,x,.82,12.55,false);
+}
+box(suiteBalcony,16,.08,.08,bronzeDetail,0,1.38,12.55,false);
+for(const x of [-4.8,4.8]){
+  const seat=new THREE.Group();suiteBalcony.add(seat);seat.position.set(x,.18,10.5);seat.rotation.y=x<0?.12:-.12;
+  box(seat,1.7,.32,1.65,linen,0,.5,0);
+  box(seat,1.7,.9,.22,chairFabric,0,.98,-.68);
+  for(const lx of [-.68,.68])box(seat,.1,.42,.1,bronzeDetail,lx,.25,.62);
+}
+cylinder(suiteBalcony,.42,.42,.12,bronzeDetail,0,.55,10.6,24);
+cylinder(suiteBalcony,.36,.36,.08,quartz,0,.65,10.6,24);
+
+
 
 // Beach and ocean plane with restrained animated wave geometry.
 const beach=box(scene,100,0.4,20,sand,0,-1.25,29,false);

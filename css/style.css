@@ -3789,3 +3789,145 @@ font-size:45px;
 
 
 }
+
+
+/* ===================================
+   FINAL RESPONSIVE POLISH — ALIENWAY
+   Shared layout safety across screen sizes
+=================================== */
+html { scroll-padding-top: 90px; }
+body { min-width: 320px; }
+img, video, iframe { max-width: 100%; }
+button, input, textarea, select { max-width: 100%; }
+p, h1, h2, h3, h4, a, span { overflow-wrap: anywhere; }
+section, footer { scroll-margin-top: 84px; }
+:focus-visible { outline: 2px solid rgba(255,255,255,.9); outline-offset: 4px; }
+.header { gap: 18px; }
+.logo { flex: 0 0 auto; min-width: 0; }
+.nav { align-items: center; flex-wrap: wrap; }
+.nav a { white-space: nowrap; }
+.hero-content, .page-hero > div { width: 100%; }
+.hero h1, .page-hero h1 { max-width: 100%; text-wrap: balance; }
+.hero-tag { line-height: 1.65; }
+.hero-buttons, .cta-buttons { flex-wrap: wrap; }
+.button, .nav-button { text-align: center; }
+.gap-card, .solution-card, .service-card, .process-card, .project-card, .why-card, .trust-card, .industry-detail-card, .service-large, .case-study, .contact-form, .cta-box { min-width: 0; }
+.project-content, .case-content { min-width: 0; }
+.project-content h3, .case-content h2 { overflow-wrap: anywhere; }
+.contact-form input, .contact-form textarea { min-width: 0; }
+.contact-form textarea { min-height: 150px; height: auto; resize: vertical; }
+.industry-cards, .menu-layout, .food-gallery, .gap-grid, .solution-grid, .services-grid, .process-grid, .portfolio-grid, .why-grid, .trust-grid { align-items: stretch; }
+.industry-detail-card p, .gap-card p, .solution-card p, .service-card p, .process-card p, .why-card p, .trust-card p { overflow-wrap: anywhere; }
+
+@media (min-width: 801px) and (max-width: 1100px) {
+  .header { padding: 18px 28px; gap: 14px; }
+  .nav { gap: clamp(12px, 2vw, 24px); }
+  .nav a { font-size: 13px; }
+  .nav-button { padding: 11px 17px; font-size: 12px; }
+  .digital-gap, .solution, .services, .process, .portfolio, .why-alienway, .trust, .cta { padding-left: 32px; padding-right: 32px; }
+  .gap-grid, .solution-grid, .services-grid, .why-grid, .trust-grid { gap: 18px; }
+  .gap-card, .solution-card, .service-card, .why-card, .trust-card { padding: 30px 24px; }
+  .process-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .case-content { padding: 35px; }
+  .contact-section { gap: 32px; padding-left: 32px; padding-right: 32px; }
+}
+
+@media (max-width: 800px) {
+  .header {
+    padding: 16px 20px;
+    gap: 15px 18px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .logo-mark { font-size: 25px; }
+  .logo-text strong { font-size: 15px; letter-spacing: 1.5px; }
+  .logo-text small { font-size: 8px; letter-spacing: 3px; }
+  /* Keep the site's full navigation usable on phones without hiding it. */
+  .header .nav {
+    display: flex;
+    order: 3;
+    flex: 1 0 100%;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 8px 18px;
+    padding-top: 5px;
+  }
+  .header .nav a { font-size: 12px; padding: 4px 0; }
+  .header .nav-button { margin-left: auto; height: 40px; padding: 9px 14px; font-size: 10px; letter-spacing: .6px; }
+  .hero { min-height: auto; padding: 76px 24px; }
+  .hero h1 { font-size: clamp(42px, 10vw, 76px); line-height: .99; letter-spacing: -1.8px; }
+  .hero-tag { font-size: 11px; letter-spacing: 2px; margin-bottom: 18px; }
+  .hero-description { font-size: 16px; line-height: 1.7; margin-bottom: 28px; }
+  .hero-buttons { gap: 12px; }
+  .hero-buttons .button, .cta-buttons .button { width: 100%; max-width: 360px; }
+  .digital-gap, .solution, .services, .process, .portfolio, .why-alienway, .trust, .cta { padding: 68px 22px; }
+  .section-heading { margin-bottom: 38px; }
+  .section-heading h2 { font-size: clamp(32px, 7vw, 48px); line-height: 1.08; }
+  .section-heading p:last-child, .section-heading p:not(.section-tag) { font-size: 16px; line-height: 1.75; }
+  .gap-grid, .solution-grid, .services-grid, .why-grid, .trust-grid, .process-grid, .portfolio-grid, .industry-cards, .menu-layout, .food-gallery { grid-template-columns: minmax(0, 1fr); }
+  .gap-card, .solution-card, .service-card, .process-card, .why-card, .trust-card, .industry-detail-card { padding: 28px 23px; }
+  .process-card span { font-size: 36px; margin-bottom: 16px; }
+  .project-image { height: 230px; }
+  .project-content { padding: 24px; }
+  .project-content h3 { font-size: 22px; }
+  .page-hero { min-height: 0; padding: 76px 24px; }
+  .page-hero h1 { font-size: clamp(40px, 9vw, 70px); line-height: 1; letter-spacing: -1.8px; }
+  .page-hero p:not(.hero-tag) { font-size: 16px; line-height: 1.75; }
+  .services-page, .portfolio-page { padding: 68px 22px; }
+  .service-large { padding: 28px 22px; margin-bottom: 18px; }
+  .service-large h2 { font-size: clamp(24px, 6vw, 32px); line-height: 1.15; }
+  .service-large p { font-size: 16px; }
+  .case-study { min-height: 0; margin-bottom: 24px; border-radius: 24px; }
+  .case-image { min-height: 240px; }
+  .case-content { padding: 27px 22px; }
+  .case-content h2 { font-size: clamp(27px, 6.5vw, 38px); }
+  .case-content span { font-size: 16px; }
+  .contact-section { grid-template-columns: minmax(0, 1fr); gap: 34px; padding: 68px 22px; }
+  .contact-info h2, .contact-form h2 { font-size: clamp(28px, 7vw, 38px); }
+  .contact-info p { font-size: 16px; margin-bottom: 25px; }
+  .contact-item { padding: 20px 0; }
+  .contact-item span { font-size: 16px; }
+  .contact-form { padding: 28px 20px; border-radius: 22px; }
+  .cta-box { padding: 42px 22px; border-radius: 25px; }
+  .cta-box h2, .about-cta h2 { font-size: clamp(32px, 8vw, 48px); line-height: 1.04; }
+  .cta-box p:not(.section-tag), .about-cta p:not(.hero-tag) { font-size: 16px; }
+  .footer { padding: 52px 22px 25px; }
+  .footer-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  .footer-bottom { margin-top: 36px; }
+  .about-story { padding: 68px 22px; }
+  .about-story-block { margin-bottom: 54px; }
+  .about-story-block p, .about-story-ending p { font-size: 16px; line-height: 1.8; }
+  .about-story-block h2, .about-story-ending h2 { font-size: clamp(28px, 7vw, 42px); letter-spacing: -1px; }
+  .highlight { font-size: 18px !important; line-height: 1.65 !important; padding-left: 16px; }
+  .about-story-ending h1 { font-size: clamp(46px, 11vw, 72px); line-height: .98; letter-spacing: -2px; }
+  .about-cta { margin: 36px 18px; padding: 44px 22px; }
+}
+
+@media (max-width: 480px) {
+  .header { padding: 14px 15px; }
+  .header .nav { gap: 7px 13px; }
+  .header .nav a { font-size: 11px; }
+  .header .nav-button { padding: 8px 10px; font-size: 9px; }
+  .hero { padding: 62px 18px; }
+  .hero h1 { font-size: clamp(37px, 10.5vw, 52px); letter-spacing: -1.2px; }
+  .hero-description { font-size: 15px; }
+  .hero-buttons .button, .cta-buttons .button { max-width: none; }
+  .digital-gap, .solution, .services, .process, .portfolio, .why-alienway, .trust, .cta { padding: 56px 18px; }
+  .section-tag { font-size: 18px; letter-spacing: 2px; }
+  .section-heading h2 { font-size: clamp(29px, 8vw, 38px); }
+  .page-hero { padding: 60px 18px; }
+  .page-hero h1 { font-size: clamp(35px, 10vw, 48px); letter-spacing: -1.2px; }
+  .services-page, .portfolio-page { padding: 55px 18px; }
+  .case-image { min-height: 200px; }
+  .case-content { padding: 23px 18px; }
+  .contact-section { padding: 55px 18px; }
+  .contact-form { padding: 24px 16px; }
+  .footer { padding: 45px 18px 22px; }
+  .about-story { padding: 56px 18px; }
+  .about-cta { margin: 28px 12px; padding: 36px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

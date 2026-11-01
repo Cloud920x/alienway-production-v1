@@ -20,10 +20,12 @@ camera.position.set(37, 22, 48);
 const isSmallScreen = window.matchMedia("(max-width: 700px)").matches;
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isSmallScreen ? 1.5 : 2));
-renderer.shadowMap.enabled = true;\nrenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.22;\nrenderer.useLegacyLights = false;
+renderer.toneMappingExposure = 1.22;
+renderer.useLegacyLights = false;
 
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
@@ -41,7 +43,11 @@ const hemi = new THREE.HemisphereLight("#d9efff", "#8b897c", 2.1);
 scene.add(hemi);
 const sun = new THREE.DirectionalLight("#fff0d2", 3.5);
 sun.position.set(-28, 42, 24);
-sun.castShadow = true;\nsun.shadow.mapSize.set(isSmallScreen ? 1024 : 2048, isSmallScreen ? 1024 : 2048);\nsun.shadow.camera.left = -48; sun.shadow.camera.right = 48; sun.shadow.camera.top = 42; sun.shadow.camera.bottom = -32;\nsun.shadow.camera.near = 1; sun.shadow.camera.far = 110; sun.shadow.bias = -0.00018;\nsun.shadow.normalBias = 0.025;
+sun.castShadow = true;
+sun.shadow.mapSize.set(isSmallScreen ? 1024 : 2048, isSmallScreen ? 1024 : 2048);
+sun.shadow.camera.left = -48; sun.shadow.camera.right = 48; sun.shadow.camera.top = 42; sun.shadow.camera.bottom = -32;
+sun.shadow.camera.near = 1; sun.shadow.camera.far = 110; sun.shadow.bias = -0.00018;
+sun.shadow.normalBias = 0.025;
 scene.add(sun);
 const moon = new THREE.DirectionalLight("#9dbce8", 0.1);
 moon.position.set(20,30,-20); scene.add(moon);
@@ -59,6 +65,7 @@ const sand = mat("#c9b99a",0.95);
 const waterMat = new THREE.MeshPhysicalMaterial({color:"#2d91a0",roughness:0.18,metalness:0.22,clearcoat:1,clearcoatRoughness:0.08});
 
 const hotel = new THREE.Group(); scene.add(hotel);
+const facadeFloorWindows = [[], [], []];
 const ground = new THREE.Mesh(new THREE.BoxGeometry(62,1.2,42),sand); ground.position.set(0,-0.8,0); ground.receiveShadow=true; hotel.add(ground);
 function box(parent,w,h,d,material,x,y,z,cast=true){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);m.position.set(x,y,z);m.castShadow=cast;m.receiveShadow=true;parent.add(m);return m;}
 function cylinder(parent,r1,r2,h,material,x,y,z,segments=12){const m=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,segments),material);m.position.set(x,y,z);m.castShadow=true;parent.add(m);return m;}
@@ -98,7 +105,8 @@ for(let floor=0;floor<3;floor++){
   const y=2.0+floor*2.35;
   for(let i=0;i<11;i++){
     const x=-15+i*3;
-    box(hotel,2.35,1.65,0.13,glass,x,y,5.58,false);
+    const windowPane = box(hotel,2.35,1.65,0.13,glass,x,y,5.58,false);
+    facadeFloorWindows[floor].push(windowPane);
     box(hotel,0.055,1.75,0.16,bronze,x,y,5.68,false);
     box(hotel,2.42,0.07,0.18,bronze,x,y-0.88,5.68,false);
   }
@@ -269,6 +277,15 @@ function updateJourney(){
  const progress=Math.max(0,Math.min(1,scrollY/max))* (chapters.length-1);
  const index=Math.min(chapters.length-1,Math.floor(progress));
  const blend=progress-index;
+ // Reveal occupied floors progressively as the visitor scrolls.
+ facadeFloorWindows.forEach((windows,floor)=>{
+   const reveal=Math.max(0,Math.min(1,(progress-(floor*0.42-0.12))/0.5));
+   windows.forEach(pane=>{
+     const lit=reveal>0.08;
+     pane.material.emissive.set(lit ? (isNight ? "#f0b86f" : "#d69b58") : "#000000");
+     pane.material.emissiveIntensity=lit ? reveal*(isNight ? 0.72 : 0.28) : 0;
+   });
+ });
  const a=cameraStops[index],b=cameraStops[Math.min(index+1,cameraStops.length-1)];
  camera.position.set(smooth(a.p[0],b.p[0],blend),smooth(a.p[1],b.p[1],blend),smooth(a.p[2],b.p[2],blend));
  controls.target.set(smooth(a.t[0],b.t[0],blend),smooth(a.t[1],b.t[1],blend),smooth(a.t[2],b.t[2],blend));

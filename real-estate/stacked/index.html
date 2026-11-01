@@ -1,103 +1,20 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#071a25">
-  <meta name="description" content="Explore Beza's Hotel, an imagined oceanfront sanctuary, through an interactive architectural experience.">
-  <title>Beza's Hotel — An Oceanfront Experience</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/site.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script>
-    function showSceneFailure(message) {
-      const reveal = () => {
-        const loader = document.getElementById("sceneLoader");
-        const preloader = document.getElementById("preloader");
-        if (loader) {
-          loader.classList.add("failed");
-          loader.innerHTML = "<strong>THE 3D EXPERIENCE COULD NOT START</strong><span>" +
-            String(message || "A browser or graphics error stopped the scene.").slice(0, 180) +
-            "</span><small>Reload the page. If this continues, the browser may be blocking WebGL or a 3D module.</small>";
-        }
-        preloader?.classList.add("done");
-      };
-      if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", reveal, {once:true});
-      else reveal();
-    }
-    window.addEventListener("error", event => {
-      if (event.target && event.target !== window) showSceneFailure("Could not load: " + (event.target.src || event.target.href || "a required script"));
-      else showSceneFailure(event.message || "A JavaScript error stopped the scene.");
-    }, true);
-    window.addEventListener("unhandledrejection", event => showSceneFailure(event.reason?.message || event.reason || "A 3D module failed to load."));
-  </script>
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
-      }
-    }
-  </script>
-  <script type="module" src="assets/hotel.js"></script>
-</head>
-<body>
-  <div class="preloader" id="preloader"><span class="preloader-mark">B</span><span>PREPARING YOUR ARRIVAL</span><i></i></div>
-  <header class="site-header">
-    <a class="brand" href="#top" aria-label="Beza's Hotel home"><span class="brand-symbol">B</span><span class="brand-name">BEZA'S HOTEL<small>OCEANFRONT COLLECTION</small></span></a>
-    <nav class="desktop-nav" aria-label="Main navigation"><a href="#experience">The experience</a><a href="#residences">Suites</a><a href="#dining">Dining</a><a href="#contact">Contact</a></nav>
-    <a class="header-cta" href="#contact">ENQUIRE <span>↗</span></a>
-  </header>
-
-  <main id="top">
-    <section class="hero" id="experience">
-      <div class="scene-shell" id="sceneShell">
-        <canvas id="hotelCanvas" aria-label="Interactive three-dimensional architectural view of Beza's Hotel"></canvas>
-        <div class="scene-vignette"></div>
-        <div class="scene-topline"><span><i class="live-dot"></i> AN OCEANFRONT SANCTUARY</span><span class="coordinates">33°55' S&nbsp; 18°25' E</span></div>
-        <div class="hero-copy" id="heroCopy">
-          <p class="eyebrow">A NEW PERSPECTIVE ON ESCAPE</p>
-          <h1>Where the<br><em>ocean</em> becomes<br>your horizon.</h1>
-          <p class="hero-description">A considered retreat shaped by light, water and the art of slowing down.</p>
-          <a class="hero-link" href="#journey">DISCOVER THE HOTEL <span>↓</span></a>
-        </div>
-        <div class="scene-controls">
-          <button class="time-toggle" id="timeToggle" type="button" aria-label="Switch to night view"><span class="sun-icon">☼</span><span class="toggle-label">DAYLIGHT</span><span class="toggle-track"><i></i></span><span class="moon-icon">☾</span></button>
-          <span class="drag-hint" id="dragHint">DRAG TO EXPLORE <b>↔</b></span>
-        </div>
-        <div class="scene-caption"><span>01 / 06</span><span>THE ARCHITECTURE</span></div>
-        <div class="scene-loader" id="sceneLoader"><span>COMPOSING THE VIEW</span><i></i></div>
-      </div>
-      <div class="scroll-cue"><span>SCROLL TO BEGIN YOUR ARRIVAL</span><i></i></div>
-    </section>
-
-    <section class="intro-section" id="journey">
-      <div class="section-index">01 — THE SETTING</div>
-      <div class="intro-grid">
-        <p class="eyebrow">A PLACE APART</p>
-        <div><h2>Arrive somewhere<br><em>extraordinary.</em></h2><p class="body-copy">Set between sculpted gardens and the endless blue, Beza's Hotel is imagined as a meeting of thoughtful architecture and effortless hospitality. Every line opens towards the water. Every detail invites you to stay a little longer.</p><a class="text-link" href="#residences">EXPLORE THE COLLECTION <span>↗</span></a></div>
-      </div>
-    </section>
-
-    <section class="feature-section residences" id="residences">
-      <div class="feature-image image-suite"><div class="image-label">THE PRIVATE COLLECTION <span>02 / 06</span></div></div>
-      <div class="feature-copy"><p class="eyebrow">ROOM TO BREATHE</p><h2>Suites with<br><em>the sea in sight.</em></h2><p class="body-copy">Quiet materials, generous light and uninterrupted ocean views. Discover spaces designed to make every arrival feel personal.</p><a class="text-link" href="#contact">DISCOVER THE SUITES <span>↗</span></a></div>
-    </section>
-
-    <section class="feature-section dining" id="dining">
-      <div class="feature-copy"><p class="eyebrow">A TASTE OF THE COAST</p><h2>Gather around<br><em>something special.</em></h2><p class="body-copy">Seasonal ingredients, thoughtful craft and tables that bring the coastline a little closer. An invitation to linger from first light to last call.</p><a class="text-link" href="#contact">EXPLORE DINING <span>↗</span></a></div>
-      <div class="feature-image image-dining"><div class="image-label">THE RESTAURANT <span>03 / 06</span></div></div>
-    </section>
-
-    <section class="pool-section">
-      <div class="pool-content"><p class="eyebrow">BEYOND THE EVERYDAY</p><h2>Time moves<br><em>differently here.</em></h2><p>Long afternoons. Salt in the air. A horizon that never asks you to hurry.</p><a class="light-link" href="#contact">MAKE AN ENQUIRY <span>↗</span></a></div>
-    </section>
-
-    <section class="contact-section" id="contact"><div><p class="eyebrow">YOUR STAY STARTS HERE</p><h2>Let the coast<br><em>call you home.</em></h2></div><a class="contact-button" href="mailto:stay@bezas.example?subject=Beza%27s%20Hotel%20enquiry">ENQUIRE ABOUT A STAY <span>↗</span></a></section>
-  </main>
-  <footer class="site-footer"><a class="brand footer-brand" href="#top"><span class="brand-symbol">B</span><span class="brand-name">BEZA'S HOTEL<small>OCEANFRONT COLLECTION</small></span></a><span>AN IMAGINED HOSPITALITY CONCEPT BY ALIENWAY PRODUCTION</span><a href="https://cloud920x.github.io/alienway-production-v1/">← BACK TO ALIENWAY</a></footer>
-  <div class="interaction-note" id="interactionNote" role="status" aria-live="polite"></div>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#071a25"><meta name="description" content="Explore Beza's Hotel as an immersive architectural and interior-design experience."><title>Beza's Hotel — Immersive Hotel Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css">
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script>function showSceneFailure(message){const reveal=()=>{const l=document.getElementById("sceneLoader");if(l){l.classList.add("failed");l.innerHTML="<strong>THE 3D EXPERIENCE COULD NOT START</strong><span>"+String(message||"A browser or graphics error stopped the scene.").slice(0,180)+"</span>";}document.getElementById("preloader")?.classList.add("done");};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",reveal,{once:true});else reveal();}window.addEventListener("error",e=>{if(e.target&&e.target!==window)showSceneFailure("Could not load a required resource.");else showSceneFailure(e.message);},true);window.addEventListener("unhandledrejection",e=>showSceneFailure(e.reason?.message||"A 3D module failed to load."));</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script><script type="module" src="assets/hotel.js"></script></head>
+<body class="immersive">
+<div class="preloader" id="preloader"><span class="preloader-mark">B</span><span>PREPARING YOUR ARRIVAL</span><i></i></div>
+<div class="world"><canvas id="hotelCanvas" aria-label="Interactive three-dimensional hotel and suite environment"></canvas><div class="world-shade"></div></div>
+<header class="tour-header"><a class="brand" href="https://cloud920x.github.io/alienway-production-v1/"><span class="brand-symbol">B</span><span class="brand-name">BEZA'S HOTEL<small>OCEANFRONT COLLECTION</small></span></a><div class="tour-status"><i></i><span id="chapterNumber">01</span> / 05 &nbsp; <span id="chapterName">THE ARRIVAL</span></div><a class="exit-link" href="https://cloud920x.github.io/alienway-production-v1/">EXIT EXPERIENCE ↗</a></header>
+<main class="tour-track" id="tourTrack">
+<section class="chapter arrival" data-chapter="0"><div class="chapter-copy opening"><p class="eyebrow">CAPE TOWN · OCEANFRONT COLLECTION</p><h1>Beza's<br><em>Hotel.</em></h1><p class="intro-line">A place to explore. A space to experience.</p><span class="scroll-prompt">SCROLL TO ENTER <b>↓</b></span></div></section>
+<section class="chapter lobby-chapter" data-chapter="1"><div class="detail-panel"><span class="detail-index">01 / ARRIVAL</span><p class="eyebrow">THE FIRST IMPRESSION</p><h2>The arrival<br><em>lounge.</em></h2><p>Step through the bronze-framed glass doors into a calm, naturally lit welcome space.</p><div class="spec-list"><div><span>FLOORING</span><b>Warm beige natural stone</b></div><div><span>FEATURE WALL</span><b>Smoked oak · vertical slats</b></div><div><span>METAL FINISH</span><b>Brushed champagne bronze</b></div><div><span>LIGHTING</span><b>Warm white · 2700K</b></div></div><span class="move-hint">KEEP SCROLLING TO EXPLORE</span></div></section>
+<section class="chapter suite-chapter" data-chapter="2"><div class="detail-panel"><span class="detail-index">02 / THE SUITE</span><p class="eyebrow">YOUR PRIVATE RETREAT</p><h2>Room to<br><em>unwind.</em></h2><p>A coastal palette with tactile finishes and a clear view towards the water.</p><div class="spec-list"><div><span>WALL COLOUR</span><b>Soft limestone · warm white</b></div><div><span>FLOORING</span><b>Natural light-oak boards</b></div><div><span>BED</span><b>King · upholstered sand linen</b></div><div><span>HEADBOARD</span><b>Curved oak veneer · matte finish</b></div><div><span>CURTAINS</span><b>Sheer ivory + blackout taupe</b></div></div><span class="move-hint">NEXT: THE KITCHEN</span></div></section>
+<section class="chapter kitchen-chapter" data-chapter="3"><div class="detail-panel"><span class="detail-index">03 / THE KITCHEN</span><p class="eyebrow">DESIGNED DOWN TO THE DETAIL</p><h2>Everyday,<br><em>elevated.</em></h2><p>Clean-lined joinery, restrained contrast and durable, considered surfaces.</p><div class="spec-list"><div><span>CABINETRY</span><b>Flat-front · matte sage green</b></div><div><span>COUNTERTOP</span><b>Ivory quartz · subtle veining</b></div><div><span>BACKSPLASH</span><b>Hand-finished warm white tile</b></div><div><span>HANDLES</span><b>Brushed champagne bronze</b></div><div><span>APPLIANCES</span><b>Integrated stainless steel</b></div></div><span class="move-hint">NEXT: THE BATHROOM</span></div></section>
+<section class="chapter bathroom-chapter" data-chapter="4"><div class="detail-panel"><span class="detail-index">04 / THE BATHROOM</span><p class="eyebrow">A MOMENT TO RESET</p><h2>Quiet luxury.<br><em>Natural calm.</em></h2><p>A spa-inspired finish story with soft stone tones and warm metal accents.</p><div class="spec-list"><div><span>WALL TILE</span><b>Travertine-look porcelain · ivory</b></div><div><span>FLOOR TILE</span><b>Textured stone · sand</b></div><div><span>VANITY</span><b>Floating oak · matte seal</b></div><div><span>FAUCETS</span><b>Brushed bronze</b></div><div><span>SHOWER</span><b>Frameless glass · rainfall head</b></div></div><span class="move-hint">END OF THE SUITE TOUR</span></div></section>
+</main>
+<div class="tour-controls"><button class="time-toggle" id="timeToggle" type="button" aria-label="Switch to night view"><span class="sun-icon">☼</span><span class="toggle-label">DAY</span><span class="toggle-track"><i></i></span><span class="moon-icon">☾</span></button><span class="rotate-hint">LANDSCAPE VIEW RECOMMENDED</span></div>
+<div class="interaction-note" id="interactionNote" role="status" aria-live="polite"></div>
+</body></html>

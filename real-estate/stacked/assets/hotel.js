@@ -2,7 +2,7 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.m
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js";
 
 const canvas = document.querySelector("#hotelCanvas");
-const shell = document.querySelector("#sceneShell");
+const shell = document.querySelector(".world");
 const loader = document.querySelector("#sceneLoader");
 const note = document.querySelector("#interactionNote");
 const timeToggle = document.querySelector("#timeToggle");

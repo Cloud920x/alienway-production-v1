@@ -320,9 +320,12 @@ const chapterNumber=document.querySelector("#chapterNumber"),chapterName=documen
 const cameraStops=[
  {p:[37,22,48],t:[0,5,0]},
  {p:[0,4.2,15],t:[0,2.6,1]},
- {p:[0,2.6,-20],t:[0,1.6,-27]},
- {p:[-4.8,2.1,-20],t:[-4.8,1.3,-23]},
- {p:[5.5,2.1,-29],t:[6,1.3,-31]}
+ // Pull back to show the full suite layout rather than framing only the bed.
+ {p:[0,9,-9],t:[0,1.6,-27]},
+ // Wider kitchen view: cabinetry, counter and dining area stay in frame.
+ {p:[-4.8,7,-10],t:[-4.8,1.3,-23]},
+ // Step back from the bathroom zone so the vanity and shower partition are visible.
+ {p:[6,7,-16],t:[6,1.3,-28.5]}
 ];
 function smooth(a,b,t){const q=Math.max(0,Math.min(1,t));return a+(b-a)*(q*q*(3-2*q));}
 let activeChapter=-1;

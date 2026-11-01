@@ -32,6 +32,9 @@ const controls = new OrbitControls(camera, canvas);
 canvas.style.touchAction = "pan-y";
 controls.enableDamping = true;
 controls.dampingFactor = 0.055;
+// Keep the hotel orientation fixed: the scroll journey moves the camera, never the building.
+controls.enableRotate = false;
+controls.autoRotate = false;
 controls.enablePan = false;
 controls.minDistance = 3;
 controls.maxDistance = 65;
@@ -340,7 +343,6 @@ function updateJourney(){
  const a=cameraStops[index],b=cameraStops[Math.min(index+1,cameraStops.length-1)];
  camera.position.set(smooth(a.p[0],b.p[0],blend),smooth(a.p[1],b.p[1],blend),smooth(a.p[2],b.p[2],blend));
  controls.target.set(smooth(a.t[0],b.t[0],blend),smooth(a.t[1],b.t[1],blend),smooth(a.t[2],b.t[2],blend));
- controls.autoRotate=progress<.12;
  if(index!==activeChapter){activeChapter=index;chapterNumber.textContent=String(index+1).padStart(2,"0");chapterName.textContent=chapterNames[index];}
 }
 window.addEventListener("scroll",updateJourney,{passive:true});

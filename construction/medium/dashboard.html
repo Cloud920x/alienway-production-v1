@@ -64,7 +64,21 @@ function settingsView(){return panel('Workspace settings','Demonstration prefere
 const views={overview,projects:projectsView,tasks:tasksView,expenses:expensesView,updates:updatesView,team:teamView,clients:clientsView,quotes:quotesView,reports:reportsView,margins:marginsView,suppliers:suppliersView,promotions:promotionsView,activity:activityView,settings:settingsView};
 const titles={overview:'Project overview.',projects:'Projects & sites.',tasks:'Tasks & deadlines.',expenses:'Budgets & costs.',updates:'Site updates.',team:'Team & workers.',clients:'Client directory.',quotes:'Quotes & enquiries.',reports:'Reports & documents.',margins:'Profit & margins.',suppliers:'Suppliers & purchasing.',promotions:'Promotions.',activity:'Activity log.',settings:'Workspace settings.'};
 function render(){const title=titles[currentSection]||'Project overview.';$('#heading').textContent=title;$('#crumb').textContent=title.replace('.','');$('#subheading').textContent=currentRole==='owner'?'Owner overview with business-level controls and visibility.':'Keep projects, people and site progress moving.';$('#view').innerHTML=(views[currentSection]||overview)();$('#view').querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>action(b.dataset.action,Number(b.dataset.i))))}
-function modal(title,kind,fields){modalKind=kind;$('#modalTitle').textContent=title;$('#modalFields').innerHTML=fields.map(f=>'<div class="field '+(f.full?'full':'')+'"><label>'+f.label+'</label>'+(f.options?'<select name="'+f.name+'">'+f.options.map(o=>'<option>'+esc(o)+'</option>').join('')+'</select>':f.area?'<textarea name="'+f.name+'" '+(f.required?'required':'')+'></textarea>':'<input name="'+f.name+'" type="'+(f.type||'text')+'" '+(f.required?'required':'')+' '+(f.value!==undefined?'value="'+esc(f.value)+'"':'')+'></div>').join('');$('#modal').classList.add('open');$('#modalFields input')?.focus()}
+function modal(title,kind,fields){
+ modalKind=kind;
+ $('#modalTitle').textContent=title;
+ $('#modalFields').innerHTML=fields.map(f=>{
+  const label='<label>'+esc(f.label)+'</label>';
+  let control='';
+  if(f.options) control='<select name="'+f.name+'">'+f.options.map(o=>'<option>'+esc(o)+'</option>').join('')+'</select>';
+  else if(f.area) control='<textarea name="'+f.name+'" '+(f.required?'required':'')+'></textarea>';
+  else control='<input name="'+f.name+'" type="'+(f.type||'text')+'" '+(f.required?'required':'')+' '+(f.value!==undefined?'value="'+esc(f.value)+'"':'')+'>';
+  return '<div class="field '+(f.full?'full':'')+'">'+label+control+'</div>';
+ }).join('');
+ $('#modal').classList.add('open');
+ const first=$('#modalFields input, #modalFields select, #modalFields textarea');
+ if(first) first.focus();
+}
 const field=(name,label,extra={})=>({name,label,...extra});
 function action(a,i){const p=data.projects[i],t=data.tasks[i];
 if(a==='add-project')return modal('Add project',a,[field('name','Project name',{required:true}),field('site','Location / site',{required:true}),field('type','Project type',{options:['Residential','Renovation','Commercial','Industrial','Other']}),field('budget','Project budget (R)',{type:'number',required:true}),field('progress','Progress (%)',{type:'number',value:0})]);

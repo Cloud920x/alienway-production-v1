@@ -29,10 +29,10 @@ const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.dampingFactor = 0.055;
 controls.enablePan = false;
-controls.minDistance = 25;
-controls.maxDistance = 82;
-controls.minPolarAngle = 0.65;
-controls.maxPolarAngle = 1.42;
+controls.minDistance = 3;
+controls.maxDistance = 65;
+controls.minPolarAngle = 0.35;
+controls.maxPolarAngle = 1.55;
 controls.target.set(0, 5, 0);
 controls.autoRotate = true;
 controls.autoRotateSpeed = 0.32;
@@ -190,6 +190,47 @@ for(let i=0;i<18;i++){
   const shrub=new THREE.Mesh(new THREE.IcosahedronGeometry(1.1+(i%3)*0.25,1),green);shrub.position.set(x,0.8,z);shrub.scale.y=.75;shrub.castShadow=true;hotel.add(shrub);
 }
 
+
+// A furnished ocean-facing suite, built as a dedicated interior walkthrough zone.
+const suite = new THREE.Group(); suite.position.set(0,0,-27); scene.add(suite);
+const wallWarm=mat("#e7dfd0",0.9), oak=mat("#a9855e",0.68), oakLight=mat("#c1a27a",0.72), sage=mat("#788879",0.78), quartz=mat("#e9e1d4",0.28), linen=mat("#d8cbb8",0.95), tile=mat("#d6c7ad",0.82), bronzeDetail=mat("#b89a6b",0.3,0.7);
+box(suite,18,.35,17,tile,0,.0,0,false);
+box(suite,18,.35,.35,wallWarm,0,3.7,-8.3,false);
+box(suite,.35,3.7,17,wallWarm,-8.8,1.85,0,false);
+box(suite,.35,3.7,17,wallWarm,8.8,1.85,0,false);
+box(suite,18,.35,17,wallWarm,0,3.7,0,false);
+box(suite,7,3.3,.22,glass,0,1.8,8.25,false);
+for(let x=-3.3;x<=3.3;x+=1.1)box(suite,.045,3.25,.12,bronzeDetail,x,1.8,8.38,false);
+box(suite,7.3,.14,.2,bronzeDetail,0,.16,8.4,false);
+// King bed, upholstered headboard and layered bedding.
+box(suite,4.5,.45,6.0,oak,1.6,.48,-1.6);
+box(suite,4.7,2.1,.25,oakLight,1.6,1.45,-4.55);
+box(suite,4.3,.22,5.65,linen,1.6,.82,-1.6);
+box(suite,4.3,.3,2.8,mat("#eee8dc",.98),1.6,1.0,-2.7);
+for(let x=-.1;x<=3.3;x+=1.8)box(suite,1.35,.35,1.0,mat("#f5f0e7",.98),x,1.12,-3.2);
+box(suite,4.4,.08,1.25,mat("#b4a18a",.95),1.6,1.2,.1);
+// Bedside tables and pendant lights.
+for(const x of [-1.25,4.45]){box(suite,.9,.72,.85,oak,x,.5,-3.5);cylinder(suite,.12,.12,.08,bronzeDetail,x,.9,-3.5,12);const p=new THREE.PointLight("#f4d7a5",.45,4);p.position.set(x,2.8,-3.5);suite.add(p);}
+// Kitchen run: matte sage cabinetry, pale quartz counter and backsplash.
+box(suite,5.7,.9,1.5,sage,-4.8,.55,4.0);
+box(suite,5.85,.14,1.62,quartz,-4.8,1.08,4.0);
+box(suite,5.7,1.25,.12,mat("#f0e9de",.7),-4.8,1.85,3.25,false);
+for(let x=-7.5;x<=-2.2;x+=1.75)box(suite,.045,.78,.035,bronzeDetail,x,.55,3.18,false);
+box(suite,5.7,.1,1.45,sage,-4.8,2.95,4.0);
+box(suite,5.8,.12,1.5,quartz,-4.8,3.58,4.0);
+box(suite,.8,.75,.65,mat("#b7b9b3",.3,.45),-6.8,1.55,3.9);
+box(suite,.7,.08,.5,mat("#292e30",.25,.4),-6.8,1.96,3.9);
+// Dining counter and stools.
+box(suite,3.2,.16,1.0,oakLight,-1.8,.95,4.6);
+for(let x=-2.8;x<=-.8;x+=1) cylinder(suite,.22,.22,.65,bronzeDetail,x,.45,5.35,12);
+// Bathroom partition and vanity visible as a distinct zone.
+box(suite,5.0,2.8,.18,wallWarm,5.9,1.4,1.0,false);
+box(suite,3.1,.75,1.1,oak,6.5,.45,-1.5);
+box(suite,3.2,.12,1.2,quartz,6.5,.9,-1.5);
+box(suite,2.8,1.0,.08,glass,6.5,1.65,-2.3,false);
+box(suite,2.7,2.5,.12,mat("#d9cbb6",.8),6.5,1.25,-4.0,false);
+const suiteLight=new THREE.PointLight("#f8dfb5",1.2,22);suiteLight.position.set(0,3.2,0);suite.add(suiteLight);
+
 // Beach and ocean plane with restrained animated wave geometry.
 const beach=box(scene,100,0.4,20,sand,0,-1.25,29,false);
 const waterGeo=new THREE.PlaneGeometry(240,150,42,28);waterGeo.rotateX(-Math.PI/2);
@@ -210,15 +251,32 @@ canvas.addEventListener("pointerdown",e=>{const rect=canvas.getBoundingClientRec
 function setNight(value){isNight=value;timeToggle.classList.toggle("night",isNight);timeToggle.querySelector(".toggle-label").textContent=isNight?"MOONLIGHT":"DAYLIGHT";timeToggle.setAttribute("aria-label",isNight?"Switch to daylight view":"Switch to night view");const target=isNight?nightSky:daySky;scene.background.copy(target);scene.fog.color.copy(target);hemi.intensity=isNight?.35:2.1;sun.intensity=isNight?.05:3.5;moon.intensity=isNight?1.35:.1;sunOrb.visible=!isNight;moonOrb.visible=isNight;stars.visible=isNight;poolLight.intensity=isNight?1.8:0;lobbyGlow.intensity=isNight?2.8:1.25;renderer.toneMappingExposure=isNight?.82:1.15;hotel.traverse(o=>{if(o.material===glass||o.material===darkGlass){o.material.emissive=new THREE.Color(isNight?"#b47a43":"#000000");o.material.emissiveIntensity=isNight?.18:0;}});}
 timeToggle.addEventListener("click",()=>setNight(!isNight));
 
-const cameraPath={x:37,y:22,z:48,tx:0,ty:5,tz:0};
-function applyCamera(){camera.position.set(cameraPath.x,cameraPath.y,cameraPath.z);controls.target.set(cameraPath.tx,cameraPath.ty,cameraPath.tz);controls.update();}
-let scrollTween=null;
-if(window.gsap&&window.ScrollTrigger){
-  window.gsap.registerPlugin(window.ScrollTrigger);
-  scrollTween=window.gsap.to(cameraPath,{x:13,y:9,z:25,tx:0,ty:4,tz:1,ease:"none",scrollTrigger:{trigger:".hero",start:"top top",end:"+=115%",scrub:1.1,pin:".scene-shell",pinSpacing:true,anticipatePin:1,onUpdate:self=>{controls.autoRotate=self.progress<0.015;applyCamera();if(heroCopy){const p=self.progress;heroCopy.style.opacity=String(Math.max(0,1-p*3.2));heroCopy.style.transform="translate3d(0,"+(-42-p*35)+"%, "+(-p*110)+"px)";}}}});
-  window.gsap.fromTo(".intro-grid > div",{y:45,opacity:0},{y:0,opacity:1,duration:1,ease:"power2.out",scrollTrigger:{trigger:".intro-grid",start:"top 78%"}});
-  window.gsap.fromTo(".feature-copy",{y:35,opacity:0},{y:0,opacity:1,duration:1,ease:"power2.out",scrollTrigger:{trigger:".feature-copy",start:"top 78%"}});
+// Scroll chapters drive one continuous camera journey: arrival, lobby, suite, kitchen, bath.
+const chapters=[...document.querySelectorAll(".chapter")];
+const chapterNames=["THE ARRIVAL","THE LOBBY","THE SUITE","THE KITCHEN","THE BATHROOM"];
+const chapterNumber=document.querySelector("#chapterNumber"),chapterName=document.querySelector("#chapterName");
+const cameraStops=[
+ {p:[37,22,48],t:[0,5,0]},
+ {p:[0,4.2,15],t:[0,2.6,1]},
+ {p:[0,2.6,-20],t:[0,1.6,-27]},
+ {p:[-4.8,2.1,-20],t:[-4.8,1.3,-23]},
+ {p:[5.5,2.1,-29],t:[6,1.3,-31]}
+];
+function smooth(a,b,t){const q=Math.max(0,Math.min(1,t));return a+(b-a)*(q*q*(3-2*q));}
+let activeChapter=-1;
+function updateJourney(){
+ const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+ const progress=Math.max(0,Math.min(1,scrollY/max))* (chapters.length-1);
+ const index=Math.min(chapters.length-1,Math.floor(progress));
+ const blend=progress-index;
+ const a=cameraStops[index],b=cameraStops[Math.min(index+1,cameraStops.length-1)];
+ camera.position.set(smooth(a.p[0],b.p[0],blend),smooth(a.p[1],b.p[1],blend),smooth(a.p[2],b.p[2],blend));
+ controls.target.set(smooth(a.t[0],b.t[0],blend),smooth(a.t[1],b.t[1],blend),smooth(a.t[2],b.t[2],blend));
+ controls.autoRotate=progress<.12;
+ if(index!==activeChapter){activeChapter=index;chapterNumber.textContent=String(index+1).padStart(2,"0");chapterName.textContent=chapterNames[index];}
 }
+window.addEventListener("scroll",updateJourney,{passive:true});
+updateJourney();
 function resize(){const w=shell.clientWidth,h=shell.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,w<700?1:1.35));}
 window.addEventListener("resize",resize,{passive:true});resize();
 

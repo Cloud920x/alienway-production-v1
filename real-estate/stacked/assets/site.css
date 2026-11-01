@@ -11,3 +11,7 @@
 .detail-panel.expanded .spec-list div{padding:7px 0}
 .detail-panel.expanded .spec-list b{font-size:9px}
 @media(max-width:760px){.detail-panel{max-width:230px;margin:0 0 0 auto}.detail-panel.expanded{width:min(300px,82vw);max-width:82vw;padding:15px;background:rgba(7,26,37,.56)}.detail-panel.expanded h2{font-size:34px}.detail-panel.expanded .spec-list b{font-size:8px}}
+
+/* Additional walkthrough chapter layouts. */
+.lounge-chapter,.guest-chapter,.kitchen-chapter,.bathroom-chapter,.balcony-chapter,.pool-chapter{justify-content:flex-end}
+@media(max-width:760px){.lounge-chapter,.guest-chapter,.kitchen-chapter,.bathroom-chapter,.balcony-chapter,.pool-chapter{justify-content:flex-end}}

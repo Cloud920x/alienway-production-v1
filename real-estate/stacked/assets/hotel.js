@@ -28,6 +28,8 @@ renderer.toneMappingExposure = 1.22;
 renderer.useLegacyLights = false;
 
 const controls = new OrbitControls(camera, canvas);
+// OrbitControls sets touch-action:none; restore vertical page swipes so the guided tour scrolls on phones.
+canvas.style.touchAction = "pan-y";
 controls.enableDamping = true;
 controls.dampingFactor = 0.055;
 controls.enablePan = false;

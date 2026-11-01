@@ -558,7 +558,7 @@ function animate(now=0){
   const t=clock.getElapsedTime();const pos=waterGeo.attributes.position;
   for(let i=0;i<pos.count;i++){const x=waveBase[i*3],z=waveBase[i*3+2];pos.array[i*3+1]=Math.sin(x*.12+t*.8)*.13+Math.sin(z*.16+t*.55)*.09;}
   pos.needsUpdate=true;
-  movePlayer(Math.min(clock.getDelta(),0.05));renderer.render(scene,camera);
+  movePlayer(deltaTime);renderer.render(scene,camera);
   if(frame++===2){loader.classList.add("done");document.querySelector("#preloader")?.classList.add("done");}
 }
 animate();

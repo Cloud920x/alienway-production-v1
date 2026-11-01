@@ -263,7 +263,7 @@ for(const side of [-1,1]){
   box(sofa,2.35,.9,.22,mat("#d0c2ad",.95),0,.93,-.4);
   for(const x of [-.92,.92])box(sofa,.12,.32,.12,bronze,x,.16,.34);
 }
-box(gallery,1.7,.12,1.25,oakLight,0,.65,-10.1);
+box(gallery,1.7,.12,1.25,paleStone,0,.65,-10.1);
 cylinder(gallery,.48,.48,.16,bronze,0,.78,-10.1,24);
 for(const x of [-2.55,2.55]){
   cylinder(gallery,.38,.44,.6,dark,x,.42,-16.7,18);

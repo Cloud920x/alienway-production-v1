@@ -53,15 +53,57 @@ const moon = new THREE.DirectionalLight("#9dbce8", 0.1);
 moon.position.set(20,30,-20); scene.add(moon);
 
 const mat = (color, roughness=0.7, metalness=0) => new THREE.MeshStandardMaterial({color,roughness,metalness});
-const stone = mat("#e6dfd0",0.82);
-const paleStone = mat("#f0eadd",0.76);
+
+// Lightweight procedural PBR surfaces: subtle mineral grain and travertine striation.
+// These are generated in-browser, so the scene gains material depth without large downloads.
+function makeSurfaceMap(kind, base, seed=1) {
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = 512;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  ctx.fillStyle = base; ctx.fillRect(0,0,512,512);
+  let state = seed >>> 0;
+  const random = () => { state = (state * 1664525 + 1013904223) >>> 0; return state / 4294967296; };
+  const pixels = ctx.getImageData(0,0,512,512);
+  for (let i=0;i<pixels.data.length;i+=4) {
+    const n = (random()-.5) * (kind === "travertine" ? 13 : 19);
+    pixels.data[i] = Math.max(0,Math.min(255,pixels.data[i]+n));
+    pixels.data[i+1] = Math.max(0,Math.min(255,pixels.data[i+1]+n));
+    pixels.data[i+2] = Math.max(0,Math.min(255,pixels.data[i+2]+n));
+  }
+  ctx.putImageData(pixels,0,0);
+  if (kind === "travertine") {
+    for(let i=0;i<38;i++){
+      const y=random()*512, alpha=.025+random()*.055;
+      ctx.strokeStyle = `rgba(112,94,69,${alpha})`;
+      ctx.lineWidth=1+random()*5;ctx.beginPath();
+      ctx.moveTo(0,y);ctx.bezierCurveTo(130,y-8,350,y+10,512,y+(random()-.5)*22);ctx.stroke();
+    }
+  } else {
+    for(let i=0;i<1800;i++){
+      const x=random()*512,y=random()*512,r=.3+random()*1.4;
+      ctx.fillStyle=`rgba(95,83,65,${random()*.12})`;
+      ctx.fillRect(x,y,r,r);
+    }
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(1.5,1.5);
+  texture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(),8);
+  return texture;
+}
+const limestoneMap = makeSurfaceMap("travertine","#e6dfd0",17);
+const paleStoneMap = makeSurfaceMap("travertine","#f0eadd",29);
+const sandMap = makeSurfaceMap("grain","#c9b99a",41);
+const stone = new THREE.MeshStandardMaterial({color:"#ffffff",map:limestoneMap,roughness:.84,bumpMap:limestoneMap,bumpScale:.035});
+const paleStone = new THREE.MeshStandardMaterial({color:"#ffffff",map:paleStoneMap,roughness:.78,bumpMap:paleStoneMap,bumpScale:.025});
 const darkStone = mat("#8b8d83",0.78);
 const glass = new THREE.MeshPhysicalMaterial({color:"#8fb9c2",roughness:0.12,metalness:0.18,transparent:true,opacity:0.58, transmission:0.12});
 const darkGlass = new THREE.MeshPhysicalMaterial({color:"#274d58",roughness:0.15,metalness:0.28,transparent:true,opacity:0.78});
 const bronze = new THREE.MeshStandardMaterial({color:"#b89a6b",roughness:0.3,metalness:0.72});
 const dark = mat("#243a3b",0.48);
 const green = mat("#315b4a",0.9);
-const sand = mat("#c9b99a",0.95);
+const sand = new THREE.MeshStandardMaterial({color:"#ffffff",map:sandMap,roughness:.96,bumpMap:sandMap,bumpScale:.045});
 const waterMat = new THREE.MeshPhysicalMaterial({color:"#2d91a0",roughness:0.18,metalness:0.22,clearcoat:1,clearcoatRoughness:0.08});
 
 const hotel = new THREE.Group(); scene.add(hotel);

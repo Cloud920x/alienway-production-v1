@@ -3931,3 +3931,8 @@ section, footer { scroll-margin-top: 84px; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* About story spacing — keep the narrative connected on wide screens too. */
+.about-story-block { margin-bottom: clamp(52px, 6vw, 78px); }
+.about-story-block:last-of-type { margin-bottom: clamp(42px, 5vw, 68px); }

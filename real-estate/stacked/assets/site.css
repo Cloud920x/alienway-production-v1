@@ -15,3 +15,13 @@
 /* Additional walkthrough chapter layouts. */
 .lounge-chapter,.guest-chapter,.kitchen-chapter,.bathroom-chapter,.balcony-chapter,.pool-chapter{justify-content:flex-end}
 @media(max-width:760px){.lounge-chapter,.guest-chapter,.kitchen-chapter,.bathroom-chapter,.balcony-chapter,.pool-chapter{justify-content:flex-end}}
+
+
+/* First-person walkthrough controls */
+.walk-ui{position:fixed;z-index:18;inset:0;pointer-events:none;font-family:var(--sans)}
+.walk-enter{display:none;pointer-events:auto;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:15px 22px;border:1px solid var(--gold);background:rgba(7,26,37,.82);color:#fff;font:600 9px var(--sans);letter-spacing:.18em;backdrop-filter:blur(12px)}
+.walk-instruction{position:absolute;left:50%;bottom:31px;transform:translateX(-50%);font-size:8px;letter-spacing:.16em;color:#fff;background:#071a25a8;padding:10px 14px;border:1px solid #ffffff30}
+.walk-stick{display:none;position:absolute;left:22px;bottom:72px;width:112px;height:112px;border:1px solid #ffffff65;border-radius:50%;background:#071a2580;pointer-events:auto;touch-action:none;backdrop-filter:blur(6px)}
+.walk-stick i{position:absolute;left:50%;top:50%;width:42px;height:42px;transform:translate(-50%,-50%);border-radius:50%;background:#d2b68b;border:2px solid #fff8}
+@media(max-width:760px){.walk-enter{display:block;top:auto;bottom:190px}.walk-ui.active .walk-enter{display:none}.walk-stick{display:block}.walk-instruction{left:auto;right:15px;bottom:91px;transform:none;max-width:130px;text-align:center;line-height:1.6}.rotate-hint{display:none}.tour-controls{bottom:15px}.walk-stick{bottom:76px}}
+@media(min-width:761px){.walk-enter{display:none}.walk-instruction{bottom:82px}}

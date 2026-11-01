@@ -105,13 +105,56 @@ for(let floor=0;floor<3;floor++){
 }
 for(let i=0;i<9;i++) box(hotel,0.1,7.4,0.18,bronze,-16+i*4,4.2,5.72,false);
 
+// Arrival hall: a real, furnished volume behind the entrance glazing.
+const lobby = new THREE.Group();
+hotel.add(lobby);
+const lobbyFloor = box(lobby,15,0.22,13,mat("#b9ad99",0.72),0,0.18,-1.1,false);
+box(lobby,15,0.22,13,mat("#d6c7ae",0.7),0,5.9,-1.1,false);
+box(lobby,14.6,0.12,0.18,bronze,0,5.65,-7.45,false);
+for (let x of [-7,7]) box(lobby,0.28,5.5,12,stone,x,2.9,-1.1,false);
+box(lobby,0.22,5.5,14.5,stone,0,2.9,-7.5,false);
+// Layered reception desk, stone counter and warm backlit feature wall.
+box(lobby,5.6,1.15,1.15,dark,0,0.78,-5.25);
+box(lobby,5.9,0.16,1.3,paleStone,0,1.42,-5.25);
+box(lobby,6.2,3.4,0.22,mat("#6e6659",0.9),0,2.55,-7.25,false);
+for(let i=0;i<5;i++) box(lobby,0.035,2.9,0.035,bronze,-2.3+i*1.15,2.55,-7.1,false);
+// Lounge seating and side tables.
+for(const side of [-1,1]){
+  const sofa=new THREE.Group();lobby.add(sofa);sofa.position.set(side*4.2,0.25,-1.1);sofa.rotation.y=side*-0.12;
+  box(sofa,2.8,0.55,1.05,mat("#b8a58b",0.92),0,0.42,0);
+  box(sofa,2.8,0.95,0.28,mat("#c9b99f",0.92),0,0.95,-0.42);
+  for(const x of [-1.15,1.15]) box(sofa,0.16,0.35,0.16,dark,x,0.18,0.34);
+  cylinder(lobby,0.48,0.48,0.12,bronze,side*2.2,0.45,0.4,20);
+  cylinder(lobby,0.42,0.42,0.12,paleStone,side*2.2,0.56,0.4,20);
+}
+// Indoor palms and a suspended sculptural light.
+for(const x of [-6.2,6.2]){
+  cylinder(lobby,0.48,0.58,0.75,dark,x,0.55,-3.8,18);
+  cylinder(lobby,0.13,0.18,2.8,sand,x,2.25,-3.8,10);
+  for(let i=0;i<6;i++){
+    const leaf=box(lobby,0.12,0.08,1.8,green,x+Math.cos(i*Math.PI/3)*0.7,3.65,-3.8+Math.sin(i*Math.PI/3)*0.7,false);
+    leaf.rotation.y=i*Math.PI/3;leaf.rotation.x=-0.25;
+  }
+}
+const lobbyGlow=new THREE.PointLight("#f6c98b",2.2,18,2);
+lobbyGlow.position.set(0,4.7,-2.2);hotel.add(lobbyGlow);
+for(const x of [-4.5,0,4.5]){
+  const pendant=new THREE.Mesh(new THREE.SphereGeometry(0.16,12,8),new THREE.MeshBasicMaterial({color:"#ffe1ad"}));
+  pendant.position.set(x,4.85,-1.8);lobby.add(pendant);
+  const light=new THREE.PointLight("#f3c78b",0.55,7,2);light.position.copy(pendant.position);lobby.add(light);
+}
+
 // Grand arrival canopy and interactive double doors.
 box(hotel,10,0.45,5,paleStone,0,5.1,8.1);
 for(let x of [-4.7,4.7]) box(hotel,0.34,5.2,0.38,bronze,x,2.55,9.65);
-const doorPivot=new THREE.Group(); doorPivot.position.set(-0.04,0.1,5.72); hotel.add(doorPivot);
-const door=box(doorPivot,2.2,3.7,0.18,darkGlass,1.1,1.95,0);
-box(doorPivot,0.06,3.7,0.22,bronze,0.03,1.95,0);
-const handle=box(doorPivot,0.09,0.72,0.1,bronze,1.82,1.9,0.17);
+const leftDoorPivot=new THREE.Group(); leftDoorPivot.position.set(0,0.1,5.72); hotel.add(leftDoorPivot);
+const leftDoor=box(leftDoorPivot,1.08,3.7,0.18,darkGlass,-0.54,1.95,0);
+box(leftDoorPivot,0.06,3.7,0.22,bronze,-1.06,1.95,0);
+box(leftDoorPivot,0.09,0.72,0.1,bronze,-0.88,1.9,0.17);
+const rightDoorPivot=new THREE.Group(); rightDoorPivot.position.set(0,0.1,5.72); hotel.add(rightDoorPivot);
+const rightDoor=box(rightDoorPivot,1.08,3.7,0.18,darkGlass,0.54,1.95,0);
+box(rightDoorPivot,0.06,3.7,0.22,bronze,1.06,1.95,0);
+box(rightDoorPivot,0.09,0.72,0.1,bronze,0.88,1.9,0.17);
 box(hotel,4.9,0.28,0.42,bronze,0,0.18,5.9);
 box(hotel,0.4,0.25,0.18,paleStone,-2.7,0.16,5.7);
 box(hotel,0.4,0.25,0.18,paleStone,2.7,0.16,5.7);
@@ -163,8 +206,8 @@ const poolLight=new THREE.PointLight("#53d9e9",0,18,2);poolLight.position.set(0,
 
 const raycaster=new THREE.Raycaster();const pointer=new THREE.Vector2();let doorOpen=false;let isNight=false;let noteTimer;
 function showNote(text){note.textContent=text;note.classList.add("show");clearTimeout(noteTimer);noteTimer=setTimeout(()=>note.classList.remove("show"),2600);}
-canvas.addEventListener("pointerdown",e=>{const rect=canvas.getBoundingClientRect();pointer.x=((e.clientX-rect.left)/rect.width)*2-1;pointer.y=-((e.clientY-rect.top)/rect.height)*2+1;raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObject(door,true);if(hits.length){doorOpen=!doorOpen;if(window.gsap){window.gsap.to(doorPivot.rotation,{y:doorOpen?-1.25:0,duration:.9,ease:"power3.inOut"});}else doorPivot.rotation.y=doorOpen?-1.25:0;showNote(doorOpen?"Welcome. The doors are open.":"The entrance is closed.");}});
-function setNight(value){isNight=value;timeToggle.classList.toggle("night",isNight);timeToggle.querySelector(".toggle-label").textContent=isNight?"MOONLIGHT":"DAYLIGHT";timeToggle.setAttribute("aria-label",isNight?"Switch to daylight view":"Switch to night view");const target=isNight?nightSky:daySky;scene.background.copy(target);scene.fog.color.copy(target);hemi.intensity=isNight?.35:2.1;sun.intensity=isNight?.05:3.5;moon.intensity=isNight?1.35:.1;sunOrb.visible=!isNight;moonOrb.visible=isNight;stars.visible=isNight;poolLight.intensity=isNight?1.8:0;renderer.toneMappingExposure=isNight?.82:1.15;hotel.traverse(o=>{if(o.material===glass||o.material===darkGlass){o.material.emissive=new THREE.Color(isNight?"#b47a43":"#000000");o.material.emissiveIntensity=isNight?.18:0;}});}
+canvas.addEventListener("pointerdown",e=>{const rect=canvas.getBoundingClientRect();pointer.x=((e.clientX-rect.left)/rect.width)*2-1;pointer.y=-((e.clientY-rect.top)/rect.height)*2+1;raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects([leftDoor,rightDoor],true);if(hits.length){doorOpen=!doorOpen;const angle=doorOpen?1.18:0;if(window.gsap){window.gsap.to(leftDoorPivot.rotation,{y:-angle,duration:.95,ease:"power3.inOut"});window.gsap.to(rightDoorPivot.rotation,{y:angle,duration:.95,ease:"power3.inOut"});}else{leftDoorPivot.rotation.y=-angle;rightDoorPivot.rotation.y=angle;}showNote(doorOpen?"Welcome to the arrival hall.":"The entrance is closed.");}});
+function setNight(value){isNight=value;timeToggle.classList.toggle("night",isNight);timeToggle.querySelector(".toggle-label").textContent=isNight?"MOONLIGHT":"DAYLIGHT";timeToggle.setAttribute("aria-label",isNight?"Switch to daylight view":"Switch to night view");const target=isNight?nightSky:daySky;scene.background.copy(target);scene.fog.color.copy(target);hemi.intensity=isNight?.35:2.1;sun.intensity=isNight?.05:3.5;moon.intensity=isNight?1.35:.1;sunOrb.visible=!isNight;moonOrb.visible=isNight;stars.visible=isNight;poolLight.intensity=isNight?1.8:0;lobbyGlow.intensity=isNight?2.8:1.25;renderer.toneMappingExposure=isNight?.82:1.15;hotel.traverse(o=>{if(o.material===glass||o.material===darkGlass){o.material.emissive=new THREE.Color(isNight?"#b47a43":"#000000");o.material.emissiveIntensity=isNight?.18:0;}});}
 timeToggle.addEventListener("click",()=>setNight(!isNight));
 
 const cameraPath={x:37,y:22,z:48,tx:0,ty:5,tz:0};

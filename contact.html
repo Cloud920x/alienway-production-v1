@@ -195,22 +195,22 @@ START YOUR PROJECT
 </h2>
 
 
-<form>
+<form id="projectForm">
 
 
-<input type="text" placeholder="Your Name">
+<input name="name" type="text" placeholder="Your Name" aria-label="Your name" autocomplete="name" required>
 
 
-<input type="email" placeholder="Your Email">
+<input name="email" type="email" placeholder="Your Email" aria-label="Your email address" autocomplete="email" required>
 
 
-<input type="text" placeholder="Business Name">
+<input name="business" type="text" placeholder="Business Name" aria-label="Business name" autocomplete="organization">
 
 
-<textarea placeholder="Tell us about your project"></textarea>
+<textarea name="message" placeholder="Tell us about your project" aria-label="Tell us about your project" required></textarea>
 
 
-<button class="button primary">
+<button type="submit" class="button primary">
 SEND MESSAGE →
 </button>
 
@@ -238,6 +238,15 @@ SEND MESSAGE →
 
 
 
+<script>
+document.getElementById("projectForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  const data = new FormData(this);
+  const subject = encodeURIComponent("New Alienway Production project enquiry");
+  const body = encodeURIComponent("Name: " + data.get("name") + "\nEmail: " + data.get("email") + "\nBusiness: " + (data.get("business") || "Not provided") + "\n\nProject details:\n" + data.get("message"));
+  window.location.href = "mailto:hello@alienway.com?subject=" + subject + "&body=" + body;
+});
+</script>
 </body>
 
 </html>

@@ -89,7 +89,7 @@ for(const side of [-1,1]){
       box(wing,2.05,0.08,0.16,bronze,x,y-0.88,4.12,false);
     }
   }
-  box(wing,14,0.18,2.1,dark,x,1.0,5.6);
+  box(wing,14,0.18,2.1,dark,0,1.0,5.6);
   for(let i=0;i<6;i++) cylinder(wing,0.045,0.045,0.8,bronze,-6+i*2.4,1.4,6.5,8);
 }
 

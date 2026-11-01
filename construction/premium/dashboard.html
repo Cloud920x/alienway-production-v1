@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Northline Build Co. | Operations</title>
+<title>Atelier Structures | Management Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -11,13 +11,13 @@
 @media(max-width:1000px){.app{grid-template-columns:210px 1fr}.stats{grid-template-columns:repeat(2,1fr)}.middle{grid-template-columns:1fr}.lower{grid-template-columns:1fr}}
 @media(max-width:680px){.app{display:block}.side{height:auto;position:relative;padding:14px}.brand{padding:0 5px 12px}.workspace,.side-bottom{display:none}.nav{display:flex;overflow:auto;padding-bottom:3px}.nav button{white-space:nowrap;padding:9px 11px;font-size:11px}.topbar{height:60px;padding:0 16px}.content{padding:25px 15px 55px}.heading{align-items:flex-start;flex-direction:column}.stats{gap:9px}.stat{padding:14px}.stat strong{font-size:21px}.top-actions{gap:6px}.role-select{max-width:145px}.cards-3{grid-template-columns:1fr}}
 /* Demo exit */
-.alienway-exit{position:fixed;right:22px;bottom:20px;z-index:99;display:flex;align-items:center;gap:10px;padding:10px 15px 10px 10px;border-radius:999px;background:rgba(12,16,22,.28);color:#fff;text-decoration:none;box-shadow:0 8px 28px rgba(0,0,0,.16);font:800 10px Manrope;letter-spacing:.08em;transition:transform .25sbackdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.34);}.alienway-exit:hover{transform:translateY(-4px) scale(1.04)}.alienway-exit .mark{width:28px;height:28px;border-radius:50%;background:var(--lime);color:#172b24;display:grid;place-items:center;font-size:14px}.alienway-exit small{display:block;font:500 8px 'DM Sans';letter-spacing:.13em;color:#b9c9bd;margin-top:2px}.alienway-exit:active{transform:scale(.9)}
+.alienway-exit{position:fixed;right:22px;bottom:20px;z-index:99;display:flex;align-items:center;gap:10px;padding:10px 15px 10px 10px;border-radius:999px;background:rgba(12,16,22,.28);color:#fff;text-decoration:none;box-shadow:0 8px 28px rgba(0,0,0,.16);font:800 10px Manrope;letter-spacing:.08em;transition:transform .25s;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.34);}.alienway-exit:hover{transform:translateY(-4px) scale(1.04)}.alienway-exit .mark{width:28px;height:28px;border-radius:50%;background:var(--lime);color:#172b24;display:grid;place-items:center;font-size:14px}.alienway-exit small{display:block;font:500 8px 'DM Sans';letter-spacing:.13em;color:#b9c9bd;margin-top:2px}.alienway-exit:active{transform:scale(.9)}
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="side">
- <div class="brand"><div class="brand-mark">N</div><div><strong>NORTHLINE</strong><small>BUILD COMPANY</small></div></div>
+ <div class="brand"><div class="brand-mark">A</div><div><strong>ATELIER STRUCTURES</strong><small>OPERATIONS PORTAL</small></div></div>
  <div class="workspace">WORKSPACE</div>
  <nav class="nav" id="nav">
   <button class="active" data-view="overview"><span class="ico">▦</span>Overview</button>
@@ -72,7 +72,7 @@
 </main>
 </div>
 <div id="toast" style="position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#172b24;color:white;padding:12px 17px;border-radius:10px;font-size:11px;z-index:120;transition:.25s;max-width:90%;text-align:center"></div>
-<a class="alienway-exit" href="../../index.html" aria-label="Exit demo and return to Alienway Production"><span class="mark">↗</span><span>EXIT<small>ALIENWAY PRODUCTION</small></span></a>
+<a class="alienway-exit" href="index.html" aria-label="Return to Atelier Structures website"><span class="mark">↗</span><span>BACK TO SITE<small>ATELIER STRUCTURES</small></span></a>
 <script>
 const views=[...document.querySelectorAll('.view')], nav=[...document.querySelectorAll('.nav button')], crumb=document.getElementById('crumb');
 function showView(id){views.forEach(v=>v.classList.toggle('active',v.id===id));nav.forEach(n=>n.classList.toggle('active',n.dataset.view===id));const active=nav.find(n=>n.dataset.view===id);crumb.textContent=active?active.textContent.trim():'Overview';window.scrollTo({top:0,behavior:'smooth'});}

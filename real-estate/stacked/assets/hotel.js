@@ -1,5 +1,5 @@
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js";
-import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js";
+import { PointerLockControls } from "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/PointerLockControls.js";
 
 const canvas = document.querySelector("#hotelCanvas");
 const shell = document.querySelector(".world");
@@ -27,20 +27,64 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.22;
 renderer.useLegacyLights = false;
 
-const controls = new OrbitControls(camera, canvas);
-// OrbitControls sets touch-action:none; restore vertical page swipes so the guided tour scrolls on phones.
-canvas.style.touchAction = "pan-y";
-controls.enableDamping = true;
-controls.dampingFactor = 0.055;
-// Keep the hotel orientation fixed: the scroll journey moves the camera, never the building.
-controls.enableRotate = false;
-controls.autoRotate = false;
-controls.enablePan = false;
-controls.minDistance = 3;
-controls.maxDistance = 65;
-controls.minPolarAngle = 0.35;
-controls.maxPolarAngle = 1.55;
-controls.target.set(0, 5, 0);
+const controls = new PointerLockControls(camera, document.body);
+camera.position.set(0, 1.68, 13.2);
+camera.rotation.set(0, 0, 0);
+canvas.style.touchAction = "none";
+const moveKeys = new Set();
+let moveForward = false, moveBack = false, moveLeft = false, moveRight = false;
+let mobileLookPointer = null, lastTouchX = 0, lastTouchY = 0;
+const moveSpeed = 5.2;
+const playerRadius = 0.34;
+const blockedZones = [
+  {minX:-7.35,maxX:-7.0,minZ:-7.3,maxZ:5.4},{minX:7.0,maxX:7.35,minZ:-7.3,maxZ:5.4},
+  {minX:-3.7,maxX:-3.35,minZ:-19.9,maxZ:-7.1},{minX:3.35,maxX:3.7,minZ:-19.9,maxZ:-7.1},
+  {minX:-8.45,maxX:-8.1,minZ:-35.5,maxZ:-18.5},{minX:8.1,maxX:8.45,minZ:-35.5,maxZ:-18.5}
+];
+function blocked(x,z){
+  if(x < -29 || x > 29 || z < -39 || z > 24) return true;
+  return blockedZones.some(b=>x+playerRadius>b.minX&&x-playerRadius<b.maxX&&z+playerRadius>b.minZ&&z-playerRadius<b.maxZ);
+}
+function setMoveKey(key,down){
+  const k=key.toLowerCase(); if(["w","arrowup"].includes(k))moveForward=down;
+  if(["s","arrowdown"].includes(k))moveBack=down;
+  if(["a","arrowleft"].includes(k))moveLeft=down;
+  if(["d","arrowright"].includes(k))moveRight=down;
+}
+window.addEventListener("keydown",e=>{setMoveKey(e.key,true);if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," "].includes(e.key))e.preventDefault();});
+window.addEventListener("keyup",e=>setMoveKey(e.key,false));
+const touchUI=document.createElement("div");
+touchUI.className="walk-ui";
+touchUI.innerHTML='<button class="walk-enter" type="button">ENTER WALKTHROUGH</button><div class="walk-stick"><i></i></div><span class="walk-instruction">DRAG TO LOOK · JOYSTICK TO MOVE</span>';
+document.body.appendChild(touchUI);
+const stick=touchUI.querySelector(".walk-stick"),stickKnob=stick.querySelector("i");
+let stickX=0,stickY=0,stickPointer=null;
+function updateStick(e){
+ const r=stick.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),len=Math.hypot(dx,dy),scale=len>38?38/len:1;
+ stickX=dx*scale/38;stickY=dy*scale/38;stickKnob.style.transform=`translate(${stickX*25}px,${stickY*25}px)`;
+}
+stick.addEventListener("pointerdown",e=>{stickPointer=e.pointerId;stick.setPointerCapture(e.pointerId);updateStick(e);});
+stick.addEventListener("pointermove",e=>{if(e.pointerId===stickPointer)updateStick(e);});
+function resetStick(){stickPointer=null;stickX=stickY=0;stickKnob.style.transform="translate(0,0)";}
+stick.addEventListener("pointerup",resetStick);stick.addEventListener("pointercancel",resetStick);
+touchUI.querySelector(".walk-enter").addEventListener("click",()=>{touchUI.classList.add("active");showNote("Use the joystick to walk and drag the scene to look around.");});
+canvas.addEventListener("click",()=>{if(!isSmallScreen&&!controls.isLocked)controls.lock();});
+canvas.addEventListener("pointerdown",e=>{if(isSmallScreen&&e.pointerType==="touch"&&e.clientX>innerWidth*.38){mobileLookPointer=e.pointerId;lastTouchX=e.clientX;lastTouchY=e.clientY;canvas.setPointerCapture(e.pointerId);}});
+canvas.addEventListener("pointermove",e=>{if(isSmallScreen&&e.pointerId===mobileLookPointer){const dx=e.clientX-lastTouchX,dy=e.clientY-lastTouchY;lastTouchX=e.clientX;lastTouchY=e.clientY;camera.rotation.y-=dx*.004;camera.rotation.x-=dy*.003;camera.rotation.x=Math.max(-1.15,Math.min(1.15,camera.rotation.x));}});
+canvas.addEventListener("pointerup",e=>{if(e.pointerId===mobileLookPointer)mobileLookPointer=null;});
+canvas.addEventListener("pointercancel",()=>mobileLookPointer=null);
+function movePlayer(dt){
+ const forward=Number(moveForward||stickY<-.15)-Number(moveBack||stickY>.15);
+ const side=Number(moveRight||stickX>.15)-Number(moveLeft||stickX<-.15);
+ if(!forward&&!side)return;
+ const direction=new THREE.Vector3();camera.getWorldDirection(direction);direction.y=0;direction.normalize();
+ const right=new THREE.Vector3().crossVectors(direction,new THREE.Vector3(0,1,0)).normalize();
+ const delta=direction.multiplyScalar(forward*moveSpeed*dt).add(right.multiplyScalar(side*moveSpeed*dt));
+ const nextX=camera.position.x+delta.x,nextZ=camera.position.z+delta.z;
+ if(!blocked(nextX,camera.position.z))camera.position.x=nextX;
+ if(!blocked(camera.position.x,nextZ))camera.position.z=nextZ;
+ camera.position.y=1.68;
+}
 
 const hemi = new THREE.HemisphereLight("#d9efff", "#8b897c", 2.1);
 scene.add(hemi);
@@ -496,9 +540,7 @@ function updateJourney(){
      pane.material.emissiveIntensity=lit ? reveal*(isNight ? 0.72 : 0.28) : 0;
    });
  });
- const a=cameraStops[index],b=cameraStops[Math.min(index+1,cameraStops.length-1)];
- camera.position.set(smooth(a.p[0],b.p[0],blend),smooth(a.p[1],b.p[1],blend),smooth(a.p[2],b.p[2],blend));
- controls.target.set(smooth(a.t[0],b.t[0],blend),smooth(a.t[1],b.t[1],blend),smooth(a.t[2],b.t[2],blend));
+ // Scroll updates chapter labels only; the visitor controls the camera freely.
  if(index!==activeChapter){activeChapter=index;chapterNumber.textContent=String(index+1).padStart(2,"0");chapterName.textContent=chapterNames[index];}
 }
 window.addEventListener("scroll",updateJourney,{passive:true});
@@ -516,7 +558,7 @@ function animate(now=0){
   const t=clock.getElapsedTime();const pos=waterGeo.attributes.position;
   for(let i=0;i<pos.count;i++){const x=waveBase[i*3],z=waveBase[i*3+2];pos.array[i*3+1]=Math.sin(x*.12+t*.8)*.13+Math.sin(z*.16+t*.55)*.09;}
   pos.needsUpdate=true;
-  controls.update();renderer.render(scene,camera);
+  movePlayer(Math.min(clock.getDelta(),0.05));renderer.render(scene,camera);
   if(frame++===2){loader.classList.add("done");document.querySelector("#preloader")?.classList.add("done");}
 }
 animate();

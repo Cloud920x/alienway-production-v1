@@ -554,6 +554,7 @@ const frameInterval=1000/(isSmallScreen?30:45);
 function animate(now=0){
   requestAnimationFrame(animate);
   if(now-lastFrame<frameInterval)return;
+  const deltaTime=Math.min((now-lastFrame)/1000,0.05);
   lastFrame=now;
   const t=clock.getElapsedTime();const pos=waterGeo.attributes.position;
   for(let i=0;i<pos.count;i++){const x=waveBase[i*3],z=waveBase[i*3+2];pos.array[i*3+1]=Math.sin(x*.12+t*.8)*.13+Math.sin(z*.16+t*.55)*.09;}

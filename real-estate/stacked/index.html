@@ -12,6 +12,28 @@
   <link rel="stylesheet" href="assets/site.css">
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script>
+    function showSceneFailure(message) {
+      const reveal = () => {
+        const loader = document.getElementById("sceneLoader");
+        const preloader = document.getElementById("preloader");
+        if (loader) {
+          loader.classList.add("failed");
+          loader.innerHTML = "<strong>THE 3D EXPERIENCE COULD NOT START</strong><span>" +
+            String(message || "A browser or graphics error stopped the scene.").slice(0, 180) +
+            "</span><small>Reload the page. If this continues, the browser may be blocking WebGL or a 3D module.</small>";
+        }
+        preloader?.classList.add("done");
+      };
+      if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", reveal, {once:true});
+      else reveal();
+    }
+    window.addEventListener("error", event => {
+      if (event.target && event.target !== window) showSceneFailure("Could not load: " + (event.target.src || event.target.href || "a required script"));
+      else showSceneFailure(event.message || "A JavaScript error stopped the scene.");
+    }, true);
+    window.addEventListener("unhandledrejection", event => showSceneFailure(event.reason?.message || event.reason || "A 3D module failed to load."));
+  </script>
   <script type="importmap">
     {
       "imports": {
@@ -23,7 +45,6 @@
 </head>
 <body>
   <div class="preloader" id="preloader"><span class="preloader-mark">B</span><span>PREPARING YOUR ARRIVAL</span><i></i></div>
-  <script>window.setTimeout(function(){document.getElementById("preloader")?.classList.add("done");document.getElementById("sceneLoader")?.classList.add("done");},6500);</script>
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Beza's Hotel home"><span class="brand-symbol">B</span><span class="brand-name">BEZA'S HOTEL<small>OCEANFRONT COLLECTION</small></span></a>
     <nav class="desktop-nav" aria-label="Main navigation"><a href="#experience">The experience</a><a href="#residences">Suites</a><a href="#dining">Dining</a><a href="#contact">Contact</a></nav>

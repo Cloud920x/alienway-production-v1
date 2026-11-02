@@ -55,7 +55,6 @@ for(let f=1;f<=levels;f++){
  const group=new THREE.Group();group.position.y=startY+(f-1)*floorH;tower.add(group);floorGroups.push(group);
  const slab=new THREE.Mesh(new THREE.BoxGeometry(W+.25,.16,D+.2),mats.metal);slab.position.y=0;group.add(slab);
  const highlight=new THREE.Mesh(new THREE.BoxGeometry(W+.42,.055,D+.38),new THREE.MeshBasicMaterial({color:0xd9ff80,transparent:true,opacity:.72}));highlight.position.y=.115;highlight.visible=false;group.add(highlight);floorHighlights.push(highlight);
- const highlight=new THREE.Mesh(new THREE.BoxGeometry(W+.42,.055,D+.38),new THREE.MeshBasicMaterial({color:0xd9ff80,transparent:true,opacity:.72}));highlight.position.y=.115;highlight.visible=false;group.add(highlight);floorHighlights.push(highlight);
  const back=new THREE.Mesh(new THREE.BoxGeometry(W,.04,.15),mats.dark);back.position.set(0,.83,-D/2);group.add(back);
  const floorUnits=[];
  for(let u=1;u<=4;u++){

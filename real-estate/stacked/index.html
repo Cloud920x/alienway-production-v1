@@ -1,155 +1,95 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#101716">
-<title>STACKED — Architecture in Progress</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101716">
+<title>STACKED — Beza's Hotel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#e9eee9;--muted:#9aa7a0;--lime:#d6ff75;--bg:#101716;--line:rgba(233,238,233,.16)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope, sans-serif}a{color:inherit;text-decoration:none}.topbar{position:fixed;z-index:20;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:24px 5vw;border-bottom:1px solid var(--line);backdrop-filter:blur(14px);background:#101716a8}.brand{font-size:14px;font-weight:800;letter-spacing:.2em}.brand span{color:var(--lime)}.top-meta,.eyebrow,.floor-index,.scroll-note{font:11px 'DM Mono',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}.top-meta strong{color:var(--lime);font-weight:400}.intro{min-height:100svh;padding:150px 8vw 80px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}.intro:after{content:"";position:absolute;width:55vw;height:55vw;border:1px solid #d6ff7514;border-radius:50%;right:-15vw;top:10%;box-shadow:0 0 0 7vw #d6ff7508,0 0 0 14vw #d6ff7505;pointer-events:none}.eyebrow{color:var(--lime)}h1{font-size:clamp(58px,11vw,160px);line-height:.88;letter-spacing:-.09em;margin:28px 0;max-width:950px;font-weight:600}h1 em{font-style:normal;color:var(--lime)}.intro-copy{max-width:430px;color:#aeb9b2;line-height:1.8;font-size:15px}.intro-bottom{display:flex;align-items:center;gap:20px;margin-top:70px}.scroll-cue{width:42px;height:42px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--lime);font-size:20px}.scroll-note{max-width:160px;line-height:1.6}.experience{height:780vh;position:relative}.stage{position:sticky;top:0;height:100svh;min-height:650px;overflow:hidden;background:radial-gradient(ellipse at 68% 48%,#34443b 0,#1a2622 32%,#101716 72%)}.stage:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#101716 0%,transparent 60%),linear-gradient(0deg,#101716 0%,transparent 30%);z-index:1;pointer-events:none}.stage-grid{position:absolute;inset:0;background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:70px 70px;mask-image:linear-gradient(90deg,transparent,#000 50%,#000);opacity:.28}.building-wrap{position:absolute;inset:0 0 0 28%;z-index:0}.building-wrap canvas{width:100%;height:100%;display:block}.floor-panel{position:absolute;z-index:3;left:8vw;top:50%;transform:translateY(-50%);width:min(330px,36vw)}.floor-index{color:var(--lime)}.floor-panel h2{font-size:clamp(34px,5vw,66px);letter-spacing:-.07em;line-height:.98;margin:18px 0 12px}.floor-price{font-size:22px;font-weight:700;margin:20px 0 10px}.floor-desc{color:#aeb9b2;line-height:1.7;font-size:13px;max-width:290px}.floor-rule{height:1px;background:var(--line);margin:25px 0;position:relative}.floor-rule:after{content:"";position:absolute;left:0;top:-2px;width:54px;height:4px;background:var(--lime);box-shadow:0 0 18px var(--lime)}.floor-specs{display:flex;gap:24px}.spec small{display:block;color:var(--muted);font:10px 'DM Mono';letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}.spec strong{font-size:13px}.floor-track{position:absolute;z-index:3;left:5vw;top:18%;bottom:18%;width:1px;background:#ffffff24}.floor-track-fill{width:2px;height:0;background:var(--lime);box-shadow:0 0 12px var(--lime)}.track-dot{position:absolute;left:-4px;width:9px;height:9px;border-radius:50%;background:var(--lime);box-shadow:0 0 16px var(--lime);top:0}.stage-label{position:absolute;z-index:3;right:5vw;top:115px;text-align:right}.stage-label strong{display:block;font-size:12px;letter-spacing:.18em}.stage-label span{font:10px 'DM Mono';color:var(--muted)}.scroll-progress{position:absolute;z-index:4;bottom:35px;left:8vw;right:8vw;height:2px;background:#ffffff20}.scroll-progress span{display:block;width:0;height:100%;background:var(--lime)}.stage-bottom{position:absolute;z-index:3;bottom:55px;right:5vw;font:10px 'DM Mono';color:var(--muted);letter-spacing:.13em}.closing{min-height:90svh;padding:140px 8vw;display:flex;flex-direction:column;justify-content:center;background:#d6ff75;color:#17201a}.closing .eyebrow{color:#43533f}.closing h2{font-size:clamp(48px,9vw,120px);letter-spacing:-.09em;line-height:.9;max-width:900px;margin:25px 0}.closing p{max-width:440px;line-height:1.8;color:#455347}.closing a{margin-top:25px;display:inline-flex;align-items:center;gap:18px;border-bottom:1px solid #17201a;padding:12px 0;width:max-content;font:11px 'DM Mono';letter-spacing:.1em}.footer{padding:25px 5vw;display:flex;justify-content:space-between;color:var(--muted);font:10px 'DM Mono';letter-spacing:.1em;text-transform:uppercase}
-@media(max-width:700px){.topbar{padding:18px 6vw}.top-meta{font-size:9px}.intro{padding:130px 7vw 60px}.intro-bottom{margin-top:48px}.experience{height:720vh}.stage{min-height:600px}.building-wrap{inset:8% -20% 0 7%;opacity:.86}.stage:before{background:linear-gradient(90deg,#101716 0%,#101716a8 34%,transparent 100%),linear-gradient(0deg,#101716 0%,transparent 35%)}.floor-panel{left:12vw;top:auto;bottom:105px;transform:none;width:72vw}.floor-panel h2{font-size:42px;margin:10px 0}.floor-price{font-size:18px;margin:12px 0 6px}.floor-desc{font-size:12px;max-width:280px}.floor-rule{margin:15px 0}.floor-track{left:6vw;top:14%;bottom:27%}.stage-label{top:85px;right:7vw}.stage-bottom{display:none}.scroll-progress{left:12vw;right:12vw;bottom:75px}.closing{padding:110px 7vw}.footer{gap:15px;flex-wrap:wrap}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-</style>
-</head>
+:root{--bg:#101715;--panel:#18221e;--ink:#eef2ed;--muted:#9ba9a0;--lime:#d6ff75;--line:#ffffff20}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope, sans-serif}button{font:inherit;color:inherit}.topbar{position:fixed;z-index:20;top:0;left:0;width:100%;padding:20px 5vw;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);background:#101715c9;backdrop-filter:blur(16px)}.brand{font-weight:800;letter-spacing:.2em;font-size:14px;text-decoration:none;color:var(--ink)}.brand span{color:var(--lime)}.topmeta,.eyebrow,.mono{font:10px 'DM Mono',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}.topmeta b{color:var(--lime);font-weight:400}.hero{min-height:100svh;padding:145px 7vw 70px;display:grid;grid-template-columns:.8fr 1.2fr;align-items:center;gap:3vw;position:relative;overflow:hidden}.hero-copy{position:relative;z-index:2}.eyebrow{color:var(--lime)}h1{font-size:clamp(58px,8vw,116px);line-height:.86;letter-spacing:-.09em;margin:24px 0;font-weight:600}h1 em{font-style:normal;color:var(--lime)}.hero-copy p:not(.eyebrow){max-width:390px;color:#b2beb6;line-height:1.8;font-size:14px}.hero-stat{display:flex;gap:35px;margin-top:50px}.hero-stat strong{display:block;font-size:22px}.hero-stat span{font:9px 'DM Mono';color:var(--muted);letter-spacing:.12em}.hero-visual{height:min(76vh,700px);min-height:440px;position:relative}.hero-visual canvas{width:100%;height:100%;display:block}.visual-caption{position:absolute;right:0;bottom:10px;font:9px 'DM Mono';letter-spacing:.14em;color:var(--muted)}.explore{padding:90px 7vw 120px;background:#141d19}.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:42px}.section-head h2{font-size:clamp(38px,6vw,72px);letter-spacing:-.075em;line-height:.95;margin:12px 0 0}.section-head p{max-width:330px;color:var(--muted);font-size:12px;line-height:1.7}.explorer{display:grid;grid-template-columns:1fr 1.1fr;gap:24px;align-items:stretch}.floor-map{background:#101715;border:1px solid var(--line);padding:25px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-content:start}.floor-btn{min-height:78px;border:1px solid #ffffff22;background:#19231e;cursor:pointer;text-align:left;padding:12px;transition:.2s}.floor-btn:hover,.floor-btn.active{border-color:var(--lime);background:#263326}.floor-btn small{display:block;font:9px 'DM Mono';color:var(--muted);margin-bottom:8px}.floor-btn strong{font-size:15px}.floor-btn.active strong{color:var(--lime)}.floor-info{background:#1b2721;border:1px solid var(--line);padding:clamp(22px,4vw,42px);min-height:350px}.floor-info-top{display:flex;justify-content:space-between;gap:15px;align-items:center}.floor-info h3{font-size:clamp(32px,4vw,52px);letter-spacing:-.07em;margin:20px 0 10px}.floor-info>p{color:#b0bdb4;font-size:13px;line-height:1.75;max-width:520px}.pill{border:1px solid #d6ff7555;color:var(--lime);padding:8px 10px;font:9px 'DM Mono';letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}.floor-meta{display:flex;gap:30px;margin:25px 0}.floor-meta small{display:block;color:var(--muted);font:9px 'DM Mono';text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}.floor-meta strong{font-size:13px}.room-heading{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:20px;margin-top:22px}.room-heading strong{font-size:14px}.room-heading span{font:9px 'DM Mono';color:var(--muted)}.rooms{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}.room{border:1px solid #ffffff20;background:#111a16;padding:15px;cursor:pointer;text-align:left;min-height:112px}.room:hover,.room.selected{border-color:var(--lime)}.room .room-top{display:flex;justify-content:space-between;gap:8px}.room b{font-size:13px}.room small{font:9px 'DM Mono';color:var(--lime)}.room p{font-size:11px;line-height:1.5;color:var(--muted);margin:10px 0 0}.room-detail{margin-top:12px;padding:18px;background:#111a16;border-left:2px solid var(--lime);display:none}.room-detail.show{display:block}.room-detail h4{margin:0 0 8px;font-size:17px}.room-detail p{font-size:12px;line-height:1.7;color:#b3beb6;margin:0}.room-detail .room-price{color:var(--lime);font-weight:700;margin-top:10px}.note{font:9px 'DM Mono';color:var(--muted);margin-top:25px;line-height:1.7}.cta{padding:110px 7vw;background:var(--lime);color:#182119}.cta .eyebrow{color:#4d5d43}.cta h2{font-size:clamp(48px,8vw,105px);line-height:.9;letter-spacing:-.09em;margin:20px 0;max-width:850px}.cta p{max-width:440px;color:#455347;font-size:13px;line-height:1.8}.cta a{display:inline-block;margin-top:22px;border-bottom:1px solid #182119;padding:12px 0;text-decoration:none;color:#182119;font:10px 'DM Mono';letter-spacing:.12em}.footer{padding:25px 5vw;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:var(--muted);font:9px 'DM Mono';letter-spacing:.12em}
+@media(max-width:800px){.hero{grid-template-columns:1fr;padding-top:130px;gap:0}.hero-visual{height:55vh;min-height:360px;grid-row:1}.hero-copy{grid-row:2;margin-top:-15px}.hero h1{font-size:clamp(58px,14vw,92px)}.hero-stat{margin-top:28px}.section-head{display:block}.section-head p{margin-top:18px}.explorer{grid-template-columns:1fr}.floor-map{grid-template-columns:repeat(4,1fr);padding:14px;gap:7px}.floor-btn{min-height:65px;padding:9px}.floor-btn small{font-size:8px}.floor-btn strong{font-size:12px}.floor-info{padding:22px}.rooms{grid-template-columns:1fr 1fr}}
+@media(max-width:430px){.topbar{padding:17px 6vw}.topmeta{font-size:8px}.floor-map{grid-template-columns:repeat(2,1fr)}.floor-btn{min-height:58px}.floor-meta{gap:18px}.room{padding:12px}.rooms{grid-template-columns:1fr}}
+</style></head>
 <body>
-<header class="topbar"><a class="brand" href="../../../index.html">STACKED<span>.</span></a><div class="top-meta">PROPERTY / <strong>01—08</strong></div></header>
-<section class="intro">
-<p class="eyebrow">A NEW WAY TO EXPERIENCE PROPERTY</p>
-<h1>BUILT<br>FROM THE<br><em>GROUND UP.</em></h1>
-<p class="intro-copy">A building is more than its address. Scroll through the structure as it rises, floor by floor, and discover the spaces taking shape.</p>
-<div class="intro-bottom"><div class="scroll-cue">↓</div><div class="scroll-note">SCROLL TO CONSTRUCT<br>THE EXPERIENCE</div></div>
+<header class="topbar"><a class="brand" href="../../../index.html">STACKED<span>.</span></a><div class="topmeta">BEZA'S HOTEL / <b>RESIDENCES</b></div></header>
+<section class="hero">
+<div class="hero-copy"><p class="eyebrow">A COASTAL HOTEL RESIDENCE</p><h1>BEZA'S<br><em>HOTEL.</em></h1><p>A finished architectural vision. Explore the complete building, move through its levels, then open each floor to discover its room collection, layouts and illustrative availability.</p><div class="hero-stat"><div><strong>08</strong><span>LEVELS</span></div><div><strong>32</strong><span>ROOM TYPES</span></div><div><strong>01</strong><span>DESTINATION</span></div></div></div>
+<div class="hero-visual" id="hotel-view"><div class="visual-caption">FULL BUILDING / ARCHITECTURAL CONCEPT</div></div>
 </section>
-<section class="experience" id="building">
-<div class="stage">
-<div class="stage-grid"></div>
-<div class="building-wrap" id="building-canvas"></div>
-<div class="floor-track"><div class="floor-track-fill" id="track-fill"></div><div class="track-dot" id="track-dot"></div></div>
-<div class="floor-panel">
-<div class="floor-index" id="floor-index">LEVEL 01 / 08</div>
-<h2 id="floor-name">THE ARRIVAL</h2>
-<div class="floor-price" id="floor-price">From R 2,450,000</div>
-<p class="floor-desc" id="floor-desc">A considered entrance to elevated coastal living, with generous shared spaces and a calm arrival experience.</p>
-<div class="floor-rule"></div>
-<div class="floor-specs"><div class="spec"><small>Residence</small><strong id="floor-type">Studio + 1 Bed</strong></div><div class="spec"><small>Availability</small><strong id="floor-status">Available</strong></div></div>
+<section class="explore" id="explore">
+<div class="section-head"><div><p class="eyebrow">THE HOTEL, LEVEL BY LEVEL</p><h2>Find your floor.</h2></div><p>Choose a level below or scroll through the floor sections. Select any room to open its layout format, features and indicative rate.</p></div>
+<div class="explorer">
+<div class="floor-map" id="floor-map" aria-label="Select hotel floor"></div>
+<div class="floor-info" aria-live="polite">
+<div class="floor-info-top"><span class="eyebrow" id="floor-number">LEVEL 01 / 08</span><span class="pill" id="floor-availability">ROOMS AVAILABLE</span></div>
+<h3 id="floor-title">The Arrival</h3><p id="floor-description"></p>
+<div class="floor-meta"><div><small>Room collection</small><strong id="floor-collection"></strong></div><div><small>From</small><strong id="floor-rate"></strong></div><div><small>Floor</small><strong id="floor-view">Garden outlook</strong></div></div>
+<div class="room-heading"><strong>Available rooms</strong><span>SELECT A ROOM TO VIEW FORMAT</span></div>
+<div class="rooms" id="rooms"></div>
+<div class="room-detail" id="room-detail"><h4 id="room-detail-title"></h4><p id="room-detail-copy"></p><div class="room-price" id="room-detail-price"></div></div>
+<p class="note">CONCEPT DEMONSTRATION ONLY · Room inventory, layouts, prices and availability are sample data, not live bookings or real property offers.</p>
 </div>
-<div class="stage-label"><strong>THE STACK / RESIDENCES</strong><span>SCROLL TO EXPLORE EACH LEVEL</span></div>
-<div class="scroll-progress"><span id="progress-fill"></span></div>
-<div class="stage-bottom">ARCHITECTURAL SEQUENCE — CONCEPT VISUALISATION</div>
 </div>
 </section>
-<section class="closing" id="enquiry"><p class="eyebrow">THE VIEW FROM HERE</p><h2>YOUR NEXT<br>CHAPTER STARTS<br>ABOVE.</h2><p>Explore a place designed around light, space and the everyday rituals that make a home. This is a concept development; residence pricing and availability are illustrative.</p><a href="mailto:hello@alienwayproduction.co.za?subject=STACKED%20Concept%20Enquiry">ENQUIRE ABOUT STACKED <span>↗</span></a></section>
-<footer class="footer"><span>STACKED / REAL ESTATE</span><span>AN ALIENWAY PRODUCTION CONCEPT</span><span>© 2026</span></footer>
+<section class="cta"><p class="eyebrow">A PLACE ABOVE THE ORDINARY</p><h2>Make room<br>for a new view.</h2><p>Explore the Beza's Hotel concept with the Alienway Production team.</p><a href="mailto:hello@alienwayproduction.co.za?subject=Bezas%20Hotel%20Enquiry">ENQUIRE ABOUT THE HOTEL ↗</a></section>
+<footer class="footer"><span>STACKED / REAL ESTATE EXPERIENCE</span><span>AN ALIENWAY PRODUCTION CONCEPT</span><span>© 2026</span></footer>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 <script type="module">
 import * as THREE from 'three';
-import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
-import { ScrollTrigger } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger/+esm';
-gsap.registerPlugin(ScrollTrigger);
-const host=document.getElementById('building-canvas');
-const scene=new THREE.Scene();scene.fog=new THREE.Fog(0x17231f,18,42);
-const camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(11,10,23);camera.lookAt(0,6.3,0);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.setSize(host.clientWidth,host.clientHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0xdcebdc,0x26342d,2));
-const key=new THREE.DirectionalLight(0xffe8c2,3.2);key.position.set(8,16,12);scene.add(key);
-const rim=new THREE.PointLight(0xd6ff75,18,35);rim.position.set(-8,9,-3);scene.add(rim);
+const host=document.getElementById('hotel-view');
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x18231e);scene.fog=new THREE.Fog(0x18231e,22,48);
+const camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(11,10,22);camera.lookAt(0,6,0);
+const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;host.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xe7f0e8,0x28372e,2.2));const sun=new THREE.DirectionalLight(0xffe4bf,3.1);sun.position.set(8,16,12);scene.add(sun);const fill=new THREE.DirectionalLight(0xb4d8c5,1.2);fill.position.set(-9,8,-8);scene.add(fill);
 const building=new THREE.Group();scene.add(building);
-const floors=8, floorH=1.55, width=6.2, depth=4.5, floorGroups=[];
-const constructionGroups=[];
-const glassMat=new THREE.MeshPhysicalMaterial({color:0x9ab6aa,metalness:.28,roughness:.2,transparent:true,opacity:.0,transmission:.12,depthWrite:false});
-const litMat=new THREE.MeshStandardMaterial({color:0xd6ff75,emissive:0x9bc94b,emissiveIntensity:0,metalness:.2,roughness:.35});
-const concrete=new THREE.MeshStandardMaterial({color:0x718078,metalness:.35,roughness:.55});
-const dark=new THREE.MeshStandardMaterial({color:0x26352e,metalness:.45,roughness:.35});
-const railMat=new THREE.MeshPhysicalMaterial({color:0xb7d2c5,metalness:.18,roughness:.12,transparent:true,opacity:.0});
-const warmMat=new THREE.MeshStandardMaterial({color:0xffd99a,emissive:0xffb65c,emissiveIntensity:0});
+const mats={stone:new THREE.MeshStandardMaterial({color:0xaaa99b,roughness:.82}),dark:new THREE.MeshStandardMaterial({color:0x35443d,roughness:.55}),glass:new THREE.MeshPhysicalMaterial({color:0x56776d,metalness:.3,roughness:.17,transparent:true,opacity:.9}),balcony:new THREE.MeshStandardMaterial({color:0xc3c1b2,roughness:.7}),rail:new THREE.MeshPhysicalMaterial({color:0xb8d0c7,metalness:.2,roughness:.12,transparent:true,opacity:.55}),warm:new THREE.MeshStandardMaterial({color:0xffd49a,emissive:0xffa84d,emissiveIntensity:.65}),green:new THREE.MeshStandardMaterial({color:0x405d48,roughness:1})};
 function box(parent,w,h,d,mat,x,y,z){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);parent.add(m);return m}
-for(let i=0;i<floors;i++){
- const g=new THREE.Group();g.position.y=i*floorH;building.add(g);floorGroups.push(g);
- box(g,width,.13,depth,concrete,0,0,0);
- // Structural corner columns and rear spine
- for(const x of [-width/2+.12,width/2-.12])for(const z of [-depth/2+.12,depth/2-.12])box(g,.16,floorH,.16,concrete,x,floorH/2,z);
- const frame=new THREE.Group();g.add(frame);constructionGroups.push(frame);
- for(const x of [-width/2,width/2])for(const z of [-depth/2,depth/2])box(frame,.07,floorH,.07,litMat,x,floorH/2,z);
- box(frame,width,.055,.055,litMat,0,floorH-.04,depth/2);
- box(frame,.055,floorH,depth,litMat,width/2,.0,0);
- box(g,.18,floorH,depth,dark,-width/2+.25,floorH/2,0);
- // Balcony slab and transparent balustrade
- box(g,width+.65,.1,1.05,concrete,0,.2,depth/2+.42);
- const rail=box(g,width+.55,.72,.045,railMat,0,.62,depth/2+.91);rail.userData.rail=true;
- box(g,width+.62,.045,.07,dark,0,.99,depth/2+.91);
- // Glass facade: front and sides, split into panels
- for(let p=0;p<5;p++){const x=-width/2+.68+p*(width-1.36)/4;const pane=box(g,1.05,1.1,.055,glassMat,x,.78,-depth/2+.05);pane.userData.glass=true;}
- for(const side of [-1,1])for(let p=0;p<3;p++){const z=-depth/2+.55+p*(depth-1.1)/2;box(g,.055,1.1,1.0,glassMat,side*(width/2-.05),.78,z);}
- // slim facade mullions give the glazing a more architectural rhythm
- for(let p=0;p<=5;p++){const x=-width/2+.15+p*(width-.3)/5;box(g,.035,1.16,.07,dark,x,.78,-depth/2-.015);}
- // warm interior light strips and interior glow panels
- const strip=box(g,width-.5,.025,.035,litMat,0,.24,-depth/2+.12);strip.userData.strip=true;
- for(let p=0;p<3;p++){const x=-1.65+p*1.65;const glow=box(g,.62,.48,.025,warmMat,x,.77,-depth/2+.09);glow.userData.warm=true;}
- // floor marker glow on balcony
- const marker=new THREE.PointLight(0xd6ff75,0,5);marker.position.set(0,.7,depth/2+1);g.add(marker);g.userData.marker=marker;
- g.userData.baseY=i*floorH;
+const W=7.2,D=5.2,H=1.55,N=8;
+// A consistent finished hotel mass, with a grounded podium and repeated balcony rhythm.
+box(building,W+1.5,.9,D+1.4,mats.dark,0,.45,0);
+box(building,W+1.1,.18,D+1.0,mats.stone,0,.99,0);
+for(let f=0;f<N;f++){
+ const y=1.1+f*H;
+ box(building,W,.16,D,mats.stone,0,y,0);
+ // solid side piers and rear wall establish a believable building silhouette
+ box(building,.24,H,D,mats.stone,-W/2+.08,y+H/2,0);box(building,.24,H,D,mats.stone,W/2-.08,y+H/2,0);
+ box(building,W-.35,H,.18,mats.dark,0,y+H/2,-D/2+.08);
+ // glazed front facade, regular mullions and illuminated room bays
+ for(let p=0;p<6;p++){const x=-W/2+.48+p*(W-.96)/5;box(building,.035,H-.22,.09,mats.dark,x,y+H/2,D/2-.08);box(building,1.02,H-.34,.055,mats.glass,x,y+H/2,D/2-.04);box(building,.7,.72,.025,mats.warm,x,y+.72,D/2+.005);}
+ // deep continuous balcony with a crisp glass balustrade and side returns
+ box(building,W+.28,.13,1.05,mats.balcony,0,y+.18,D/2+.52);
+ box(building,W+.15,.055,.045,mats.rail,0,y+.78,D/2+1.02);
+ for(let x=-W/2+.12;x<=W/2;x+=.55)box(building,.025,.58,.035,mats.rail,x,y+.48,D/2+1.02);
+ box(building,.05,.58,1.02,mats.rail,-W/2-.02,y+.48,D/2+.52);box(building,.05,.58,1.02,mats.rail,W/2+.02,y+.48,D/2+.52);
+ // dark slab edge
+ box(building,W+.2,.09,.12,mats.dark,0,y+.06,D/2+.1);
 }
-const podium=new THREE.Group();building.add(podium);podium.position.y=-.75;
-box(podium,width+1,.45,depth+1,concrete,0,0,0);
-box(podium,width+.55,.08,depth+.55,dark,0,.26,0);
-for(let p=0;p<7;p++){const x=-width/2+.4+p*(width-.8)/6;box(podium,.045,.34,.05,litMat,x,.42,depth/2+.48);}
-// Rooftop crown and a light architectural cap
-const crown=new THREE.Group();building.add(crown);crown.position.y=floors*floorH;
-box(crown,width+.25,.22,depth+.25,concrete,0,0,0);
-box(crown,width-.45,.12,depth-.45,dark,0,.18,0);
-for(let x=-2;x<=2;x+=1)box(crown,.035,.75,.035,litMat,x,.62,-depth/2+.22);
-const ground=new THREE.Mesh(new THREE.CircleGeometry(13,64),new THREE.MeshBasicMaterial({color:0x18231e,transparent:true,opacity:.75}));ground.rotation.x=-Math.PI/2;ground.position.y=-.12;scene.add(ground);
-const grid=new THREE.GridHelper(28,28,0x53645a,0x34443b);grid.position.y=-.1;scene.add(grid);
-const outlineMat=new THREE.MeshBasicMaterial({color:0xd6ff75,wireframe:true,transparent:true,opacity:.0});
-const wire=new THREE.Mesh(new THREE.BoxGeometry(width+.1,floors*floorH+.2,depth+.1),outlineMat);wire.position.y=(floors*floorH)/2;building.add(wire);
-const data=[
- ['THE ARRIVAL','From R 2,450,000','A considered entrance to elevated coastal living, with generous shared spaces and a calm arrival experience.','Studio + 1 Bed','Available'],
- ['GARDEN LEVEL','From R 2,850,000','Grounded residences with planted outlooks, private terraces and a quieter connection to the landscape.','1–2 Bedrooms','Available'],
- ['THE SOCIAL FLOOR','From R 3,150,000','Open-plan homes shaped for gathering, with generous balconies and uninterrupted living spaces.','1–2 Bedrooms','Limited'],
- ['COASTAL LIVING','From R 3,650,000','Bright, flexible residences with wide glazing and carefully considered everyday functionality.','2 Bedrooms','Available'],
- ['THE COLLECTION','From R 4,250,000','A refined collection of corner residences with expanded views and considered material finishes.','2–3 Bedrooms','Limited'],
- ['THE VIEW RESIDENCES','From R 4,850,000','Elevated homes with long coastal sightlines, generous entertaining areas and private outdoor space.','2–3 Bedrooms','Available'],
- ['SKY HOMES','From R 5,650,000','A smaller set of premium residences with expansive glazing, private outlooks and extra room to unwind.','3 Bedrooms','Few remaining'],
- ['THE PENTHOUSE','POA','The signature residence: exceptional volume, private outdoor living and the building’s highest vantage point.','Penthouse','Enquire']
-];
-function updateFloor(progress){
- const active=Math.min(floors-1,Math.floor(progress*floors));const d=data[active];
- document.getElementById('floor-index').textContent='LEVEL '+String(active+1).padStart(2,'0')+' / 08';
- document.getElementById('floor-name').textContent=d[0];document.getElementById('floor-price').textContent=d[1];document.getElementById('floor-desc').textContent=d[2];document.getElementById('floor-type').textContent=d[3];document.getElementById('floor-status').textContent=d[4];
- document.getElementById('track-fill').style.height=(progress*100)+'%';document.getElementById('track-dot').style.top=(progress*100)+'%';document.getElementById('progress-fill').style.width=(progress*100)+'%';
-}
-function setProgress(p){
- const reveal=Math.max(0,Math.min(1,p));const total=floors*floorH;
- floorGroups.forEach((g,i)=>{
-  const local=THREE.MathUtils.clamp((reveal*1.13-i/floors)*floors,0,1);
-  g.position.y=i*floorH-(1-local)*2.4;
-  g.scale.y=.18+.82*local;
-  constructionGroups[i].visible=local<.98;
-  constructionGroups[i].scale.setScalar(1);
-  constructionGroups[i].position.y=(1-local)*.22;
-  g.children.forEach(o=>{
-   if(o.userData.glass)o.material.opacity=.08+.82*local;
-   if(o.userData.rail)o.material.opacity=.05+.62*local;
-   if(o.userData.warm)o.material.emissiveIntensity=local>.45?.7:0;
-   if(o.userData.strip)o.material.emissiveIntensity=local>.55?1.8:0;
-  });
-  g.userData.marker.intensity=local>.72?2.8:0;
-  g.userData.marker.color.setHex(0xd6ff75);
- });
- outlineMat.opacity=.25*(1-reveal);
- wire.scale.y=.15+.85*reveal;
- building.rotation.y=.18+reveal*.18;
- building.position.y=-.35+reveal*.35;
- updateFloor(reveal);
-}
-setProgress(0);
-ScrollTrigger.create({trigger:'#building',start:'top top',end:'bottom bottom',scrub:1,onUpdate:self=>setProgress(self.progress)});
-function resize(){const w=host.clientWidth,h=host.clientHeight;camera.aspect=w/h;if(w<700){camera.position.set(12,10,29);camera.fov=39;}else{camera.position.set(11,10,23);camera.fov=34;}camera.lookAt(0,6.3,0);camera.updateProjectionMatrix();renderer.setSize(w,h)}
-new ResizeObserver(resize).observe(host);
-function render(){requestAnimationFrame(render);renderer.render(scene,camera)}render();
+// Strong vertical end walls and a clean roof pavilion complete the silhouette.
+box(building,.34,N*H+1.1,.28,mats.dark,-W/2+.05,1.1+(N*H)/2,-D/2+.04);
+box(building,.34,N*H+1.1,.28,mats.dark,W/2-.05,1.1+(N*H)/2,-D/2+.04);
+box(building,W+.35,.28,D+.25,mats.stone,0,1.1+N*H,0);
+box(building,W*.72,.85,D*.72,mats.dark,0,1.1+N*H+.55,0);
+box(building,W*.78,.12,D*.78,mats.stone,0,1.1+N*H+1.02,0);
+for(let i=0;i<5;i++)box(building,.08,.35,.08,mats.rail,-2+i,1.1+N*H+1.2,-1.6);
+const ground=new THREE.Mesh(new THREE.CircleGeometry(15,64),new THREE.MeshStandardMaterial({color:0x29372e,roughness:1}));ground.rotation.x=-Math.PI/2;ground.position.y=-.03;scene.add(ground);
+for(let i=0;i<7;i++){const tree=new THREE.Group();tree.position.set(-7+i*2.2,0,-4.5-(i%2)*1.5);box(tree,.18,1.6,.18,mats.dark,0,.8,0);const crown=new THREE.Mesh(new THREE.SphereGeometry(.75,10,8),mats.green);crown.position.y=2;tree.add(crown);scene.add(tree)}
+function resize(){const w=host.clientWidth,h=host.clientHeight;camera.aspect=w/h;if(innerWidth<800){camera.position.set(10,10,25);camera.fov=39;}else{camera.position.set(11,10,22);camera.fov=34;}camera.lookAt(0,6.5,0);camera.updateProjectionMatrix();renderer.setSize(w,h)}new ResizeObserver(resize).observe(host);resize();
+function animate(){requestAnimationFrame(animate);building.rotation.y=Math.sin(performance.now()*.00016)*.025;renderer.render(scene,camera)}animate();
 </script>
-</body>
-</html>
+<script>
+const floors=[
+{title:'The Arrival',desc:'The hotel welcome level pairs warm hospitality with generous shared spaces, garden outlooks and a calm transition from the coast into the building.',collection:'Suites & studios',rate:'R 2,450 / night',view:'Garden outlook',rooms:[['A01 · Garden Studio','Studio · 34 m²','Open-plan sleeping and lounge zone, kitchenette, walk-in shower and a planted terrace.','R 2,450 / night','Available'],['A02 · Corner Studio','Studio · 39 m²','Corner glazing, queen sleeping area, compact dining nook and garden-facing balcony.','R 2,750 / night','Available'],['A03 · Courtyard Suite','1 bedroom · 48 m²','Separate bedroom, full bathroom, lounge and private courtyard outlook.','R 3,150 / night','Limited'],['A04 · Accessible Suite','1 bedroom · 51 m²','Step-free circulation, accessible bathroom, generous turning space and separate lounge.','R 3,250 / night','Available']]},
+{title:'Garden Level',desc:'A softer, greener floor with rooms opening toward landscaped terraces and quiet pockets for slow mornings.',collection:'Garden rooms',rate:'R 2,850 / night',view:'Landscaped terrace',rooms:[['B01 · Garden King','1 bedroom · 42 m²','King bedroom, lounge chair, full bathroom and a private planted patio.','R 2,850 / night','Available'],['B02 · Terrace Suite','1 bedroom · 49 m²','Separate lounge, dining corner and wide terrace with garden access.','R 3,250 / night','Available'],['B03 · Family Garden','2 bedrooms · 68 m²','Two sleeping rooms, shared lounge, family bathroom and a sheltered terrace.','R 4,250 / night','Limited'],['B04 · Garden Deluxe','1 bedroom · 46 m²','Open-plan suite with a super-king bed, reading nook and outdoor seating.','R 3,450 / night','Available']]},
+{title:'The Social Floor',desc:'A lively collection close to the hotel’s social spaces. Flexible room formats make it ideal for couples and small groups.',collection:'Social suites',rate:'R 3,150 / night',view:'Pool & courtyard',rooms:[['C01 · Poolside King','1 bedroom · 44 m²','King bedroom, lounge zone and balcony looking toward the pool deck.','R 3,150 / night','Available'],['C02 · Twin Social','Twin · 40 m²','Two full-size beds, work desk, shower room and shared balcony.','R 3,250 / night','Available'],['C03 · Friends Suite','2 bedrooms · 70 m²','Two ensuite bedrooms with a shared living and dining space.','R 4,650 / night','Limited'],['C04 · Social Corner','1 bedroom · 52 m²','Corner suite with wraparound glazing and a generous lounge.','R 3,850 / night','Available']]},
+{title:'Coastal Living',desc:'Bright, practical rooms with wide glazing, clean lines and generous space to settle in for a longer stay.',collection:'Coastal rooms',rate:'R 3,650 / night',view:'Partial sea view',rooms:[['D01 · Coastal King','1 bedroom · 45 m²','King bedroom, full bathroom and a balcony with a partial sea view.','R 3,650 / night','Available'],['D02 · Coastal Twin','Twin · 43 m²','Twin beds, desk, lounge chair and full-height sliding doors.','R 3,650 / night','Available'],['D03 · Family Coastal','2 bedrooms · 73 m²','Two bedrooms, two bathrooms and a shared lounge with balcony.','R 5,250 / night','Limited'],['D04 · Wide View Suite','1 bedroom · 54 m²','Separate lounge and broad coastal-facing glazing with a dining nook.','R 4,350 / night','Available']]},
+{title:'The Collection',desc:'A more intimate set of corner and upgraded rooms, with considered finishes and wider views across the coastline.',collection:'Signature suites',rate:'R 4,250 / night',view:'Open coastal view',rooms:[['E01 · Signature King','1 bedroom · 50 m²','King bedroom, premium bathroom finishes and a deep private balcony.','R 4,250 / night','Available'],['E02 · Signature Corner','1 bedroom · 58 m²','Corner glazing, separate lounge and panoramic coastal outlook.','R 4,850 / night','Available'],['E03 · Two Bedroom Select','2 bedrooms · 82 m²','Two ensuite bedrooms, full kitchen and large shared living space.','R 6,250 / night','Limited'],['E04 · Signature Family','2 bedrooms · 78 m²','Flexible family layout, two bathrooms and an outdoor dining terrace.','R 5,950 / night','Available']]},
+{title:'The View Residences',desc:'Elevated stays with long sightlines, outdoor entertaining space and layouts designed around the view.',collection:'View residences',rate:'R 4,850 / night',view:'Panoramic sea view',rooms:[['F01 · View King','1 bedroom · 52 m²','King bedroom, freestanding bath and private sea-facing balcony.','R 4,850 / night','Available'],['F02 · Horizon Suite','1 bedroom · 61 m²','Separate lounge, dining area and uninterrupted horizon-facing glazing.','R 5,450 / night','Available'],['F03 · View Family','2 bedrooms · 88 m²','Two ensuite bedrooms, open-plan kitchen and panoramic balcony.','R 7,250 / night','Limited'],['F04 · Grand View','2 bedrooms · 94 m²','Large entertaining lounge, two bathrooms and corner sea views.','R 7,850 / night','Available']]},
+{title:'Sky Homes',desc:'A limited number of premium upper-level homes with expansive glazing, calm interiors and room to unwind.',collection:'Sky suites',rate:'R 5,650 / night',view:'Elevated sea view',rooms:[['G01 · Sky King','1 bedroom · 56 m²','King bedroom, dressing area, premium bathroom and elevated balcony.','R 5,650 / night','Available'],['G02 · Sky Corner','1 bedroom · 67 m²','Corner suite with a separate lounge and wide-angle sea views.','R 6,350 / night','Available'],['G03 · Sky Family','2 bedrooms · 96 m²','Two ensuite bedrooms, full kitchen and expansive living space.','R 8,250 / night','Limited'],['G04 · Sky Residence','3 bedrooms · 118 m²','Three-bedroom layout with generous dining and a wraparound balcony.','R 9,850 / night','Available']]},
+{title:'The Penthouse',desc:'The signature top-floor residence: exceptional volume, private outdoor living and the hotel’s highest vantage point.',collection:'Private penthouses',rate:'On request',view:'Signature panorama',rooms:[['PH01 · The Penthouse','3 bedrooms · 186 m²','Three ensuite bedrooms, private dining, full kitchen, double lounge and a large private terrace.','POA · Enquire','Available'],['PH02 · Sky Villa','2 bedrooms · 142 m²','Two ensuite bedrooms, double-height lounge and private plunge-pool terrace.','POA · Enquire','Limited'],['PH03 · Horizon Residence','2 bedrooms · 128 m²','Corner residence with wraparound glazing, private dining and premium finishes.','POA · Enquire','Available'],['PH04 · Presidential Suite','2 bedrooms · 154 m²','Grand entertaining lounge, two suites, private service entry and panoramic terrace.','POA · Enquire','Enquire']]}
+];
+const map=document.getElementById('floor-map'),rooms=document.getElementById('rooms');let active=0;
+floors.forEach((f,i)=>{const b=document.createElement('button');b.className='floor-btn';b.type='button';b.innerHTML='<small>LEVEL '+String(i+1).padStart(2,'0')+'</small><strong>'+f.title+'</strong>';b.addEventListener('click',()=>selectFloor(i,true));map.appendChild(b)});
+function selectFloor(i,scroll){active=i;const f=floors[i];document.querySelectorAll('.floor-btn').forEach((b,n)=>b.classList.toggle('active',n===i));document.getElementById('floor-number').textContent='LEVEL '+String(i+1).padStart(2,'0')+' / 08';document.getElementById('floor-title').textContent=f.title;document.getElementById('floor-description').textContent=f.desc;document.getElementById('floor-collection').textContent=f.collection;document.getElementById('floor-rate').textContent=f.rate;document.getElementById('floor-view').textContent=f.view;document.getElementById('floor-availability').textContent=f.rooms.some(r=>r[4]==='Available')?'ROOMS AVAILABLE':'ENQUIRY ONLY';rooms.innerHTML='';document.getElementById('room-detail').classList.remove('show');f.rooms.forEach((r,n)=>{const b=document.createElement('button');b.type='button';b.className='room';b.innerHTML='<div class="room-top"><b>'+r[0]+'</b><small>'+r[4].toUpperCase()+'</small></div><p>'+r[1]+' · '+r[3]+'</p>';b.addEventListener('click',()=>{document.querySelectorAll('.room').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');document.getElementById('room-detail-title').textContent=r[0]+' — '+r[1];document.getElementById('room-detail-copy').textContent=r[2]+' Sample availability: '+r[4]+'.';document.getElementById('room-detail-price').textContent=r[3];document.getElementById('room-detail').classList.add('show')});rooms.appendChild(b)});if(scroll)document.querySelector('.floor-info').scrollIntoView({behavior:'smooth',block:'center'})}
+selectFloor(0,false);
+const section=document.getElementById('explore');let ticking=false;window.addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{const rect=section.getBoundingClientRect();if(rect.top<innerHeight*.65&&rect.bottom>innerHeight*.25){const p=Math.max(0,Math.min(.999,(innerHeight*.65-rect.top)/(rect.height+innerHeight*.3)));const index=Math.min(7,Math.floor(p*8));if(index!==active)selectFloor(index,false)}ticking=false})},{passive:true});
+</script>
+</body></html>

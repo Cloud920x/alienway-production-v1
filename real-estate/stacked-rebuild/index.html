@@ -41,24 +41,24 @@
 <div class="stage-bottom">ARCHITECTURAL SEQUENCE — CONCEPT VISUALISATION</div>
 </div>
 </section>
-<section class="closing"><p class="eyebrow">THE VIEW FROM HERE</p><h2>YOUR NEXT<br>CHAPTER STARTS<br>ABOVE.</h2><p>Explore a place designed around light, space and the everyday rituals that make a home.</p><a href="mailto:hello@stacked.example?subject=STACKED%20Property%20Enquiry">ENQUIRE ABOUT STACKED <span>↗</span></a></section>
+<section class="closing" id="enquiry"><p class="eyebrow">THE VIEW FROM HERE</p><h2>YOUR NEXT<br>CHAPTER STARTS<br>ABOVE.</h2><p>Explore a place designed around light, space and the everyday rituals that make a home. This is a concept development; residence pricing and availability are illustrative.</p><a href="mailto:hello@alienwayproduction.co.za?subject=STACKED%20Concept%20Enquiry">ENQUIRE ABOUT STACKED <span>↗</span></a></section>
 <footer class="footer"><span>STACKED / REAL ESTATE</span><span>AN ALIENWAY PRODUCTION CONCEPT</span><span>© 2026</span></footer>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 <script type="module">
 import * as THREE from 'three';
-import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js';
-import { ScrollTrigger } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js';
+import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
+import { ScrollTrigger } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger/+esm';
 gsap.registerPlugin(ScrollTrigger);
 const host=document.getElementById('building-canvas');
 const scene=new THREE.Scene();scene.fog=new THREE.Fog(0x17231f,18,42);
 const camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(11,10,23);camera.lookAt(0,7,0);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(host.clientWidth,host.clientHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.appendChild(renderer.domElement);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.setSize(host.clientWidth,host.clientHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.appendChild(renderer.domElement);
 scene.add(new THREE.HemisphereLight(0xdcebdc,0x26342d,2));
 const key=new THREE.DirectionalLight(0xffe8c2,3.2);key.position.set(8,16,12);scene.add(key);
 const rim=new THREE.PointLight(0xd6ff75,18,35);rim.position.set(-8,9,-3);scene.add(rim);
 const building=new THREE.Group();scene.add(building);
 const floors=8, floorH=1.55, width=6.2, depth=4.5, floorGroups=[];
-const glassMat=new THREE.MeshPhysicalMaterial({color:0x9ab6aa,metalness:.28,roughness:.2,transparent:true,opacity:.0,transmission:.12});
+const glassMat=new THREE.MeshPhysicalMaterial({color:0x9ab6aa,metalness:.28,roughness:.2,transparent:true,opacity:.0,transmission:.12,depthWrite:false});
 const litMat=new THREE.MeshStandardMaterial({color:0xd6ff75,emissive:0x9bc94b,emissiveIntensity:0,metalness:.2,roughness:.35});
 const concrete=new THREE.MeshStandardMaterial({color:0x718078,metalness:.35,roughness:.55});
 const dark=new THREE.MeshStandardMaterial({color:0x26352e,metalness:.45,roughness:.35});

@@ -78,8 +78,34 @@ for(let i=0;i<5;i++)box(building,.08,.35,.08,mats.rail,-2+i,1.1+N*H+1.2,-1.6);
 const ground=new THREE.Mesh(new THREE.CircleGeometry(15,64),new THREE.MeshStandardMaterial({color:0x29372e,roughness:1}));ground.rotation.x=-Math.PI/2;ground.position.y=-.03;scene.add(ground);
 for(let i=0;i<7;i++){const tree=new THREE.Group();tree.position.set(-7+i*2.2,0,-4.5-(i%2)*1.5);box(tree,.18,1.6,.18,mats.dark,0,.8,0);const crown=new THREE.Mesh(new THREE.SphereGeometry(.75,10,8),mats.green);crown.position.y=2;tree.add(crown);scene.add(tree)}
 const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
-renderer.domElement.addEventListener('pointermove',e=>{const r=renderer.domElement.getBoundingClientRect();pointer.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);raycaster.setFromCamera(pointer,camera);renderer.domElement.style.cursor=raycaster.intersectObjects(floorPickMeshes,false).length?'pointer':'grab'});
-renderer.domElement.addEventListener('click',e=>{const r=renderer.domElement.getBoundingClientRect();pointer.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);raycaster.setFromCamera(pointer,camera);const hit=raycaster.intersectObjects(floorPickMeshes,false)[0];if(hit&&typeof window.openHotelFloor==='function')window.openHotelFloor(hit.object.userData.floorIndex)});
+renderer.domElement.style.touchAction='manipulation';
+function pickHotelFloor(e){
+ const rect=renderer.domElement.getBoundingClientRect();
+ if(!rect.width||!rect.height)return;
+ pointer.set(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);
+ camera.updateMatrixWorld(true);building.updateMatrixWorld(true);
+ raycaster.setFromCamera(pointer,camera);
+ const hits=raycaster.intersectObjects(floorPickMeshes,false);
+ if(hits.length){
+  const index=hits[0].object.userData.floorIndex;
+  if(Number.isInteger(index)&&typeof window.openHotelFloor==='function'){
+   window.openHotelFloor(index);
+   renderer.domElement.style.cursor='pointer';
+   e.preventDefault();
+   return true;
+  }
+ }
+ return false;
+}
+renderer.domElement.addEventListener('pointermove',e=>{
+ const rect=renderer.domElement.getBoundingClientRect();
+ pointer.set(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);
+ camera.updateMatrixWorld(true);building.updateMatrixWorld(true);
+ raycaster.setFromCamera(pointer,camera);
+ renderer.domElement.style.cursor=raycaster.intersectObjects(floorPickMeshes,false).length?'pointer':'grab';
+});
+renderer.domElement.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')pickHotelFloor(e);});
+renderer.domElement.addEventListener('click',e=>pickHotelFloor(e));
 function resize(){const w=host.clientWidth,h=host.clientHeight;camera.aspect=w/h;if(innerWidth<800){camera.position.set(10,10,25);camera.fov=39;}else{camera.position.set(11,10,22);camera.fov=34;}camera.lookAt(0,6.5,0);camera.updateProjectionMatrix();renderer.setSize(w,h)}new ResizeObserver(resize).observe(host);resize();
 function animate(){requestAnimationFrame(animate);building.rotation.y=Math.sin(performance.now()*.00016)*.025;renderer.render(scene,camera)}animate();
 </script>

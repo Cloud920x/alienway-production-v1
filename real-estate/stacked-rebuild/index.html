@@ -51,7 +51,7 @@ import { ScrollTrigger } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTr
 gsap.registerPlugin(ScrollTrigger);
 const host=document.getElementById('building-canvas');
 const scene=new THREE.Scene();scene.fog=new THREE.Fog(0x17231f,18,42);
-const camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(11,10,23);camera.lookAt(0,7,0);
+const camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(11,10,23);camera.lookAt(0,6.3,0);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.setSize(host.clientWidth,host.clientHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.appendChild(renderer.domElement);
 scene.add(new THREE.HemisphereLight(0xdcebdc,0x26342d,2));
 const key=new THREE.DirectionalLight(0xffe8c2,3.2);key.position.set(8,16,12);scene.add(key);
@@ -74,12 +74,23 @@ for(let i=0;i<floors;i++){
  // Glass facade: front and sides, split into panels
  for(let p=0;p<5;p++){const x=-width/2+.68+p*(width-1.36)/4;const pane=box(g,1.05,1.1,.055,glassMat,x,.78,-depth/2+.05);pane.userData.glass=true;}
  for(const side of [-1,1])for(let p=0;p<3;p++){const z=-depth/2+.55+p*(depth-1.1)/2;box(g,.055,1.1,1.0,glassMat,side*(width/2-.05),.78,z);}
+ // slim facade mullions give the glazing a more architectural rhythm
+ for(let p=0;p<=5;p++){const x=-width/2+.15+p*(width-.3)/5;box(g,.035,1.16,.07,dark,x,.78,-depth/2-.015);}
  // warm interior light strips
  const strip=box(g,width-.5,.025,.035,litMat,0,.24,-depth/2+.12);strip.userData.strip=true;
  // floor marker glow on balcony
  const marker=new THREE.PointLight(0xd6ff75,0,5);marker.position.set(0,.7,depth/2+1);g.add(marker);g.userData.marker=marker;
  g.userData.baseY=i*floorH;
 }
+const podium=new THREE.Group();building.add(podium);podium.position.y=-.75;
+box(podium,width+1,.45,depth+1,concrete,0,0,0);
+box(podium,width+.55,.08,depth+.55,dark,0,.26,0);
+for(let p=0;p<7;p++){const x=-width/2+.4+p*(width-.8)/6;box(podium,.045,.34,.05,litMat,x,.42,depth/2+.48);}
+// Rooftop crown and a light architectural cap
+const crown=new THREE.Group();building.add(crown);crown.position.y=floors*floorH;
+box(crown,width+.25,.22,depth+.25,concrete,0,0,0);
+box(crown,width-.45,.12,depth-.45,dark,0,.18,0);
+for(let x=-2;x<=2;x+=1)box(crown,.035,.75,.035,litMat,x,.62,-depth/2+.22);
 const ground=new THREE.Mesh(new THREE.CircleGeometry(13,64),new THREE.MeshBasicMaterial({color:0x18231e,transparent:true,opacity:.75}));ground.rotation.x=-Math.PI/2;ground.position.y=-.12;scene.add(ground);
 const grid=new THREE.GridHelper(28,28,0x53645a,0x34443b);grid.position.y=-.1;scene.add(grid);
 const outlineMat=new THREE.MeshBasicMaterial({color:0xd6ff75,wireframe:true,transparent:true,opacity:.0});
@@ -119,7 +130,7 @@ function setProgress(p){
 }
 setProgress(0);
 ScrollTrigger.create({trigger:'#building',start:'top top',end:'bottom bottom',scrub:1,onUpdate:self=>setProgress(self.progress)});
-function resize(){const w=host.clientWidth,h=host.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h)}
+function resize(){const w=host.clientWidth,h=host.clientHeight;camera.aspect=w/h;if(w<700){camera.position.set(12,10,29);camera.fov=39;}else{camera.position.set(11,10,23);camera.fov=34;}camera.lookAt(0,6.3,0);camera.updateProjectionMatrix();renderer.setSize(w,h)}
 new ResizeObserver(resize).observe(host);
 function render(){requestAnimationFrame(render);renderer.render(scene,camera)}render();
 </script>

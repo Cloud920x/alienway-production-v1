@@ -63,6 +63,8 @@ const glassMat=new THREE.MeshPhysicalMaterial({color:0x9ab6aa,metalness:.28,roug
 const litMat=new THREE.MeshStandardMaterial({color:0xd6ff75,emissive:0x9bc94b,emissiveIntensity:0,metalness:.2,roughness:.35});
 const concrete=new THREE.MeshStandardMaterial({color:0x718078,metalness:.35,roughness:.55});
 const dark=new THREE.MeshStandardMaterial({color:0x26352e,metalness:.45,roughness:.35});
+const railMat=new THREE.MeshPhysicalMaterial({color:0xb7d2c5,metalness:.18,roughness:.12,transparent:true,opacity:.0});
+const warmMat=new THREE.MeshStandardMaterial({color:0xffd99a,emissive:0xffb65c,emissiveIntensity:0});
 function box(parent,w,h,d,mat,x,y,z){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);parent.add(m);return m}
 for(let i=0;i<floors;i++){
  const g=new THREE.Group();g.position.y=i*floorH;building.add(g);floorGroups.push(g);
@@ -74,15 +76,18 @@ for(let i=0;i<floors;i++){
  box(frame,width,.055,.055,litMat,0,floorH-.04,depth/2);
  box(frame,.055,floorH,depth,litMat,width/2,.0,0);
  box(g,.18,floorH,depth,dark,-width/2+.25,floorH/2,0);
- // Balcony slab
+ // Balcony slab and transparent balustrade
  box(g,width+.65,.1,1.05,concrete,0,.2,depth/2+.42);
+ const rail=box(g,width+.55,.72,.045,railMat,0,.62,depth/2+.91);rail.userData.rail=true;
+ box(g,width+.62,.045,.07,dark,0,.99,depth/2+.91);
  // Glass facade: front and sides, split into panels
  for(let p=0;p<5;p++){const x=-width/2+.68+p*(width-1.36)/4;const pane=box(g,1.05,1.1,.055,glassMat,x,.78,-depth/2+.05);pane.userData.glass=true;}
  for(const side of [-1,1])for(let p=0;p<3;p++){const z=-depth/2+.55+p*(depth-1.1)/2;box(g,.055,1.1,1.0,glassMat,side*(width/2-.05),.78,z);}
  // slim facade mullions give the glazing a more architectural rhythm
  for(let p=0;p<=5;p++){const x=-width/2+.15+p*(width-.3)/5;box(g,.035,1.16,.07,dark,x,.78,-depth/2-.015);}
- // warm interior light strips
+ // warm interior light strips and interior glow panels
  const strip=box(g,width-.5,.025,.035,litMat,0,.24,-depth/2+.12);strip.userData.strip=true;
+ for(let p=0;p<3;p++){const x=-1.65+p*1.65;const glow=box(g,.62,.48,.025,warmMat,x,.77,-depth/2+.09);glow.userData.warm=true;}
  // floor marker glow on balcony
  const marker=new THREE.PointLight(0xd6ff75,0,5);marker.position.set(0,.7,depth/2+1);g.add(marker);g.userData.marker=marker;
  g.userData.baseY=i*floorH;
@@ -127,6 +132,8 @@ function setProgress(p){
   constructionGroups[i].position.y=(1-local)*.22;
   g.children.forEach(o=>{
    if(o.userData.glass)o.material.opacity=.08+.82*local;
+   if(o.userData.rail)o.material.opacity=.05+.62*local;
+   if(o.userData.warm)o.material.emissiveIntensity=local>.45?.7:0;
    if(o.userData.strip)o.material.emissiveIntensity=local>.55?1.8:0;
   });
   g.userData.marker.intensity=local>.72?2.8:0;

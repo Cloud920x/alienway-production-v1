@@ -58,6 +58,7 @@ const key=new THREE.DirectionalLight(0xffe8c2,3.2);key.position.set(8,16,12);sce
 const rim=new THREE.PointLight(0xd6ff75,18,35);rim.position.set(-8,9,-3);scene.add(rim);
 const building=new THREE.Group();scene.add(building);
 const floors=8, floorH=1.55, width=6.2, depth=4.5, floorGroups=[];
+const constructionGroups=[];
 const glassMat=new THREE.MeshPhysicalMaterial({color:0x9ab6aa,metalness:.28,roughness:.2,transparent:true,opacity:.0,transmission:.12,depthWrite:false});
 const litMat=new THREE.MeshStandardMaterial({color:0xd6ff75,emissive:0x9bc94b,emissiveIntensity:0,metalness:.2,roughness:.35});
 const concrete=new THREE.MeshStandardMaterial({color:0x718078,metalness:.35,roughness:.55});
@@ -68,6 +69,10 @@ for(let i=0;i<floors;i++){
  box(g,width,.13,depth,concrete,0,0,0);
  // Structural corner columns and rear spine
  for(const x of [-width/2+.12,width/2-.12])for(const z of [-depth/2+.12,depth/2-.12])box(g,.16,floorH,.16,concrete,x,floorH/2,z);
+ const frame=new THREE.Group();g.add(frame);constructionGroups.push(frame);
+ for(const x of [-width/2,width/2])for(const z of [-depth/2,depth/2])box(frame,.07,floorH,.07,litMat,x,floorH/2,z);
+ box(frame,width,.055,.055,litMat,0,floorH-.04,depth/2);
+ box(frame,.055,floorH,depth,litMat,width/2,.0,0);
  box(g,.18,floorH,depth,dark,-width/2+.25,floorH/2,0);
  // Balcony slab
  box(g,width+.65,.1,1.05,concrete,0,.2,depth/2+.42);
@@ -117,15 +122,20 @@ function setProgress(p){
   const local=THREE.MathUtils.clamp((reveal*1.13-i/floors)*floors,0,1);
   g.position.y=i*floorH-(1-local)*2.4;
   g.scale.y=.18+.82*local;
+  constructionGroups[i].visible=local<.98;
+  constructionGroups[i].scale.setScalar(1);
+  constructionGroups[i].position.y=(1-local)*.22;
   g.children.forEach(o=>{
    if(o.userData.glass)o.material.opacity=.08+.82*local;
    if(o.userData.strip)o.material.emissiveIntensity=local>.55?1.8:0;
   });
   g.userData.marker.intensity=local>.72?2.8:0;
+  g.userData.marker.color.setHex(0xd6ff75);
  });
  outlineMat.opacity=.25*(1-reveal);
  wire.scale.y=.15+.85*reveal;
  building.rotation.y=.18+reveal*.18;
+ building.position.y=-.35+reveal*.35;
  updateFloor(reveal);
 }
 setProgress(0);

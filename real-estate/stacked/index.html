@@ -102,7 +102,7 @@ for(let f=1;f<=floors;f++){
   const x=-w/2+.48+bw*(u-.5);
   addBox(g,bw-.13,1.29,.075,mats.glass,x,.83,front-.05);
   // Invisible-but-raycastable unit hit area preserves the existing selector and unit IDs.
-  const hit=new THREE.Mesh(new THREE.BoxGeometry(bw-.18,1.14,.12),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));hit.position.set(x,.83,front+.035);hit.userData={floor:f,unit:u,id:String(f).padStart(2,'0')+String(u).padStart(2,'0')};g.add(hit);selectables.push(hit);
+  const hit=new THREE.Mesh(new THREE.BoxGeometry(bw-.18,1.14,.12),new THREE.MeshStandardMaterial({color:0x000000,emissive:0x000000,transparent:true,opacity:0,depthWrite:false}));hit.position.set(x,.83,front+.035);hit.userData={floor:f,unit:u,id:String(f).padStart(2,'0')+String(u).padStart(2,'0')};g.add(hit);selectables.push(hit);
   const balconyDepth=(f%5===0||f>=15)?1.7:1.22,balconyW=bw-.08;
   addBox(g,balconyW,.13,balconyDepth,mats.stone,x,.14,d/2+balconyDepth/2-.02);
   addBox(g,balconyW-.08,.48,.055,mats.glass,x,.46,d/2+balconyDepth-.04);

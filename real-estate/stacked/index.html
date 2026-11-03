@@ -209,7 +209,7 @@ let scroll=0;function onScroll(){const max=document.documentElement.scrollHeight
 function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}addEventListener('resize',resize);resize();
 const smooth=(a,b,t)=>a+(b-a)*t;
 let lastRender=0;const renderInterval=innerWidth<800?1000/40:0;
-function animate(){requestAnimationFrame(animate);const now=performance.now();if(renderInterval&&now-lastRender<renderInterval)return;lastRender=now;const time=now*.001,p=scroll;let rise,zoom,angle;if(p<.24){const t=p/.24;rise=smooth(-27,0,t);zoom=smooth(64,52,t);angle=smooth(.4,.2,t)}else if(p<.52){const t=(p-.24)/.28;rise=smooth(0,0,t);zoom=smooth(52,43,t);angle=smooth(.2,-.18,t)}else if(p<.88){const t=(p-.52)/.36;rise=0;zoom=smooth(43,34,t);angle=smooth(-.18,.12,t)}else{const t=(p-.88)/.12;rise=0;zoom=smooth(34,62,t);angle=smooth(.12,.24,t)}
+function animate(){requestAnimationFrame(animate);const now=performance.now();if(renderInterval&&now-lastRender<renderInterval)return;lastRender=now;const time=now*.001,p=scroll;let rise,zoom,angle;if(p<.24){const t=p/.24;rise=smooth(-27,0,t);zoom=smooth(64,52,t);angle=smooth(.4,.2,t)}else if(p<.52){const t=(p-.24)/.28;rise=smooth(0,0,t);zoom=smooth(52,43,t);angle=smooth(.2,-.18,t)}else if(p<.88){const t=(p-.52)/.36;rise=0;zoom=smooth(43,34,t);angle=smooth(-.18,.12,t)}else{const t=(p-.88)/.12;rise=0;zoom=smooth(43,76,t);angle=smooth(.12,.16,t)}
 tower.position.y=THREE.MathUtils.damp(tower.position.y,rise,3.2,1/60);
 hotel.rotation.y=THREE.MathUtils.damp(hotel.rotation.y,Math.sin(p*Math.PI*2)*.035,2,1/60);
 hotel.position.y=Math.sin(time*.7)*.045;
@@ -220,7 +220,7 @@ floorWindows.forEach((w,i)=>{w.material.emissiveIntensity=.18+(.12*(1+Math.sin(t
 
 const cityDrop=smooth(0,1,THREE.MathUtils.clamp((p-.035)/.205,0,1))*25;for(const b of descendingBuildings)b.position.y=b.userData.startY-cityDrop;for(const w of descendingWindows)w.position.y=w.userData.startY-cityDrop;
 const desired=new THREE.Vector3(Math.sin(angle)*zoom*.52,Math.max(12,zoom*.43),Math.cos(angle)*zoom);camera.position.lerp(desired,.035);
-if(p<.52){targetLook.set(0,Math.max(8,tower.position.y+12),0)}else{targetLook.y=THREE.MathUtils.damp(targetLook.y,tower.position.y+baseY+(activeFloor-1)*floorH,2,1/60)}
+if(p<.52){targetLook.set(0,Math.max(8,tower.position.y+12),0)}else if(p>=.88){targetLook.y=THREE.MathUtils.damp(targetLook.y,tower.position.y+baseY+(floors*floorH)*.52,2,1/60)}else{targetLook.y=THREE.MathUtils.damp(targetLook.y,tower.position.y+baseY+(activeFloor-1)*floorH,2,1/60)}
 look.lerp(targetLook,.035);camera.lookAt(look);renderer.render(scene,camera)}
 animate();
 </script>

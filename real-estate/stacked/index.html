@@ -108,12 +108,19 @@ for(let f=1;f<=floors;f++){
 
  addBox(g,w+.5,.16,d+.45,mats.bronze,0,0,0);
  const glow=new THREE.Mesh(new THREE.BoxGeometry(w+1,.12,d+.9),new THREE.MeshBasicMaterial({color:0x8be7ff,transparent:true,opacity:.9,depthWrite:false,blending:THREE.AdditiveBlending}));glow.position.y=.14;glow.renderOrder=10;glow.visible=false;g.add(glow);floorGlow.push(glow);
- // Limestone side piers and full-height glazing.
+ // Solid limestone side piers define the tower; glazing is limited to framed window openings.
  addBox(g,.48,1.48,d,facade,-w/2+.24,.78,0);addBox(g,.48,1.48,d,facade,w/2-.24,.78,0);
  const bw=(w-.96)/4,front=d/2+.08;
  for(let u=1;u<=4;u++){
   const x=-w/2+.48+bw*(u-.5);
-  addBox(g,bw-.13,1.29,.075,mats.glass,x,.83,front-.05);
+  // Solid warm-stone facade with a recessed, framed window opening.
+  addBox(g,bw-.13,1.29,.075,mats.stone,x,.83,front-.05);
+  addBox(g,bw*.76,.92,.035,mats.dark,x,.83,front+.012);
+  addBox(g,bw*.68,.78,.025,mats.glass,x,.83,front+.036);
+  addBox(g,bw*.78,.07,.055,mats.bronze,x,.36,front+.05);
+  addBox(g,bw*.78,.07,.055,mats.bronze,x,1.30,front+.05);
+  addBox(g,.055,.96,.055,mats.bronze,x-bw*.39,.83,front+.05);
+  addBox(g,.055,.96,.055,mats.bronze,x+bw*.39,.83,front+.05);
   // Furnished room silhouettes, batched behind the glazing for smooth scrolling.
   const iz=d/2-.92;
   furnish('wood',x,.28,iz-.08,bw*.55,.12,.78);

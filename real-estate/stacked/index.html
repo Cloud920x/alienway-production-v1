@@ -58,7 +58,7 @@ stone:new THREE.MeshStandardMaterial({color:0xd8d0bf,roughness:.72}),
 graphite:new THREE.MeshStandardMaterial({color:0x303c43,roughness:.38,metalness:.48}),
 bronze:new THREE.MeshStandardMaterial({color:0x987653,roughness:.34,metalness:.62}),
 blue:new THREE.MeshStandardMaterial({color:0x5b8795,roughness:.2,metalness:.35}),
-glass:new THREE.MeshPhysicalMaterial({color:0x8daeb8,metalness:0,roughness:.14,transparent:true,opacity:.46,side:THREE.DoubleSide,clearcoat:1,clearcoatRoughness:.08,ior:1.46,thickness:.12,depthWrite:true}),
+glass:new THREE.MeshPhysicalMaterial({color:0x9fc6d2,metalness:0,roughness:.08,transparent:true,opacity:.28,side:THREE.DoubleSide,clearcoat:1,clearcoatRoughness:.045,ior:1.46,thickness:.1,depthWrite:false}),
 dark:new THREE.MeshStandardMaterial({color:0x101a20,metalness:.5,roughness:.3}),
 light:new THREE.MeshStandardMaterial({color:0xd9d0bd,metalness:.35,roughness:.3}),
 warm:new THREE.MeshStandardMaterial({color:0x263641,emissive:0x000000,emissiveIntensity:0})
@@ -113,16 +113,22 @@ for(let f=1;f<=floors;f++){
  const bw=(w-.96)/4,front=d/2+.08;
  for(let u=1;u<=4;u++){
   const x=-w/2+.48+bw*(u-.5);
-  // Solid warm-stone facade with a recessed, framed window opening.
-  addBox(g,bw-.13,1.29,.075,mats.stone,x,.83,front-.05);
-  addBox(g,bw*.76,.92,.035,mats.dark,x,.83,front+.012);
-  addBox(g,bw*.68,.78,.025,mats.glass,x,.83,front+.036);
-  addBox(g,bw*.78,.07,.055,mats.bronze,x,.36,front+.05);
-  addBox(g,bw*.78,.07,.055,mats.bronze,x,1.30,front+.05);
-  addBox(g,.055,.96,.055,mats.bronze,x-bw*.39,.83,front+.05);
-  addBox(g,.055,.96,.055,mats.bronze,x+bw*.39,.83,front+.05);
+  // Solid premium-concrete wall piers with a true open window bay.
+  // The wall is split into left/right piers and solid sill/header; no wall panel sits behind the glass.
+  const openingW=bw*.72,openingH=.88,openingZ=front-.05;
+  const pierW=(bw-.13-openingW)/2;
+  addBox(g,pierW,1.29,.075,mats.stone,x-openingW/2-pierW/2,.83,openingZ);
+  addBox(g,pierW,1.29,.075,mats.stone,x+openingW/2+pierW/2,.83,openingZ);
+  addBox(g,openingW,.205,.075,mats.stone,x,.83-(openingH/2+.205/2),openingZ);
+  addBox(g,openingW,.205,.075,mats.stone,x,.83+(openingH/2+.205/2),openingZ);
+  // Recessed transparent glazing, behind the bronze frame; interior furniture is further inside.
+  addBox(g,openingW-.07,openingH-.07,.025,mats.glass,x,.83,front+.02);
+  addBox(g,openingW,.055,.055,mats.bronze,x,.83-openingH/2,front+.065);
+  addBox(g,openingW,.055,.055,mats.bronze,x,.83+openingH/2,front+.065);
+  addBox(g,.055,openingH,.055,mats.bronze,x-openingW/2,.83,front+.065);
+  addBox(g,.055,openingH,.055,mats.bronze,x+openingW/2,.83,front+.065);
   // Furnished room silhouettes, batched behind the glazing for smooth scrolling.
-  const iz=d/2-.92;
+  const iz=d/2-1.55;
   furnish('wood',x,.28,iz-.08,bw*.55,.12,.78);
   furnish('linen',x,.42,iz-.08,bw*.53,.18,.74);
   furnish('upholstery',x,.64,iz-.55,bw*.55,.62,.09);
@@ -141,7 +147,7 @@ for(let f=1;f<=floors;f++){
   addBox(g,balconyW-.08,.48,.055,mats.glass,x,.46,d/2+balconyDepth-.04);
   addBox(g,.055,.52,.07,mats.bronze,x-balconyW/2+.04,.46,d/2+balconyDepth-.04);
   addBox(g,.055,.52,.07,mats.bronze,x+balconyW/2-.04,.46,d/2+balconyDepth-.04);
-  const win=new THREE.Mesh(new THREE.PlaneGeometry(bw*.68,.72),mats.warm.clone());win.position.set(x,.83,d/2-.08);win.userData.floor=f;g.add(win);floorWindows.push(win);
+  const win=new THREE.Mesh(new THREE.PlaneGeometry(bw*.68,.72),mats.warm.clone());win.position.set(x,.83,d/2-.42);win.userData.floor=f;g.add(win);floorWindows.push(win);
  }
  // Fine vertical bronze fins and balcony fascia.
  for(let p=0;p<=4;p++){const x=-w/2+.48+p*bw;addBox(g,.075,1.5,.15,mats.bronze,x,.78,d/2+.12)}

@@ -91,6 +91,12 @@ for(let x=-8;x<=8;x+=2.6){addBox(hotel,1.65,.12,1.6,mats.stone,x,4.24,5.1)}
 const tierW=f=>f<=5?18.4:f<=10?17.2:f<=14?16:14.6;
 const tierD=f=>f<=5?10.2:f<=10?9.4:f<=14?8.8:8.1;
 const tierZ=f=>f<=5?-.1:f<=10?.25:f<=14?.55:.85;
+const interiorMats={
+ wood:new THREE.MeshStandardMaterial({color:0x76563e,roughness:.72}),
+ upholstery:new THREE.MeshStandardMaterial({color:0x9b8063,roughness:.9}),
+ linen:new THREE.MeshStandardMaterial({color:0xe5dfd2,roughness:1}),
+ brass:new THREE.MeshStandardMaterial({color:0xb18b55,metalness:.65,roughness:.32})
+};
 for(let f=1;f<=floors;f++){
  const y=baseY+(f-1)*floorH,w=tierW(f),d=tierD(f),g=new THREE.Group();g.position.set(0,y,tierZ(f));hotel.add(g);
  addBox(g,w+.5,.16,d+.45,mats.bronze,0,0,0);
@@ -101,6 +107,19 @@ for(let f=1;f<=floors;f++){
  for(let u=1;u<=4;u++){
   const x=-w/2+.48+bw*(u-.5);
   addBox(g,bw-.13,1.29,.075,mats.glass,x,.83,front-.05);
+  // Furnished room silhouettes, positioned behind the glass so the tower feels inhabited.
+  const iz=d/2-.92;
+  addBox(g,bw*.55,.12,.78,interiorMats.wood,x,.28,iz-.08);
+  addBox(g,bw*.53,.18,.74,interiorMats.linen,x,.42,iz-.08);
+  addBox(g,bw*.55,.62,.09,interiorMats.upholstery,x,.64,iz-.55);
+  for(const side of [-1,1]){
+   addBox(g,.25,.08,.24,interiorMats.linen,x+side*bw*.17,.55,iz-.28);
+   addBox(g,.22,.28,.24,interiorMats.wood,x+side*bw*.39,.34,iz-.1);
+   addCylinder(g,.035,.035,.22,interiorMats.brass,x+side*bw*.39,.56,iz-.1,8);
+  }
+  addBox(g,bw*.28,.28,.34,interiorMats.upholstery,x-bw*.27,.32,iz+.48);
+  addBox(g,bw*.32,.07,.2,interiorMats.wood,x+bw*.25,.62,iz+.5);
+  addBox(g,.035,.34,.035,interiorMats.wood,x+bw*.25,.43,iz+.5);
   // Invisible-but-raycastable unit hit area preserves the existing selector and unit IDs.
   const hit=new THREE.Mesh(new THREE.BoxGeometry(bw-.18,1.14,.12),new THREE.MeshStandardMaterial({color:0x000000,emissive:0x000000,transparent:true,opacity:0,depthWrite:false}));hit.position.set(x,.83,front+.035);hit.userData={floor:f,unit:u,id:String(f).padStart(2,'0')+String(u).padStart(2,'0')};g.add(hit);selectables.push(hit);
   const balconyDepth=(f%5===0||f>=15)?1.7:1.22,balconyW=bw-.08;

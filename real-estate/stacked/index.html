@@ -97,8 +97,15 @@ const interiorMats={
  linen:new THREE.MeshStandardMaterial({color:0xe5dfd2,roughness:1}),
  brass:new THREE.MeshStandardMaterial({color:0xb18b55,metalness:.65,roughness:.32})
 };
+const furnitureUnitBox=new THREE.BoxGeometry(1,1,1);
 for(let f=1;f<=floors;f++){
  const y=baseY+(f-1)*floorH,w=tierW(f),d=tierD(f),g=new THREE.Group();g.position.set(0,y,tierZ(f));hotel.add(g);
+  // Batch each floor's furniture into four instanced draws instead of hundreds of separate meshes.
+  const furnitureBatches={};
+  for(const key of Object.keys(interiorMats)){const batch=new THREE.InstancedMesh(furnitureUnitBox,interiorMats[key],32);batch.count=0;batch.frustumCulled=false;g.add(batch);furnitureBatches[key]=batch}
+  const furnitureCounts={wood:0,upholstery:0,linen:0,brass:0},furnitureMatrix=new THREE.Matrix4(),furniturePosition=new THREE.Vector3(),furnitureScale=new THREE.Vector3(),furnitureRotation=new THREE.Quaternion();
+  function furnish(key,x,y,z,sx,sy,sz){const batch=furnitureBatches[key],n=furnitureCounts[key]++;furniturePosition.set(x,y,z);furnitureScale.set(sx,sy,sz);furnitureMatrix.compose(furniturePosition,furnitureRotation,furnitureScale);batch.setMatrixAt(n,furnitureMatrix);batch.count=furnitureCounts[key];batch.instanceMatrix.needsUpdate=true}
+
  addBox(g,w+.5,.16,d+.45,mats.bronze,0,0,0);
  const glow=new THREE.Mesh(new THREE.BoxGeometry(w+1,.12,d+.9),new THREE.MeshBasicMaterial({color:0x8be7ff,transparent:true,opacity:.9,depthWrite:false,blending:THREE.AdditiveBlending}));glow.position.y=.14;glow.renderOrder=10;glow.visible=false;g.add(glow);floorGlow.push(glow);
  // Limestone side piers and full-height glazing.
@@ -107,19 +114,19 @@ for(let f=1;f<=floors;f++){
  for(let u=1;u<=4;u++){
   const x=-w/2+.48+bw*(u-.5);
   addBox(g,bw-.13,1.29,.075,mats.glass,x,.83,front-.05);
-  // Furnished room silhouettes, positioned behind the glass so the tower feels inhabited.
+  // Furnished room silhouettes, batched behind the glazing for smooth scrolling.
   const iz=d/2-.92;
-  addBox(g,bw*.55,.12,.78,interiorMats.wood,x,.28,iz-.08);
-  addBox(g,bw*.53,.18,.74,interiorMats.linen,x,.42,iz-.08);
-  addBox(g,bw*.55,.62,.09,interiorMats.upholstery,x,.64,iz-.55);
+  furnish('wood',x,.28,iz-.08,bw*.55,.12,.78);
+  furnish('linen',x,.42,iz-.08,bw*.53,.18,.74);
+  furnish('upholstery',x,.64,iz-.55,bw*.55,.62,.09);
   for(const side of [-1,1]){
-   addBox(g,.25,.08,.24,interiorMats.linen,x+side*bw*.17,.55,iz-.28);
-   addBox(g,.22,.28,.24,interiorMats.wood,x+side*bw*.39,.34,iz-.1);
-   addCylinder(g,.035,.035,.22,interiorMats.brass,x+side*bw*.39,.56,iz-.1,8);
+   furnish('linen',x+side*bw*.17,.55,iz-.28,.25,.08,.24);
+   furnish('wood',x+side*bw*.39,.34,iz-.1,.22,.28,.24);
+   furnish('brass',x+side*bw*.39,.56,iz-.1,.07,.22,.07);
   }
-  addBox(g,bw*.28,.28,.34,interiorMats.upholstery,x-bw*.27,.32,iz+.48);
-  addBox(g,bw*.32,.07,.2,interiorMats.wood,x+bw*.25,.62,iz+.5);
-  addBox(g,.035,.34,.035,interiorMats.wood,x+bw*.25,.43,iz+.5);
+  furnish('upholstery',x-bw*.27,.32,iz+.48,bw*.28,.28,.34);
+  furnish('wood',x+bw*.25,.62,iz+.5,bw*.32,.07,.2);
+  furnish('wood',x+bw*.25,.43,iz+.5,.035,.34,.035);
   // Invisible-but-raycastable unit hit area preserves the existing selector and unit IDs.
   const hit=new THREE.Mesh(new THREE.BoxGeometry(bw-.18,1.14,.12),new THREE.MeshStandardMaterial({color:0x000000,emissive:0x000000,transparent:true,opacity:0,depthWrite:false}));hit.position.set(x,.83,front+.035);hit.userData={floor:f,unit:u,id:String(f).padStart(2,'0')+String(u).padStart(2,'0')};g.add(hit);selectables.push(hit);
   const balconyDepth=(f%5===0||f>=15)?1.7:1.22,balconyW=bw-.08;

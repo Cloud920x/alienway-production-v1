@@ -313,6 +313,15 @@ floorWindows.forEach((w,i)=>{w.material.emissiveIntensity=.18+(.12*(1+Math.sin(t
 const cityDrop=smooth(0,1,THREE.MathUtils.clamp((p-.035)/.205,0,1))*25;for(const b of descendingBuildings)b.position.y=b.userData.startY-cityDrop;for(const w of descendingWindows)w.position.y=w.userData.startY-cityDrop;const islandReveal=THREE.MathUtils.clamp((p-.19)/.16,0,1);island.visible=islandReveal>.01;ground.visible=islandReveal<.99;roadGroup.visible=islandReveal<.99;island.position.y=0;
 const desired=new THREE.Vector3(Math.sin(angle)*zoom*.52,Math.max(12,zoom*.43),Math.cos(angle)*zoom);camera.position.lerp(desired,.035);
 if(p<.52){targetLook.set(0,Math.max(8,tower.position.y+12),0)}else if(p>=.88){targetLook.y=THREE.MathUtils.damp(targetLook.y,tower.position.y+baseY+(floors*floorH)*.52,2,1/60)}else{targetLook.y=THREE.MathUtils.damp(targetLook.y,tower.position.y+baseY+(activeFloor-1)*floorH,2,1/60)}
+
+// Slow orbital boat movement and soft lagoon ripples.
+islandBoats.forEach((item,i)=>{const a=time*.045+item.phase;item.boat.position.x=item.x+Math.sin(a)*3.2;item.boat.position.z=item.z+Math.cos(a)*2.2;item.boat.position.y=-.02+Math.sin(time*1.4+i)*.045;item.boat.rotation.y=-a*.35});
+waterRings.forEach((ring,i)=>{const phase=(time*.12+i*.17)%1;ring.scale.setScalar(.65+phase*1.25);ring.material.opacity=(1-phase)*.15});
+// A restrained tropical day-to-evening cycle keeps the architecture legible.
+const daylight=(Math.sin(time*.035-.8)+1)*.5;
+key.intensity=1.15+daylight*1.65;warmFill.intensity=.35+daylight*.55;rim.intensity=1.1+daylight*.7;
+crownGlow.intensity=.75+(1-daylight)*1.15+Math.sin(time*1.25)*.18;
+arrivalGlow.intensity=.65+(1-daylight)*1.0+Math.sin(time*1.6+.8)*.16;
 look.lerp(targetLook,.035);camera.lookAt(look);renderer.render(scene,camera)}
 
 /* Live island ambience: slow water movement, boats and a true day-to-night lighting cycle. */

@@ -133,6 +133,19 @@ for(const x of [-8,8])palm(x,-4,.62);
 const beacon=new THREE.PointLight(0xb9eaff,0,48);beacon.position.set(0,topY+1,0);tower.add(beacon);
 const podiumGlow=new THREE.PointLight(0xd5efff,0,35);podiumGlow.position.set(0,7,7);tower.add(podiumGlow);
 const activeFloorLight=new THREE.PointLight(0x55dfff,0,25);tower.add(activeFloorLight);
+// Subtle resort life: animated water glints and warm architectural lighting.
+const waterRipples=[];
+const rippleMat=new THREE.MeshBasicMaterial({color:0xb9efff,transparent:true,opacity:.22,side:THREE.DoubleSide,depthWrite:false});
+for(let i=0;i<4;i++){
+ const ring=new THREE.Mesh(new THREE.RingGeometry(.22,.34,48),rippleMat.clone());
+ ring.rotation.x=-Math.PI/2;
+ ring.position.set(-4.5+i*3,4.39,-4.1+(i%2)*.45);
+ ring.userData.phase=i*.85;
+ hotel.add(ring);waterRipples.push(ring);
+}
+const crownGlow=new THREE.PointLight(0x9bdfff,1.2,24);crownGlow.position.set(0,topY+2.8,0);tower.add(crownGlow);
+const arrivalGlow=new THREE.PointLight(0xffd39a,1.1,19);arrivalGlow.position.set(0,3.2,9);tower.add(arrivalGlow);
+
 function setFinish(key){const chosen={stone:mats.stone,graphite:mats.graphite,bronze:mats.bronze,blue:mats.blue}[key];facade=chosen;hotel.traverse(o=>{if(o.isMesh&&[mats.stone,mats.graphite,mats.bronze,mats.blue].includes(o.material)&&o.material!==mats.dark)o.material=chosen});document.querySelectorAll('[data-finish]').forEach(b=>b.classList.toggle('active',b.dataset.finish===key))}
 const floorsEl=document.getElementById('floors'),unitsEl=document.getElementById('units'),details=document.getElementById('unitdetail');let activeFloor=11;
 const listings={};for(let f=1;f<=floors;f++)listings[f]=[1,2,3,4].map(u=>({id:String(f).padStart(2,'0')+String(u).padStart(2,'0'),name:'Residence '+f+String(u).padStart(2,'0'),beds:u===4?'2 BED':'1 BED',area:(49+u*8+(f%3)*3)+' m²',price:'R '+(1890000+f*43500+u*92500).toLocaleString('en-ZA')}));
@@ -156,8 +169,15 @@ const ray=new THREE.Raycaster(),pointer=new THREE.Vector2();renderer.domElement.
 let scroll=0;function onScroll(){const max=document.documentElement.scrollHeight-innerHeight;scroll=max?scrollY/max:0;document.getElementById('progress').style.width=(scroll*100)+'%';const label=document.getElementById('model-label');if(scroll<.2)label.innerHTML='01 / THE CITY<br>IT RISES AS YOU SCROLL';else if(scroll<.49)label.innerHTML='02 / STRUCTURE<br>LIGHT, LINE & MATERIAL';else if(scroll<.88)label.innerHTML='03 / RESIDENCES<br>CHOOSE YOUR ELEVATION';else label.innerHTML='04 / A NEW PERSPECTIVE';['idx1','idx2','idx3'].forEach((id,i)=>document.getElementById(id).classList.toggle('active',i=== (scroll<.25?0:scroll<.53?1:2)))}addEventListener('scroll',onScroll,{passive:true});onScroll();
 function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}addEventListener('resize',resize);resize();
 const smooth=(a,b,t)=>a+(b-a)*t;
-function animate(){requestAnimationFrame(animate);const p=scroll;let rise,zoom,angle;if(p<.24){const t=p/.24;rise=smooth(-27,0,t);zoom=smooth(64,52,t);angle=smooth(.4,.2,t)}else if(p<.52){const t=(p-.24)/.28;rise=smooth(0,0,t);zoom=smooth(52,43,t);angle=smooth(.2,-.18,t)}else if(p<.88){const t=(p-.52)/.36;rise=0;zoom=smooth(43,34,t);angle=smooth(-.18,.12,t)}else{const t=(p-.88)/.12;rise=0;zoom=smooth(34,48,t);angle=smooth(.12,.38,t)}
+function animate(){requestAnimationFrame(animate);const time=performance.now()*.001,p=scroll;let rise,zoom,angle;if(p<.24){const t=p/.24;rise=smooth(-27,0,t);zoom=smooth(64,52,t);angle=smooth(.4,.2,t)}else if(p<.52){const t=(p-.24)/.28;rise=smooth(0,0,t);zoom=smooth(52,43,t);angle=smooth(.2,-.18,t)}else if(p<.88){const t=(p-.52)/.36;rise=0;zoom=smooth(43,34,t);angle=smooth(-.18,.12,t)}else{const t=(p-.88)/.12;rise=0;zoom=smooth(34,48,t);angle=smooth(.12,.38,t)}
 tower.position.y=THREE.MathUtils.damp(tower.position.y,rise,3.2,1/60);
+hotel.rotation.y=THREE.MathUtils.damp(hotel.rotation.y,Math.sin(p*Math.PI*2)*.035,2,1/60);
+hotel.position.y=Math.sin(time*.7)*.045;
+waterRipples.forEach((ring,i)=>{const phase=(time*.32+ring.userData.phase)%1,scale=.65+phase*2.5;ring.scale.setScalar(scale);ring.material.opacity=(1-phase)*.2});
+crownGlow.intensity=1.1+Math.sin(time*1.25)*.35;
+arrivalGlow.intensity=1+Math.sin(time*1.6+.8)*.28;
+floorWindows.forEach((w,i)=>{w.material.emissiveIntensity=.18+(.12*(1+Math.sin(time*1.4+i*.7)))});
+
 const cityDrop=smooth(0,1,THREE.MathUtils.clamp((p-.035)/.205,0,1))*25;for(const b of descendingBuildings)b.position.y=b.userData.startY-cityDrop;for(const w of descendingWindows)w.position.y=w.userData.startY-cityDrop;
 const desired=new THREE.Vector3(Math.sin(angle)*zoom*.52,Math.max(12,zoom*.43),Math.cos(angle)*zoom);camera.position.lerp(desired,.035);
 if(p<.52){targetLook.set(0,Math.max(8,tower.position.y+12),0)}else{targetLook.y=THREE.MathUtils.damp(targetLook.y,tower.position.y+baseY+(activeFloor-1)*floorH,2,1/60)}

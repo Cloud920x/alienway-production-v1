@@ -40,7 +40,7 @@ main{position:relative;z-index:2}.chapter{min-height:100svh;max-width:100%;overf
 import * as THREE from 'three';
 const mount=document.getElementById('world'),scene=new THREE.Scene();scene.background=new THREE.Color(0x080d16);scene.fog=new THREE.FogExp2(0x080d16,.009);
 const camera=new THREE.PerspectiveCamera(35,innerWidth/innerHeight,.1,500);camera.position.set(30,21,52);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.8));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.22;mount.appendChild(renderer.domElement);
+const renderer=new THREE.WebGLRenderer({antialias:false,alpha:false,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.25));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.22;mount.appendChild(renderer.domElement);
 scene.add(new THREE.HemisphereLight(0x9dbbd4,0x101722,1.5));const key=new THREE.DirectionalLight(0xd9e9f5,2.8);key.position.set(-30,45,25);scene.add(key);const rim=new THREE.DirectionalLight(0x80b9d0,2);rim.position.set(25,25,-30);scene.add(rim);
 const city=new THREE.Group();scene.add(city);
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(400,400),new THREE.MeshStandardMaterial({color:0x101923,roughness:.94}));ground.rotation.x=-Math.PI/2;ground.position.y=-.15;city.add(ground);
@@ -64,7 +64,7 @@ light:new THREE.MeshStandardMaterial({color:0xd9d0bd,metalness:.35,roughness:.3}
 warm:new THREE.MeshStandardMaterial({color:0x263641,emissive:0x000000,emissiveIntensity:0})
 };
 let facade=mats.stone;
-const floors=17,floorH=1.62,baseY=3.2,selectables=[],floorGlow=[],floorWindows=[];
+const floors=17,floorH=1.62,baseY=3.2,selectables=[],floorWindows=[];
 const addBox=(p,w,h,d,m,x,y,z)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);p.add(o);return o};
 const addCylinder=(p,rt,rb,h,m,x,y,z,seg=12)=>{const o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg),m);o.position.set(x,y,z);p.add(o);return o};
 const hotel=new THREE.Group();tower.add(hotel);
@@ -107,8 +107,6 @@ for(let f=1;f<=floors;f++){
   function furnish(key,x,y,z,sx,sy,sz){const batch=furnitureBatches[key],n=furnitureCounts[key]++;furniturePosition.set(x,y,z);furnitureScale.set(sx,sy,sz);furnitureMatrix.compose(furniturePosition,furnitureRotation,furnitureScale);batch.setMatrixAt(n,furnitureMatrix);batch.count=furnitureCounts[key];batch.instanceMatrix.needsUpdate=true}
 
  addBox(g,w+.5,.16,d+.45,mats.bronze,0,0,0);
- // A soft light wash illuminates the selected level without placing geometry across its windows.
- const glow=new THREE.PointLight(0x8be7ff,0,13);glow.position.set(0,.95,0);g.add(glow);floorGlow.push(glow);
  // Solid limestone side piers define the tower; glazing is limited to framed window openings.
  addBox(g,.48,1.48,d,facade,-w/2+.24,.78,0);addBox(g,.48,1.48,d,facade,w/2-.24,.78,0);
  const bw=(w-.96)/4,front=d/2+.08;
@@ -172,7 +170,6 @@ for(let x=-4;x<=4;x+=2){addBox(hotel,.08,.08,7.6,mats.bronze,x,topY+2.64,0)}
 for(const x of [-8,8])palm(x,-4,.62);
 const beacon=new THREE.PointLight(0xb9eaff,0,48);beacon.position.set(0,topY+1,0);tower.add(beacon);
 const podiumGlow=new THREE.PointLight(0xd5efff,0,35);podiumGlow.position.set(0,7,7);tower.add(podiumGlow);
-const activeFloorLight=new THREE.PointLight(0x55dfff,0,25);tower.add(activeFloorLight);
 // Subtle resort life: animated water glints and warm architectural lighting.
 const waterRipples=[];
 const rippleMat=new THREE.MeshBasicMaterial({color:0xb9efff,transparent:true,opacity:.22,side:THREE.DoubleSide,depthWrite:false});
@@ -193,7 +190,7 @@ const groupMeta=(f)=>{if(levelMeta[f])return levelMeta[f];if(f<=8)return{name:'T
 const listings={};for(let f=1;f<=floors;f++)listings[f]=[1,2,3,4].map(u=>({id:String(f).padStart(2,'0')+String(u).padStart(2,'0'),name:(f>=14?'Suite ':f>=9?'Junior Suite ':'Guest Room ')+String(f).padStart(2,'0')+String(u),beds:['KING ROOM','TWIN ROOM','KING ROOM','JUNIOR SUITE'][u-1],area:(f>=14?78:f>=9?62:38)+u*4+' m²',price:'R '+(2450+f*185+u*220).toLocaleString('en-ZA')+' / NIGHT'}));
 const selectedGlow=new THREE.Vector3(0,0,0),look=new THREE.Vector3(0,12,0);let targetLook=new THREE.Vector3(0,12,0),targetCamera=new THREE.Vector3(30,21,52),chosenId=null;
 function clearSelection(){selectables.forEach(m=>{m.material.emissive.setHex(0);m.material.emissiveIntensity=0;m.scale.set(1,1,1)})}
-function chooseFloor(f){activeFloor=f;chosenId=null;clearSelection();floorGlow.forEach((light,i)=>{light.intensity=(i===f-1)?2.2:0});selectables.forEach(m=>{m.material.emissive.setHex(m.userData.floor===f?0x55cfff:0x000000);m.material.emissiveIntensity=m.userData.floor===f ? 0.9 : 0});floorWindows.forEach(w=>{const on=w.userData.floor===f;w.material.color.setHex(on?0xffc56e:0x263641);w.material.emissive.setHex(on?0xff9f36:0x000000);w.material.emissiveIntensity=on?1.35:0;w.material.needsUpdate=true});activeFloorLight.position.set(0,baseY+(f-1)*floorH+.35,0);activeFloorLight.intensity=0;document.getElementById('floor-title').textContent='LEVEL '+String(f).padStart(2,'0');floorsEl.querySelectorAll('.floor').forEach(b=>b.classList.toggle('active',Number(b.dataset.floor)===f));unitsEl.innerHTML='';listings[f].forEach(item=>{const b=document.createElement('button');b.className='unit';b.innerHTML='<b>'+item.name+'</b><small>'+item.beds+' / '+item.area+'</small><span>VIEW RESIDENCE ↗</span>';b.addEventListener('click',()=>chooseUnit(item));unitsEl.appendChild(b)});details.classList.remove('show');document.getElementById('enter-note').textContent='';targetLook.set(0,tower.position.y+baseY+(f-1)*floorH+.7,0)}
+function chooseFloor(f){activeFloor=f;chosenId=null;clearSelection();selectables.forEach(m=>{m.material.emissive.setHex(m.userData.floor===f?0x55cfff:0x000000);m.material.emissiveIntensity=m.userData.floor===f ? 0.9 : 0});floorWindows.forEach(w=>{const on=w.userData.floor===f;w.material.color.setHex(on?0xffc56e:0x263641);w.material.emissive.setHex(on?0xff9f36:0x000000);w.material.emissiveIntensity=on?1.35:0;w.material.needsUpdate=true});document.getElementById('floor-title').textContent='LEVEL '+String(f).padStart(2,'0');floorsEl.querySelectorAll('.floor').forEach(b=>b.classList.toggle('active',Number(b.dataset.floor)===f));unitsEl.innerHTML='';listings[f].forEach(item=>{const b=document.createElement('button');b.className='unit';b.innerHTML='<b>'+item.name+'</b><small>'+item.beds+' / '+item.area+'</small><span>VIEW RESIDENCE ↗</span>';b.addEventListener('click',()=>chooseUnit(item));unitsEl.appendChild(b)});details.classList.remove('show');document.getElementById('enter-note').textContent='';targetLook.set(0,tower.position.y+baseY+(f-1)*floorH+.7,0)}
 function chooseUnit(item){chosenId=item.id;clearSelection();const mesh=selectables.find(m=>m.userData.id===item.id);if(mesh){mesh.material.emissive.setHex(0xbdefff);mesh.material.emissiveIntensity=2;mesh.scale.set(1.18,1.15,1.7)}unitsEl.querySelectorAll('.unit').forEach((b,i)=>b.classList.toggle('active',listings[activeFloor][i].id===item.id));document.getElementById('unitname').textContent=item.name;document.getElementById('unitdesc').textContent='A considered hotel stay with generous glazing, considered finishes and thoughtful guest comforts. '+item.beds+' · '+item.area+'.';document.getElementById('unitprice').textContent=item.price+' · SAMPLE RATE';details.classList.add('show');document.getElementById('model-label').innerHTML='ROOM '+item.id+'<br>ILLUMINATED IN THE MODEL';targetLook.set(0,tower.position.y+baseY+(activeFloor-1)*floorH+.8,0)}
 const dock=document.getElementById('level-dock'),expansion=document.getElementById('level-expansion'),expansionContent=document.getElementById('level-expansion-content');const dockObserver=new IntersectionObserver(entries=>{dock.classList.toggle('visible',entries[0].isIntersecting);if(!entries[0].isIntersecting)closeFloorDetails()},{threshold:.12});dockObserver.observe(document.getElementById('finder'));let lastFloorTap={floor:null,time:0};
 const roomCollections={

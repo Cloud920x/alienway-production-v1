@@ -115,21 +115,117 @@ button,a{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-vi
 .experience-foot p{max-width:440px;color:#b9c9c4;font-size:11px;line-height:1.8;margin:0}
 .experience-book{padding:15px 18px;background:#e9c99b;color:#142329;border:1px solid #e9c99b;font:8px 'DM Mono';letter-spacing:.13em;cursor:pointer;white-space:nowrap}
 @media(max-width:700px){.experience-hero{min-height:72vh}.experience-intro{grid-template-columns:1fr;gap:20px;margin-bottom:35px}.experience-detail-grid{grid-template-columns:1fr}.experience-detail{min-height:0}.experience-gallery{grid-template-columns:1fr}.experience-gallery img,.experience-gallery img+img{height:240px}.experience-foot{align-items:flex-start;flex-direction:column}.experience-book{width:100%}}
+
+/* Final whole-site refinement — typography, rhythm, responsive detail and interaction states */
+:root{--sand:#e9c99b;--sea:#8fcbd0;--soft-white:#f4f1e9}
+::selection{background:rgba(143,203,208,.32);color:#fff}
+body{letter-spacing:.005em;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.topbar{min-height:76px;padding:18px clamp(20px,5vw,76px);transition:background .3s,border-color .3s}
+.brand{font-size:19px;letter-spacing:.19em;font-weight:800}
+.mainnav{gap:clamp(16px,3vw,42px)}
+.mainnav a,.topmeta,.nav-cta{transition:color .25s,opacity .25s}
+.mainnav a{font-size:8px;letter-spacing:.17em}
+.mainnav a:hover,.topmeta:hover{color:var(--sand)}
+.nav-cta{padding:12px 17px;border:1px solid rgba(233,201,155,.62);background:rgba(233,201,155,.07)}
+.nav-cta:hover{background:var(--sand);color:#17252a}
+.chapter .copy{max-width:650px}
+.chapter h1,.chapter h2,.experience-heading h2{letter-spacing:-.075em}
+.chapter .copy>p,.experience-heading>p{max-width:490px;color:#d0d9d8;line-height:1.95;font-size:clamp(13px,1.15vw,15px)}
+.kicker{letter-spacing:.2em}
+.primary-cta,.text-cta,.experience-card-copy button,.experience-book,.booking-submit,.nav-cta{transition:transform .28s cubic-bezier(.2,.7,.2,1),background .28s,border-color .28s,color .28s}
+.primary-cta:hover,.experience-book:hover,.booking-submit:hover{transform:translateY(-3px)}
+.text-cta:hover{color:var(--sand)}
+.micro-specs{gap:clamp(18px,3vw,42px)}
+.micro-specs span{color:#aab9b8;letter-spacing:.14em}
+.micro-specs b{color:var(--sand)}
+.panel{border-color:rgba(233,201,155,.28);background:linear-gradient(145deg,rgba(9,22,30,.88),rgba(7,14,22,.78));box-shadow:0 30px 100px #0005;backdrop-filter:blur(20px)}
+.paneltop{align-items:flex-end}
+.paneltop h2{letter-spacing:-.07em}
+.live{color:#a6d5c2}
+.unit{transition:transform .25s,border-color .25s,background .25s}
+.unit:hover{transform:translateY(-2px);background:rgba(233,201,155,.1)}
+.unit.active{border-color:var(--sand);background:rgba(233,201,155,.12)}
+.unitdetail{border-top-color:rgba(233,201,155,.35)}
+.unitdetail button{transition:background .25s,color .25s,transform .25s}
+.unitdetail button:hover{transform:translateY(-2px)}
+.experience-section{position:relative;padding:clamp(100px,13vw,190px) clamp(22px,7vw,110px);background:linear-gradient(180deg,rgba(6,18,24,.2),rgba(6,18,24,.93) 18%,rgba(6,18,24,.96));}
+.experience-heading{max-width:1200px;margin:0 auto clamp(35px,5vw,70px);align-items:end}
+.experience-heading h2{font-size:clamp(48px,7.4vw,96px);line-height:.9}
+.experience-grid{max-width:1200px;margin:auto;gap:clamp(12px,2vw,24px)}
+.experience-card{min-height:520px;border:1px solid rgba(233,201,155,.18);background:#0b1b20;box-shadow:0 20px 65px #0003}
+.experience-card:after{content:'';position:absolute;inset:0;pointer-events:none;border:1px solid rgba(255,255,255,.06)}
+.experience-card img{transition:transform 1.1s cubic-bezier(.2,.7,.2,1),filter .6s}
+.experience-card:hover img{transform:scale(1.055);filter:saturate(1.12)}
+.experience-card-copy{padding:clamp(20px,2.5vw,32px)}
+.experience-card-copy h3{letter-spacing:-.055em}
+.experience-card-copy p{line-height:1.8;color:#d3ddda}
+.experience-card-copy button{border-bottom:1px solid rgba(233,201,155,.5);padding:0 0 10px}
+.experience-card-copy button:hover{color:var(--sand);border-color:var(--sand);transform:translateX(4px)}
+.chapter.end{background:linear-gradient(180deg,rgba(5,16,22,.85),rgba(5,16,22,.97))}
+.chapter.end .copy{max-width:760px}
+.end-note{letter-spacing:.2em;color:#b7c7c1}
+.site-footer{padding:30px clamp(20px,5vw,76px);gap:18px;border-top:1px solid rgba(233,201,155,.18);background:#07131a}
+.site-footer a{transition:color .2s}.site-footer a:hover{color:var(--sand)}
+.floating-enquire{border:1px solid rgba(233,201,155,.55);box-shadow:0 12px 40px #0005;backdrop-filter:blur(12px)}
+.level-dock,.level-expansion{filter:drop-shadow(0 12px 35px #0004)}
+.level-expansion{border-color:rgba(233,201,155,.3)}
+.booking-shell,.ops-shell{border:1px solid rgba(233,201,155,.28);box-shadow:0 35px 120px #0009}
+.booking-head,.ops-head{border-bottom-color:rgba(233,201,155,.2)}
+.form-field input,.form-field select,.form-field textarea{transition:border-color .2s,background .2s}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{outline:none;border-color:var(--sand);background:#142630}
+.experience-overlay{overscroll-behavior:contain;scrollbar-color:#8b9d91 #07171c}
+.experience-body{padding-top:clamp(42px,7vw,82px);padding-bottom:clamp(52px,8vw,100px)}
+.experience-intro h3{letter-spacing:-.06em}
+.experience-detail{border-top-color:rgba(233,201,155,.35)}
+.experience-detail span{color:var(--sand)}
+.experience-gallery img{transition:transform .8s}
+.experience-gallery img:hover{transform:scale(1.015)}
+:where(a,button,input,select,textarea):focus-visible{outline:2px solid var(--sand);outline-offset:4px}
+#architecture,#finder,#experiences{scroll-margin-top:90px}
+@media(max-width:760px){
+ .topbar{min-height:64px;padding:13px 17px;gap:12px}
+ .brand{font-size:16px}
+ .mainnav{gap:12px}
+ .mainnav a{font-size:7px;letter-spacing:.1em}
+ .topmeta{display:none}
+ .nav-cta{padding:10px 12px;font-size:8px}
+ .experience-section{padding:100px 20px 80px}
+ .experience-heading{display:block}
+ .experience-heading>p{margin-top:20px}
+ .experience-grid{gap:14px}
+ .experience-card{min-height:440px}
+ .experience-card-copy h3{font-size:32px}
+ .site-footer{display:grid;grid-template-columns:1fr 1fr;align-items:center}
+ .site-footer>span{grid-column:1/-1;order:3}
+ .site-footer>a:nth-of-type(2){text-align:right}
+ .experience-hero{min-height:72svh}
+}
+@media(max-width:420px){
+ .topbar{padding-inline:13px}
+ .mainnav{gap:9px}
+ .mainnav a{font-size:6px}
+ .nav-cta{padding:9px 9px}
+ .experience-card{min-height:400px}
+ .site-footer{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
 </style>
 </head>
 <body>
-<header class="topbar"><a class="brand" href="../../../index.html" aria-label="STACKED home">STACKED<span>.</span></a><nav class="mainnav" aria-label="Main navigation"><a href="#architecture">THE HOTEL</a><a href="#finder">ROOMS & SUITES</a><a href="#experiences">EXPERIENCES</a></nav><div class="top-actions"><div class="topmeta">A NEW PERSPECTIVE <span>/</span> PRIVATE ISLAND</div><a class="nav-cta" href="#booking-overlay" data-open-booking>ENQUIRE <span>↗</span></a></div></header>
+<header class="topbar" id="top"><a class="brand" href="../../../index.html" aria-label="STACKED home">STACKED<span>.</span></a><nav class="mainnav" aria-label="Main navigation"><a href="#architecture">THE HOTEL</a><a href="#finder">ROOMS & SUITES</a><a href="#experiences">EXPERIENCES</a></nav><div class="top-actions"><div class="topmeta">A NEW PERSPECTIVE <span>/</span> PRIVATE ISLAND</div><a class="nav-cta" href="#booking-overlay" data-open-booking>ENQUIRE <span>↗</span></a></div></header>
 <div class="progress" id="progress"></div><div id="world"></div><div class="atmosphere"></div><nav class="level-dock" id="level-dock" aria-label="Select building level"><div class="floors" id="floors"></div></nav><aside class="level-expansion" id="level-expansion" aria-live="polite" aria-label="Floor details"><div id="level-expansion-content"></div></aside>
 <div class="model-label" id="model-label">01 / THE CITY<br>IT RISES AS YOU SCROLL</div><div class="bottomlabel">SCROLL TO MOVE THROUGH THE ARCHITECTURE ↓</div>
 <div class="side-index"><span class="active" id="idx1">01 / CITY</span><span id="idx2">02 / STRUCTURE</span><span id="idx3">03 / RESIDENCES</span></div>
 <main>
-<section class="chapter hero" data-chapter="0"><div class="copy reveal"><div class="kicker"><span class="kicker-line"></span> BEZA’S HOTEL · A PRIVATE ISLAND ESCAPE</div><h1>BEYOND<br>THE <em>BLUE.</em></h1><p>A new island landmark where thoughtful design meets the rhythm of the ocean. Explore the hotel, discover your suite and find your own place in the sun.</p><div class="hero-actions"><a class="primary-cta" href="#finder">EXPLORE THE HOTEL <span>↗</span></a><a class="text-cta" href="#experiences">DISCOVER THE EXPERIENCE <span>↓</span></a></div><div class="scrollhint"><b>↓</b> SCROLL TO REVEAL THE ISLAND</div></div><div class="hero-stamp"><span>17</span><small>FLOORS ABOVE<br>THE ORDINARY</small></div></section>
-<section class="chapter structure" id="architecture" data-chapter="1"><div class="copy reveal"><div class="kicker"><span class="kicker-line"></span> 01 / THE ARCHITECTURE</div><h2>Made to<br><em>belong.</em></h2><p>Quietly sculptural stone, warm bronze details and rooms shaped around the view. A landmark designed to feel at home beside the water.</p><div class="micro-specs"><span><b>17</b> LEVELS</span><span><b>04</b> ROOM TYPES / LEVEL</span><span><b>01</b> PRIVATE ISLAND</span></div></div><div class="structure-note"><span>01 — 17</span><small>ARCHITECTURE<br>IN HARMONY WITH NATURE</small></div></section>
-<section class="chapter residences" id="finder" data-chapter="2"><div class="panel"><div class="paneltop"><div><div class="kicker">02 / HOTEL LEVEL EXPLORER</div><h2>Find your<br><em>escape.</em></h2></div><div class="live">● INTERACTIVE MODEL</div></div><div class="findergrid"><div><div class="unitshead"><strong id="floor-title">LEVEL 11</strong><span>04 STAYS</span></div><div class="units" id="units"></div><div class="unitdetail" id="unitdetail"><h3 id="unitname">Residence 1104</h3><p id="unitdesc"></p><strong id="unitprice"></strong><button id="explore">EXPLORE THIS ROOM ↗</button><div id="enter-note"></div></div></div><p class="footnote">SELECT A LEVEL TO EXPLORE ITS STAY COLLECTION. DISCOVER ROOM TYPES, FEATURES AND CURATED HOTEL EXPERIENCES. ALL DETAILS AND RATES ARE ILLUSTRATIVE DEMO DATA.</p></div></section>
-<section class="experience-section" id="experiences" data-chapter="3"><div class="experience-heading reveal"><div><div class="kicker"><span class="kicker-line"></span> 02 / THE ART OF ESCAPE</div><h2>Find your<br><em>own rhythm.</em></h2></div><p>From first light over the water to the last drink above the palms, every part of the stay has its own pace.</p></div><div class="experience-grid"><article class="experience-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1000&q=82" alt="Tropical resort pool beside the ocean"><div class="experience-card-copy"><span>01 / THE ART OF STILLNESS</span><h3>The waterline</h3><p>Where the pool meets the endless blue.</p><button type="button" data-open-experience="waterline">ENTER THE WATERLINE ↗</button></div></article><article class="experience-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=82" alt="Elegant restaurant dining room"><div class="experience-card-copy"><span>02 / THE ART OF GATHERING</span><h3>Island dining</h3><p>Golden hours. Beautiful tables. One more course.</p><button type="button" data-open-experience="dining">TAKE YOUR SEAT ↗</button></div></article><article class="experience-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1000&q=82" alt="Clear turquoise ocean and soft waves"><div class="experience-card-copy"><span>03 / THE ART OF ESCAPE</span><h3>Beyond the shore</h3><p>A quieter world, just beyond the tide.</p><button type="button" data-open-experience="shore">DISCOVER THE ISLAND ↗</button></div></article></div></section><section class="chapter end" data-chapter="4"><div class="copy reveal"><div class="kicker"><span class="kicker-line"></span> 03 / YOUR STAY STARTS HERE</div><h2>Make room<br>for <em>wonder.</em></h2><p>Your island escape begins with a conversation. Tell us what your perfect stay looks like.</p><a class="primary-cta" href="#booking-overlay" data-open-booking>PLAN YOUR STAY <span>↗</span></a><div class="end-note">BEZA’S HOTEL · A PRIVATE ISLAND EXPERIENCE</div></div></section></main><footer class="site-footer"><a class="brand" href="../../../index.html">STACKED<span>.</span></a><span>BEZA’S HOTEL · PRIVATE ISLAND COLLECTION</span><a href="#ops-overlay" data-open-ops>HOTEL OPERATIONS ↗</a><a href="#top" id="back-top">BACK TO TOP ↑</a></footer><a class="floating-enquire" href="#booking-overlay" data-open-booking><span>PLAN YOUR STAY</span><b>↗</b></a>
+<section class="chapter hero" data-chapter="0"><div class="copy reveal"><div class="kicker"><span class="kicker-line"></span> BEZA’S HOTEL · A PRIVATE ISLAND ESCAPE</div><h1>BEYOND<br>THE <em>BLUE.</em></h1><p>Set between open sky and endless blue, Beza’s is an island retreat shaped by thoughtful architecture, quiet luxury and the rhythm of the sea.</p><div class="hero-actions"><a class="primary-cta" href="#finder">EXPLORE THE HOTEL <span>↗</span></a><a class="text-cta" href="#experiences">DISCOVER THE EXPERIENCE <span>↓</span></a></div><div class="scrollhint"><b>↓</b> SCROLL TO REVEAL THE ISLAND</div></div><div class="hero-stamp"><span>17</span><small>FLOORS ABOVE<br>THE ORDINARY</small></div></section>
+<section class="chapter structure" id="architecture" data-chapter="1"><div class="copy reveal"><div class="kicker"><span class="kicker-line"></span> 01 / THE ARCHITECTURE</div><h2>Made to<br><em>belong.</em></h2><p>Natural stone. Warm bronze. Light moving across the water. An island landmark shaped to belong to its setting.</p><div class="micro-specs"><span><b>17</b> LEVELS</span><span><b>04</b> ROOM TYPES / LEVEL</span><span><b>01</b> PRIVATE ISLAND</span></div></div><div class="structure-note"><span>01 — 17</span><small>ARCHITECTURE<br>IN HARMONY WITH NATURE</small></div></section>
+<section class="chapter residences" id="finder" data-chapter="2"><div class="panel"><div class="paneltop"><div><div class="kicker">02 / HOTEL LEVEL EXPLORER</div><h2>Find your<br><em>escape.</em></h2></div><div class="live">● INTERACTIVE MODEL</div></div><div class="findergrid"><div><div class="unitshead"><strong id="floor-title">LEVEL 11</strong><span>04 STAYS</span></div><div class="units" id="units"></div><div class="unitdetail" id="unitdetail"><h3 id="unitname">Residence 1104</h3><p id="unitdesc"></p><strong id="unitprice"></strong><button id="explore">EXPLORE THIS ROOM ↗</button><div id="enter-note"></div></div></div><p class="footnote">Choose a level. Discover its collection. Select a suite to explore its details. Room information and rates are illustrative.</p></div></section>
+<section class="experience-section" id="experiences" data-chapter="3"><div class="experience-heading reveal"><div><div class="kicker"><span class="kicker-line"></span> 02 / THE ART OF ESCAPE</div><h2>Find your<br><em>own rhythm.</em></h2></div><p>From still mornings beside the water to evenings above the palms, discover a stay that moves at your pace.</p></div><div class="experience-grid"><article class="experience-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1000&q=82" alt="Tropical resort pool beside the ocean"><div class="experience-card-copy"><span>01 / THE ART OF STILLNESS</span><h3>The waterline</h3><p>Where the pool meets the endless blue.</p><button type="button" data-open-experience="waterline">ENTER THE WATERLINE ↗</button></div></article><article class="experience-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=82" alt="Elegant restaurant dining room"><div class="experience-card-copy"><span>02 / THE ART OF GATHERING</span><h3>Island dining</h3><p>Golden hours. Beautiful tables. One more course.</p><button type="button" data-open-experience="dining">TAKE YOUR SEAT ↗</button></div></article><article class="experience-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1000&q=82" alt="Clear turquoise ocean and soft waves"><div class="experience-card-copy"><span>03 / THE ART OF ESCAPE</span><h3>Beyond the shore</h3><p>A quieter world, just beyond the tide.</p><button type="button" data-open-experience="shore">DISCOVER THE ISLAND ↗</button></div></article></div></section><section class="chapter end" data-chapter="4"><div class="copy reveal"><div class="kicker"><span class="kicker-line"></span> 03 / YOUR STAY STARTS HERE</div><h2>Make room<br>for <em>wonder.</em></h2><p>Some places stay with you. Begin planning your time on the island.</p><a class="primary-cta" href="#booking-overlay" data-open-booking>PLAN YOUR STAY <span>↗</span></a><div class="end-note">BEZA’S HOTEL · A PRIVATE ISLAND EXPERIENCE</div></div></section></main><footer class="site-footer"><a class="brand" href="../../../index.html">STACKED<span>.</span></a><span>BEZA’S HOTEL · PRIVATE ISLAND COLLECTION</span><a href="#ops-overlay" data-open-ops>HOTEL OPERATIONS ↗</a><a href="#top" id="back-top">BACK TO TOP ↑</a></footer><a class="floating-enquire" href="#booking-overlay" data-open-booking><span>PLAN YOUR STAY</span><b>↗</b></a>
 
 <div class="booking-overlay" id="booking-overlay" role="dialog" aria-modal="true" aria-labelledby="booking-title">
- <div class="booking-shell"><div class="booking-head"><div><div class="kicker">BEZA’S HOTEL / PRIVATE ISLAND COLLECTION</div><h2 id="booking-title">Plan your escape.</h2><p>Shape your stay and review an illustrative booking summary.</p></div><button class="overlay-close" data-close-overlay aria-label="Close booking">×</button></div>
+ <div class="booking-shell"><div class="booking-head"><div><div class="kicker">BEZA’S HOTEL / PRIVATE ISLAND COLLECTION</div><h2 id="booking-title">Plan your escape.</h2><p>Shape your island stay and review an illustrative request.</p></div><button class="overlay-close" data-close-overlay aria-label="Close booking">×</button></div>
  <div id="booking-form-view" class="booking-content"><form class="booking-form" id="booking-form">
   <div class="form-field"><label for="stay-arrival">ARRIVAL</label><input id="stay-arrival" type="date" required></div><div class="form-field"><label for="stay-departure">DEPARTURE</label><input id="stay-departure" type="date" required></div>
   <div class="form-field"><label for="stay-guests">GUESTS</label><select id="stay-guests"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>

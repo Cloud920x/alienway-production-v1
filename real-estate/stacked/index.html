@@ -58,7 +58,7 @@ stone:new THREE.MeshStandardMaterial({color:0xd8d0bf,roughness:.72}),
 graphite:new THREE.MeshStandardMaterial({color:0x303c43,roughness:.38,metalness:.48}),
 bronze:new THREE.MeshStandardMaterial({color:0x987653,roughness:.34,metalness:.62}),
 blue:new THREE.MeshStandardMaterial({color:0x5b8795,roughness:.2,metalness:.35}),
-glass:new THREE.MeshPhysicalMaterial({color:0xb8d7df,metalness:0,roughness:.055,transparent:true,opacity:.2,side:THREE.DoubleSide,clearcoat:1,clearcoatRoughness:.035,ior:1.46,thickness:.18}),
+glass:new THREE.MeshPhysicalMaterial({color:0x8daeb8,metalness:0,roughness:.14,transparent:true,opacity:.46,side:THREE.DoubleSide,clearcoat:1,clearcoatRoughness:.08,ior:1.46,thickness:.12,depthWrite:true}),
 dark:new THREE.MeshStandardMaterial({color:0x101a20,metalness:.5,roughness:.3}),
 light:new THREE.MeshStandardMaterial({color:0xd9d0bd,metalness:.35,roughness:.3}),
 warm:new THREE.MeshStandardMaterial({color:0x263641,emissive:0x000000,emissiveIntensity:0})
@@ -134,7 +134,7 @@ for(let f=1;f<=floors;f++){
   addBox(g,balconyW-.08,.48,.055,mats.glass,x,.46,d/2+balconyDepth-.04);
   addBox(g,.055,.52,.07,mats.bronze,x-balconyW/2+.04,.46,d/2+balconyDepth-.04);
   addBox(g,.055,.52,.07,mats.bronze,x+balconyW/2-.04,.46,d/2+balconyDepth-.04);
-  const win=new THREE.Mesh(new THREE.PlaneGeometry(bw*.68,.72),mats.warm.clone());win.position.set(x,.83,d/2+.17);win.userData.floor=f;g.add(win);floorWindows.push(win);
+  const win=new THREE.Mesh(new THREE.PlaneGeometry(bw*.68,.72),mats.warm.clone());win.position.set(x,.83,d/2-.08);win.userData.floor=f;g.add(win);floorWindows.push(win);
  }
  // Fine vertical bronze fins and balcony fascia.
  for(let p=0;p<=4;p++){const x=-w/2+.48+p*bw;addBox(g,.075,1.5,.15,mats.bronze,x,.78,d/2+.12)}

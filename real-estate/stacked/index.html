@@ -809,39 +809,155 @@ for(let f=1;f<=floors;f++){
  }
  // Fine vertical bronze fins and balcony fascia.
  for(let p=0;p<=4;p++){const x=-w/2+.48+p*bw;addBox(g,.075,1.5,.15,mats.bronze,x,.78,d/2+.12)}
- addBox(g,w,.11,.2,mats.graphite,0,1.49,d/2+.08);
+ // A gently bowed bronze balcony ribbon gives the tower a softer, more sculpted silhouette.
+ const sweepPoints=[];for(let step=0;step<=24;step++){const t=-1+step/12;sweepPoints.push(new THREE.Vector3(t*w*.5,1.49,d/2+.16+.52*(1-t*t)));}
+ const sweepCurve=new THREE.CatmullRomCurve3(sweepPoints);
+ const sweepRail=new THREE.Mesh(new THREE.TubeGeometry(sweepCurve,48,.055,7,false),mats.bronze);g.add(sweepRail);
  for(const side of [-1,1]){addBox(g,.22,1.55,.28,facade,side*(w/2-.12),.8,d/2+.15);addBox(g,.12,1.4,d-.6,mats.glass,side*(w/2-.18),.8,0)}
  if([5,10,14].includes(f)){
   addBox(g,w+.9,.2,d+.8,mats.graphite,0,1.62,0);
   for(let p=0;p<7;p++){const x=-w/2+p*w/6;addBox(g,.72,.36,.68,mats.stone,x,1.92,-d/2+.5);const shrub=new THREE.Mesh(new THREE.SphereGeometry(.34,8,6),palmMat);shrub.scale.y=.65;shrub.position.set(x,2.18,-d/2+.5);g.add(shrub)}
  }
 }
-// Crown level: rooftop restaurant pavilion, pergola and a second infinity-edge pool.
+// CROWN ROOFTOP: a sculpted private-club terrace with an infinity pool, glass pavilion and live party atmosphere.
 const topY=baseY+floors*floorH;
-addBox(hotel,11,.3,8,mats.graphite,0,topY,0);
-addBox(hotel,9.8,2.15,6.8,mats.glass,0,topY+1.2,0);
-for(let x=-5;x<=5;x+=1.25)addBox(hotel,.09,2.6,.12,mats.bronze,x,topY+1.35,3.45);
-for(const side of [-1,1])addBox(hotel,.1,2.6,6.9,mats.bronze,side*5,topY+1.35,0);
-addBox(hotel,10.8,.2,7.8,mats.stone,0,topY+2.5,0);
-addBox(hotel,7,.16,2.7,mats.blue,0,topY+2.68,-5.1);
-addBox(hotel,7,.08,2.7,mats.glass,0,topY+2.79,-5.1);
-for(let x=-4;x<=4;x+=2){addBox(hotel,.08,.08,7.6,mats.bronze,x,topY+2.64,0)}
-for(const x of [-8,8])palm(x,-4,.62);
-const beacon=new THREE.PointLight(0xb9eaff,0,48);beacon.position.set(0,topY+1,0);tower.add(beacon);
+const roofSurface=topY+.48;
+const roofDeckMat=new THREE.MeshStandardMaterial({color:0x303b40,roughness:.42,metalness:.34});
+const roofStoneMat=new THREE.MeshStandardMaterial({color:0xcfc4b0,roughness:.62});
+const roofGoldMat=new THREE.MeshStandardMaterial({color:0xc49a61,metalness:.76,roughness:.24,emissive:0x4a2409,emissiveIntensity:.2});
+const roofGlassMat=new THREE.MeshPhysicalMaterial({color:0x8dc8d3,metalness:.08,roughness:.09,transparent:true,opacity:.23,side:THREE.DoubleSide,depthWrite:false,clearcoat:1,clearcoatRoughness:.05});
+const roofDarkMat=new THREE.MeshStandardMaterial({color:0x101c25,metalness:.48,roughness:.3});
+const roofWaterMat=new THREE.MeshPhysicalMaterial({color:0x24b9ce,metalness:.18,roughness:.12,transparent:true,opacity:.84,emissive:0x063b50,emissiveIntensity:.28});
+const roofNeonPink=new THREE.MeshStandardMaterial({color:0xff4cba,emissive:0xd51b9d,emissiveIntensity:2.1,metalness:.2,roughness:.25});
+const roofNeonBlue=new THREE.MeshStandardMaterial({color:0x53eaff,emissive:0x12a9dc,emissiveIntensity:1.8,metalness:.15,roughness:.25});
+const roofWarmLight=new THREE.MeshStandardMaterial({color:0xffd9a0,emissive:0xb86a24,emissiveIntensity:1.1,roughness:.3});
+function roofRoundRect(w,h,r){
+ const s=new THREE.Shape();
+ s.moveTo(-w/2+r,-h/2);s.lineTo(w/2-r,-h/2);s.quadraticCurveTo(w/2,-h/2,w/2,-h/2+r);
+ s.lineTo(w/2,h/2-r);s.quadraticCurveTo(w/2,h/2,w/2-r,h/2);
+ s.lineTo(-w/2+r,h/2);s.quadraticCurveTo(-w/2,h/2,-w/2,h/2-r);
+ s.lineTo(-w/2,-h/2+r);s.quadraticCurveTo(-w/2,-h/2,-w/2+r,-h/2);
+ return s;
+}
+const roofShape=roofRoundRect(21.5,13.8,2.1);
+const roofDeckGeo=new THREE.ExtrudeGeometry(roofShape,{depth:.38,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.12,bevelThickness:.08});
+roofDeckGeo.rotateX(-Math.PI/2);
+const roofDeck=new THREE.Mesh(roofDeckGeo,roofDeckMat);roofDeck.position.y=topY+.08;hotel.add(roofDeck);
+const roofEdgePoints=roofShape.getPoints(24).map(p=>new THREE.Vector3(p.x,roofSurface+.04,-p.y));
+const roofEdgeCurve=new THREE.CatmullRomCurve3(roofEdgePoints,true);
+hotel.add(new THREE.Mesh(new THREE.TubeGeometry(roofEdgeCurve,180,.075,8,true),roofGoldMat));
+// Glass balustrades keep the cantilevered roof terrace open to the island views.
+addBox(hotel,18.5,.92,.065,roofGlassMat,0,roofSurface+.98,6.48);
+addBox(hotel,18.5,.075,.1,roofGoldMat,0,roofSurface+1.47,6.48);
+addBox(hotel,18.5,.92,.065,roofGlassMat,0,roofSurface+.98,-6.48);
+addBox(hotel,18.5,.075,.1,roofGoldMat,0,roofSurface+1.47,-6.48);
+for(const side of [-1,1]){
+ addBox(hotel,.065,.92,11.2,roofGlassMat,side*10.12,roofSurface+.98,0);
+ addBox(hotel,.1,.075,11.2,roofGoldMat,side*10.12,roofSurface+1.47,0);
+}
+// The infinity pool occupies its own left-hand terrace, with a luminous ocean-facing edge.
+addBox(hotel,8.05,.42,5.15,roofDarkMat,-6.05,roofSurface-.17,1.45);
+addBox(hotel,7.62,.1,4.72,roofGoldMat,-6.05,roofSurface+.075,1.45);
+addBox(hotel,7.38,.075,4.48,roofWaterMat,-6.05,roofSurface+.16,1.45);
+addBox(hotel,7.42,1.28,.075,roofWaterMat,-6.05,roofSurface-.52,3.91);
+addBox(hotel,7.55,.075,.12,roofNeonBlue,-6.05,roofSurface+.12,3.91);
+for(const x of [-9.55,-2.55])addBox(hotel,.08,.12,4.65,roofGoldMat,x,roofSurface+.17,1.45);
+// A curved glass pavilion gives the roof a recognisable crown rather than a flat box.
+const roofPavilion=new THREE.Group();roofPavilion.position.set(1.65,roofSurface,-3.55);hotel.add(roofPavilion);
+const pavilionGlass=new THREE.Mesh(new THREE.CylinderGeometry(5.05,5.35,2.65,56,1,true),roofGlassMat);
+pavilionGlass.scale.z=.67;pavilionGlass.position.y=1.34;roofPavilion.add(pavilionGlass);
+const pavilionBase=new THREE.Mesh(new THREE.CylinderGeometry(5.28,5.28,.16,56),roofDarkMat);
+pavilionBase.scale.z=.67;pavilionBase.position.y=.12;roofPavilion.add(pavilionBase);
+const pavilionCrown=new THREE.Mesh(new THREE.TorusGeometry(1,.14,10,96),roofGoldMat);
+pavilionCrown.rotation.x=Math.PI/2;pavilionCrown.scale.set(5.45,3.72,1);pavilionCrown.position.y=2.72;roofPavilion.add(pavilionCrown);
+const pavilionLightRing=new THREE.Mesh(new THREE.TorusGeometry(1,.055,8,96),roofNeonPink);
+pavilionLightRing.rotation.x=Math.PI/2;pavilionLightRing.scale.set(5.05,3.35,1);pavilionLightRing.position.y=2.57;roofPavilion.add(pavilionLightRing);
+for(let i=0;i<12;i++){const a=i*Math.PI/6;const post=new THREE.Mesh(new THREE.CylinderGeometry(.045,.055,2.5,8),roofGoldMat);post.position.set(Math.cos(a)*5.18,1.28,Math.sin(a)*3.42);roofPavilion.add(post)}
+// DJ booth and illuminated performance wall, positioned to remain visible from the hotel approach.
+addBox(hotel,5.1,2.65,.18,roofDarkMat,1.65,roofSurface+2.0,-5.85);
+addBox(hotel,4.75,2.3,.055,roofNeonBlue,1.65,roofSurface+2.0,-5.72);
+addBox(hotel,4.5,2.05,.045,roofDarkMat,1.65,roofSurface+2.0,-5.65);
+const djHaloA=new THREE.Mesh(new THREE.TorusGeometry(.92,.075,10,64),roofNeonPink);djHaloA.position.set(1.65,roofSurface+2.05,-5.56);hotel.add(djHaloA);
+const djHaloB=new THREE.Mesh(new THREE.TorusGeometry(.57,.055,10,64),roofNeonBlue);djHaloB.position.set(1.65,roofSurface+2.05,-5.48);hotel.add(djHaloB);
+addBox(hotel,3.75,.86,.9,roofDarkMat,1.65,roofSurface+.55,-3.55);
+addBox(hotel,3.55,.09,.76,roofNeonPink,1.65,roofSurface+1.02,-3.55);
+addBox(hotel,3.1,.08,.12,roofNeonBlue,1.65,roofSurface+.57,-3.07);
+const djConsole=new THREE.Group();djConsole.position.set(1.65,roofSurface,-3.05);hotel.add(djConsole);
+addBox(djConsole,.62,.85,.12,roofDarkMat,0,.78,0);
+addBox(djConsole,.48,.12,.035,roofNeonBlue,0,1.02,.075);
+const djHead=new THREE.Mesh(new THREE.SphereGeometry(.16,12,10),roofWarmLight);djHead.position.set(1.65,roofSurface+1.62,-3.18);hotel.add(djHead);
+addBox(hotel,.42,.58,.24,roofDarkMat,1.65,roofSurface+1.17,-3.18);
+// A cocktail bar and low lounge seating make the rooftop feel like a real hospitality venue.
+addBox(hotel,3.7,.82,1.05,roofDarkMat,7.05,roofSurface+.42,-2.55);
+addBox(hotel,3.78,.1,1.12,roofGoldMat,7.05,roofSurface+.88,-2.55);
+addBox(hotel,3.3,.055,.78,roofWarmLight,7.05,roofSurface+.96,-2.55);
+for(let i=0;i<4;i++){const stool=new THREE.Group();stool.position.set(5.85+i*.8,roofSurface,-1.55);hotel.add(stool);addCylinder(stool,.22,.22,.12,roofGoldMat,0,.58,0,12);addCylinder(stool,.055,.075,.58,roofDarkMat,0,.29,0,8);addCylinder(stool,.17,.17,.08,roofGoldMat,0,.05,0,10)}
+const loungeMat=new THREE.MeshStandardMaterial({color:0x9d8265,roughness:.82});
+for(const x of [5.7,8.1]){
+ addBox(hotel,2.25,.48,.88,loungeMat,x,roofSurface+.42,3.35);
+ addBox(hotel,2.25,.72,.18,roofDarkMat,x,roofSurface+.83,3.78);
+ addBox(hotel,1.65,.12,.62,roofStoneMat,x,roofSurface+.7,3.31);
+ for(const side of [-1,1])addBox(hotel,.16,.56,.9,roofGoldMat,x+side*1.05,roofSurface+.58,3.35);
+}
+addBox(hotel,1.55,.12,.9,roofDarkMat,6.9,roofSurface+.38,2.15);
+addBox(hotel,1.38,.08,.74,roofGoldMat,6.9,roofSurface+.48,2.15);
+// Tropical roof planters with broad leaves, kept low so they do not hide the party from the camera.
+const roofLeafMat=new THREE.MeshStandardMaterial({color:0x376b52,roughness:.9});
+function roofPlanter(x,z,s=1){
+ addCylinder(hotel,.48*s,.58*s,.48*s,roofDarkMat,x,roofSurface+.24*s,z,12);
+ addCylinder(hotel,.37*s,.42*s,.08*s,roofGoldMat,x,roofSurface+.49*s,z,12);
+ for(let i=0;i<6;i++){const a=i*Math.PI/3;const leaf=new THREE.Mesh(new THREE.ConeGeometry(.19*s,1.45*s,6),roofLeafMat);leaf.position.set(x+Math.cos(a)*.52*s,roofSurface+.95*s,z+Math.sin(a)*.52*s);leaf.rotation.z=Math.cos(a)*-.72;leaf.rotation.x=Math.sin(a)*.72;hotel.add(leaf)}
+}
+roofPlanter(-9.0,-4.3,.85);roofPlanter(-9.1,5.0,.78);roofPlanter(9.0,-4.6,.85);roofPlanter(9.1,5.0,.78);
+// Small, deliberately varied guest silhouettes: a social rooftop, not a field of identical cut-outs.
+const rooftopPeople=[];
+const guestTorsoGeo=new THREE.CylinderGeometry(.13,.18,.58,8);
+const guestHeadGeo=new THREE.SphereGeometry(.135,10,8);
+const guestArmGeo=new THREE.CylinderGeometry(.045,.055,.42,6);
+const guestLegGeo=new THREE.CylinderGeometry(.055,.07,.38,6);
+const guestMaterials=[0x263746,0x5d394b,0x344f49,0x9b7655,0x28313a,0x6a5b83,0x8a4c39].map(color=>new THREE.MeshStandardMaterial({color,roughness:.78}));
+const guestSkinMaterials=[0x8b6047,0xb77e5a,0x684431,0xd09a70,0x9c6c50].map(color=>new THREE.MeshStandardMaterial({color,roughness:.85}));
+function addRooftopGuest(x,z,scale,style,phase){
+ const guest=new THREE.Group();guest.position.set(x,roofSurface,z);guest.scale.setScalar(scale);
+ const torso=new THREE.Mesh(guestTorsoGeo,guestMaterials[style%guestMaterials.length]);torso.position.y=.69;guest.add(torso);
+ const head=new THREE.Mesh(guestHeadGeo,guestSkinMaterials[(style*3)%guestSkinMaterials.length]);head.position.y=1.12;guest.add(head);
+ for(const side of [-1,1]){
+  const arm=new THREE.Mesh(guestArmGeo,guestMaterials[style%guestMaterials.length]);arm.position.set(side*.2,.76,.015);arm.rotation.z=side*.42;guest.add(arm);
+  const leg=new THREE.Mesh(guestLegGeo,roofDarkMat);leg.position.set(side*.075,.2,0);guest.add(leg);
+ }
+ hotel.add(guest);rooftopPeople.push({group:guest,phase,baseY:roofSurface,scale});
+}
+const guestSpots=[
+[-2.5,-.05],[-1.35,.25],[-.1,.05],[1.1,.2],[2.35,.1],[3.55,.35],[4.75,.55],
+[-2.15,1.55],[-.95,1.85],[.35,1.55],[1.65,1.8],[2.95,1.55],[4.2,1.95],[5.35,2.0],
+[-1.75,3.15],[-.35,3.55],[1.05,3.1],[2.45,3.45],[3.85,3.15],[5.2,3.65],
+[6.35,.35],[7.0,1.35],[7.45,2.3],[4.8,4.65],[2.9,4.75],[-.2,4.75]
+];
+guestSpots.forEach((p,i)=>addRooftopGuest(p[0],p[1],.82+(i%4)*.07,i,i*.73));
+// A few guests beside the pool complete the resort-club atmosphere without crowding the water.
+addRooftopGuest(-2.35,-1.45,.86,2,2.4);addRooftopGuest(-2.0,3.0,.9,4,3.1);
+// Warm, cyan and violet light pools give the rooftop a living evening atmosphere.
+const rooftopAccentLights=[];
+function roofPointLight(color,intensity,distance,x,y,z,phase){
+ const light=new THREE.PointLight(color,intensity,distance,2);light.position.set(x,y,z);hotel.add(light);rooftopAccentLights.push({light,intensity,phase,x,y,z});
+}
+roofPointLight(0x9a43ff,4.2,17,-1.8,roofSurface+3.4,-2.2,0);
+roofPointLight(0x22dfff,3.8,16,4.8,roofSurface+2.8,1.8,1.4);
+roofPointLight(0xff4bbd,3.4,15,7.0,roofSurface+2.4,-2.7,2.7);
+roofPointLight(0xffc27b,2.6,13,-7.4,roofSurface+2.0,1.0,3.5);
+const rooftopPulseRings=[djHaloA,djHaloB,pavilionLightRing];
+const crownBeacon=new THREE.PointLight(0xb9eaff,0,48);crownBeacon.position.set(0,topY+1,0);tower.add(crownBeacon);
 const podiumGlow=new THREE.PointLight(0xd5efff,0,35);podiumGlow.position.set(0,7,7);tower.add(podiumGlow);
-// Subtle resort life: animated water glints and warm architectural lighting.
+// Existing pool ambience remains part of the resort; the rooftop infinity edge adds its own subtle glints.
 const waterRipples=[];
 const rippleMat=new THREE.MeshBasicMaterial({color:0xb9efff,transparent:true,opacity:.22,side:THREE.DoubleSide,depthWrite:false});
 for(let i=0;i<4;i++){
  const ring=new THREE.Mesh(new THREE.RingGeometry(.22,.34,48),rippleMat.clone());
- ring.rotation.x=-Math.PI/2;
- ring.position.set(-4.5+i*3,4.39,-4.1+(i%2)*.45);
- ring.userData.phase=i*.85;
+ ring.rotation.x=-Math.PI/2;ring.position.set(-4.5+i*3,4.39,-4.1+(i%2)*.45);ring.userData.phase=i*.85;
  hotel.add(ring);waterRipples.push(ring);
 }
 const crownGlow=new THREE.PointLight(0x9bdfff,1.2,24);crownGlow.position.set(0,topY+2.8,0);tower.add(crownGlow);
 const arrivalGlow=new THREE.PointLight(0xffd39a,1.1,19);arrivalGlow.position.set(0,3.2,9);tower.add(arrivalGlow);
-
 function setFinish(key){const chosen={stone:mats.stone,graphite:mats.graphite,bronze:mats.bronze,blue:mats.blue}[key];facade=chosen;hotel.traverse(o=>{if(o.isMesh&&[mats.stone,mats.graphite,mats.bronze,mats.blue].includes(o.material)&&o.material!==mats.dark)o.material=chosen});document.querySelectorAll('[data-finish]').forEach(b=>b.classList.toggle('active',b.dataset.finish===key))}
 const floorsEl=document.getElementById('floors'),unitsEl=document.getElementById('units'),details=document.getElementById('unitdetail');let activeFloor=11;
 const levelMeta={1:{name:'THE ARRIVAL COLLECTION',type:'DELUXE GUEST ROOMS',desc:'A welcoming first level with easy access to the hotel lobby, concierge and arrival lounge.',features:['Direct access to the arrival lobby','24-hour concierge and guest services','Luggage assistance and private transfers','Quiet rooms with garden-facing outlooks']},2:{name:'THE WELLNESS COLLECTION',type:'WELLNESS FLOOR',desc:'A restorative level designed around calm, comfort and a slower pace.',features:['Wellness and spa access nearby','Treatment and relaxation rooms','Fitness studio access','In-room wellness amenities']},3:{name:'THE DINING COLLECTION',type:'CULINARY FLOOR',desc:'A social level with easy access to signature dining and intimate gathering spaces.',features:['Signature restaurant access','Private dining options','Lounge and bar experiences','In-room dining available']}};
@@ -1034,6 +1150,9 @@ hotel.position.y=Math.sin(time*.7)*.045;
 waterRipples.forEach((ring,i)=>{const phase=(time*.32+ring.userData.phase)%1,scale=.65+phase*2.5;ring.scale.setScalar(scale);ring.material.opacity=(1-phase)*.2});
 crownGlow.intensity=1.1+Math.sin(time*1.25)*.35;
 arrivalGlow.intensity=1+Math.sin(time*1.6+.8)*.28;
+rooftopPeople.forEach(person=>{person.group.position.y=person.baseY+Math.sin(time*2.1+person.phase)*.035;person.group.rotation.y=Math.sin(time*1.25+person.phase)*.11;person.group.rotation.z=Math.sin(time*2.6+person.phase)*.045});
+rooftopAccentLights.forEach(item=>{item.light.intensity=item.intensity*(.82+.18*Math.sin(time*1.8+item.phase));item.light.position.x=item.x+Math.sin(time*.42+item.phase)*.45});
+rooftopPulseRings.forEach((ring,i)=>{ring.material.emissiveIntensity=1.5+.55*Math.sin(time*2+i*.8)});
 floorWindows.forEach((w,i)=>{w.material.emissiveIntensity=.18+(.12*(1+Math.sin(time*1.4+i*.7)))});
 
 const cityDrop=smooth(0,1,THREE.MathUtils.clamp((p-.035)/.205,0,1))*25;for(const b of descendingBuildings)b.position.y=b.userData.startY-cityDrop;for(const w of descendingWindows)w.position.y=w.userData.startY-cityDrop;const islandReveal=THREE.MathUtils.clamp((p-.19)/.16,0,1);island.visible=islandReveal>.01;ground.visible=islandReveal<.99;roadGroup.visible=islandReveal<.99;island.position.y=0;

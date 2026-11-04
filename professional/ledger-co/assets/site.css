@@ -29,3 +29,53 @@
 html,body{max-width:100%;overflow-x:clip}
 .business-intro,.appointment-section,.contact-section{overflow-x:clip}
 .nav-cta[aria-current=page]{background:var(--blue-dark);color:#fff}
+
+/* Ledger atmosphere: visible editorial photography with a ledger-grid fallback. */
+.section::before{
+ background-image:radial-gradient(ellipse at 95% 10%,rgba(198,223,114,.25),transparent 48%),linear-gradient(rgba(40,90,136,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(40,90,136,.065) 1px,transparent 1px);
+ background-size:auto,64px 64px,64px 64px;
+}
+.section-services,.firm-story,.team-intro,.services-overview,.pricing-main{
+ background-image:linear-gradient(100deg,rgba(250,251,248,.96) 10%,rgba(243,245,242,.78) 65%,rgba(243,245,242,.62)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1900&q=82');
+}
+.section-clients,.business-intro,.firm-process,.business-checklist{
+ background-image:linear-gradient(105deg,rgba(243,245,242,.96),rgba(243,245,242,.76) 65%,rgba(243,245,242,.62)),url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1900&q=82');
+}
+.section-pricing-preview,.appointment-section,.contact-section,.privacy-section{
+ background-image:linear-gradient(110deg,rgba(250,251,248,.96),rgba(243,245,242,.78) 65%,rgba(243,245,242,.66)),url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1900&q=82');
+}
+.section-rhythm,.firm-principles,.business-pillars,.team-culture,.pricing-faq,.service-boundary{
+ background-image:linear-gradient(105deg,rgba(12,36,59,.96),rgba(16,47,73,.84) 60%,rgba(16,47,73,.64)),url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1900&q=82');
+}
+.section-rhythm::before,.firm-principles::before,.business-pillars::before,.team-culture::before,.pricing-faq::before,.service-boundary::before{
+ background-image:radial-gradient(ellipse at 95% 10%,rgba(198,223,114,.13),transparent 55%),linear-gradient(rgba(198,223,114,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(198,223,114,.06) 1px,transparent 1px);
+}
+.signal-strip{background-image:repeating-linear-gradient(120deg,transparent 0 48px,rgba(23,40,59,.045) 49px 50px)}
+.price-preview,.package-card,.team-card,.checklist-card{
+ background-image:radial-gradient(ellipse at top right,rgba(198,223,114,.18),transparent 70%);
+}
+.principle-grid article,.pillar-grid article{background:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.035));backdrop-filter:blur(5px)}
+/* Individual transforms coexist with the existing scroll-reveal transform. */
+.motion-card{position:relative;isolation:isolate;--card-x:50%;--card-y:50%;
+ transition:translate .3s ease,rotate .3s ease,scale .3s ease,box-shadow .3s ease,border-color .3s ease;
+}
+.motion-card::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border:1px solid transparent;
+ background:radial-gradient(260px circle at var(--card-x) var(--card-y),rgba(198,223,114,.18),transparent 75%);opacity:0;transition:opacity .3s,border-color .3s}
+.motion-card:focus-within::after,.motion-card.is-pressed::after{opacity:1;border-color:rgba(112,140,53,.6)}
+.motion-card:focus-within{box-shadow:0 18px 40px rgba(21,43,62,.18)}
+.motion-card.is-pressed{scale:.985}
+.service-icon,.card-link b{transition:transform .3s ease,background .3s ease}
+@media(hover:hover) and (pointer:fine){
+ .motion-card:hover{translate:0 -7px;rotate:var(--card-axis,1 0 0) var(--card-angle,0deg);box-shadow:0 24px 50px rgba(21,43,62,.22)}
+ .motion-card:hover::after{opacity:1;border-color:rgba(198,223,114,.5)}
+ .service-card:hover .service-icon{transform:rotate(12deg);background:rgba(198,223,114,.18)}
+ .service-card:hover .card-link b{transform:translateX(5px)}
+}
+.snapshot-bars i{transform-origin:bottom;animation:ledger-bars .9s cubic-bezier(.2,.7,.2,1) both}
+.snapshot-bars i:nth-child(2n){animation-delay:.12s}
+.snapshot-bars i:nth-child(3n){animation-delay:.24s}
+@keyframes ledger-bars{from{transform:scaleY(.12)}to{transform:scaleY(1)}}
+@media(prefers-reduced-motion:reduce){
+ .motion-card,.motion-card:hover,.motion-card.is-pressed{translate:none;rotate:none;scale:none}
+ .snapshot-bars i{animation:none}
+}

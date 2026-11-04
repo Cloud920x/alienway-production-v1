@@ -215,6 +215,116 @@ body{letter-spacing:.005em;-webkit-font-smoothing:antialiased;text-rendering:opt
 @media(prefers-reduced-motion:reduce){
  *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* BEZA'S HOTEL — final fit, spacing and small-screen usability pass */
+:root{--content-gutter:clamp(20px,5.5vw,88px)}
+html,body{max-width:100%;overflow-x:clip}
+img,canvas,svg{max-width:100%}
+button,a{touch-action:manipulation}
+.topbar{gap:clamp(10px,2vw,26px);padding-inline:var(--content-gutter)}
+.topbar .brand{flex:0 0 auto;white-space:nowrap}
+.mainnav{min-width:0;flex-wrap:wrap;justify-content:center}
+.top-actions{flex:0 0 auto}
+.chapter{scroll-margin-top:88px}
+.copy,.experience-card-copy,.ops-main,.booking-content,.experience-body{min-width:0}
+.chapter .copy{width:min(100%,760px)}
+.hero .copy{padding-bottom:clamp(24px,5vh,58px)}
+.hero-stamp{max-width:35vw}
+.structure-note{max-width:34vw}
+.experience-heading{min-width:0}
+.experience-card{min-width:0}
+.experience-card img{display:block}
+.booking-overlay,.ops-overlay{padding:clamp(8px,2vw,18px);overscroll-behavior:contain}
+.booking-shell,.ops-shell{width:min(1080px,100%);max-height: min(92svh,920px);overscroll-behavior:contain}
+.booking-head,.ops-head{min-width:0}
+.booking-head>div,.ops-head>div{min-width:0}
+.ops-main{overflow-x:auto}
+.ops-main>.ops-table{display:block;max-width:100%;overflow-x:auto}
+.ops-table{min-width:560px}
+.ops-main h3,.ops-main>p{overflow-wrap:anywhere}
+.ops-role-control{width:min(100%,260px)}
+.ops-nav{scrollbar-width:thin;scrollbar-color:#9c8a6c transparent}
+.ops-nav button{flex:0 0 auto;min-height:40px}
+.ops-action,.room-step,.overlay-close,.experience-close,.exp-close,.room-action,.booking-submit{min-height:42px}
+.form-field input,.form-field select,.form-field textarea,.maintenance-form input,.maintenance-form select,.ops-role-control select,.guest-search-label input{max-width:100%;min-width:0}
+.ops-room-table-wrap,.ops-main>.ops-table{overscroll-behavior-x:contain}
+.experience-overlay{overscroll-behavior:contain}
+.experience-gallery img{display:block;max-width:100%}
+.site-footer>*{min-width:0}
+@media(max-width:760px){
+ .topbar{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;min-height:62px;padding:10px 14px}
+ .brand{font-size:clamp(12px,3.5vw,15px);letter-spacing:.13em}
+ .mainnav{gap:clamp(7px,2vw,13px);margin:0;flex-wrap:nowrap;white-space:nowrap}
+ .mainnav a{font-size:clamp(6px,1.7vw,8px);letter-spacing:.04em}
+ .top-actions{gap:0}
+ .nav-cta{white-space:nowrap;padding:10px 9px;font-size:7px}
+ .nav-cta span{margin-left:3px}
+ .chapter{min-height:100svh;padding-top:105px;padding-bottom:76px}
+ .hero{min-height:100svh}
+ .hero .copy{padding-top:26px;padding-bottom:130px}
+ .chapter h1,.chapter h2{font-size:clamp(54px,13vw,88px);overflow-wrap:normal}
+ .hero-stamp{right:7vw;bottom:10%;max-width:45vw}
+ .structure-note{right:7vw;bottom:7%;max-width:55vw}
+ .micro-specs{gap:12px 20px}
+ .level-dock{z-index:12}
+ .level-expansion{z-index:13;right:10px;bottom:12px;width:calc(100vw - 138px);max-height:56svh;overflow:auto}
+ .experience-section{padding:88px 18px 76px}
+ .experience-card{min-height:clamp(330px,78vw,440px)}
+ .experience-card-copy{padding:18px}
+ .chapter.end{min-height:82svh;padding-top:100px;padding-bottom:100px}
+ .site-footer{gap:14px}
+ .booking-shell,.ops-shell{max-height:94svh;width:100%}
+ .booking-head,.ops-head{padding:16px;gap:12px}
+ .booking-content{padding:14px;gap:16px}
+ .ops-layout{min-height:0}
+ .ops-nav{position:relative;max-width:100%;padding:8px}
+ .ops-main{padding:14px}
+ .ops-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .ops-metric{min-width:0}
+ .ops-metric b{font-size:clamp(15px,4vw,19px)}
+ .ops-metric span{font-size:6px;overflow-wrap:anywhere}
+ .ops-table{min-width:560px}
+ .experience-hero{min-height:68svh}
+ .experience-body{padding:42px 18px 58px}
+}
+@media(max-width:420px){
+ .topbar{grid-template-columns:auto minmax(0,1fr) auto;gap:7px;padding-inline:10px}
+ .brand{font-size:11px;letter-spacing:.09em}
+ .mainnav{gap:7px}
+ .mainnav a{font-size:5.5px;letter-spacing:0}
+ .nav-cta{font-size:6px;padding:9px 7px;letter-spacing:.08em}
+ .nav-cta span{display:none}
+ .chapter{padding-inline:6vw}
+ .chapter h1,.chapter h2{font-size:clamp(50px,13.5vw,72px)}
+ .hero .copy{padding-bottom:118px}
+ .hero-stamp>span{font-size:38px}
+ .hero-stamp small{font-size:5px}
+ .level-dock{width:104px}
+ .floor{width:100px}
+ .level-expansion{right:8px;width:calc(100vw - 124px);max-height:53svh;padding:12px 9px}
+ .experience-card{min-height:340px}
+ .booking-form{grid-template-columns:1fr}
+ .form-field.full,.booking-submit,.booking-disclaimer{grid-column:auto}
+ .booking-content{grid-template-columns:minmax(0,1fr)}
+ .ops-metrics{gap:5px}
+ .ops-metric{padding:8px 6px}
+ .ops-metric span{letter-spacing:0}
+ .report-bar-row{grid-template-columns:82px minmax(20px,1fr) 18px;gap:6px}
+ .experience-hero h2{font-size:clamp(48px,14vw,72px)}
+ .experience-detail{padding:18px}
+ .experience-gallery img,.experience-gallery img+img{height:210px}
+}
+@media(max-width:350px){
+ .mainnav a:nth-child(2){display:none}
+ .topbar{grid-template-columns:auto 1fr auto}
+ .hero-stamp{bottom:8%}
+ .ops-head h2,.booking-head h2{font-size:26px}
+}
+@media(prefers-reduced-motion:reduce){
+ .experience-hero img{animation:none}
+ .experience-card img,.experience-gallery img{transition:none}
+}
+
 </style>
 </head>
 <body>

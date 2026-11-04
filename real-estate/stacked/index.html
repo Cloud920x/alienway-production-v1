@@ -940,7 +940,7 @@ animate();
  {number:'0704',collection:'Deluxe',status:'Needs cleaning'},
  {number:'1202',collection:'Skyline',status:'Inspected'}
  ];
- const frontOfficeDate=(offset=0)=>{const d=new Date();d.setDate(d.getDate()+offset);return d.toISOString().slice(0,10)};
+ const frontOfficeDate=(offset=0)=>{const d=new Date();d.setDate(d.getDate()+offset);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
  const frontOfficeReservations=[
   {id:'FO-3101',guest:'A. Morgan',email:'a.morgan@example.test',phone:'+27 82 000 0101',room:'1402',collection:'Crown',arrival:frontOfficeDate(0),departure:frontOfficeDate(2),guests:2,source:'Direct',status:'Confirmed',notes:'Airport transfer requested'},
   {id:'FO-3102',guest:'J. Williams',email:'j.williams@example.test',phone:'+27 82 000 0102',room:'0903',collection:'Skyline',arrival:frontOfficeDate(0),departure:frontOfficeDate(3),guests:2,source:'Travel partner',status:'In-house',notes:'Late checkout enquiry'},
@@ -952,6 +952,7 @@ animate();
   return roomStates.filter(r=>r.status==='Ready'||r.number===selected).map(r=>'<option value="'+r.number+'" '+(r.number===selected?'selected':'')+'>'+r.number+' · '+r.collection+' · '+r.status+'</option>').join('');
  }
  function renderFrontOffice(){
+  demoBookingRequests.forEach(b=>{if(!frontOfficeReservations.some(r=>r.id===b.ref)){frontOfficeReservations.unshift({id:b.ref,guest:b.guest,email:'',phone:'',room:'Unassigned',collection:b.room,arrival:b.arrival,departure:b.departure,guests:Number(b.guests),source:'Website enquiry',status:'New request',notes:'Website request · '+b.nights+' night(s)'})}});
   const role=activeDemoRole,manager=role==='frontoffice',agent=role==='reservations',desk=role==='frontdesk';
   const today=frontOfficeDate(0),arrivals=frontOfficeReservations.filter(r=>r.arrival===today&&['Confirmed','New request'].includes(r.status)),departures=frontOfficeReservations.filter(r=>r.departure===today&&r.status==='In-house'),inhouse=frontOfficeReservations.filter(r=>r.status==='In-house'),pending=frontOfficeReservations.filter(r=>r.status==='New request').length;
   const metrics=manager?[[arrivals.length,'DUE TO ARRIVE'],[departures.length,'DUE TO DEPART'],[inhouse.length,'IN HOUSE'],[pending,'UNPROCESSED']]:desk?[[arrivals.length,'ARRIVALS TODAY'],[departures.length,'DEPARTURES TODAY'],[inhouse.length,'IN HOUSE']]:[[frontOfficeReservations.length,'RESERVATION FILES'],[pending,'NEW REQUESTS'],[frontOfficeReservations.filter(r=>r.status==='Confirmed').length,'CONFIRMED']];

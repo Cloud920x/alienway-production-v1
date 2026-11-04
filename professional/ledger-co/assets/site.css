@@ -24,3 +24,8 @@
 @media(orientation:landscape) and (max-height:560px) and (max-width:1000px){.site-header{height:64px}.main-nav{top:64px}.hero-grid{grid-template-columns:1fr 1fr;padding-top:40px;padding-bottom:25px;min-height:480px}.hero-copy h1{font-size:clamp(2.5rem,6vw,4rem)}.hero-visual{min-height:300px}.floating-note{max-width:340px}.visual-stamp{right:0;width:82px;height:82px}.page-hero{min-height:340px}.page-hero-inner{padding-top:45px;padding-bottom:45px}.section{padding:55px 0}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js [data-reveal]{opacity:1;transform:none;transition:none}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 @media print{.site-header,.exit-alienway,.button,.site-footer{display:none!important}.section,.page-hero{background:none!important;color:#000!important}}
+
+/* Keep off-canvas reveal motion from expanding narrow-screen layouts. */
+html,body{max-width:100%;overflow-x:clip}
+.business-intro,.appointment-section,.contact-section{overflow-x:clip}
+.nav-cta[aria-current=page]{background:var(--blue-dark);color:#fff}

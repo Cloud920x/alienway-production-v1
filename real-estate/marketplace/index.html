@@ -39,7 +39,7 @@
  <div class="wrap header-inner">
   <a class="brand" href="#top" aria-label="Keystone home"><span class="brand-mark">K.</span><span class="brand-copy"><span class="brand-name">KEYSTONE</span><span class="brand-sub">PROPERTY MARKET</span></span></a>
   <nav class="main-nav" id="main-nav" aria-label="Main navigation">
-   <a href="#properties" data-nav-filter="buy">Buy</a><a href="#properties" data-nav-filter="rent">Rent</a><a href="#areas">Explore areas</a><a href="#agents">Find an agent</a><a href="#calculator">Bond calculator</a><a href="#" id="nav-list-property">List your property</a>
+   <a href="#properties" data-nav-filter="buy">Buy</a><a href="#properties" data-nav-filter="rent">Rent</a><a href="#areas">Explore areas</a><a href="#agents">Find an agent</a><a href="#calculator">Bond calculator</a><a href="#" id="nav-workspace-open">Agent workspace</a><a href="#" id="nav-list-property">List your property</a>
   </nav>
   <div class="header-actions"><button class="btn btn-outline" id="workspace-open">Agent workspace ↗</button><button class="btn btn-primary" id="list-property-open">List a property <span>＋</span></button><button class="menu-toggle" id="menu-toggle" aria-label="Open navigation" aria-expanded="false">☰</button></div>
  </div>
@@ -248,7 +248,7 @@ $('property-detail-content').addEventListener('click',e=>{const b=e.target.close
 $('property-detail-content').addEventListener('submit',e=>{if(e.target.id!=='property-enquiry-form')return;e.preventDefault();closeModal('property-modal');showToast('Your demo enquiry has been prepared. No message was sent.');});
 $('calculator-open').addEventListener('click',()=>{computeBond();openModal('calculator-modal')});
 $('calc-recompute').addEventListener('click',computeBond);
-$('list-property-open').addEventListener('click',()=>openModal('listing-modal'));$('nav-list-property').addEventListener('click',e=>{e.preventDefault();$('main-nav').classList.remove('open');$('menu-toggle').setAttribute('aria-expanded','false');$('menu-toggle').textContent='☰';openModal('listing-modal')});
+$('list-property-open').addEventListener('click',()=>openModal('listing-modal'));$('nav-list-property').addEventListener('click',e=>{e.preventDefault();$('main-nav').classList.remove('open');$('menu-toggle').setAttribute('aria-expanded','false');$('menu-toggle').textContent='☰';openModal('listing-modal')});$('nav-workspace-open').addEventListener('click',e=>{e.preventDefault();$('main-nav').classList.remove('open');$('menu-toggle').setAttribute('aria-expanded','false');$('menu-toggle').textContent='☰';openWorkspace()});
 $('footer-list').addEventListener('click',e=>{e.preventDefault();openModal('listing-modal')});
 $('listing-form').addEventListener('submit',e=>{e.preventDefault();closeModal('listing-modal');e.target.reset();showToast('Listing enquiry received in this demonstration. Nothing was published.');});
 $('workspace-open').addEventListener('click',openWorkspace);$('workspace-open-2').addEventListener('click',openWorkspace);

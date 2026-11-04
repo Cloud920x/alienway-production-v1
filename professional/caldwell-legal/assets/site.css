@@ -118,3 +118,12 @@ html.motion-ready [data-reveal].is-visible{transform:translate3d(0,0,0);clip-pat
 .practice-card::before,.value-card::before,.profile-card::before,.insight-card::before,.practice-detail::before,.approach-card::before,.article::before,.trust-item::before{z-index:0}
 .practice-card>*,.value-card>*,.profile-card>*,.insight-card>*,.practice-detail>*,.approach-card>*,.article>*,.trust-item>*{position:relative;z-index:1}
 @media(prefers-reduced-motion:reduce){html.motion-ready [data-reveal]{clip-path:none!important}}
+
+
+/* Keep true slide-in motion observable by IntersectionObserver. */
+html.motion-ready [data-reveal]{clip-path:none;transition:opacity .78s cubic-bezier(.2,.7,.2,1),transform .78s cubic-bezier(.2,.7,.2,1)}
+html.motion-ready [data-reveal="left"]{transform:translate3d(-32px,12px,0)}
+html.motion-ready [data-reveal="right"]{transform:translate3d(32px,12px,0)}
+html.motion-ready [data-reveal="up"]{transform:translate3d(0,28px,0)}
+html.motion-ready [data-reveal].is-visible{transform:translate3d(0,0,0);clip-path:none}
+@media(prefers-reduced-motion:reduce){html.motion-ready [data-reveal]{clip-path:none!important;transform:none!important}}

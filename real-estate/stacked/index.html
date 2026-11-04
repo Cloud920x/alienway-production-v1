@@ -411,6 +411,110 @@ button,a{touch-action:manipulation}
   .experience-card{min-height:660px}
 }
 
+
+/* PHONE LANDSCAPE — compact composition for rotated handsets */
+@media (orientation:landscape) and (max-height:560px) and (max-width:950px){
+  html,body{width:100%;overflow-x:clip}
+  .topbar{min-height:48px;height:auto;padding:7px 18px;grid-template-columns:auto minmax(0,1fr) auto;gap:14px}
+  .brand{font-size:13px;letter-spacing:.12em}
+  .mainnav{gap:clamp(10px,2.2vw,22px);margin:0;flex-wrap:nowrap}
+  .mainnav a{font-size:7px;letter-spacing:.07em}
+  .top-actions{gap:0}
+  .topmeta{display:none}
+  .nav-cta{padding:8px 10px;font-size:7px}
+  .nav-cta span{display:inline;margin-left:4px}
+  .chapter{min-height:100svh;padding:76px 7vw 34px;align-items:center}
+  .chapter .copy{max-width:min(58vw,560px)}
+  .chapter h1,.chapter h2{font-size:clamp(42px,8.5vh,68px);line-height:.86;margin:12px 0}
+  .copy p{max-width:440px;font-size:10px;line-height:1.65}
+  .kicker{font-size:7px;letter-spacing:.16em}
+  .hero{min-height:100svh}
+  .hero .copy{padding:0 0 12px}
+  .hero-actions{gap:12px;margin-top:14px}
+  .primary-cta{padding:10px 12px;gap:16px;font-size:7px}
+  .text-cta{font-size:7px}
+  .scrollhint{margin-top:17px;font-size:7px}
+  .hero-stamp{right:8vw;bottom:12%;gap:8px}
+  .hero-stamp>span{font-size:42px}
+  .hero-stamp small{font-size:6px}
+  .chapter.structure{padding-bottom:40px;align-items:center}
+  .structure .copy{max-width:55vw}
+  .structure-note{right:7vw;bottom:12%;max-width:30vw}
+  .structure-note span{font-size:8px}
+  .structure-note small{font-size:6px}
+  .micro-specs{gap:10px 16px;margin-top:16px;padding-top:10px}
+  .micro-specs span{font-size:6px}
+  .micro-specs b{font-size:16px;margin-bottom:2px}
+  .chapter.residences{min-height:100svh;padding:0}
+  .level-dock{left:0;top:50%;width:104px;max-height:66svh}
+  .floors{max-height:66svh;gap:3px}
+  .floor{width:100px;min-height:28px;margin-left:-48px;padding:5px 6px 5px 9px}
+  .floor strong{font-size:7px}
+  .floor small{font-size:6px}
+  .level-expansion{right:12px;left:auto;top:50%;bottom:auto;transform:translateY(calc(-50% + 10px));width:min(390px,calc(100vw - 150px));max-height:78svh;padding:12px 14px;overflow:auto}
+  .level-expansion.open{transform:translateY(-50%)}
+  .level-expansion:before{font-size:6px;margin-bottom:8px;padding-bottom:7px}
+  .exp-top{padding-bottom:8px}
+  .exp-title{font-size:19px;margin:6px 0}
+  .exp-sub{font-size:8px;line-height:1.5}
+  .exp-stats{margin:8px 0;gap:5px}
+  .exp-stat{padding:7px 6px}
+  .exp-stat b{font-size:12px}
+  .exp-section{padding-top:8px;margin-top:8px}
+  .exp-unit{padding:7px}
+  .exp-unit b{font-size:8px}
+  .exp-unit small{font-size:7px;margin-top:3px}
+  .exp-unit em{font-size:6px;margin-top:4px}
+  .exp-features{grid-template-columns:1fr 1fr;gap:5px 9px}
+  .exp-feature{font-size:7px}
+  .room-gallery{gap:5px;margin-top:8px}
+  .room-photo img{height:64px}
+  .room-action{padding:8px;font-size:7px;margin-top:8px}
+  .model-label{top:58px;right:18px;font-size:6px}
+  .bottomlabel{display:none}
+  .side-index{right:12px;gap:8px}
+  .side-index span{font-size:6px}
+  .experience-section{padding:64px 6vw 58px}
+  .experience-heading{display:grid;grid-template-columns:1fr minmax(180px,.7fr);gap:18px;align-items:end;margin-bottom:22px}
+  .experience-heading h2{font-size:clamp(38px,7vh,58px);margin-top:10px}
+  .experience-heading>p{font-size:9px;line-height:1.6;margin:0 0 4px}
+  .experience-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .experience-card{min-height:clamp(190px,52vh,270px)}
+  .experience-card-copy{left:12px;right:12px;bottom:10px;padding:10px}
+  .experience-card-copy>span{font-size:6px}
+  .experience-card h3{font-size:19px;margin:6px 0}
+  .experience-card p{font-size:8px;line-height:1.5}
+  .chapter.end{min-height:100svh;padding:72px 7vw 35px;align-items:center}
+  .chapter.end .copy{max-width:58vw}
+  .chapter.end h2{font-size:clamp(42px,8vh,66px)}
+  .chapter.end .end-note{font-size:6px;margin-top:12px}
+  .site-footer{padding:15px 6vw;gap:12px}
+  .site-footer>*{font-size:7px}
+  .booking-overlay,.ops-overlay{padding:8px}
+  .booking-shell,.ops-shell{width:min(94vw,900px);max-height:94svh}
+  .booking-head,.ops-head{padding:10px 14px}
+  .booking-content{padding:12px 16px;gap:14px}
+  .booking-summary{padding:12px}
+  .booking-form{gap:8px}
+  .form-field label{font-size:7px}
+  .form-field input,.form-field select{padding:9px;font-size:12px}
+  .booking-submit{padding:11px}
+  .ops-layout{grid-template-columns:130px minmax(0,1fr);min-height:0}
+  .ops-nav{padding:8px}
+  .ops-nav button{padding:8px;font-size:7px}
+  .ops-main{padding:12px}
+  .ops-main h3{font-size:19px}
+  .ops-metrics{gap:6px}
+  .ops-metric{padding:8px}
+  .ops-metric b{font-size:15px}
+  .ops-metric span{font-size:6px}
+  .experience-hero{min-height:72svh;padding:30px}
+  .experience-hero h2{font-size:clamp(40px,8vh,66px)}
+  .experience-body{padding:28px 5vw 38px}
+  .experience-detail-grid{gap:8px}
+  .experience-gallery img{height:130px}
+}
+
 </style>
 </head>
 <body>

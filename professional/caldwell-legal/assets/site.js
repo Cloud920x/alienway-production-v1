@@ -13,8 +13,10 @@ if(!reduced){
  const seen=new Set(),targets=[];
  revealSets.forEach(([selector,direction])=>document.querySelectorAll(selector).forEach((el,index)=>{if(seen.has(el))return;seen.add(el);el.dataset.reveal=direction;el.style.setProperty('--reveal-delay',Math.min(index,5)*75+'ms');targets.push(el)}));
  document.documentElement.classList.add('motion-ready');
- if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}}),{threshold:.12,rootMargin:'0px 0px -7% 0px'});targets.forEach(el=>observer.observe(el))}
- else targets.forEach(el=>el.classList.add('is-visible'));
+ const pending=new Set(targets);let revealFrame=false;
+ const revealCheck=()=>{pending.forEach(el=>{const rect=el.getBoundingClientRect();if(rect.top<window.innerHeight*.92&&rect.bottom>0){el.classList.add('is-visible');pending.delete(el)}});revealFrame=false};
+ const scheduleReveal=()=>{if(!revealFrame){requestAnimationFrame(revealCheck);revealFrame=true}};
+ window.addEventListener('scroll',scheduleReveal,{passive:true});window.addEventListener('resize',scheduleReveal,{passive:true});revealCheck();
 }
 
 /* Restrained 3D card response on mouse/trackpad; touch remains simple. */

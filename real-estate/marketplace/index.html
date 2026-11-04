@@ -158,6 +158,14 @@ html{scroll-behavior:auto!important;scroll-padding-top:0}
  .workspace-kpi-value{font-size:19px}
  .workspace-nav button{font-size:8px;padding:8px}
 }
+/* Keep the expanded desktop navigation from crowding the header on smaller laptops. */
+@media(min-width:901px) and (max-width:1010px){
+ .main-nav{display:none;position:absolute;top:81px;left:0;right:0;background:#fbfcf9;padding:16px 24px 20px;border-bottom:1px solid var(--line);box-shadow:0 15px 22px #182d2114;flex-direction:column;align-items:stretch;gap:0}
+ .main-nav.open{display:flex}
+ .main-nav a{padding:12px 4px;border-bottom:1px solid #edf0eb;font-size:12px}
+ .menu-toggle{display:grid;place-items:center}
+ .header-actions .btn-outline{display:none}
+}
 </style>
 </head>
 <body>
@@ -488,7 +496,7 @@ $('empty-state').querySelector('#clear-filters').addEventListener('click',resetF
 $('advanced-open').addEventListener('click',()=>openModal('advanced-modal'));
 $('advanced-reset').addEventListener('click',()=>{ $('min-price').value='';$('max-price').value='';$('min-beds').value='0';$('min-baths').value='0';document.querySelectorAll('.feature-check').forEach(c=>c.checked=false);});
 $('advanced-apply').addEventListener('click',()=>{state.minPrice=Number($('min-price').value)||0;state.advancedMax=Number($('max-price').value)||0;state.minBeds=Number($('min-beds').value);state.minBaths=Number($('min-baths').value);state.features=Array.from(document.querySelectorAll('.feature-check:checked')).map(c=>c.value);renderListings();closeModal('advanced-modal')});
-document.querySelectorAll('.area-card').forEach(b=>b.addEventListener('click',()=>{$('search-location').value=b.dataset.area;state.location=b.dataset.area;state.quick='all';renderListings();$('properties').scrollIntoView({behavior:'smooth'});}));
+document.querySelectorAll('.area-card').forEach(b=>b.addEventListener('click',()=>{$('search-location').value=b.dataset.area;state.location=b.dataset.area;state.quick='all';renderListings();$('properties').scrollIntoView();}));
 $('property-detail-content').addEventListener('click',e=>{const b=e.target.closest('[data-gallery]');if(!b)return;const p=listings.find(x=>x.id===state.currentProperty);if(!p)return;$('detail-main-image').src=photo(p.images[Number(b.dataset.gallery)],1200);document.querySelectorAll('[data-gallery]').forEach(x=>x.classList.toggle('active',x===b));});
 $('property-detail-content').addEventListener('submit',e=>{if(e.target.id!=='property-enquiry-form')return;e.preventDefault();closeModal('property-modal');showToast('Your demo enquiry has been prepared. No message was sent.');});
 $('calculator-open').addEventListener('click',()=>{computeBond();openModal('calculator-modal')});

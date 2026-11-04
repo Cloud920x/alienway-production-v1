@@ -127,3 +127,88 @@ html.motion-ready [data-reveal="right"]{transform:translate3d(32px,12px,0)}
 html.motion-ready [data-reveal="up"]{transform:translate3d(0,28px,0)}
 html.motion-ready [data-reveal].is-visible{transform:translate3d(0,0,0);clip-path:none}
 @media(prefers-reduced-motion:reduce){html.motion-ready [data-reveal]{clip-path:none!important;transform:none!important}}
+
+
+/* =========================================================
+   CALDWELL LEGAL — LAYERED VISUAL ENVIRONMENTS
+   Atmospheric photography, tactile surfaces and page-specific
+   scenery. Imagery stays beneath readable content.
+========================================================= */
+.section{position:relative;isolation:isolate;background-color:var(--cream);background-image:linear-gradient(115deg,rgba(251,249,244,.91),rgba(245,241,232,.88)),url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=82');background-size:cover;background-position:center}
+.section>.wrap{position:relative;z-index:1}
+.section-paper{background-color:var(--paper);background-image:linear-gradient(112deg,rgba(245,241,232,.91),rgba(251,249,244,.86) 55%,rgba(238,232,220,.9)),url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=82');background-size:cover;background-position:center}
+.section-ink{background-color:#1d3027;background-image:linear-gradient(115deg,rgba(29,48,39,.94),rgba(35,53,44,.88)),url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1800&q=82');background-size:cover;background-position:center}
+.page-hero{background-color:var(--paper);background-image:linear-gradient(105deg,rgba(245,241,232,.91),rgba(251,249,244,.83) 58%,rgba(238,232,220,.89)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=82');background-size:cover;background-position:center 46%}
+.hero{background-color:var(--paper);background-image:linear-gradient(105deg,rgba(245,241,232,.96) 0%,rgba(248,245,238,.92) 54%,rgba(238,232,220,.83) 100%),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=82');background-size:cover;background-position:center}
+.trust-strip{background-color:var(--white);background-image:linear-gradient(90deg,rgba(255,254,250,.92),rgba(245,241,232,.88)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=78');background-size:cover;background-position:center}
+.cta-panel{position:relative;isolation:isolate;overflow:hidden;background-color:#eae3d7;background-image:linear-gradient(100deg,rgba(234,227,215,.93),rgba(245,241,232,.84)),url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=80');background-size:cover;background-position:center}
+.site-footer{background-color:#1d3027;background-image:linear-gradient(100deg,rgba(29,48,39,.96),rgba(29,48,39,.9)),url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1800&q=78');background-size:cover;background-position:center}
+
+/* Home: each major section gets its own visual atmosphere. */
+body.page-home main>section:nth-of-type(2){background-image:linear-gradient(110deg,rgba(251,249,244,.89),rgba(245,241,232,.84)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=82');background-position:center 42%}
+body.page-home main>section:nth-of-type(3){background-image:linear-gradient(112deg,rgba(29,48,39,.95),rgba(35,53,44,.86)),url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1800&q=82');background-position:center}
+body.page-home main>section:nth-of-type(4){background-image:linear-gradient(110deg,rgba(245,241,232,.88),rgba(251,249,244,.9)),url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=82');background-position:center}
+body.page-home main>section:nth-of-type(5){background-image:linear-gradient(110deg,rgba(245,241,232,.9),rgba(251,249,244,.86)),url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=82');background-position:center}
+body.page-home main>section:nth-of-type(6){background-image:linear-gradient(110deg,rgba(245,241,232,.88),rgba(251,249,244,.82)),url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=80');background-position:center}
+
+/* Firm story: architectural opening, warm editorial middle, dark library close. */
+body.page-firm .page-hero{background-image:linear-gradient(105deg,rgba(245,241,232,.88),rgba(251,249,244,.78) 58%,rgba(238,232,220,.86)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=82')}
+body.page-firm main>section:nth-of-type(2){background-image:linear-gradient(110deg,rgba(251,249,244,.91),rgba(245,241,232,.86)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1800&q=82')}
+body.page-firm main>section:nth-of-type(3){background-image:linear-gradient(110deg,rgba(245,241,232,.88),rgba(251,249,244,.84)),url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=82')}
+body.page-firm main>section:nth-of-type(4){background-image:linear-gradient(110deg,rgba(29,48,39,.94),rgba(35,53,44,.88)),url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1800&q=82')}
+body.page-firm main>section:nth-of-type(5){background-image:linear-gradient(110deg,rgba(245,241,232,.9),rgba(251,249,244,.84)),url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=80')}
+
+/* Expertise: each practice card carries a distinct, quiet visual cue. */
+body.page-expertise .page-hero{background-image:linear-gradient(105deg,rgba(245,241,232,.88),rgba(251,249,244,.79) 58%,rgba(238,232,220,.87)),url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1800&q=82')}
+body.page-expertise main>section:nth-of-type(2){background-image:linear-gradient(110deg,rgba(245,241,232,.88),rgba(251,249,244,.9)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=82')}
+.practice-detail{background-color:var(--white);background-image:linear-gradient(100deg,rgba(255,254,250,.95),rgba(255,254,250,.88)),url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1300&q=78');background-size:cover;background-position:center}
+.practice-detail:nth-child(3n+2){background-image:linear-gradient(100deg,rgba(255,254,250,.95),rgba(255,254,250,.88)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1300&q=78')}
+.practice-detail:nth-child(3n){background-image:linear-gradient(100deg,rgba(255,254,250,.95),rgba(255,254,250,.88)),url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1300&q=78')}
+
+/* People: subtle individual settings behind each sample profile. */
+body.page-people .page-hero{background-image:linear-gradient(105deg,rgba(245,241,232,.88),rgba(251,249,244,.8) 58%,rgba(238,232,220,.86)),url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=82')}
+body.page-people main>section:nth-of-type(2){background-image:linear-gradient(110deg,rgba(245,241,232,.9),rgba(251,249,244,.88)),url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=82')}
+.profile-card{background-color:var(--white);background-image:linear-gradient(155deg,rgba(255,254,250,.94),rgba(245,241,232,.9)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1100&q=78');background-size:cover;background-position:center}
+.profile-card:nth-child(2){background-image:linear-gradient(155deg,rgba(255,254,250,.94),rgba(245,241,232,.9)),url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1100&q=78')}
+.profile-card:nth-child(3){background-image:linear-gradient(155deg,rgba(255,254,250,.94),rgba(245,241,232,.9)),url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1100&q=78')}
+.profile-monogram{background:rgba(255,254,250,.58);box-shadow:0 8px 24px rgba(35,53,44,.06)}
+
+/* Insights: editorial desk and paper textures, not empty white panels. */
+body.page-insights .page-hero{background-image:linear-gradient(105deg,rgba(245,241,232,.88),rgba(251,249,244,.8) 58%,rgba(238,232,220,.87)),url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=82')}
+body.page-insights main>section:nth-of-type(2){background-image:linear-gradient(110deg,rgba(245,241,232,.89),rgba(251,249,244,.86)),url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1800&q=82')}
+.article{background-color:var(--white);background-image:linear-gradient(100deg,rgba(255,254,250,.95),rgba(255,254,250,.9)),url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1400&q=78');background-size:cover;background-position:center}
+.article:nth-child(2){background-image:linear-gradient(100deg,rgba(255,254,250,.95),rgba(255,254,250,.9)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1400&q=78')}
+.article:nth-child(3){background-image:linear-gradient(100deg,rgba(255,254,250,.95),rgba(255,254,250,.9)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1400&q=78')}
+
+/* Contact: welcoming meeting-room atmosphere behind the enquiry journey. */
+body.page-contact .page-hero{background-image:linear-gradient(105deg,rgba(245,241,232,.87),rgba(251,249,244,.78) 58%,rgba(238,232,220,.86)),url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=82')}
+body.page-contact main>section:nth-of-type(2){background-image:linear-gradient(110deg,rgba(245,241,232,.9),rgba(251,249,244,.86)),url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1800&q=82')}
+.contact-aside{position:relative;padding:28px;background:linear-gradient(145deg,rgba(255,254,250,.75),rgba(245,241,232,.55));border:1px solid rgba(183,124,81,.2)}
+.enquiry-form{background-color:var(--white);background-image:linear-gradient(145deg,rgba(255,254,250,.96),rgba(245,241,232,.92)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=78');background-size:cover;background-position:center}
+
+/* Legal notices: calm paper grain and architectural detail. */
+body.page-privacy .page-hero,body.page-disclaimer .page-hero{background-image:linear-gradient(105deg,rgba(245,241,232,.9),rgba(251,249,244,.82) 58%,rgba(238,232,220,.88)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=82')}
+body.page-privacy main>section:nth-of-type(2),body.page-disclaimer main>section:nth-of-type(2){background-image:linear-gradient(110deg,rgba(245,241,232,.9),rgba(251,249,244,.87)),url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=82')}
+.legal-copy{padding:clamp(24px,4vw,48px);background:linear-gradient(145deg,rgba(255,254,250,.83),rgba(245,241,232,.76));border:1px solid rgba(183,124,81,.18);box-shadow:0 18px 55px rgba(35,53,44,.055)}
+
+/* The card surfaces have depth even before hover. */
+.practice-card{background-color:var(--white);background-image:linear-gradient(145deg,rgba(255,254,250,.94),rgba(245,241,232,.9)),url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1000&q=76');background-size:cover;background-position:center}
+.practice-card:nth-child(3n+2){background-image:linear-gradient(145deg,rgba(255,254,250,.94),rgba(245,241,232,.9)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=76')}
+.practice-card:nth-child(3n){background-image:linear-gradient(145deg,rgba(255,254,250,.94),rgba(245,241,232,.9)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=76')}
+.value-card{background-color:var(--white);background-image:linear-gradient(145deg,rgba(255,254,250,.94),rgba(245,241,232,.9)),url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=76');background-size:cover;background-position:center}
+.value-card:nth-child(2){background-image:linear-gradient(145deg,rgba(255,254,250,.94),rgba(245,241,232,.9)),url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1000&q=76')}
+.value-card:nth-child(3){background-image:linear-gradient(145deg,rgba(255,254,250,.94),rgba(245,241,232,.9)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=76')}
+.insight-card{background-color:var(--white);background-image:linear-gradient(145deg,rgba(255,254,250,.94),rgba(245,241,232,.9)),url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1000&q=76');background-size:cover;background-position:center}
+.insight-card:nth-child(2){background-image:linear-gradient(145deg,rgba(255,254,250,.94),rgba(245,241,232,.9)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=76')}
+.insight-card:nth-child(3){background-image:linear-gradient(145deg,rgba(255,254,250,.94),rgba(245,241,232,.9)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=76')}
+.approach-card{padding:24px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025)),url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1000&q=72') center/cover;border:1px solid rgba(255,255,255,.12);border-top:1px solid rgba(216,177,142,.65)}
+.approach-card:nth-child(2){background-image:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=72')}
+.approach-card:nth-child(3){background-image:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=72')}
+
+@media(max-width:720px){
+ .section,.section-paper,.section-ink,.page-hero{background-position:center;background-attachment:scroll}
+ .practice-card,.practice-detail,.profile-card,.insight-card,.article,.value-card{background-position:center}
+ .contact-aside{padding:22px}
+ .approach-card{padding:22px}
+}
+@media(prefers-reduced-motion:reduce){.section,.section-paper,.section-ink,.page-hero,.hero,.site-footer{background-attachment:scroll}}

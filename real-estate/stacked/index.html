@@ -325,6 +325,92 @@ button,a{touch-action:manipulation}
  .experience-card img,.experience-gallery img{transition:none}
 }
 
+
+/* DEVICE-SPECIFIC COMPOSITIONS — phone, tablet and laptop are designed separately */
+/* PHONE: compact, single-column, thumb-friendly */
+@media (max-width:760px){
+  .topbar{grid-template-columns:auto minmax(0,1fr) auto}
+  .mainnav{justify-content:center;min-width:0}
+  .chapter{display:flex;align-items:center;padding-inline:clamp(20px,6vw,42px)}
+  .chapter .copy{width:100%;max-width:560px}
+  .experience-grid{grid-template-columns:minmax(0,1fr)}
+  .experience-card{min-height:clamp(350px,112vw,500px)}
+  .booking-content{grid-template-columns:minmax(0,1fr)}
+  .booking-form{grid-template-columns:minmax(0,1fr)}
+  .form-field.full,.booking-submit,.booking-disclaimer{grid-column:1}
+  .ops-layout{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+  .ops-nav{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;border-right:0;border-bottom:1px solid #ffffff1c;white-space:nowrap}
+  .ops-nav button{width:auto;flex:0 0 auto;margin:0}
+  .ops-main{min-width:0}
+}
+/* TABLET: balanced two-column editorial layout, more breathing room */
+@media (min-width:761px) and (max-width:1100px){
+  :root{--content-gutter:clamp(30px,5vw,58px)}
+  .topbar{min-height:76px;padding:16px 4vw;gap:clamp(16px,2.5vw,30px)}
+  .brand{font-size:15px;letter-spacing:.2em}
+  .mainnav{display:flex;gap:clamp(14px,2.5vw,28px);flex-wrap:nowrap}
+  .mainnav a{font-size:8px;white-space:nowrap}
+  .topmeta{display:none}
+  .nav-cta{font-size:8px;padding:12px 15px;white-space:nowrap}
+  .chapter{min-height:92svh;padding:125px 8vw 90px}
+  .chapter .copy{width:min(58%,620px);max-width:620px}
+  .chapter h1,.chapter h2{font-size:clamp(76px,9vw,112px)}
+  .hero-stamp{right:8vw;bottom:12%;max-width:230px}
+  .structure-note{right:8vw;bottom:10%;max-width:260px}
+  .level-dock{width:116px;max-height:68svh}
+  .floors{max-height:68svh}
+  .floor{width:108px}
+  .level-expansion{width:min(340px,38vw);max-height:62svh;overflow:auto}
+  .experience-section{padding:110px 5vw 96px}
+  .experience-heading{display:grid;grid-template-columns:1fr minmax(220px,.7fr);gap:28px;align-items:end}
+  .experience-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .experience-card{min-height:clamp(390px,52vw,520px)}
+  .experience-card:last-child:nth-child(odd){grid-column:1/-1;min-height:400px}
+  .booking-shell,.ops-shell{width:min(94vw,980px);max-height:90svh}
+  .booking-content{grid-template-columns:minmax(0,1.15fr) minmax(230px,.85fr);gap:20px;padding:22px}
+  .booking-form{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .ops-layout{grid-template-columns:154px minmax(0,1fr);min-height: min(66svh,650px)}
+  .ops-nav{display:block;overflow-y:auto;overflow-x:hidden;border-right:1px solid #ffffff1c;border-bottom:0;padding:12px}
+  .ops-nav button{width:100%;white-space:normal;text-align:left;font-size:7px;padding:12px 8px}
+  .ops-main{padding:18px;overflow:auto}
+  .ops-metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+  .ops-metric{padding:10px}
+  .ops-metric b{font-size:clamp(17px,2.4vw,23px)}
+  .ops-table{min-width:520px}
+  .experience-hero{min-height:66svh;padding:6vw}
+  .experience-body{padding:56px 6vw 70px}
+  .site-footer{padding-inline:5vw}
+}
+/* LAPTOP / DESKTOP: wide composition, full navigation and three-column content */
+@media (min-width:1101px){
+  .topbar{padding:22px clamp(48px,6vw,110px);gap:34px}
+  .mainnav{gap:clamp(26px,3vw,54px)}
+  .chapter{padding-left:clamp(100px,12vw,210px);padding-right:clamp(100px,12vw,210px)}
+  .chapter .copy{max-width:650px}
+  .chapter h1,.chapter h2{font-size:clamp(100px,8.2vw,140px)}
+  .hero-stamp{right:clamp(90px,12vw,210px)}
+  .structure-note{right:clamp(90px,12vw,210px)}
+  .experience-section{padding-inline:clamp(70px,9vw,160px)}
+  .experience-heading,.experience-grid{max-width:1440px}
+  .experience-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,2vw,34px)}
+  .experience-card{min-height:clamp(500px,43vw,650px)}
+  .booking-shell,.ops-shell{width:min(1160px,88vw);max-height: min(88svh,980px)}
+  .booking-content{grid-template-columns:minmax(0,1.3fr) minmax(300px,.8fr);gap:34px;padding:32px 36px}
+  .ops-layout{grid-template-columns:210px minmax(0,1fr);min-height: min(72svh,740px)}
+  .ops-nav{padding:22px}
+  .ops-main{padding:30px}
+  .ops-metrics{gap:12px}
+  .ops-metric{padding:17px}
+  .experience-hero{min-height:min(78svh,820px);padding:clamp(70px,8vw,130px)}
+  .experience-body{max-width:1440px;margin-inline:auto;padding:90px 8vw 120px}
+}
+/* Extra-wide monitors: prevent text and cards from stretching too far */
+@media (min-width:1600px){
+  .chapter .copy{max-width:720px}
+  .experience-section{padding-inline:max(9vw,calc((100vw - 1440px)/2))}
+  .experience-card{min-height:660px}
+}
+
 </style>
 </head>
 <body>

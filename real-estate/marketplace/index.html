@@ -34,6 +34,131 @@
 @media(orientation:landscape) and (max-height:520px) and (max-width:950px){.site-header{height:58px}.main-nav{top:57px}.main-nav.open{top:57px}.hero{padding:16px 0}.hero-grid{grid-template-columns:1fr 1fr;gap:18px}.hero h1{font-size:38px}.hero-copy>p{font-size:11px;line-height:1.5;margin-bottom:10px}.hero-visual,.hero-visual>img{height:230px;min-height:230px}.hero-note{margin-top:13px}.floating-card.bottom{bottom:55px}.search-fields{grid-template-columns:1.4fr 1fr 1fr 1fr}.search-submit{grid-column:auto}.trust-strip{padding:12px 0}.listings-section{padding:38px 0}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
+<style id="keystone-finish-polish">
+/* Stable page movement: no sticky page header or automatic smooth scrolling. */
+html{scroll-behavior:auto!important;scroll-padding-top:0}
+.site-header{position:relative!important;top:auto!important}
+.modal-header{position:relative!important;top:auto!important;backdrop-filter:none!important}
+#workspace-modal .modal{width:min(1120px,100%);max-height:92vh;overflow:auto}
+#workspace-modal .workspace-modal-header{display:flex;align-items:center;gap:15px}
+.workspace-modal-kicker{display:block;color:#668071;font-size:8px;font-weight:900;letter-spacing:1.5px;margin-bottom:5px}
+.workspace-modal-header strong{display:block}
+.workspace-shell{grid-template-columns:218px minmax(0,1fr);min-height:610px;background:#f5f7f3}
+.workspace-side{display:flex;flex-direction:column;padding:23px 16px;background:linear-gradient(160deg,#173e33 0%,#102f27 100%);min-width:0}
+.workspace-side-brand{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.workspace-side-brand small{font-size:8px;letter-spacing:1.5px;color:#c2d6c8;font-weight:900}
+.workspace-side-brand span{font-size:7px;letter-spacing:.8px;color:#d8eddd;border:1px solid #ffffff35;padding:5px 7px;border-radius:20px;white-space:nowrap}
+.workspace-side h3{font:600 23px/1.12 'Playfair Display',serif;margin:18px 0 8px;color:#fff}
+.workspace-side>p{font-size:10px;line-height:1.7;color:#c1d3c7;margin:0 0 24px}
+.workspace-nav{display:grid;gap:6px}
+.workspace-nav button{display:flex;align-items:center;gap:9px;border:1px solid transparent;background:transparent;color:#c4d6ca;text-align:left;padding:11px 10px;border-radius:10px;font-size:10px;font-weight:800;transition:background .18s,border-color .18s}
+.workspace-nav button:before{content:"";width:6px;height:6px;border:1px solid #9bb6a5;border-radius:2px;flex:0 0 auto}
+.workspace-nav button.active,.workspace-nav button:hover{background:#ffffff16;border-color:#ffffff16;color:#fff}
+.workspace-nav button.active:before{background:#d5fa8a;border-color:#d5fa8a}
+.workspace-side-foot{margin-top:auto;padding-top:24px;color:#b5cbbc;font-size:7px;letter-spacing:1px;font-weight:800;display:flex;align-items:center;gap:7px}
+.workspace-online-dot{width:7px;height:7px;border-radius:50%;background:#9de0a9;box-shadow:0 0 0 3px #9de0a922}
+.workspace-main{padding:25px 26px;min-width:0;background:#f5f7f3}
+.workspace-top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:20px}
+.workspace-top-copy{min-width:0}
+.workspace-kicker{font-size:8px;letter-spacing:1.5px;font-weight:900;color:#72877a;margin:0 0 6px}
+.workspace-top h3{font:600 26px/1.1 'Playfair Display',serif;margin:0;color:#20352b}
+.workspace-top-copy>p:last-child{font-size:10px;line-height:1.55;color:#7b8980;margin:7px 0 0}
+.workspace-role-picker{display:grid;gap:5px;flex:0 0 auto}
+.workspace-role-picker span{font-size:7px;letter-spacing:1.2px;font-weight:900;color:#839087}
+.workspace-top select{border:1px solid #dfe6dc;background:#fff;border-radius:9px;padding:10px 30px 10px 11px;font-size:10px;color:#34473b;max-width:190px}
+.workspace-kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:13px}
+.workspace-kpi{background:#fff;border:1px solid #e4eae2;border-radius:13px;padding:14px;min-width:0;box-shadow:0 4px 14px #19372906}
+.workspace-kpi-label{font-size:8px;color:#77867c;font-weight:800;line-height:1.4}
+.workspace-kpi-value{display:block;font:800 24px 'Manrope',sans-serif;color:#194b3e;margin:8px 0 3px;letter-spacing:-.7px}
+.workspace-kpi-note{font-size:8px;color:#66836f;line-height:1.5}
+.workspace-overview-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(220px,.85fr);gap:12px;margin-top:12px}
+.workspace-card{background:#fff;border:1px solid #e4eae2;border-radius:14px;padding:15px;min-width:0;box-shadow:0 4px 14px #19372905}
+.workspace-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.workspace-card-head h4{font-size:11px;color:#263b30;margin:0}
+.workspace-card-head p{font-size:8px;color:#87938a;margin:4px 0 0;line-height:1.5}
+.workspace-count{font-size:8px;font-weight:900;color:#47745a;background:#eaf2e9;border-radius:20px;padding:6px 8px;white-space:nowrap}
+.workspace-lead{padding:12px 0;border-top:1px solid #edf1eb}
+.workspace-lead:first-of-type{border-top:0}
+.workspace-lead-top{display:flex;justify-content:space-between;align-items:flex-start;gap:9px}
+.workspace-lead-name{font-size:10px;font-weight:900;color:#34463b}
+.workspace-lead-time{font-size:8px;color:#8a968e;white-space:nowrap}
+.workspace-lead-property{font-size:9px;color:#6d7d72;margin-top:4px;line-height:1.5}
+.workspace-lead-contact{font-size:8px;color:#87938a;margin-top:4px}
+.workspace-lead-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.workspace-mini-btn{border:1px solid #dce6dc;background:#f8faf7;color:#315d43;border-radius:7px;padding:7px 9px;font-size:8px;font-weight:900}
+.workspace-mini-btn.primary{background:#194b3e;color:white;border-color:#194b3e}
+.workspace-empty{font-size:9px;color:#89958d;padding:14px 0}
+.workspace-schedule-item{display:grid;grid-template-columns:43px 1fr;gap:10px;padding:11px 0;border-top:1px solid #edf1eb}
+.workspace-schedule-item:first-of-type{border-top:0}
+.workspace-schedule-time{font-size:9px;font-weight:900;color:#47745a;padding-top:2px}
+.workspace-schedule-title{font-size:9px;font-weight:900;color:#34463b}
+.workspace-schedule-meta{font-size:8px;color:#849087;margin-top:4px;line-height:1.5}
+.workspace-task{display:flex;align-items:flex-start;gap:9px;padding:10px 0;border-top:1px solid #edf1eb;font-size:9px;color:#526257;line-height:1.5}
+.workspace-task:first-of-type{border-top:0}
+.workspace-task input{accent-color:#194b3e;margin-top:2px}
+.workspace-task.done span{text-decoration:line-through;color:#a0aaa2}
+.workspace-performance-row{display:grid;grid-template-columns:minmax(90px,1fr) 1.5fr 34px;align-items:center;gap:9px;margin:13px 0;font-size:8px;color:#65756a}
+.workspace-bar{height:7px;background:#edf1eb;border-radius:20px;overflow:hidden}
+.workspace-bar span{display:block;height:100%;background:linear-gradient(90deg,#2b6a50,#9ac59a);border-radius:20px}
+.workspace-data-table-wrap{overflow-x:auto;border:1px solid #e4eae2;border-radius:13px;background:white}
+.workspace-data-table{width:100%;border-collapse:collapse;min-width:590px}
+.workspace-data-table th{text-align:left;font-size:8px;letter-spacing:.7px;color:#87948a;padding:12px 13px;background:#f8faf7}
+.workspace-data-table td{font-size:9px;color:#46574b;padding:13px;border-top:1px solid #edf1eb;vertical-align:middle}
+.workspace-data-table td strong{display:block;color:#2d4034;font-size:9px}
+.workspace-data-table td small{display:block;color:#8b968e;font-size:8px;margin-top:4px}
+.workspace-section-intro{font-size:9px;line-height:1.7;color:#7a887e;margin:0 0 13px}
+.workspace-status{display:inline-flex;align-items:center;border-radius:20px;padding:6px 8px;font-size:7px;font-weight:900;white-space:nowrap;background:#e8f2e9;color:#3a7650}
+.workspace-status.pending{background:#fff0dd;color:#a56b25}
+.workspace-status.review{background:#eaf0fa;color:#58709e}
+.workspace-status.contacted{background:#e5f1f5;color:#47778a}
+.workspace-report-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.workspace-report-card{background:#fff;border:1px solid #e4eae2;border-radius:13px;padding:14px}
+.workspace-report-card small{display:block;font-size:8px;color:#7d8b81}
+.workspace-report-card strong{display:block;font:800 20px 'Manrope',sans-serif;color:#194b3e;margin:7px 0 4px}
+.workspace-report-card span{font-size:8px;color:#839087}
+.workspace-callout{padding:14px 15px;border-radius:12px;background:#eaf1e9;border:1px solid #dce8dc;color:#47624e;font-size:9px;line-height:1.7;margin-top:12px}
+.workspace-action-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px;margin-top:13px}
+.workspace-action-row .btn{font-size:9px;padding:10px 13px}
+.workspace-footnote{font-size:8px;color:#929d94;line-height:1.65;margin:14px 2px 2px}
+#workspace-content .workspace-card+.workspace-card{margin-top:12px}
+@media(min-width:761px) and (max-width:1050px){
+ #workspace-modal .modal{width:min(980px,100%)}
+ .workspace-shell{grid-template-columns:185px minmax(0,1fr)}
+ .workspace-main{padding:20px}
+ .workspace-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .workspace-overview-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+ #workspace-modal .modal{max-height:96vh}
+ .workspace-shell{grid-template-columns:1fr;min-height:0}
+ .workspace-side{padding:13px 14px 11px}
+ .workspace-side h3{font-size:18px;margin:9px 0 5px}
+ .workspace-side>p{margin:0 0 11px;font-size:9px}
+ .workspace-side-foot{display:none}
+ .workspace-nav{display:flex;overflow-x:auto;gap:5px;padding-bottom:2px;scrollbar-width:thin}
+ .workspace-nav button{white-space:nowrap;flex:0 0 auto;padding:9px 10px;font-size:9px}
+ .workspace-main{padding:15px 13px}
+ .workspace-top{align-items:flex-start;flex-direction:column;gap:12px;margin-bottom:15px}
+ .workspace-top h3{font-size:23px}
+ .workspace-role-picker{width:100%}
+ .workspace-top select{max-width:none;width:100%}
+ .workspace-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .workspace-kpi{padding:11px}
+ .workspace-kpi-value{font-size:21px}
+ .workspace-overview-grid{grid-template-columns:1fr;gap:10px}
+ .workspace-report-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .workspace-card{padding:13px}
+ .workspace-lead-top{flex-direction:column;gap:4px}
+ .workspace-performance-row{grid-template-columns:85px 1fr 30px}
+}
+@media(max-width:360px){
+ .workspace-main{padding:12px 10px}
+ .workspace-kpi{padding:9px}
+ .workspace-kpi-label,.workspace-kpi-note{font-size:7px}
+ .workspace-kpi-value{font-size:19px}
+ .workspace-nav button{font-size:8px;padding:8px}
+}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -120,7 +245,7 @@
 <div class="modal-backdrop" id="compare-modal" role="dialog" aria-modal="true" aria-labelledby="compare-title"><div class="modal"><div class="modal-header"><strong id="compare-title">Compare your shortlist</strong><button class="modal-close" data-close="compare-modal" aria-label="Close">×</button></div><div class="modal-content" id="compare-content"></div></div></div>
 <div class="modal-backdrop" id="calculator-modal" role="dialog" aria-modal="true" aria-labelledby="calc-title"><div class="modal small"><div class="modal-header"><strong id="calc-title">Bond repayment calculator</strong><button class="modal-close" data-close="calculator-modal" aria-label="Close">×</button></div><div class="modal-content"><div class="calc-grid"><div class="modal-field"><label for="calc-price">Purchase price (R)</label><input id="calc-price" type="number" min="1" value="2500000"></div><div class="modal-field"><label for="calc-deposit">Deposit (%)</label><input id="calc-deposit" type="number" min="0" max="100" value="10"></div><div class="modal-field"><label for="calc-rate">Interest rate (%)</label><input id="calc-rate" type="number" min="0" max="40" step=".1" value="11.5"></div><div class="modal-field"><label for="calc-years">Loan term (years)</label><select id="calc-years"><option>10</option><option>15</option><option selected>20</option><option>25</option><option>30</option></select></div></div><div class="calc-result"><small>Estimated monthly bond repayment</small><strong id="calc-output">R24 900</strong><p id="calc-note">Illustrative estimate on the loan amount only. Excludes transfer costs, bond registration, insurance, rates and levies.</p></div><button class="btn btn-primary" id="calc-recompute" style="width:100%;margin-top:12px">Calculate repayment</button></div></div></div>
 <div class="modal-backdrop" id="listing-modal" role="dialog" aria-modal="true" aria-labelledby="listing-modal-title"><div class="modal small"><div class="modal-header"><strong id="listing-modal-title">List your property</strong><button class="modal-close" data-close="listing-modal" aria-label="Close">×</button></div><div class="modal-content"><p style="font-size:11px;color:var(--muted);line-height:1.6;margin-top:0">Tell our demonstration team a little about the property. This form shows the listing enquiry flow; it does not publish a real advert.</p><form id="listing-form"><div class="modal-field"><label for="owner-name">Your name</label><input id="owner-name" required placeholder="Full name"></div><div class="modal-field"><label for="owner-email">Email address</label><input id="owner-email" type="email" required placeholder="you@example.com"></div><div class="modal-field"><label for="owner-area">Property suburb / city</label><input id="owner-area" required placeholder="e.g. Claremont, Cape Town"></div><div class="form-row"><div class="modal-field"><label for="owner-type">Property type</label><select id="owner-type"><option>House</option><option>Apartment</option><option>Townhouse</option><option>Commercial</option><option>Farm</option></select></div><div class="modal-field"><label for="owner-purpose">I want to</label><select id="owner-purpose"><option>Sell</option><option>Rent out</option></select></div></div><button class="btn btn-primary" type="submit" style="width:100%">Send listing enquiry ↗</button><p class="form-note">Demonstration only — no personal details are transmitted or stored.</p></form></div></div></div>
-<div class="modal-backdrop" id="workspace-modal" role="dialog" aria-modal="true" aria-labelledby="workspace-title"><div class="modal"><div class="modal-header"><strong id="workspace-title">KEYSTONE · Operations workspace</strong><button class="modal-close" data-close="workspace-modal" aria-label="Close">×</button></div><div class="workspace-shell"><aside class="workspace-side"><small>DEMO WORKSPACE</small><h3>Property operations</h3><div class="workspace-nav"><button class="active" data-workspace-view="overview">Overview</button><button data-workspace-view="listings">Listings</button><button data-workspace-view="leads">Enquiries & leads</button><button data-workspace-view="team">Team & approvals</button><button data-workspace-view="reports">Reports</button></div></aside><div class="workspace-main"><div class="workspace-top"><h3 id="workspace-heading">Your overview</h3><select id="workspace-role" aria-label="Choose demonstration role"><option value="agent">Sales agent</option><option value="manager">Agency manager</option><option value="admin">Platform administrator</option></select></div><div id="workspace-content"></div><p class="workspace-footnote">This is a front-end role demonstration. The views are separated in the interface; production access control and customer-data permissions must be enforced by a secure backend.</p></div></div></div></div>
+<div class="modal-backdrop" id="workspace-modal" role="dialog" aria-modal="true" aria-labelledby="workspace-title"><div class="modal workspace-modal"><div class="modal-header workspace-modal-header"><div><span class="workspace-modal-kicker">KEYSTONE · DEMONSTRATION ENVIRONMENT</span><strong id="workspace-title">Sales agent workspace</strong></div><button class="modal-close" data-close="workspace-modal" aria-label="Close workspace">×</button></div><div class="workspace-shell"><aside class="workspace-side"><div class="workspace-side-brand"><small>MY WORKSPACE</small><span id="workspace-role-badge">SALES AGENT</span></div><h3 id="workspace-side-title">My sales desk</h3><p id="workspace-side-copy">Your listings, enquiries and daily priorities in one place.</p><div class="workspace-nav" aria-label="Workspace departments"><button class="active" type="button" data-workspace-view="overview">Overview</button><button type="button" data-workspace-view="listings">My listings</button><button type="button" data-workspace-view="leads">Enquiries & leads</button><button type="button" data-workspace-view="team">My activity</button><button type="button" data-workspace-view="reports">My reports</button></div><div class="workspace-side-foot"><span class="workspace-online-dot"></span> DEMO WORKSPACE ACTIVE</div></aside><div class="workspace-main"><div class="workspace-top"><div class="workspace-top-copy"><p id="workspace-kicker" class="workspace-kicker">PERSONAL WORKSPACE</p><h3 id="workspace-heading">My overview</h3><p id="workspace-subheading">Your day, organised around the next best action.</p></div><label class="workspace-role-picker"><span>PREVIEW ROLE</span><select id="workspace-role" aria-label="Preview a demonstration role"><option value="agent">Sales agent</option><option value="manager">Agency manager</option><option value="admin">Platform administrator</option></select></label></div><div id="workspace-content"></div><p class="workspace-footnote">Demonstration data only. Role previews show different interface experiences; real employee permissions, private records and approvals must be enforced by a secure backend.</p></div></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 (function(){
@@ -143,13 +268,38 @@ const agents=[
 {name:'Samantha Jacobs',role:'Senior property advisor',area:'Cape Town · Atlantic Seaboard',initials:'SJ',count:24,phone:'021 555 0198',image:'photo-1534528741775-53994a69daeb'},
 {name:'Naledi Khumalo',role:'Leasing & sales specialist',area:'Johannesburg · Durban',initials:'NK',count:16,phone:'011 555 0124',image:'photo-1531123897727-8f129e1688ce'}
 ];
-const state={purpose:'buy',quick:'all',location:'',type:'all',maxPrice:'',minPrice:0,advancedMax:0,minBeds:0,minBaths:0,features:[],favorites:new Set(),compare:new Set(),sort:'featured',currentProperty:null,workspaceRole:'agent',workspaceView:'overview'};
+const state={purpose:'buy',quick:'all',location:'',type:'all',maxPrice:'',minPrice:0,advancedMax:0,minBeds:0,minBaths:0,features:[],favorites:new Set(),compare:new Set(),sort:'featured',currentProperty:null,workspaceRole:'agent',workspaceView:'overview',workspaceLeadStates:{},workspaceTasks:new Set()};
 const $=id=>document.getElementById(id);
 function money(n){return 'R'+Math.round(n).toLocaleString('en-ZA').replace(/,/g,' ')}
 function photo(id,w){return imageBase+id+'?auto=format&fit=crop&w='+(w||900)+'&q=82'}
 function showToast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>t.classList.remove('show'),2600)}
-function openModal(id){$(id).classList.add('open');document.body.style.overflow='hidden'}
-function closeModal(id){$(id).classList.remove('open');if(!document.querySelector('.modal-backdrop.open'))document.body.style.overflow=''}
+let lockedScrollY=0;
+function openModal(id){
+ if(!document.querySelector('.modal-backdrop.open')){
+  lockedScrollY=window.scrollY||window.pageYOffset||0;
+  const scrollbarGap=Math.max(0,window.innerWidth-document.documentElement.clientWidth);
+  document.body.style.position='fixed';
+  document.body.style.top='-'+lockedScrollY+'px';
+  document.body.style.left='0';
+  document.body.style.right='0';
+  document.body.style.width='100%';
+  document.body.style.paddingRight=scrollbarGap?scrollbarGap+'px':'';
+ }
+ $(id).classList.add('open');
+}
+function closeModal(id){
+ $(id).classList.remove('open');
+ if(!document.querySelector('.modal-backdrop.open')){
+  const restoreY=lockedScrollY;
+  document.body.style.position='';
+  document.body.style.top='';
+  document.body.style.left='';
+  document.body.style.right='';
+  document.body.style.width='';
+  document.body.style.paddingRight='';
+  window.scrollTo(0,restoreY);
+ }
+}
 function listingCard(p){
  const saved=state.favorites.has(p.id),selected=state.compare.has(p.id);
  return '<article class="property-card" data-id="'+p.id+'" tabindex="0" aria-label="View '+p.title+'"><div class="card-photo"><img loading="lazy" src="'+photo(p.images[0],800)+'" alt="'+p.title+'"><span class="badge '+(p.tag==='New listing'?'new':'')+'">'+p.tag+'</span><button class="heart-btn '+(saved?'saved':'')+'" data-fav="'+p.id+'" aria-label="'+(saved?'Remove from':'Save to')+' favourites">'+(saved?'♥':'♡')+'</button><span class="photo-count">▧ '+p.images.length+' photos</span></div><div class="card-body"><div class="card-price">'+p.priceLabel+' <small>'+(p.priceSuffix||'')+'</small></div><div class="card-title">'+p.title+'</div><div class="card-location">⌖ '+p.address+' · '+p.type+'</div><div class="card-meta"><span><b>⌂ '+p.beds+'</b> beds</span><span><b>♧ '+p.baths+'</b> baths</span><span><b>▱ '+p.size+'</b> m²</span></div><div class="card-bottom"><div class="agent-mini"><span class="agent-avatar">'+p.agentInitials+'</span><span>'+p.agent+'</span></div><button class="compare-toggle '+(selected?'selected':'')+'" data-compare="'+p.id+'">'+(selected?'✓ Added':'＋ Compare')+'</button></div></div></article>';
@@ -206,32 +356,124 @@ function computeBond(){
 function openWorkspace(){renderWorkspace();openModal('workspace-modal')}
 function renderWorkspace(){
  const role=state.workspaceRole,view=state.workspaceView;
- const roleName=role==='agent'?'Sales agent':role==='manager'?'Agency manager':'Platform administrator';
- const titles={overview:role==='agent'?'My overview':role==='manager'?'Agency overview':'Platform overview',listings:role==='agent'?'My listings':role==='manager'?'Agency listings':'Listing approvals',leads:role==='agent'?'My enquiries & leads':role==='manager'?'Team enquiries & leads':'Platform reports & flags',team:role==='agent'?'My activity':role==='manager'?'Team & approvals':'Agency verification',reports:role==='agent'?'My performance':role==='manager'?'Agency performance':'Platform analytics'};
- $('workspace-heading').textContent=titles[view];$('workspace-title').textContent='KEYSTONE · '+roleName+' workspace';
- const data={
- agent:{metrics:[['My active listings','8','2 new this month'],['New enquiries','12','4 need a reply'],['Viewings booked','6','Next one · 14:30']],rows:[['Sea Point apartment · KS102','New enquiry','pending'],['Claremont townhouse · KS103','Viewing requested','review'],['Constantia family home · KS101','Follow-up due','pending']]},
- manager:{metrics:[['Agency listings','46','8 added this month'],['Team enquiries','83','18 awaiting allocation'],['Viewings this week','29','Across 6 agents']],rows:[['Lutho Mbeki · 18 listings','On track',''],['Samantha Jacobs · 16 listings','Strong activity',''],['Naledi Khumalo · 12 listings','Review pipeline','pending']]},
- admin:{metrics:[['Registered agencies','128','Demo platform total'],['Listings for review','17','6 priority checks'],['Reported adverts','3','Require moderation']],rows:[['Cape & Country Realty · 6 listings','Verification pending','pending'],['Northline Property Group · 3 listings','Documents received','review'],['Listing KS-209 · price concern','Flagged for review','pending']]}
+ const modal=$('workspace-modal').querySelector('.modal');
+ const keepScroll=modal?modal.scrollTop:0;
+ const roleInfo={
+  agent:{name:'Sales agent',badge:'SALES AGENT',side:'My sales desk',copy:'Your own listings, customers and daily priorities.',kicker:'PERSONAL WORKSPACE',heading:'Your day, in one place.',sub:'A clear view of your property portfolio and the next actions that move deals forward.'},
+  manager:{name:'Agency manager',badge:'AGENCY MANAGER',side:'Agency control room',copy:'Team performance, lead allocation and agency standards.',kicker:'AGENCY OPERATIONS',heading:'Your agency at a glance.',sub:'Monitor team activity, manage inventory and keep the agency pipeline moving.'},
+  admin:{name:'Platform administrator',badge:'PLATFORM ADMIN',side:'Platform operations',copy:'Platform-wide quality, agency verification and moderation.',kicker:'PLATFORM OPERATIONS',heading:'Platform health and oversight.',sub:'Review marketplace activity, agency checks and platform-wide service quality.'}
+ }[role];
+ const headings={
+  overview:role==='agent'?'My overview':role==='manager'?'Agency overview':'Platform overview',
+  listings:role==='agent'?'My property portfolio':role==='manager'?'Agency listings':'Listing review queue',
+  leads:role==='agent'?'My enquiries & leads':role==='manager'?'Team enquiries & leads':'Platform reports & flags',
+  team:role==='agent'?'My profile & activity':role==='manager'?'Team & approvals':'Agency verification',
+  reports:role==='agent'?'My performance':role==='manager'?'Agency performance':'Platform analytics'
  };
- const d=data[role];
- let metrics=d.metrics;
- let rows=d.rows;
- if(view==='listings'){rows=role==='agent'?[['My Sea Point apartment · KS102','Published',''],['My Constantia home · KS101','Published',''],['My Claremont rental · KS103','Draft','pending']]:role==='manager'?[['46 agency listings','Live inventory',''],['4 listings','Awaiting approval','pending'],['2 listings','Missing documents','review']]:[['17 listings','Awaiting platform review','pending'],['6 listings','Approved today',''],['3 listings','Rejected / returned','review']]}
- if(view==='leads'){rows=role==='agent'?[['A. Petersen · KS102','New enquiry','pending'],['M. Dlamini · KS101','Viewing requested','review'],['T. Williams · KS103','Lease question','pending']]:role==='manager'?[['Unassigned enquiries · 18','Needs allocation','pending'],['Viewing requests · 29','This week','review'],['Agent response time','Team average · 2h 14m','']]:[['Spam / duplicate flags · 9','Moderation queue','pending'],['Customer complaints · 3','Needs review','review'],['Platform response time','Within target','']]}
- if(view==='team'){rows=role==='agent'?[['My profile & credentials','Up to date',''],['My area coverage','Cape Town',''],['Training checklist','2 items remaining','pending']]:role==='manager'?[['Agent onboarding · 2 people','In progress','review'],['Leave & viewing cover','1 request','pending'],['Lead allocation rules','Active','']]:[['Agency identity checks · 6','Pending verification','pending'],['Agency documents · 4','Under review','review'],['Suspended accounts · 2','Admin action','pending']]}
- if(view==='reports'){rows=role==='agent'?[['Listing views','1 284 this month',''],['Enquiry conversion','8.4%',''],['Viewing-to-offer rate','18%','']]:role==='manager'?[['Team lead conversion','7.8%',''],['Average listing age','31 days',''],['Agency stock value','R186.4m','']]:[['New listings this month','2 481',''],['Platform enquiry volume','18 420',''],['Moderation completion','96.2%','']]}
- $('workspace-content').innerHTML='<div class="metric-grid">'+metrics.map(m=>'<div class="metric"><small>'+m[0]+'</small><strong>'+m[1]+'</strong><em>'+m[2]+'</em></div>').join('')+'</div><div class="workspace-panel"><h4>'+titles[view]+' · '+roleName+'</h4>'+rows.map((r,i)=>'<div class="workspace-row"><span>'+r[0]+'</span><span class="status '+(r[2]||'')+'">'+r[1]+'</span></div>').join('')+'</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:13px"><button class="btn btn-soft" id="workspace-action"> '+(role==='agent'?'Open my lead queue':role==='manager'?'Review team activity':'Open review queue')+' ↗</button><button class="btn btn-outline" id="workspace-export">Export view ↓</button></div>';
- $('workspace-action').onclick=()=>showToast(role==='agent'?'Your private lead queue is selected.':role==='manager'?'Team activity review opened in this demonstration.':'Platform review queue selected.');
- $('workspace-export').onclick=()=>showToast('Demo report prepared. Connect a backend to export live data.');
- document.querySelectorAll('[data-workspace-view]').forEach(b=>b.classList.toggle('active',b.dataset.workspaceView===view));
+ $('workspace-heading').textContent=headings[view];
+ $('workspace-title').textContent='KEYSTONE · '+roleInfo.name+' workspace';
+ $('workspace-role-badge').textContent=roleInfo.badge;
+ $('workspace-side-title').textContent=roleInfo.side;
+ $('workspace-side-copy').textContent=roleInfo.copy;
+ $('workspace-kicker').textContent=roleInfo.kicker;
+ $('workspace-subheading').textContent=roleInfo.sub;
+ const metricCards=items=>'<div class="workspace-kpi-grid">'+items.map(m=>'<div class="workspace-kpi"><div class="workspace-kpi-label">'+m[0]+'</div><strong class="workspace-kpi-value">'+m[1]+'</strong><div class="workspace-kpi-note">'+m[2]+'</div></div>').join('')+'</div>';
+ const card=(title,subtitle,body,badge)=>'<section class="workspace-card"><div class="workspace-card-head"><div><h4>'+title+'</h4><p>'+subtitle+'</p></div>'+(badge?'<span class="workspace-count">'+badge+'</span>':'')+'</div>'+body+'</section>';
+ const status=(label,kind)=>'<span class="workspace-status '+(kind||'')+'">'+label+'</span>';
+ const leads=[
+  {id:'L-204',name:'A. Petersen',property:'Sea Point apartment · KS102',contact:'buyer.demo@example.com · 082 000 0102',time:'Today · 09:42',need:'Asked for a second viewing and levy details.',status:'New enquiry'},
+  {id:'L-198',name:'M. Dlamini',property:'Constantia family home · KS101',contact:'buyer.demo@example.com · 082 000 0103',time:'Today · 08:16',need:'Requested a Saturday viewing for two adults.',status:'Viewing requested'},
+  {id:'L-191',name:'T. Williams',property:'Claremont townhouse · KS103',contact:'tenant.demo@example.com · 082 000 0104',time:'Yesterday · 16:35',need:'Needs the rental application requirements.',status:'Follow-up due'}
+ ];
+ const leadState=id=>state.workspaceLeadStates[id]||'';
+ const leadCard=l=>'<div class="workspace-lead"><div class="workspace-lead-top"><div class="workspace-lead-name">'+l.name+' <span style="font-weight:500;color:#829087">· '+l.id+'</span></div><span class="workspace-lead-time">'+l.time+'</span></div><div class="workspace-lead-property">'+l.property+'</div><div class="workspace-lead-contact">'+l.contact+'</div><div class="workspace-lead-property">'+l.need+'</div><div class="workspace-lead-actions">'+(leadState(l.id)==='contacted'?status('Contacted','contacted'):leadState(l.id)==='viewing'?status('Viewing arranged',''):status(l.status,l.status==='New enquiry'?'pending':'review'))+'<button class="workspace-mini-btn" type="button" data-lead-action="contacted" data-lead-id="'+l.id+'">Mark contacted</button><button class="workspace-mini-btn primary" type="button" data-lead-action="viewing" data-lead-id="'+l.id+'">Arrange viewing</button></div></div>';
+ const schedule=[
+  ['09:30','Buyer call · A. Petersen','Confirm viewing requirements · Sea Point'],
+  ['11:00','Property viewing · KS102','Sea Point · Meet at main entrance'],
+  ['14:30','Seller update · KS101','Share enquiry feedback · Constantia']
+ ];
+ const tasks=[
+  ['task-docs','Send levy information for KS102'],
+  ['task-viewing','Confirm Saturday viewing with M. Dlamini'],
+  ['task-photos','Review updated photographs for KS103']
+ ];
+ const ownIds=['KS101','KS102','KS103','KS104'];
+ const ownListings=listings.filter(p=>ownIds.includes(p.id));
+ const demoViews=[842,615,438,291],demoLeads=[7,5,3,2];
+ const listingRows=ownListings.map((p,i)=>'<tr><td><strong>'+p.title+'</strong><small>'+p.id+' · '+p.area+', '+p.city+'</small></td><td>'+p.priceLabel+'</td><td>'+p.beds+' bed · '+p.baths+' bath</td><td>'+status(p.tag,p.tag==='Featured'?'':'review')+'</td><td>'+(demoViews[i]||210)+'<small>'+(demoLeads[i]||1)+' enquiries</small></td><td><button class="workspace-mini-btn" type="button" data-workspace-property="'+p.id+'">Open listing ↗</button></td></tr>').join('');
+ const managerData={
+  metrics:[['Agency listings','46','8 added this month'],['Team enquiries','83','18 awaiting allocation'],['Viewings this week','29','Across 6 agents'],['Response SLA','91%','Within agency target']],
+  rows:[['Lutho Mbeki','18 listings · 21 active leads','On track',''],['Samantha Jacobs','16 listings · 34 active leads','Strong activity',''],['Naledi Khumalo','12 listings · 28 active leads','Review pipeline','pending']]
+ };
+ const adminData={
+  metrics:[['Registered agencies','128','Demonstration platform total'],['Listings for review','17','6 priority checks'],['Reported adverts','3','Require moderation'],['Service availability','99.8%','Illustrative demo metric']],
+  rows:[['Cape & Country Realty','6 listings','Verification pending','pending'],['Northline Property Group','3 listings','Documents received','review'],['Listing KS-209','Price concern','Flagged for review','pending']]
+ };
+ let html='';
+ if(role==='agent'&&view==='overview'){
+  html=metricCards([['Active listings','8','2 updated this month'],['New enquiries','12','4 need a reply'],['Viewings booked','6','Next appointment · 11:00'],['Response rate','94%','Illustrative monthly rate']]);
+  html+='<div class="workspace-overview-grid">'+card('Priority inbox','The customer conversations that need your attention.','<div class="workspace-lead-list">'+leads.map(leadCard).join('')+'</div>','3 DEMO LEADS')+card("Today's schedule",'Appointments and important time blocks.',schedule.map(s=>'<div class="workspace-schedule-item"><div class="workspace-schedule-time">'+s[0]+'</div><div><div class="workspace-schedule-title">'+s[1]+'</div><div class="workspace-schedule-meta">'+s[2]+'</div></div></div>').join(''),'TODAY')+'</div>';
+  html+='<div class="workspace-overview-grid">'+card('My follow-up list','Tick items as you complete them. Your progress stays in this browser demo.',tasks.map(t=>'<label class="workspace-task '+(state.workspaceTasks.has(t[0])?'done':'')+'"><input type="checkbox" data-task-toggle="'+t[0]+'" '+(state.workspaceTasks.has(t[0])?'checked':'')+'><span>'+t[1]+'</span></label>').join(''),'3 TASKS')+card('Portfolio attention','A quick read of how your featured listings are performing.','<div class="workspace-performance-row"><span>KS101 · Constantia</span><div class="workspace-bar"><span style="width:86%"></span></div><b>842</b></div><div class="workspace-performance-row"><span>KS102 · Sea Point</span><div class="workspace-bar"><span style="width:64%"></span></div><b>615</b></div><div class="workspace-performance-row"><span>KS103 · Claremont</span><div class="workspace-bar"><span style="width:45%"></span></div><b>438</b></div><p class="workspace-section-intro">Illustrative listing views for this demonstration period.</p>','THIS MONTH')+'</div>';
+  html+='<div class="workspace-action-row"><button class="btn btn-primary" type="button" data-workspace-view-target="leads">Open my enquiry inbox →</button><button class="btn btn-outline" type="button" data-workspace-view-target="listings">Manage my listings</button><button class="btn btn-soft" type="button" data-workspace-export>Export this view ↓</button></div>';
+ }else if(role==='agent'&&view==='listings'){
+  html=metricCards([['My active properties','8','Across your assigned areas'],['Total listing views','2 186','Illustrative monthly views'],['Enquiries generated','17','Across displayed listings'],['Needs attention','2','Check details or media']]);
+  html+=card('My property portfolio','Only listings assigned to this demonstration agent are shown here.','<div class="workspace-data-table-wrap"><table class="workspace-data-table"><thead><tr><th>PROPERTY</th><th>ASKING PRICE</th><th>LAYOUT</th><th>LISTING STATUS</th><th>PERFORMANCE</th><th>ACTION</th></tr></thead><tbody>'+listingRows+'</tbody></table></div><div class="workspace-callout">Listing changes in this preview are not published. A live version would connect edits to the agency approval process.</div>');
+  html+='<div class="workspace-action-row"><button class="btn btn-soft" type="button" data-workspace-export>Export my portfolio ↓</button></div>';
+ }else if(role==='agent'&&view==='leads'){
+  html=metricCards([['Open conversations','12','Across your own listings'],['New today','4','Reply as soon as possible'],['Viewings requested','6','Confirm suitable time slots'],['Follow-ups due','3','Your personal action queue']]);
+  html+=card('My enquiry inbox','Customer enquiries assigned to your agent account. Update each demo lead as you work through it.',leads.map(leadCard).join(''),'PERSONAL QUEUE');
+  html+='<div class="workspace-callout">Customer contact details shown here are fictional demonstration data. A production workspace should only return leads assigned to the signed-in agent.</div>';
+  html+='<div class="workspace-action-row"><button class="btn btn-soft" type="button" data-workspace-export>Export enquiry list ↓</button></div>';
+ }else if(role==='agent'&&view==='team'){
+  html=metricCards([['Profile status','Complete','Illustrative agent profile'],['Coverage areas','3','Cape Town · Southern Suburbs'],['Response target','2 hours','Personal service standard'],['Training items','2','Learning checklist remaining']]);
+  html+='<div class="workspace-overview-grid">'+card('My agent profile','Your individual professional details.','<div class="workspace-lead"><div class="workspace-lead-name">Lutho Mbeki</div><div class="workspace-lead-property">Property consultant · Demonstration profile</div><div class="workspace-lead-contact">lutho.agent@example.com · 021 555 0142</div></div><div class="workspace-schedule-item"><div class="workspace-schedule-time">AREA</div><div><div class="workspace-schedule-title">Cape Town · Southern Suburbs</div><div class="workspace-schedule-meta">Constantia · Claremont · Sea Point</div></div></div><div class="workspace-schedule-item"><div class="workspace-schedule-time">ID</div><div><div class="workspace-schedule-title">Agent reference · AG-014</div><div class="workspace-schedule-meta">Verification shown as complete in this demo.</div></div></div>')+card('My professional checklist','Your own development and compliance reminders.',tasks.map(t=>'<label class="workspace-task '+(state.workspaceTasks.has(t[0])?'done':'')+'"><input type="checkbox" data-task-toggle="'+t[0]+'" '+(state.workspaceTasks.has(t[0])?'checked':'')+'><span>'+t[1]+'</span></label>').join('')+'<div class="workspace-callout">This area is personal to the agent. It does not expose other employees’ records, commission details or owner-level financial information.</div>')+'</div>';
+ }else if(role==='agent'&&view==='reports'){
+  html=metricCards([['Property views','2 186','Illustrative this month'],['Enquiry conversion','8.4%','Views converted to enquiries'],['Viewing-to-offer rate','18%','Illustrative pipeline measure'],['Average response','38 min','Demonstration service metric']]);
+  html+=card('My listing engagement','Compare the attention received by your current showcase listings.','<div class="workspace-performance-row"><span>KS101 · Constantia</span><div class="workspace-bar"><span style="width:86%"></span></div><b>86%</b></div><div class="workspace-performance-row"><span>KS102 · Sea Point</span><div class="workspace-bar"><span style="width:64%"></span></div><b>64%</b></div><div class="workspace-performance-row"><span>KS103 · Claremont</span><div class="workspace-bar"><span style="width:45%"></span></div><b>45%</b></div><div class="workspace-performance-row"><span>KS104 · Parkhurst</span><div class="workspace-bar"><span style="width:32%"></span></div><b>32%</b></div><p class="workspace-section-intro">Illustrative relative engagement, not live analytics.</p>');
+  html+='<div class="workspace-report-grid" style="margin-top:12px"><div class="workspace-report-card"><small>Enquiries answered</small><strong>94%</strong><span>Personal response rate</span></div><div class="workspace-report-card"><small>Viewings completed</small><strong>18</strong><span>Illustrative monthly total</span></div><div class="workspace-report-card"><small>Offers received</small><strong>4</strong><span>Across demo listings</span></div></div><div class="workspace-action-row"><button class="btn btn-soft" type="button" data-workspace-export>Export my report ↓</button></div>';
+ }else{
+  const d=role==='manager'?managerData:adminData;
+  const metrics=d.metrics;
+  let rows=d.rows;
+  if(view==='listings')rows=role==='manager'?[['Agency inventory','46 live listings','Current stock',''],['Approval queue','4 submissions','Awaiting manager review','pending'],['Compliance checks','2 listings','Missing documents','review']]:[['Marketplace listings','17 submissions','Awaiting platform review','pending'],['Approved today','6 listings','Passed quality checks',''],['Returned to agency','3 listings','Needs correction','review']];
+  if(view==='leads')rows=role==='manager'?[['Unassigned enquiries','18 leads','Needs team allocation','pending'],['Viewing requests','29 appointments','This week','review'],['Agent response time','2h 14m','Team average','']]:[['Spam / duplicate flags','9 reports','Moderation queue','pending'],['Customer complaints','3 cases','Needs review','review'],['Platform response time','Within target','Service indicator','']];
+  if(view==='team')rows=role==='manager'?[['Agent onboarding','2 people','In progress','review'],['Leave & viewing cover','1 request','Manager action','pending'],['Lead allocation rules','Active','Last reviewed this week','']]:[['Agency identity checks','6 agencies','Pending verification','pending'],['Agency documents','4 files','Under review','review'],['Account restrictions','2 accounts','Admin review','pending']];
+  if(view==='reports')rows=role==='manager'?[['Team lead conversion','7.8%','Illustrative monthly rate',''],['Average listing age','31 days','Across agency stock',''],['Agency stock value','R186.4m','Illustrative asking-price total','']]:[['New listings this month','2 481','Illustrative platform total',''],['Enquiry volume','18 420','Illustrative monthly total',''],['Moderation completion','96.2%','Illustrative service metric','']];
+  html=metricCards(metrics);
+  html+=card(headings[view],role==='manager'?'Agency-level information for managers.': 'Platform-level information for authorised administrators.',rows.map(r=>'<div class="workspace-lead"><div class="workspace-lead-top"><div class="workspace-lead-name">'+r[0]+'</div>'+status(r[2],r[3])+'</div><div class="workspace-lead-property">'+r[1]+'</div></div>').join(''),role==='manager'?'AGENCY VIEW':'PLATFORM VIEW');
+  html+='<div class="workspace-callout">'+(role==='manager'?'This manager view focuses on agency-wide inventory, team workload, approvals and performance. Individual agent private notes are not included.':'This administrator view is platform-wide and focuses on moderation, agency verification and service quality. It is separate from agency owner and sales-agent workspaces.')+'</div><div class="workspace-action-row"><button class="btn btn-soft" type="button" data-workspace-export>Export this view ↓</button></div>';
+ }
+ $('workspace-content').innerHTML=html;
+ document.querySelectorAll('[data-workspace-view]').forEach(b=>{b.classList.toggle('active',b.dataset.workspaceView===view);b.setAttribute('aria-current',b.dataset.workspaceView===view?'page':'false')});
+ $('workspace-content').onclick=e=>{
+  const action=e.target.closest('[data-lead-action]');
+  if(action){state.workspaceLeadStates[action.dataset.leadId]=action.dataset.leadAction;renderWorkspace();showToast(action.dataset.leadAction==='viewing'?'Viewing marked as arranged in this demo.':'Lead marked as contacted in this demo.');return}
+  const property=e.target.closest('[data-workspace-property]');
+  if(property){const id=property.dataset.workspaceProperty;closeModal('workspace-modal');openProperty(id);return}
+  const target=e.target.closest('[data-workspace-view-target]');
+  if(target){state.workspaceView=target.dataset.workspaceViewTarget;renderWorkspace();if(modal)modal.scrollTop=0;return}
+  const exportButton=e.target.closest('[data-workspace-export]');
+  if(exportButton){
+   const rows=[['KEYSTONE DEMONSTRATION EXPORT'],['Role',roleInfo.name],['Section',headings[view]],['Generated',new Date().toLocaleString('en-ZA')],[],['Details']];
+   document.querySelectorAll('#workspace-content .workspace-lead,#workspace-content .workspace-report-card,#workspace-content .workspace-task').forEach(el=>rows.push([el.innerText.replace(/\s+/g,' ').trim()]));
+   if(rows.length===6)rows.push([document.querySelector('#workspace-content')?.innerText.replace(/\s+/g,' ').trim()||'No rows']);
+   const csv=rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+   const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+   a.href=url;a.download='keystone-'+role+'-'+view+'-demo.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);showToast('Your demonstration report has been exported.');return;
+  }
+ };
+ $('workspace-content').querySelectorAll('[data-task-toggle]').forEach(input=>input.addEventListener('change',()=>{
+  if(input.checked)state.workspaceTasks.add(input.dataset.taskToggle);else state.workspaceTasks.delete(input.dataset.taskToggle);
+  renderWorkspace();if(modal)modal.scrollTop=keepScroll;
+ }));
+ if(modal)modal.scrollTop=keepScroll;
 }
 function resetFilters(){state.location='';state.type='all';state.maxPrice='';state.minPrice=0;state.advancedMax=0;state.minBeds=0;state.minBaths=0;state.features=[];$('search-location').value='';$('search-type').value='all';$('search-price').value='';$('search-beds').value='0';$('min-price').value='';$('max-price').value='';$('min-beds').value='0';$('min-baths').value='0';document.querySelectorAll('.feature-check').forEach(c=>c.checked=false);state.quick='all';renderListings()}
-$('search-form').addEventListener('submit',e=>{e.preventDefault();state.location=$('search-location').value;state.type=$('search-type').value;state.maxPrice=$('search-price').value;state.minBeds=Number($('search-beds').value);state.quick='all';renderListings();$('properties').scrollIntoView({behavior:'smooth'});});
+$('search-form').addEventListener('submit',e=>{e.preventDefault();state.location=$('search-location').value;state.type=$('search-type').value;state.maxPrice=$('search-price').value;state.minBeds=Number($('search-beds').value);state.quick='all';renderListings();});
 document.querySelectorAll('[data-purpose]').forEach(b=>b.addEventListener('click',()=>{state.purpose=b.dataset.purpose;state.quick='all';document.querySelectorAll('[data-purpose]').forEach(x=>x.classList.toggle('active',x===b));if(state.purpose==='rent'){$('search-price').value='';$('search-price').querySelector('option[value="20000"]').hidden=false}renderListings()}));
 document.querySelectorAll('[data-quick]').forEach(b=>b.addEventListener('click',()=>{state.quick=b.dataset.quick;if(state.quick==='buy'||state.quick==='rent')state.purpose=state.quick;renderListings()}));
 document.querySelectorAll('[data-nav-filter]').forEach(a=>a.addEventListener('click',()=>{state.quick=a.dataset.navFilter;state.purpose=a.dataset.navFilter;renderListings();}));
-$('hero-rent').addEventListener('click',()=>{state.purpose='rent';state.quick='rent';document.querySelectorAll('[data-purpose]').forEach(x=>x.classList.toggle('active',x.dataset.purpose==='rent'));renderListings();$('properties').scrollIntoView({behavior:'smooth'})});
+$('hero-rent').addEventListener('click',()=>{state.purpose='rent';state.quick='rent';document.querySelectorAll('[data-purpose]').forEach(x=>x.classList.toggle('active',x.dataset.purpose==='rent'));renderListings();});
 $('sort-listings').addEventListener('change',e=>{state.sort=e.target.value;renderListings()});
 $('listing-grid').addEventListener('click',e=>{
  const fav=e.target.closest('[data-fav]');if(fav){e.stopPropagation();const id=fav.dataset.fav;state.favorites.has(id)?state.favorites.delete(id):state.favorites.add(id);renderListings();return}

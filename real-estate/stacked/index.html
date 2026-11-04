@@ -1167,7 +1167,7 @@ const daylight=(Math.sin(time*.035-.8)+1)*.5;
 key.intensity=1.15+daylight*1.65;warmFill.intensity=.35+daylight*.55;rim.intensity=1.1+daylight*.7;
 crownGlow.intensity=.75+(1-daylight)*1.15+Math.sin(time*1.25)*.18;
 arrivalGlow.intensity=.65+(1-daylight)*1.0+Math.sin(time*1.6+.8)*.16;
-look.lerp(targetLook,easeLook);camera.lookAt(look);window.__stackedCameraDebug={p,cameraY:camera.position.y,cameraZ:camera.position.z,lookY:look.y,targetY:targetLook.y,towerY:tower.position.y,zoom,cameraHeightFactor};renderer.render(scene,camera)}
+look.lerp(targetLook,easeLook);camera.lookAt(look);renderer.render(scene,camera)}
 document.addEventListener('visibilitychange',()=>{lastRender=0});
 
 /* Live island ambience: slow water movement, boats and a true day-to-night lighting cycle. */

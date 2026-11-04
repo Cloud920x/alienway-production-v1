@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /About-backup.html
+Disallow: /style-backup.css
+
+Sitemap: https://cloud920x.github.io/alienway-production-v1/sitemap.xml

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 88" fill="none">
+ <g transform="translate(4 4) scale(1)"><path d="M9 68V34L40 10L71 34V68" stroke="#174B3E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M25 68V47C25 38.7 31.7 32 40 32C48.3 32 55 38.7 55 47V68" stroke="#174B3E" stroke-width="4.5" stroke-linecap="round"/><path d="M40 5L50 17L40 29L30 17L40 5Z" fill="#C69A5A"/><path d="M5 68H75" stroke="#C69A5A" stroke-width="4" stroke-linecap="round"/><path d="M17 43V58M63 43V58" stroke="#174B3E" stroke-width="3" stroke-linecap="round" opacity=".75"/></g>
+ <text x="98" y="43" fill="#174B3E" font-family="Manrope,Arial,sans-serif" font-size="31" font-weight="800" letter-spacing="5.2">KEYSTONE</text>
+ <path d="M100 55H129" stroke="#C69A5A" stroke-width="2"/><path d="M329 55H358" stroke="#C69A5A" stroke-width="2"/>
+ <text x="143" y="59" fill="#738078" font-family="Arial,sans-serif" font-size="10" font-weight="700" letter-spacing="4.1">PROPERTY MARKET</text>
+</svg>

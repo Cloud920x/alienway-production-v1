@@ -41,7 +41,7 @@ body{background:radial-gradient(ellipse at 82% 0%,#dff7fb 0,transparent 32%),lin
 .view.active{animation:viewIn .32s ease both}
 @keyframes viewIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 @keyframes barReveal{from{transform:scaleX(.05)}to{transform:scaleX(1)}}
-@media(max-width:900px){.stats{gap:10px}.stat{padding:15px}}
+@media(max-width:900px){.stats{gap:10px}.stat{padding:15px}.two{grid-template-columns:minmax(0,1fr)}.two>.panel{min-width:0}.tablewrap{min-width:0;max-width:100%;overflow-x:auto}}
 @media(max-width:650px){.side{background:linear-gradient(110deg,#0b1c2e,#071321)}.nav{gap:5px}.nav button.active{box-shadow:inset 0 -2px var(--cyan)}.top{backdrop-filter:blur(12px)}.content{padding-top:24px}.stats{gap:8px}.stat{padding:13px}.stat strong{font-size:23px}.panel{padding:14px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 

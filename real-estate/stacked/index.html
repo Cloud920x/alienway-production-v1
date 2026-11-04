@@ -629,7 +629,7 @@ document.getElementById('back-top')?.addEventListener('click',e=>{e.preventDefau
 function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}addEventListener('resize',resize);resize();
 const smooth=(a,b,t)=>a+(b-a)*t;
 let lastRender=0;const renderInterval=innerWidth<800?1000/40:0;
-function animate(){requestAnimationFrame(animate);const now=performance.now();if(renderInterval&&now-lastRender<renderInterval)return;lastRender=now;const time=now*.001,p=scroll;let rise,zoom,angle;if(p<.24){const t=p/.24;rise=smooth(-27,0,t);zoom=smooth(64,52,t);angle=smooth(.4,.2,t)}else if(p<.52){const t=(p-.24)/.28;rise=smooth(0,0,t);zoom=smooth(52,43,t);angle=smooth(.2,-.18,t)}else if(p<.88){const t=(p-.52)/.36;rise=0;zoom=smooth(43,34,t);angle=smooth(-.18,.12,t)}else{const t=(p-.88)/.12;rise=0;zoom=smooth(43,76,t);angle=smooth(.12,.16,t)}
+function animate(){requestAnimationFrame(animate);const now=performance.now();if(renderInterval&&now-lastRender<renderInterval)return;lastRender=now;const time=now*.001,p=scroll;let rise,zoom,angle;if(p<.24){const t=p/.24;rise=smooth(-27,0,t);zoom=smooth(64,52,t);angle=smooth(.4,.2,t)}else if(p<.52){const t=(p-.24)/.28;rise=smooth(0,0,t);zoom=smooth(52,43,t);angle=smooth(.2,-.18,t)}else if(p<.88){const t=(p-.52)/.36;rise=0;zoom=smooth(43,60,t);angle=smooth(-.18,.12,t)}else{const t=(p-.88)/.12;rise=0;zoom=smooth(60,76,t);angle=smooth(.12,.16,t)}
 tower.position.y=THREE.MathUtils.damp(tower.position.y,rise,3.2,1/60);
 hotel.rotation.y=THREE.MathUtils.damp(hotel.rotation.y,Math.sin(p*Math.PI*2)*.035,2,1/60);
 hotel.position.y=Math.sin(time*.7)*.045;

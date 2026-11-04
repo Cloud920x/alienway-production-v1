@@ -107,3 +107,14 @@ html.motion-ready [data-reveal].is-visible{opacity:1;transform:translate3d(0,0,0
 @media(max-width:720px){.hero-stamp{top:13px;right:-5px;min-width:142px;padding:11px 13px}.hero-stamp strong{font-size:20px}.hero-visual::before{inset:12px -5px 10px 8px}.page-hero::after{right:10px;opacity:.13}.hero::after{font-size:clamp(30px,8vw,48px)}[data-reactive-card]{transform:none;will-change:auto}[data-reactive-card]>*{transform:none}}
 @media(max-width:420px){.hero-stamp{top:9px;right:-3px;min-width:128px;padding:9px 11px}.hero-stamp span{font-size:7px}.hero-stamp strong{font-size:18px}.hero-stamp small{font-size:8px}.hero::after{letter-spacing:.035em}.page-hero::after{display:none}}
 @media(prefers-reduced-motion:reduce){.hero::before,.hero::after,.page-hero::before,.hero-stamp,.site-header{animation:none!important}.hero-visual:hover .hero-photo{transform:none}.scroll-progress{display:none}html.motion-ready [data-reveal]{opacity:1!important;transform:none!important;transition:none!important}[data-reactive-card]{transform:none!important;transition:none!important;will-change:auto!important}.button::after,.header-cta::after{display:none}}
+
+
+/* Motion reveal masks stay inside their own boxes on narrow screens. */
+html,body{max-width:100%;overflow-x:clip}
+html.motion-ready [data-reveal]{transition:opacity .78s cubic-bezier(.2,.7,.2,1),transform .78s cubic-bezier(.2,.7,.2,1),clip-path .86s cubic-bezier(.2,.7,.2,1);clip-path:inset(0)}
+html.motion-ready [data-reveal="left"]{transform:translate3d(0,20px,0);clip-path:inset(0 100% 0 0)}
+html.motion-ready [data-reveal="right"]{transform:translate3d(0,20px,0);clip-path:inset(0 0 0 100%)}
+html.motion-ready [data-reveal].is-visible{transform:translate3d(0,0,0);clip-path:inset(0)}
+.practice-card::before,.value-card::before,.profile-card::before,.insight-card::before,.practice-detail::before,.approach-card::before,.article::before,.trust-item::before{z-index:0}
+.practice-card>*,.value-card>*,.profile-card>*,.insight-card>*,.practice-detail>*,.approach-card>*,.article>*,.trust-item>*{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){html.motion-ready [data-reveal]{clip-path:none!important}}

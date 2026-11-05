@@ -20,3 +20,6 @@
 @media(prefers-reduced-motion:reduce){.story-card:hover,.collage-main:hover,.collage-small:hover,.button:hover,.filter:hover{transform:none}.title-spark,.ticker i,.manifesto-art i{animation:none}}
 @media print{.article-copy{font-size:12pt}.article-copy blockquote{transform:none;background:white}.article-head h1{font-size:32pt}}
 .collage-small img{height:auto;object-fit:cover}.collage-label{left:auto;max-width:55%;text-align:right}
+/* Keep the journal's traveller in frame across portrait and landscape crops. */
+.kai-portrait{width:100%;aspect-ratio:1;object-fit:cover;object-position:72% center;border:2px solid #171919;border-radius:16px;transform:rotate(-3deg);box-shadow:8px 8px 0 #171919}.collage-main img{object-position:65% center}.cover img{object-position:65% center}.hero>img{object-position:65% center}.article-cover{object-position:center 35%}
+@media(max-width:560px){.hero>img{object-position:72% center}.hero:after{background:linear-gradient(0deg,#071513eb,transparent 95%)}.article-cover{object-position:65% center}}

@@ -43,3 +43,6 @@ let ticking=false;function progress(){const r=copy.getBoundingClientRect();const
 window.addEventListener("scroll",()=>{if(!ticking){ticking=true;requestAnimationFrame(progress)}},{passive:true});progress();
 }
 })();
+
+// Subtle pointer-responsive covers; touch and reduced-motion retain a steady layout.
+(()=>{const allowed=matchMedia('(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)');let frame=0;document.addEventListener('pointermove',e=>{if(!allowed.matches)return;const card=e.target.closest('.story-card');if(!card)return;cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{const r=card.getBoundingClientRect();card.style.setProperty('--ry',((e.clientX-r.left)/r.width-.5)*4+'deg');card.style.setProperty('--rx',-((e.clientY-r.top)/r.height-.5)*4+'deg')})},{passive:true});document.addEventListener('pointerout',e=>{const card=e.target.closest('.story-card');if(card&&!card.contains(e.relatedTarget)){cancelAnimationFrame(frame);card.style.removeProperty('--rx');card.style.removeProperty('--ry')}},{passive:true})})();

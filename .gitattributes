@@ -1,0 +1,10 @@
+# These JavaScript files are maintained application source, not generated bundles.
+# Override Linguist's minified-file heuristic so they count as JavaScript source.
+blog/assets/app.js -linguist-generated
+blog/assets/data.js -linguist-generated
+blog/assets/dream.js -linguist-generated
+blog/assets/shared.js -linguist-generated
+blog/assets/studio-pro.js -linguist-generated
+blog/assets/studio.js -linguist-generated
+professional/caldwell-legal/assets/site.js -linguist-generated
+professional/ledger-co/assets/site.js -linguist-generated

@@ -741,32 +741,63 @@ warm:new THREE.MeshStandardMaterial({color:0x263641,emissive:0x000000,emissiveIn
 };
 let facade=mats.stone;
 const floors=17,floorH=1.62,baseY=3.2,selectables=[],floorWindows=[];
-const addBox=(p,w,h,d,m,x,y,z)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);p.add(o);return o};
+const architecturalBoxGeometry=new THREE.BoxGeometry(1,1,1);
+const addBox=(p,w,h,d,m,x,y,z)=>{const o=new THREE.Mesh(architecturalBoxGeometry,m);o.scale.set(w,h,d);o.position.set(x,y,z);o.userData.architecturalBox=true;p.add(o);return o};
 const addCylinder=(p,rt,rb,h,m,x,y,z,seg=12)=>{const o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg),m);o.position.set(x,y,z);p.add(o);return o};
 const hotel=new THREE.Group();tower.add(hotel);
-// Broad arrival podium: warm stone, bronze screens and a luminous double-height lobby.
-addBox(hotel,23,3.1,17,mats.stone,0,1.55,0);
-addBox(hotel,22.5,.22,16.5,mats.bronze,0,3.12,0);
-addBox(hotel,17.8,2.5,13.5,mats.glass,0,1.75,0);
-for(let x=-8;x<=8;x+=1.6){addBox(hotel,.095,2.55,.12,mats.bronze,x,1.75,6.82);addBox(hotel,.095,2.55,.12,mats.bronze,x,1.75,-6.82)}
-// Arrival canopy and porte-cochere.
-addBox(hotel,13,.22,5.2,mats.graphite,0,3.55,10.2);
-addBox(hotel,12.6,.1,5,mats.bronze,0,3.68,10.2);
-for(let x=-5.4;x<=5.41;x+=3.6)addBox(hotel,.18,3.1,.18,mats.bronze,x,1.65,11.9);
-// Landscape planters and palms at the hotel arrival.
-const palmMat=new THREE.MeshStandardMaterial({color:0x526b55,roughness:.92});
-function palm(x,z,s=1){addCylinder(hotel,.13*s,.22*s,2.8*s,mats.bronze,x,1.4*s+3.15,z,9);for(let i=0;i<7;i++){const a=i*Math.PI*2/7;const leaf=new THREE.Mesh(new THREE.ConeGeometry(.22*s,2.1*s,5),palmMat);leaf.position.set(x+Math.cos(a)*.78*s,4.7*s+1.8,z+Math.sin(a)*.78*s);leaf.rotation.z=Math.cos(a)*-.7;leaf.rotation.x=Math.sin(a)*.7;hotel.add(leaf)}}
-for(const x of [-10,-7,7,10])palm(x,9,.85);
-// Resort podium terrace and long infinity pool.
-addBox(hotel,21,.22,15,mats.graphite,0,4.05,0);
-addBox(hotel,14,.22,5.2,mats.blue,0,4.22,-4.1);
-addBox(hotel,14,.12,5.2,mats.glass,0,4.36,-4.1);
-addBox(hotel,14.3,.18,.18,mats.light,0,4.42,-6.72);
-for(let x=-8;x<=8;x+=2.6){addBox(hotel,1.65,.12,1.6,mats.stone,x,4.24,5.1)}
-// Main guestroom tower: softly stepped wings, continuous balcony bands and bronze fins.
-const tierW=f=>f<=5?18.4:f<=10?17.2:f<=14?16:14.6;
-const tierD=f=>f<=5?10.2:f<=10?9.4:f<=14?8.8:8.1;
-const tierZ=f=>f<=5?-.1:f<=10?.25:f<=14?.55:.85;
+// BEZA RESORT / pale limestone, warm timber, recessed glazing and cascading garden terraces.
+function resortTexture(kind){const c=document.createElement('canvas');c.width=c.height=128;const ctx=c.getContext('2d');ctx.fillStyle=kind==='stone'?'#e4dfd4':'#907052';ctx.fillRect(0,0,128,128);let seed=391;for(let i=0;i<1200;i++){seed=(seed*16807)%2147483647;const x=seed%128;seed=(seed*16807)%2147483647;const y=seed%128;ctx.fillStyle=kind==='stone'?'rgba(80,71,56,.035)':'rgba(52,29,11,.075)';ctx.fillRect(x,y,kind==='stone'?2:1,kind==='stone'?1:25)}const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(2,2);return t}
+mats.stone.color.setHex(0xf3ebd8);mats.stone.map=resortTexture('stone');mats.stone.roughness=.68;
+mats.bronze.color.setHex(0x8c785c);mats.bronze.roughness=.38;mats.bronze.metalness=.52;
+mats.glass.color.setHex(0xb4d0d0);mats.glass.opacity=.32;mats.glass.roughness=.12;
+const resort={wood:new THREE.MeshStandardMaterial({color:0xd6aa77,map:resortTexture('wood'),roughness:.68}),light:new THREE.MeshStandardMaterial({color:0xffdf9e,emissive:0xffc977,emissiveIntensity:.85}),room:new THREE.MeshStandardMaterial({color:0x69513c,roughness:.85,emissive:0x392515,emissiveIntensity:.25}),linen:new THREE.MeshStandardMaterial({color:0xf0e6d5,roughness:.95}),water:new THREE.MeshPhysicalMaterial({color:0x42becb,roughness:.15,metalness:.2,clearcoat:1,emissive:0x0e6478,emissiveIntensity:.3}),planter:new THREE.MeshStandardMaterial({color:0xc4bca7,roughness:.9}),green:new THREE.MeshStandardMaterial({color:0x506d43,roughness:.95})};
+function resortSlab(parent,w,h,d,r,mat,x,y,z){const shape=new THREE.Shape(),hw=w/2,hd=d/2;shape.moveTo(-hw+r,-hd);shape.lineTo(hw-r,-hd);shape.quadraticCurveTo(hw,-hd,hw,-hd+r);shape.lineTo(hw,hd-r);shape.quadraticCurveTo(hw,hd,hw-r,hd);shape.lineTo(-hw+r,hd);shape.quadraticCurveTo(-hw,hd,-hw,hd-r);shape.lineTo(-hw,-hd+r);shape.quadraticCurveTo(-hw,-hd,-hw+r,-hd);const geo=new THREE.ExtrudeGeometry(shape,{depth:h,bevelEnabled:false,curveSegments:8});geo.rotateX(-Math.PI/2);const mesh=new THREE.Mesh(geo,mat);mesh.position.set(x,y,z);parent.add(mesh);return mesh}
+const resortShrubGeo=new THREE.IcosahedronGeometry(1,1),palmMat=resort.green;
+function resortShrub(parent,x,y,z,s){const shrub=new THREE.Mesh(resortShrubGeo,resort.green);shrub.position.set(x,y,z);shrub.scale.set(s,s*.7,s*.7);parent.add(shrub)}
+function resortPalm(parent,x,y,z,s=1){addCylinder(parent,.09*s,.16*s,2.7*s,resort.wood,x,y+1.35*s,z,8);for(let j=0;j<7;j++){const a=j*Math.PI*2/7;const leaf=new THREE.Mesh(new THREE.SphereGeometry(1,8,4),resort.green);leaf.scale.set(1.35*s,.08*s,.25*s);leaf.rotation.z=.18;leaf.rotation.y=-a;leaf.position.set(x+Math.cos(a)*.72*s,y+2.75*s,z+Math.sin(a)*.72*s);parent.add(leaf)}}
+function resortLounger(x,y,z,rot=0){const g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=rot;hotel.add(g);addBox(g,.7,.12,1.65,mats.bronze,0,.22,0);addBox(g,.65,.13,1.5,resort.linen,0,.33,0);const back=addBox(g,.65,.12,.55,resort.linen,0,.52,-.55);back.rotation.x=-.35;for(const xx of [-.26,.26])addBox(g,.07,.24,1.35,mats.bronze,xx,.1,0)}
+function resortUmbrella(x,y,z,s=1){addCylinder(hotel,.035,.045,1.9*s,mats.bronze,x,y+.95*s,z,8);const cover=new THREE.Mesh(new THREE.ConeGeometry(1.15*s,.32*s,12,1,false),resort.linen);cover.position.set(x,y+1.95*s,z);hotel.add(cover)}
+// Light-filled ground floor: no opaque block concealing the reception glazing.
+resortSlab(hotel,29,.3,25,2,mats.stone,-.5,0,3.5);
+addBox(hotel,24,.2,14,mats.stone,0,2.85,0);
+addBox(hotel,21,2.45,10,resort.room,0,1.4,-1.5);
+for(let x=-11;x<=11;x+=1.4){addBox(hotel,1.23,2.48,.04,mats.glass,x,1.5,6.6);addBox(hotel,.1,2.7,.25,resort.wood,x-.66,1.48,6.7);addBox(hotel,.05,.08,.12,resort.light,x,2.77,6.83)}
+for(const side of [-1,1])for(let z=-5;z<=6;z+=1.4){addBox(hotel,.05,2.48,1.24,mats.glass,side*12,1.5,z);addBox(hotel,.17,2.7,.09,resort.wood,side*12.1,1.48,z)}
+// Broad rounded pool podium, stepped garden wings and recessed timber fascia.
+resortSlab(hotel,29,.3,25,2,mats.stone,-.5,3.05,3.5);
+resortSlab(hotel,28.6,.09,24.6,1.8,resort.wood,-.5,3.36,3.5);
+for(let x=-14;x<14;x+=.32)addBox(hotel,.065,2.65,.2,resort.wood,x,1.55,15.72);
+addBox(hotel,27,.055,.08,resort.light,-.5,2.9,15.86);
+resortSlab(hotel,15.5,.14,5.2,1.25,mats.stone,-2,3.39,11.1);
+resortSlab(hotel,15,.06,4.7,1.1,resort.water,-2,3.54,11.1);
+addBox(hotel,13.3,.5,.055,resort.water,-2,3.3,13.43);
+addBox(hotel,13.4,.045,.07,resort.light,-2,3.55,13.5);
+for(const side of [-1,1])for(let j=0;j<4;j++)resortLounger(side<0?-11.9:9.5,3.45,8.2+j*1.85,side<0?Math.PI/2:-Math.PI/2);
+for(let j=0;j<5;j++)resortLounger(-7+j*2.6,3.45,14.6,Math.PI);
+for(const [x,z] of [[-12,7],[10.5,7],[-7,14.7],[3.5,14.7]])resortUmbrella(x,3.46,z,.8);
+for(let x=-12;x<13;x+=3.6){addBox(hotel,1.9,.42,.7,resort.planter,x,3.66,15.15);resortShrub(hotel,x,4,15.15,.8)}
+for(const [x,z] of [[-13,5.6],[12,5.6],[-13,-5.5],[12,-5.5]])resortPalm(hotel,x,3.45,z,.9);
+// Cascading restaurant terraces flank an open view to the pool.
+for(const side of [-1,1])for(let level=0;level<2;level++){
+ const x=side*10.5,y=5.3+level*2.1,z=5.5-level*.7,w=7-level*.8,d=6-level*.7;
+ resortSlab(hotel,w,.28,d,1.4,mats.stone,x,y,z);
+ addBox(hotel,w-.6,.05,d-.5,resort.wood,x,y+.3,z);
+ for(let j=0;j<7;j++)addBox(hotel,.075,1.8,.1,resort.wood,x-w/2+.4+j*(w-.8)/6,y-.8,z+d/2-.1);
+ addBox(hotel,w-.2,.045,.055,resort.light,x,y-.06,z+d/2-.08);
+ addBox(hotel,w-.5,.65,.04,mats.glass,x,y+.63,z+d/2-.12);
+ for(let k=-1;k<=1;k++){addBox(hotel,1,.3,.55,resort.planter,x+k*1.8,y+.45,z+d/2-.5);resortShrub(hotel,x+k*1.8,y+.72,z+d/2-.5,.4)}
+ for(let k=-1;k<=1;k++){addCylinder(hotel,.42,.42,.08,resort.linen,x+k*1.8,y+.85,z,12);addCylinder(hotel,.055,.08,.5,mats.bronze,x+k*1.8,y+.55,z,8)}
+ resortUmbrella(x,y+.3,z-.8,.8);
+}
+// A glazed entrance canopy and architectural signage anchor the arrival.
+resortSlab(hotel,8,.16,3.8,.5,mats.stone,0,2.5,17.0);
+addBox(hotel,7.7,.065,3.5,resort.wood,0,2.4,17);
+for(const x of [-3.4,3.4])addBox(hotel,.14,2.4,.14,mats.bronze,x,1.2,18.2);
+const signCanvas=document.createElement('canvas');signCanvas.width=1024;signCanvas.height=128;const signCtx=signCanvas.getContext('2d');signCtx.clearRect(0,0,1024,128);signCtx.fillStyle='#f9dfad';signCtx.font='500 60px Georgia';signCtx.textAlign='center';signCtx.fillText('B E Z A ’ S   H O T E L',512,86);const signTex=new THREE.CanvasTexture(signCanvas);signTex.colorSpace=THREE.SRGBColorSpace;const resortSign=new THREE.Mesh(new THREE.PlaneGeometry(7.4,.93),new THREE.MeshBasicMaterial({map:signTex,transparent:true,depthWrite:false}));resortSign.position.set(0,1.86,15.87);hotel.add(resortSign);
+const tierW=f=>f<=3?24:f<=7?22:f<=12?19.6:17.8;
+const tierD=f=>f<=3?11:f<=7?10.2:f<=12?9.2:8.1;
+const tierZ=f=>f<=3?-.6:f<=7?-.25:f<=12?.25:.85;
+const tierX=f=>f<=3?-1:f<=7?-.5:0;
 const interiorMats={
  wood:new THREE.MeshStandardMaterial({color:0x76563e,roughness:.72}),
  upholstery:new THREE.MeshStandardMaterial({color:0x9b8063,roughness:.9}),
@@ -775,22 +806,33 @@ const interiorMats={
 };
 const furnitureUnitBox=new THREE.BoxGeometry(1,1,1);
 for(let f=1;f<=floors;f++){
- const y=baseY+(f-1)*floorH,w=tierW(f),d=tierD(f),g=new THREE.Group();g.position.set(0,y,tierZ(f));hotel.add(g);
+ const y=baseY+(f-1)*floorH,w=tierW(f),d=tierD(f),g=new THREE.Group();g.position.set(tierX(f),y,tierZ(f));hotel.add(g);
   // Batch each floor's furniture into four instanced draws instead of hundreds of separate meshes.
   const furnitureBatches={};
   for(const key of Object.keys(interiorMats)){const batch=new THREE.InstancedMesh(furnitureUnitBox,interiorMats[key],32);batch.count=0;batch.frustumCulled=false;g.add(batch);furnitureBatches[key]=batch}
   const furnitureCounts={wood:0,upholstery:0,linen:0,brass:0},furnitureMatrix=new THREE.Matrix4(),furniturePosition=new THREE.Vector3(),furnitureScale=new THREE.Vector3(),furnitureRotation=new THREE.Quaternion();
   function furnish(key,x,y,z,sx,sy,sz){const batch=furnitureBatches[key],n=furnitureCounts[key]++;furniturePosition.set(x,y,z);furnitureScale.set(sx,sy,sz);furnitureMatrix.compose(furniturePosition,furnitureRotation,furnitureScale);batch.setMatrixAt(n,furnitureMatrix);batch.count=furnitureCounts[key];batch.instanceMatrix.needsUpdate=true}
 
- addBox(g,w+.5,.16,d+.45,mats.bronze,0,0,0);
+ addBox(g,w+.65,.19,d+.55,mats.stone,0,0,0);
+ addBox(g,w+.4,.035,.06,resort.light,0,.115,d/2+.28);
  // Solid limestone side piers define the tower; glazing is limited to framed window openings.
- addBox(g,.48,1.48,d,facade,-w/2+.24,.78,0);addBox(g,.48,1.48,d,facade,w/2-.24,.78,0);
+ // Side elevations have recessed glass bays, stone mullions and timber fins.
+ for(const side of [-1,1]){
+  addBox(g,.22,.18,d,facade,side*(w/2-.11),.17,0);
+  addBox(g,.22,.18,d,facade,side*(w/2-.11),1.49,0);
+  for(let k=0;k<5;k++){const zz=-d/2+(k+.5)*d/5;
+   addBox(g,.08,1.13,d/5-.19,mats.glass,side*(w/2-.2),.83,zz);
+   addBox(g,.17,1.34,.12,resort.wood,side*(w/2-.04),.83,zz-d/10);
+   addBox(g,.06,1.12,.035,mats.bronze,side*(w/2+.02),.83,zz);
+   addBox(g,.22,1.1,d/5-.25,resort.room,side*(w/2-.65),.83,zz);
+  }
+ }
  const bw=(w-.96)/4,front=d/2+.08;
  for(let u=1;u<=4;u++){
   const x=-w/2+.48+bw*(u-.5);
   // Solid premium-concrete wall piers with a true open window bay.
   // The wall is split into left/right piers and solid sill/header; no wall panel sits behind the glass.
-  const openingW=bw*.72,openingH=.88,openingZ=front-.05;
+  const openingW=bw*.84,openingH=1.14,openingZ=front-.05;
   const pierW=(bw-.13-openingW)/2;
   addBox(g,pierW,1.29,.075,mats.stone,x-openingW/2-pierW/2,.83,openingZ);
   addBox(g,pierW,1.29,.075,mats.stone,x+openingW/2+pierW/2,.83,openingZ);
@@ -817,23 +859,29 @@ for(let f=1;f<=floors;f++){
   furnish('wood',x+bw*.25,.43,iz+.5,.035,.34,.035);
   // Invisible-but-raycastable unit hit area preserves the existing selector and unit IDs.
   const hit=new THREE.Mesh(new THREE.BoxGeometry(bw-.18,1.14,.12),new THREE.MeshStandardMaterial({color:0x000000,emissive:0x000000,transparent:true,opacity:0,depthWrite:false}));hit.position.set(x,.83,front+.035);hit.userData={floor:f,unit:u,id:String(f).padStart(2,'0')+String(u).padStart(2,'0')};g.add(hit);selectables.push(hit);
-  const balconyDepth=(f%5===0||f>=15)?1.7:1.22,balconyW=bw-.08;
-  addBox(g,balconyW,.13,balconyDepth,mats.stone,x,.14,d/2+balconyDepth/2-.02);
+  const balconyDepth=(f%5===0||f>=15)?1.65:1.05,balconyW=bw-.08;
+  addBox(g,balconyW,.17,balconyDepth,mats.stone,x,.14,d/2+balconyDepth/2-.02);
+  addBox(g,balconyW-.16,.04,balconyDepth-.16,resort.wood,x,.25,d/2+balconyDepth/2-.02);
+  addBox(g,balconyW,.04,.04,resort.light,x,.07,d/2+balconyDepth-.03);
+  addBox(g,.045,.045,.42,mats.bronze,x,.55,d/2+.55);
+  addBox(g,.45,.05,.42,resort.linen,x,.57,d/2+.55);
+  if((f+u)%3===0){addBox(g,.48,.22,.38,resort.planter,x+bw*.36,.34,d/2+.7);resortShrub(g,x+bw*.36,.53,d/2+.7,.25)}
   addBox(g,balconyW-.08,.48,.055,mats.glass,x,.46,d/2+balconyDepth-.04);
   addBox(g,.055,.52,.07,mats.bronze,x-balconyW/2+.04,.46,d/2+balconyDepth-.04);
   addBox(g,.055,.52,.07,mats.bronze,x+balconyW/2-.04,.46,d/2+balconyDepth-.04);
-  const win=new THREE.Mesh(new THREE.PlaneGeometry(bw*.68,.72),mats.warm.clone());win.position.set(x,.83,d/2-.42);win.userData.floor=f;g.add(win);floorWindows.push(win);
+  const win=new THREE.Mesh(new THREE.PlaneGeometry(bw*.78,1.04),mats.warm.clone());win.position.set(x,.83,d/2-.42);win.userData.floor=f;g.add(win);floorWindows.push(win);
  }
  // Fine vertical bronze fins and balcony fascia.
  for(let p=0;p<=4;p++){const x=-w/2+.48+p*bw;addBox(g,.075,1.5,.15,mats.bronze,x,.78,d/2+.12)}
- // A gently bowed bronze balcony ribbon gives the tower a softer, more sculpted silhouette.
- const sweepPoints=[];for(let step=0;step<=24;step++){const t=-1+step/12;sweepPoints.push(new THREE.Vector3(t*w*.5,1.49,d/2+.16+.52*(1-t*t)));}
- const sweepCurve=new THREE.CatmullRomCurve3(sweepPoints);
- const sweepRail=new THREE.Mesh(new THREE.TubeGeometry(sweepCurve,48,.055,7,false),mats.bronze);g.add(sweepRail);
- for(const side of [-1,1]){addBox(g,.22,1.55,.28,facade,side*(w/2-.12),.8,d/2+.15);addBox(g,.12,1.4,d-.6,mats.glass,side*(w/2-.18),.8,0)}
- if([5,10,14].includes(f)){
-  addBox(g,w+.9,.2,d+.8,mats.graphite,0,1.62,0);
-  for(let p=0;p<7;p++){const x=-w/2+p*w/6;addBox(g,.72,.36,.68,mats.stone,x,1.92,-d/2+.5);const shrub=new THREE.Mesh(new THREE.SphereGeometry(.34,8,6),palmMat);shrub.scale.y=.65;shrub.position.set(x,2.18,-d/2+.5);g.add(shrub)}
+ // Continuous limestone balcony edges with slender champagne handrails.
+ addBox(g,w+.18,.065,.07,mats.bronze,0,.74,d/2+1.04);
+ for(const side of [-1,1])addBox(g,.18,1.55,.2,facade,side*(w/2-.08),.8,d/2+.15);
+ if([3,7,12].includes(f)){
+  const terraceDepth=f===3?3.4:2.2;
+  resortSlab(g,w+1.5,.26,terraceDepth,1.0,mats.stone,0,1.58,d/2+terraceDepth/2);
+  addBox(g,w-.2,.56,.035,mats.glass,0,1.99,d/2+terraceDepth-.12);
+  addBox(g,w-.2,.045,.05,mats.bronze,0,2.29,d/2+terraceDepth-.12);
+  for(let k=-2;k<=2;k++){const xx=k*w/5;addBox(g,1.05,.32,.6,resort.planter,xx,1.91,d/2+terraceDepth-.5);resortShrub(g,xx,2.2,d/2+terraceDepth-.5,.44)}
  }
 }
 // CROWN ROOFTOP: a sculpted private-club terrace with an infinity pool, glass pavilion and live party atmosphere.
@@ -963,6 +1011,21 @@ roofPointLight(0x22dfff,3.8,16,4.8,roofSurface+2.8,1.8,1.4);
 roofPointLight(0xff4bbd,3.4,15,7.0,roofSurface+2.4,-2.7,2.7);
 roofPointLight(0xffc27b,2.6,13,-7.4,roofSurface+2.0,1.0,3.5);
 const rooftopPulseRings=[djHaloA,djHaloB,pavilionLightRing];
+// Signature floating timber canopies echo the resort reference, with slender stone supports.
+for(const wing of [{x:-5.5,z:-3.2,w:8.8,d:5.8,y:roofSurface+4.5},{x:5.0,z:-3.4,w:9.5,d:6.5,y:roofSurface+5.0}]){
+ resortSlab(hotel,wing.w,.22,wing.d,.14,mats.stone,wing.x,wing.y,wing.z);
+ addBox(hotel,wing.w-.22,.08,wing.d-.22,resort.wood,wing.x,wing.y-.14,wing.z);
+ addBox(hotel,wing.w-.4,.045,.055,resort.light,wing.x,wing.y-.2,wing.z+wing.d/2-.2);
+ for(const dx of [-wing.w*.35,wing.w*.35])addBox(hotel,.14,3.9,.14,mats.bronze,wing.x+dx,wing.y-2.05,wing.z-1.3);
+ for(let k=0;k<12;k++)addBox(hotel,.04,.09,wing.d-.4,resort.wood,wing.x-wing.w/2+.4+k*(wing.w-.8)/11,wing.y-.22,wing.z);
+}
+// Instance static architectural boxes by finish: detail without a draw call for every slat.
+hotel.updateWorldMatrix(true,true);const hotelInverse=new THREE.Matrix4().copy(hotel.matrixWorld).invert();const architecturalBatches=new Map();
+hotel.traverse(o=>{if(o.isMesh&&o.userData.architecturalBox){const key=o.material.uuid;if(!architecturalBatches.has(key))architecturalBatches.set(key,[]);architecturalBatches.get(key).push(o)}});
+for(const meshes of architecturalBatches.values()){
+ const batch=new THREE.InstancedMesh(architecturalBoxGeometry,meshes[0].material,meshes.length);batch.frustumCulled=false;
+ meshes.forEach((mesh,i)=>{batch.setMatrixAt(i,new THREE.Matrix4().multiplyMatrices(hotelInverse,mesh.matrixWorld));mesh.removeFromParent()});batch.instanceMatrix.needsUpdate=true;hotel.add(batch);
+}
 const crownBeacon=new THREE.PointLight(0xb9eaff,0,48);crownBeacon.position.set(0,topY+1,0);tower.add(crownBeacon);
 const podiumGlow=new THREE.PointLight(0xd5efff,0,35);podiumGlow.position.set(0,7,7);tower.add(podiumGlow);
 // Existing pool ambience remains part of the resort; the rooftop infinity edge adds its own subtle glints.
@@ -970,7 +1033,7 @@ const waterRipples=[];
 const rippleMat=new THREE.MeshBasicMaterial({color:0xb9efff,transparent:true,opacity:.22,side:THREE.DoubleSide,depthWrite:false});
 for(let i=0;i<4;i++){
  const ring=new THREE.Mesh(new THREE.RingGeometry(.22,.34,48),rippleMat.clone());
- ring.rotation.x=-Math.PI/2;ring.position.set(-4.5+i*3,4.39,-4.1+(i%2)*.45);ring.userData.phase=i*.85;
+ ring.rotation.x=-Math.PI/2;ring.position.set(-5+i*2.6,3.61,11.2+(i%2)*.45);ring.userData.phase=i*.85;
  hotel.add(ring);waterRipples.push(ring);
 }
 const crownGlow=new THREE.PointLight(0x9bdfff,1.2,24);crownGlow.position.set(0,topY+2.8,0);tower.add(crownGlow);
@@ -1163,17 +1226,17 @@ let lastRender=0;const reducedMotion=matchMedia('(prefers-reduced-motion: reduce
 function animate(now=performance.now()){requestAnimationFrame(animate);if(document.hidden)return;const elapsed=lastRender?Math.min((now-lastRender)/1000,.05):1/60;const frameInterval=innerWidth<800?1000/45:0;if(frameInterval&&lastRender&&now-lastRender<frameInterval)return;lastRender=now;const time=now*.001*(reducedMotion?.35:1);const easeCamera=1-Math.exp(-5.2*elapsed);const easeLook=1-Math.exp(-3.8*elapsed);let p=scroll;if(innerWidth<761){const experience=document.getElementById('experiences');const max=document.documentElement.scrollHeight-innerHeight;const start=experience&&max?Math.min(.92,Math.max(.01,experience.offsetTop/max)):.5;p=scroll<start?scroll/start*.88:.88+(scroll-start)/(1-start)*.12}let rise,zoom,angle;if(p<.24){const t=p/.24;rise=smooth(-27,0,t);zoom=smooth(64,52,t);angle=smooth(.4,.2,t)}else if(p<.52){const t=(p-.24)/.28;rise=smooth(0,0,t);zoom=smooth(52,43,t);angle=smooth(.2,-.18,t)}else if(p<.88){const t=(p-.52)/.36;rise=0;zoom=smooth(43,52,t);angle=smooth(-.18,.12,t)}else{const t=(p-.88)/.12;rise=0;zoom=smooth(52,35,t);angle=smooth(.12,.16,t)}
 tower.position.y=THREE.MathUtils.damp(tower.position.y,rise,3.2,elapsed);
 hotel.rotation.y=THREE.MathUtils.damp(hotel.rotation.y,Math.sin(p*Math.PI*2)*.035,2,elapsed);
-hotel.position.y=Math.sin(time*.7)*.045;
+hotel.position.y=0;
 waterRipples.forEach((ring,i)=>{const phase=(time*.32+ring.userData.phase)%1,scale=.65+phase*2.5;ring.scale.setScalar(scale);ring.material.opacity=(1-phase)*.2});
 crownGlow.intensity=1.1+Math.sin(time*1.25)*.35;
 arrivalGlow.intensity=1+Math.sin(time*1.6+.8)*.28;
 rooftopPeople.forEach(person=>{person.group.position.y=person.baseY+Math.sin(time*2.1+person.phase)*.035;person.group.rotation.y=Math.sin(time*1.25+person.phase)*.11;person.group.rotation.z=Math.sin(time*2.6+person.phase)*.045});
 rooftopAccentLights.forEach(item=>{item.light.intensity=item.intensity*(.82+.18*Math.sin(time*1.8+item.phase));item.light.position.x=item.x+Math.sin(time*.42+item.phase)*.45});
 rooftopPulseRings.forEach((ring,i)=>{ring.material.emissiveIntensity=1.5+.55*Math.sin(time*2+i*.8)});
-floorWindows.forEach((w,i)=>{w.material.emissiveIntensity=.18+(.12*(1+Math.sin(time*1.4+i*.7)))});
+floorWindows.forEach(w=>{w.material.emissiveIntensity=w.userData.floor===activeFloor?1.15:0});
 
 const cityDrop=smooth(0,1,THREE.MathUtils.clamp((p-.035)/.205,0,1))*25;for(const b of descendingBuildings)b.position.y=b.userData.startY-cityDrop;for(const w of descendingWindows)w.position.y=w.userData.startY-cityDrop;const islandReveal=THREE.MathUtils.clamp((p-.19)/.16,0,1);island.visible=islandReveal>.01;ground.visible=islandReveal<.99;roadGroup.visible=islandReveal<.99;island.position.y=0;
-const mobileFrame=innerWidth<761?1.32:1;const framedZoom=zoom*mobileFrame;const roofReveal=THREE.MathUtils.smoothstep(p,.82,.96);const cameraHeightFactor=smooth(.43,1.4,roofReveal);const desired=new THREE.Vector3(Math.sin(angle)*framedZoom*.52,Math.max(12,framedZoom*cameraHeightFactor),Math.cos(angle)*framedZoom);camera.position.lerp(desired,easeCamera);
+const mobileFrame=innerWidth<761?1.32:1;const framedZoom=innerWidth<761?Math.max(zoom*mobileFrame,32/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.aspect)):zoom;const roofReveal=THREE.MathUtils.smoothstep(p,.82,.96);const cameraHeightFactor=smooth(.43,1.4,roofReveal);const desired=new THREE.Vector3(Math.sin(angle)*framedZoom*.52,Math.max(12,framedZoom*cameraHeightFactor),Math.cos(angle)*framedZoom);camera.position.lerp(desired,easeCamera);
 if(p<.52){targetLook.set(0,Math.max(8,tower.position.y+12),0)}else if(p>=.88){targetLook.y=THREE.MathUtils.damp(targetLook.y,tower.position.y+baseY+floors*floorH+4.1,2,elapsed)}else{targetLook.y=THREE.MathUtils.damp(targetLook.y,tower.position.y+baseY+(activeFloor-1)*floorH,2,elapsed)}
 
 // Slow orbital boat movement and soft lagoon ripples.

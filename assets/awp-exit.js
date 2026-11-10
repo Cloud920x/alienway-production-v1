@@ -14,7 +14,7 @@
   style.id = "awp-exit-style";
   style.textContent = `
     .awp-exit-button {
-      position: fixed; right: 18px; bottom: 18px; z-index: 10001;
+      position: fixed; left: auto; right: 18px; bottom: 18px; z-index: 10001;
       display: inline-flex; align-items: center; gap: 9px;
       max-width: calc(100vw - 24px); padding: 12px 15px;
       border: 1px solid rgba(255,255,255,.36); border-radius: 12px;
@@ -63,7 +63,7 @@
       100% { opacity: 0; transform: translate3d(var(--tx),var(--ty),0) rotate(var(--rot)) scale(.18); }
     }
     @media (max-width: 600px) {
-      .awp-exit-button { right: 10px; bottom: 10px; padding: 10px 12px; font-size: 8px; }
+      .awp-exit-button { left: auto; right: 10px; bottom: 10px; padding: 10px 12px; font-size: 8px; }
     }
     @media (prefers-reduced-motion: reduce) {
       .awp-exit-button { transition: none; }

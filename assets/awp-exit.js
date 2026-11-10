@@ -6,8 +6,9 @@
   const reducedMotion = window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Pages that already have their own Alienway exit control should not get a duplicate.
+  // Preserve existing custom exit effects; upgrade the simpler Ledger & Co. exit link.
   if (document.querySelector("[data-aw-exit], .alienway-exit, .awp-exit-button")) return;
+  const legacyLink = document.querySelector("a.exit-alienway");
 
   const style = document.createElement("style");
   style.id = "awp-exit-style";
@@ -71,19 +72,24 @@
   `;
   document.head.appendChild(style);
 
-  const link = document.createElement("a");
-  link.className = "awp-exit-button";
-  link.href = home;
+  const link = legacyLink || document.createElement("a");
+  if (!legacyLink) {
+    link.className = "awp-exit-button";
+    link.href = home;
+    link.setAttribute("aria-label", "Return to Alienway Production");
+    const mark = document.createElement("span");
+    mark.className = "awp-exit-mark";
+    mark.setAttribute("aria-hidden", "true");
+    mark.textContent = "↗";
+    const label = document.createElement("span");
+    label.textContent = "BACK TO ALIENWAY PRODUCTION";
+    link.append(mark, label);
+    document.body.appendChild(link);
+  } else {
+    link.classList.add("awp-exit-button");
+    link.setAttribute("aria-label", "Return to Alienway Production");
+  }
   link.setAttribute("data-aw-exit", "");
-  link.setAttribute("aria-label", "Return to Alienway Production");
-  const mark = document.createElement("span");
-  mark.className = "awp-exit-mark";
-  mark.setAttribute("aria-hidden", "true");
-  mark.textContent = "↗";
-  const label = document.createElement("span");
-  label.textContent = "BACK TO ALIENWAY PRODUCTION";
-  link.append(mark, label);
-  document.body.appendChild(link);
 
   let leaving = false;
   link.addEventListener("click", (event) => {

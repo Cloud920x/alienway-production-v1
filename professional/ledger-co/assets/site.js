@@ -28,3 +28,12 @@
   motion.addEventListener("change",reset);
  });
 })();
+
+
+// Shared Alienway exit control: adds a floating return button or upgrades the existing Ledger link.
+(() => {
+  const loader = document.createElement("script");
+  loader.src = "../../assets/awp-exit.js";
+  loader.dataset.home = "../../index.html";
+  document.body.appendChild(loader);
+})();

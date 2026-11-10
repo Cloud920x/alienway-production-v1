@@ -3249,9 +3249,8 @@ textarea:focus-visible {
             <div class="form-heading">
                 <h3>Request a table.</h3>
                 <p>
-                    Share your preferred date and time.
-                    Your reservation is not confirmed until the restaurant
-                    confirms it with you.
+                    Choose your preferred date and time to preview the booking journey.
+                    This demonstration does not send or store your details.
                 </p>
             </div>
 
@@ -3364,26 +3363,25 @@ textarea:focus-visible {
                     <input type="checkbox" id="privacyConsent" required>
                     <span>
                         I understand this is a demonstration booking system.
-                        My details will be saved to its database, but this does
-                        not create or confirm a real restaurant booking. *
+                        My details will not be sent to the restaurant or saved to a database, and no booking will be created. *
                     </span>
                 </label>
 
                 <button type="submit" class="button form-submit">
-                    Submit Reservation Request
+                    Preview Reservation Request
                     <span class="button-arrow">↗</span>
                 </button>
 
                 <div class="form-notice" id="formNotice" role="status" aria-live="polite">
-                    <strong>Your enquiry details are ready.</strong>
+                    <strong>Your demo request preview is ready.</strong>
                     <span id="formNoticeText"></span>
                 </div>
 
                 <p class="form-disclaimer">
-                    Demonstration only. Submitted details are saved to a
-                    demonstration database. This form does not check live
-                    availability or confirm a real restaurant booking.
-                    Do not enter sensitive personal information.
+                    Demonstration only. Details are used only to preview the form in this browser;
+                    they are not sent to a server or saved to a database. This form does not check
+                    live availability or create a real restaurant booking. Do not enter sensitive
+                    personal information.
                 </p>
 
             </form>
@@ -3835,16 +3833,12 @@ updateBackToTop();
 document.getElementById("currentYear").textContent =
     new Date().getFullYear();
 
-/* RESERVATION FORM — SUPABASE CONNECTION */
+/* RESERVATION FORM — FRONT-END DEMONSTRATION */
 
 const reservationForm = document.getElementById("reservationForm");
 const bookingDate = document.getElementById("bookingDate");
 const formNotice = document.getElementById("formNotice");
 const formNoticeText = document.getElementById("formNoticeText");
-const reservationSubmitButton = reservationForm.querySelector('[type="submit"]');
-
-const SUPABASE_URL = "https://pxmtsjspimlggaacsqml.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_MHmuzJckU_KV4npFI-ZiGA_ustnXZQi";
 
 function getLocalDateString(date) {
     const year = date.getFullYear();
@@ -3867,7 +3861,7 @@ function showReservationNotice(title, message) {
 
 bookingDate.min = getLocalDateString(new Date());
 
-reservationForm.addEventListener("submit", async function (event) {
+reservationForm.addEventListener("submit", function (event) {
     event.preventDefault();
     formNotice.classList.remove("visible");
 
@@ -3879,112 +3873,35 @@ reservationForm.addEventListener("submit", async function (event) {
     if (selectedDate < today) {
         showReservationNotice(
             "Please choose a valid date.",
-            "Choose today or a future date for your reservation request."
+            "Choose today or a future date to preview the reservation request."
         );
         bookingDate.focus();
         return;
     }
 
     const guestName = document.getElementById("guestName").value.trim();
-    const guestEmail = document.getElementById("guestEmail").value.trim();
-    const guestPhone = document.getElementById("guestPhone").value.trim();
     const guestCount = document.getElementById("guestCount").value;
     const reservationTime = document.getElementById("bookingTime").value;
-    const occasion = document.getElementById("occasion").value;
-    const specialRequests = document.getElementById("specialRequests").value.trim();
 
-    // The database has no separate occasion column, so preserve it in special_requests.
-    const requestParts = [];
-    if (occasion) requestParts.push("Occasion: " + occasion);
-    if (specialRequests) requestParts.push("Special requests: " + specialRequests);
+    const formattedDate = new Date(
+        Number(selectedDate.split("-")[0]),
+        Number(selectedDate.split("-")[1]) - 1,
+        Number(selectedDate.split("-")[2])
+    ).toLocaleDateString("en-ZA", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
 
-    const reservationPayload = {
-        guest_name: guestName,
-        guest_email: guestEmail,
-        guest_phone: guestPhone || null,
-        reservation_date: selectedDate,
-        reservation_time: reservationTime,
-        party_size: guestCount === "9+" ? 9 : Number(guestCount),
-        special_requests: requestParts.length ? requestParts.join("\n") : null
-    };
+    reservationForm.reset();
+    bookingDate.min = getLocalDateString(new Date());
 
-    reservationSubmitButton.disabled = true;
-    const originalButtonText = reservationSubmitButton.innerText;
-    reservationSubmitButton.innerText = "Submitting...";
-
-    try {
-        const response = await fetch(
-            SUPABASE_URL + "/rest/v1/olive_reservations",
-            {
-                method: "POST",
-                headers: {
-                    "apikey": SUPABASE_PUBLISHABLE_KEY,
-                    "Content-Type": "application/json",
-                    "Prefer": "return=minimal"
-                },
-                body: JSON.stringify(reservationPayload)
-            }
-        );
-
-        if (!response.ok) {
-            let detail = "";
-            try {
-                const errorBody = await response.json();
-                detail = errorBody.message || errorBody.details || errorBody.hint || "";
-            } catch (_) {}
-
-            console.error("OLIVE reservation submission failed:", response.status, detail);
-
-            if (response.status === 401 || response.status === 403) {
-                showReservationNotice(
-                    "Reservation request could not be submitted.",
-                    "The database rejected the request. Please check the Supabase Data API exposure and INSERT policy."
-                );
-            } else if (response.status === 404 || response.status === 406) {
-                showReservationNotice(
-                    "Reservation service is not available yet.",
-                    "Supabase could not find the reservation API endpoint. Check that olive_reservations is exposed through the Data API."
-                );
-            } else {
-                showReservationNotice(
-                    "We couldn't submit your request.",
-                    "Please try again in a moment. Your request has not been confirmed."
-                );
-            }
-            return;
-        }
-
-        const formattedDate = new Date(
-            Number(selectedDate.split("-")[0]),
-            Number(selectedDate.split("-")[1]) - 1,
-            Number(selectedDate.split("-")[2])
-        ).toLocaleDateString("en-ZA", {
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-        });
-
-        reservationForm.reset();
-        bookingDate.min = getLocalDateString(new Date());
-
-        showReservationNotice(
-            "Reservation request received, " + guestName + ".",
-            "Your request for " + formattedDate + " at " + reservationTime +
-            " has been saved to OLIVE's demonstration database. This is a request only, not a confirmed restaurant booking."
-        );
-    } catch (error) {
-        console.error("OLIVE reservation network error:", error);
-        showReservationNotice(
-            "Connection problem.",
-            "We couldn't reach the reservation service. Check your connection and try again. No booking confirmation has been made."
-        );
-    } finally {
-        reservationSubmitButton.disabled = false;
-        reservationSubmitButton.innerHTML =
-            'Submit Reservation Request <span class="button-arrow">↗</span>';
-    }
-});
-</script>
+    showReservationNotice(
+        "Demo request preview complete, " + guestName + ".",
+        "Your preferred table for " + guestCount + " guests on " + formattedDate +
+        " at " + reservationTime + " has been previewed. No details were sent to the restaurant or saved to a database. No booking has been made."
+    );
+});</script>
 
 <a class="alienway-exit" href="../index.html" aria-label="EXIT and return to the Alienway Production website" title="Exit to Alienway Production">
   <span class="alienway-exit__mark" aria-hidden="true">↗</span>

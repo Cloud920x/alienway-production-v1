@@ -34,3 +34,11 @@ if(finePointer&&!reduced){
 const progress=document.createElement('div');progress.className='scroll-progress';progress.setAttribute('aria-hidden','true');document.body.prepend(progress);
 let ticking=false;const updateProgress=()=>{const max=document.documentElement.scrollHeight-window.innerHeight;progress.style.transform='scaleX('+(max>0?window.scrollY/max:0)+')';ticking=false};window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(updateProgress);ticking=true}},{passive:true});window.addEventListener('resize',updateProgress,{passive:true});updateProgress();
 })();
+
+// Shared Alienway exit control: adds a floating return button or upgrades the existing Ledger link.
+(() => {
+  const loader = document.createElement("script");
+  loader.src = "../../assets/awp-exit.js";
+  loader.dataset.home = "../../index.html";
+  document.body.appendChild(loader);
+})();

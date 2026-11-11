@@ -1044,3 +1044,13 @@ body{
   .rr-scroll-cue>span:after{animation:none!important}
   .rr-motion-ready .rr-process-panel:not(.is-visible){opacity:1;transform:none}
 }
+
+/* Final interaction tuning: keep the active chapter lifted after reveal,
+   and switch the cards to a single column before phone widths get cramped. */
+.rr-motion-ready .rr-process-panel.is-visible.is-active{transform:translateY(-3px)}
+.rr-scroll-cue>span:after{animation:rr-scroll-nudge 1.8s ease-in-out 2}
+@media(max-width:680px){
+  .rr-process-panel{grid-template-columns:1fr;min-height:0}
+  .rr-process-panel-visual{height:clamp(190px,55vw,245px);min-height:0}
+  .rr-process-panel-copy{padding:20px 19px 18px}
+}

@@ -4,19 +4,24 @@
 
   const STORAGE_KEY = "rinseRitualDemo_v1";
   const SERVICES = [
-    {id:"quick",name:"Quick Reset",price:149,duration:25,description:"Foam pre-wash, exterior hand wash, wheels and dry finish."},
-    {id:"signature",name:"Signature Hand Wash",price:259,duration:45,description:"Two-bucket wash, wheels, glass and hand-finished shine."},
-    {id:"interior",name:"Interior Revival",price:389,duration:60,description:"Vacuum, mats, dash, trim and interior glass."},
-    {id:"full",name:"Full Revival",price:699,duration:90,description:"A full exterior and interior treatment."},
-    {id:"ceramic",name:"Ceramic Shield",price:1490,duration:150,description:"Deep clean, paint prep and ceramic spray protection."}
+    {id:"quick",name:"Quick Reset",price:149,duration:25,description:"Foam pre-wash, careful exterior hand wash, wheels and a clean dry-down."},
+    {id:"signature",name:"Signature Hand Wash",price:259,duration:45,description:"Two-bucket hand wash, detailed wheels, clean glass and a hand-finished shine."},
+    {id:"interior",name:"Interior Revival",price:389,duration:60,description:"Thorough vacuum, dash and trim care, refreshed mats and interior glass."},
+    {id:"full",name:"Full Revival",price:699,duration:90,description:"A complete inside-and-out refresh with careful attention to detail."},
+    {id:"ceramic",name:"Ceramic Shield",price:1490,duration:150,description:"Paint preparation finished with a ceramic spray sealant for added gloss."}
   ];
   const ADDONS = [
-    {id:"petHair",name:"Pet hair removal",price:90},
-    {id:"engineBay",name:"Engine bay refresh",price:120},
-    {id:"odour",name:"Odour neutraliser",price:70},
+    {id:"petHair",name:"Pet-hair removal",price:90},
+    {id:"engineBay",name:"Engine-bay refresh",price:120},
+    {id:"odour",name:"Odour treatment",price:70},
     {id:"tyres",name:"Tyre dressing",price:45},
-    {id:"childSeat",name:"Child-seat refresh",price:80}
+    {id:"childSeat",name:"Child-seat surface refresh",price:80}
   ];
+  const MEMBERSHIP_DETAILS = {
+    "Fresh Pass": {price:249,saving:49,items:["2 Quick Resets each month","10% off selected extras"]},
+    "Ritual Plus": {price:649,saving:167,items:["2 Signature Hand Washes each month","2 Quick Resets each month","10% off selected extras"]},
+    "All Access": {price:1099,saving:326,items:["4 Signature Hand Washes each month","1 Interior Revival each month","15% off selected extras"]}
+  };
   const VEHICLES = {
     hatch:{label:"Hatchback / Compact",multiplier:.9},
     sedan:{label:"Sedan",multiplier:1},
@@ -77,7 +82,7 @@
         {id:"RR-26046",name:"Ethan Fortuin",phone:"082 *** 0146",email:"",vehicle:"SUV",serviceId:"signature",serviceName:"Signature Hand Wash",date:offsetDate(1),time:"09:30",price:324,status:"booked",bay:"",createdAt:Date.now()},
         {id:"RR-26047",name:"Amara Smith",phone:"082 *** 0147",email:"",vehicle:"Sedan",serviceId:"full",serviceName:"Full Revival",date:offsetDate(-1),time:"11:30",price:699,status:"completed",bay:"",createdAt:Date.now()-86400000},
         {id:"RR-26048",name:"Kai September",phone:"082 *** 0148",email:"",vehicle:"Hatchback",serviceId:"interior",serviceName:"Interior Revival",date:offsetDate(-2),time:"14:30",price:350,status:"completed",bay:"",createdAt:Date.now()-172800000},
-        {id:"RR-26049",name:"Leah Botha",phone:"082 *** 0149",email:"",vehicle:"SUV",serviceId:"ceramic",serviceName:"Ceramic Shield",date:offsetDate(-3),time:"08:30",price:1860,status:"completed",bay:"",createdAt:Date.now()-259200000},
+        {id:"RR-26049",name:"Leah Botha",phone:"082 *** 0149",email:"",vehicle:"SUV",serviceId:"ceramic",serviceName:"Ceramic Shield",date:offsetDate(-3),time:"08:30",price:1863,status:"completed",bay:"",createdAt:Date.now()-259200000},
         {id:"RR-26050",name:"Mason Williams",phone:"082 *** 0150",email:"",vehicle:"Sedan",serviceId:"signature",serviceName:"Signature Hand Wash",date:offsetDate(-4),time:"10:30",price:259,status:"completed",bay:"",createdAt:Date.now()-345600000},
         {id:"RR-26051",name:"Isla Petersen",phone:"082 *** 0151",email:"",vehicle:"Bakkie",serviceId:"full",serviceName:"Full Revival",date:offsetDate(-5),time:"13:30",price:909,status:"completed",bay:"",createdAt:Date.now()-432000000},
         {id:"RR-26052",name:"Theo Jacobs",phone:"082 *** 0152",email:"",vehicle:"Sedan",serviceId:"quick",serviceName:"Quick Reset",date:offsetDate(-6),time:"15:30",price:149,status:"completed",bay:"",createdAt:Date.now()-518400000}
@@ -118,6 +123,8 @@
   let bookingSearch = "";
   let bookingFilter = "all";
   let toastTimer = null;
+  let lastModalTrigger = null;
+  let lastOpsTrigger = null;
 
   const saveState = function () {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
@@ -136,7 +143,7 @@
     const vehicleId = $("#vehicleType") ? $("#vehicleType").value : "sedan";
     const service = getService(serviceId);
     const vehicle = VEHICLES[vehicleId] || VEHICLES.sedan;
-    const base = Math.round((getPrice(serviceId) * vehicle.multiplier) / 5) * 5;
+    const base = Math.round(getPrice(serviceId) * vehicle.multiplier);
     const extras = getSelectedAddons().reduce(function (total, addon) { return total + addon.price; }, 0);
     return {service:service,vehicle:vehicle,base:base,extras:extras,total:base+extras};
   };
@@ -503,8 +510,8 @@
     const joinButton = event.target.closest("[data-join-membership]");
     if (joinButton) { openMembership(joinButton.dataset.joinMembership); return; }
     const closeModal = event.target.closest("[data-close-modal]");
-    if (closeModal) { closeModal.closest(".rr-modal").hidden = true; return; }
-    if (event.target.classList.contains("rr-modal")) { event.target.hidden = true; return; }
+    if (closeModal) { closeModalDialog(closeModal.closest(".rr-modal")); return; }
+    if (event.target.classList.contains("rr-modal")) { closeModalDialog(event.target); return; }
     const opsPageButton = event.target.closest("[data-ops-page]");
     if (opsPageButton) { renderOpsPage(opsPageButton.dataset.opsPage); return; }
     const bookingAction = event.target.closest("[data-booking-action]");
@@ -548,12 +555,17 @@
   $("#menuToggle").addEventListener("click",function () {
     const nav = $("#mainNav");
     const open = nav.classList.toggle("open");
+    $("#menuToggle").classList.toggle("is-open",open);
     $("#menuToggle").setAttribute("aria-expanded",String(open));
     $("#menuToggle").setAttribute("aria-label",open ? "Close navigation" : "Open navigation");
-    $("#menuToggle").textContent = open ? "×" : "☰";
   });
-  $$("#mainNav a").forEach(function (link) {
-    link.addEventListener("click",function () { $("#mainNav").classList.remove("open"); $("#menuToggle").setAttribute("aria-expanded","false"); $("#menuToggle").textContent = "☰"; });
+  $("#mainNav a").forEach(function (link) {
+    link.addEventListener("click",function () {
+      $("#mainNav").classList.remove("open");
+      $("#menuToggle").classList.remove("is-open");
+      $("#menuToggle").setAttribute("aria-expanded","false");
+      $("#menuToggle").setAttribute("aria-label","Open navigation");
+    });
   });
   $("#bookingDate").min = dateKey(new Date());
   $("#bookingDate").value = dateKey(new Date());
@@ -616,7 +628,353 @@
     } else {
       panels.forEach(function (panel) { panel.classList.add("is-visible"); });
     }
-  })();
+  
+  /* Accessible overlay management and return-focus behaviour. */
+  function setPublicSiteInert(active) {
+    const site = $("#publicSite");
+    if (!site) return;
+    site.inert = !!active;
+    if (active) site.setAttribute("aria-hidden","true");
+    else site.removeAttribute("aria-hidden");
+  }
+  function restoreFocus(target) {
+    if (target && document.contains(target) && !target.closest("[hidden]")) {
+      try { target.focus({preventScroll:true}); } catch (error) { target.focus(); }
+    }
+  }
+  function closeModalDialog(modal) {
+    if (!modal) return;
+    modal.hidden = true;
+    const opsOpen = $("#opsApp") && !$("#opsApp").hidden;
+    const otherModalOpen = ($("#membershipModal") && !$("#membershipModal").hidden) || ($("#bookingConfirmation") && !$("#bookingConfirmation").hidden);
+    if (!opsOpen && !otherModalOpen) setPublicSiteInert(false);
+    const trigger = lastModalTrigger;
+    lastModalTrigger = null;
+    if (!opsOpen && !otherModalOpen) restoreFocus(trigger);
+  }
+  function getDialogFocusables(dialog) {
+    return Array.from(dialog.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'))
+      .filter(function (element) { return !element.closest("[hidden]") && element.getClientRects().length > 0; });
+  }
+
+  function getGreeting() {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 17) return "Good afternoon";
+    return "Good evening";
+  }
+
+  function openMembership(plan) {
+    const details = MEMBERSHIP_DETAILS[plan] || MEMBERSHIP_DETAILS["Fresh Pass"];
+    lastModalTrigger = document.activeElement;
+    $("#membershipPlan").value = plan;
+    $("#membershipIntro").textContent = "Preview the " + plan + " plan. No payment is taken and this sample sign-up stays in this browser.";
+    $("#membershipSummary").innerHTML = '<strong>' + money(details.price) + ' <small>/ month</small></strong><small>Save ' + money(details.saving) + ' against individual visits.</small><ul>' + details.items.map(function (item) { return '<li>' + escapeHTML(item) + '</li>'; }).join("") + '</ul>';
+    setPublicSiteInert(true);
+    $("#membershipModal").hidden = false;
+    requestAnimationFrame(function () { $("#memberName").focus({preventScroll:true}); });
+  }
+
+  function openOps() {
+    const active = document.activeElement;
+    lastOpsTrigger = active && active.closest(".rr-modal") ? $("#opsLaunch") : active;
+    $("#membershipModal").hidden = true;
+    $("#bookingConfirmation").hidden = true;
+    lastModalTrigger = null;
+    setPublicSiteInert(true);
+    $("#opsApp").hidden = false;
+    $("#opsLogin").hidden = false;
+    $("#opsShell").hidden = true;
+    currentRole = "";
+    document.body.classList.add("ops-open");
+    window.scrollTo(0,0);
+    requestAnimationFrame(function () {
+      const firstRole = $("#opsLogin").querySelector("[data-enter-role]");
+      if (firstRole) firstRole.focus({preventScroll:true});
+      else $("#opsApp").focus({preventScroll:true});
+    });
+  }
+
+  function closeOps() {
+    $("#opsApp").hidden = true;
+    document.body.classList.remove("ops-open");
+    currentRole = "";
+    setPublicSiteInert(false);
+    const trigger = lastOpsTrigger;
+    lastOpsTrigger = null;
+    restoreFocus(trigger);
+  }
+
+  function enterRole(role) {
+    currentRole = role === "manager" ? "manager" : "owner";
+    currentPage = "overview";
+    bookingSearch = "";
+    bookingFilter = "all";
+    $("#opsLogin").hidden = true;
+    $("#opsShell").hidden = false;
+    $("#rolePill").textContent = currentRole === "owner" ? "OWNER · FULL ACCESS" : "MANAGER · DAILY OPS";
+    renderNav();
+    renderOpsPage("overview");
+    requestAnimationFrame(function () {
+      const firstNav = $("#opsNav").querySelector("button");
+      if (firstNav) firstNav.focus({preventScroll:true});
+    });
+  }
+
+  function renderNav() {
+    const nav = $("#opsNav");
+    const items = currentRole === "owner" ? OWNER_NAV : MANAGER_NAV;
+    nav.innerHTML = items.map(function (item) {
+      const active = item.id === currentPage;
+      return '<button type="button" data-ops-page="' + item.id + '" class="' + (active ? "active" : "") + '"' + (active ? ' aria-current="page"' : "") + ' title="' + escapeHTML(item.label) + '"><span class="rr-nav-icon" aria-hidden="true">' + item.icon + '</span><span>' + escapeHTML(item.label) + '</span></button>';
+    }).join("");
+  }
+
+  function pageHeader(title, description, action) {
+    return '<div class="rr-ops-page-head"><div><div class="rr-eyebrow">RINSE / RITUAL · ' + (currentRole === "owner" ? "OWNER WORKSPACE" : "DAILY OPERATIONS") + '</div><h1 id="opsPageTitle">' + escapeHTML(title) + '</h1><p>' + escapeHTML(description) + '</p></div>' + (action || "") + '</div>';
+  }
+
+  function renderOverview() {
+    const today = dateKey(new Date());
+    const todays = state.bookings.filter(function (b) { return b.date === today && b.status !== "cancelled"; });
+    const completed = todays.filter(function (b) { return b.status === "completed"; });
+    const revenue = completed.reduce(function (sum,b) { return sum + Number(b.price); },0);
+    const active = state.bookings.filter(function (b) { return (b.status === "washing" || b.status === "ready") && b.date === today; });
+    const waiting = state.bookings.filter(function (b) { return b.date === today && b.status === "checked-in"; });
+    const ready = state.bookings.filter(function (b) { return b.date === today && b.status === "ready"; });
+    const customers = getCustomers();
+    const lowStock = state.inventory.filter(function (item) { return item.stock <= item.min; }).length;
+    const rows = state.bookings.filter(function (b) { return b.date === today && b.status !== "cancelled"; }).slice().sort(function (a,b) { return a.time.localeCompare(b.time); }).slice(0,5);
+    let kpis;
+    let pulse;
+    if (currentRole === "owner") {
+      kpis = [
+        ["BOOKINGS TODAY",todays.length,"Scheduled arrivals"],
+        ["REVENUE COLLECTED",money(revenue),"Completed jobs only"],
+        ["VEHICLES IN BAYS",active.length,"Assigned to a wash bay"],
+        ["CUSTOMER PROFILES",customers.length,"Across demo bookings"]
+      ];
+      pulse = '<div class="rr-staff-row"><div><strong>Wash bays occupied</strong><small class="rr-table-secondary">Vehicles currently assigned to a bay</small></div><b>' + active.length + ' / 3</b></div><div class="rr-staff-row"><div><strong>Memberships active</strong><small class="rr-table-secondary">Sample member accounts</small></div><b>' + state.memberships.length + '</b></div><div class="rr-staff-row"><div><strong>Stock items to watch</strong><small class="rr-table-secondary">At or below minimum level</small></div><b>' + lowStock + '</b></div><div class="rr-staff-row"><div><strong>Staff on shift</strong><small class="rr-table-secondary">Team availability</small></div><b>' + state.staff.filter(function (s) { return s.active; }).length + ' / ' + state.staff.length + '</b></div>';
+    } else {
+      kpis = [
+        ["BOOKINGS TODAY",todays.length,"Scheduled arrivals"],
+        ["VEHICLES IN BAYS",active.length,"Currently on the wash floor"],
+        ["WAITING FOR A BAY",waiting.length,"Checked in and queued"],
+        ["READY TO COLLECT",ready.length,"Awaiting customer collection"]
+      ];
+      pulse = '<div class="rr-staff-row"><div><strong>Wash bays occupied</strong><small class="rr-table-secondary">Vehicles currently assigned to a bay</small></div><b>' + active.length + ' / 3</b></div><div class="rr-staff-row"><div><strong>Customers waiting</strong><small class="rr-table-secondary">Checked in, not yet assigned</small></div><b>' + waiting.length + '</b></div><div class="rr-staff-row"><div><strong>Vehicles ready</strong><small class="rr-table-secondary">Awaiting customer collection</small></div><b>' + ready.length + '</b></div><div class="rr-staff-row"><div><strong>Customer profiles</strong><small class="rr-table-secondary">For service and check-in support</small></div><b>' + customers.length + '</b></div>';
+    }
+    return pageHeader(getGreeting() + ", team.", "Here is the studio at a glance.") +
+      '<div class="rr-ops-grid">' + kpis.map(function (k) { return '<div class="rr-kpi"><span>' + k[0] + '</span><strong>' + k[1] + '</strong><small>' + k[2] + '</small></div>'; }).join("") + '</div>' +
+      '<div class="rr-ops-two-col"><section class="rr-ops-panel"><h3>Today&#39;s wash schedule</h3>' + bookingTable(rows) + '</section><section class="rr-ops-panel"><h3>Studio pulse</h3>' + pulse + '<button class="rr-btn rr-btn-dark rr-btn-small" style="margin-top:15px" data-ops-page="live">OPEN WASH FLOOR ↗</button></section></div>';
+  }
+
+  function renderLive() {
+    const active = state.bookings.filter(function (b) { return b.date === dateKey(new Date()) && (b.status === "washing" || b.status === "ready"); });
+    const queue = state.bookings.filter(function (b) { return b.date === dateKey(new Date()) && b.status === "checked-in"; });
+    const bays = BAYS.map(function (bay) {
+      const booking = active.find(function (b) { return b.bay === bay; });
+      return '<article class="rr-bay"><div class="rr-bay-top"><strong>' + bay + '</strong><span>' + (booking ? "IN USE" : "AVAILABLE") + '</span></div>' + (booking ? '<div class="rr-bay-customer"><strong>' + escapeHTML(booking.name) + '</strong><small>' + escapeHTML(booking.serviceName) + ' · ' + escapeHTML(booking.time) + '</small>' + statusPill(booking.status) + '<div class="rr-action-row" style="margin-top:13px">' + bookingActionButtons(booking) + '</div></div>' : '<div class="rr-bay-empty">Ready for the next vehicle.</div>') + '</article>';
+    }).join("");
+    return pageHeader("Wash floor","Follow each vehicle from check-in through the wash to collection.") +
+      '<section class="rr-ops-panel"><h3>Bay status · ' + dateLabel(dateKey(new Date())) + '</h3><div class="rr-bay-grid">' + bays + '</div></section>' +
+      '<section class="rr-ops-panel" style="margin-top:13px"><h3>Checked in · waiting for a bay</h3>' + (queue.length ? bookingTable(queue) : '<div class="rr-empty-state">No vehicles waiting for a bay.</div>') + '</section>';
+  }
+
+  function renderBookings() {
+    const statuses = ["all","booked","checked-in","washing","ready","completed","cancelled"];
+    return pageHeader("Bookings & arrivals","Find an arrival, check a vehicle in and move each job through the wash.") +
+      '<section class="rr-ops-panel"><div class="rr-ops-controls rr-ops-controls-polished"><div class="rr-field"><label class="rr-sr-only" for="bookingSearch">Search bookings by customer, service or reference</label><input id="bookingSearch" type="search" aria-label="Search bookings by customer, service or reference" placeholder="Search name, service or reference…" value="' + escapeHTML(bookingSearch) + '"></div><div class="rr-field"><label class="rr-sr-only" for="bookingFilter">Filter bookings by status</label><select id="bookingFilter" aria-label="Filter bookings by status">' + statuses.map(function (s) { return '<option value="' + s + '"' + (bookingFilter === s ? " selected" : "") + '>' + (s === "all" ? "All statuses" : s.replace("-"," ")) + '</option>'; }).join("") + '</select></div><span class="rr-table-secondary">Status changes appear on the wash floor.</span></div><div id="bookingTableArea"></div></section>';
+  }
+
+  function bookingTable(rows) {
+    if (!rows.length) return '<div class="rr-empty-state">No bookings match this view yet.</div>';
+    return '<div class="rr-ops-table-wrap" role="region" aria-label="Booking records" tabindex="0"><table class="rr-ops-table"><thead><tr><th>Customer</th><th>Service</th><th>Arrival</th><th>Vehicle</th><th>Estimate</th><th>Status</th><th>Actions</th></tr></thead><tbody>' + rows.map(function (booking) {
+      return '<tr><td data-label="Customer"><span class="rr-table-primary">' + escapeHTML(booking.name) + '</span><span class="rr-table-secondary">' + escapeHTML(booking.phone) + '</span></td><td data-label="Service">' + escapeHTML(booking.serviceName) + '</td><td data-label="Arrival"><span class="rr-table-primary">' + escapeHTML(booking.time) + '</span><span class="rr-table-secondary">' + prettyDate(booking.date) + '</span></td><td data-label="Vehicle">' + escapeHTML(booking.vehicle) + '</td><td data-label="Estimate"><strong>' + money(booking.price) + '</strong></td><td data-label="Status">' + statusPill(booking.status) + '</td><td data-label="Actions"><div class="rr-action-row">' + bookingActionButtons(booking) + '</div></td></tr>';
+    }).join("") + '</tbody></table></div>';
+  }
+
+  function bookingActionButtons(booking) {
+    const id = escapeHTML(booking.id);
+    const name = escapeHTML(booking.name);
+    if (booking.status === "booked") return '<button class="rr-action" data-booking-action="checkin" data-booking-id="' + id + '" aria-label="Check in ' + name + '">Check in</button><button class="rr-action danger" data-booking-action="cancel" data-booking-id="' + id + '" aria-label="Cancel booking ' + id + ' for ' + name + '">Cancel</button>';
+    if (booking.status === "checked-in") return '<button class="rr-action" data-booking-action="start" data-booking-id="' + id + '" aria-label="Start wash for ' + name + '">Start wash</button><button class="rr-action danger" data-booking-action="cancel" data-booking-id="' + id + '" aria-label="Cancel booking ' + id + ' for ' + name + '">Cancel</button>';
+    if (booking.status === "washing") return '<button class="rr-action" data-booking-action="ready" data-booking-id="' + id + '" aria-label="Mark ' + name + '&#39;s wash ready">Mark ready</button>';
+    if (booking.status === "ready") return '<button class="rr-action" data-booking-action="complete" data-booking-id="' + id + '" aria-label="Complete the wash for ' + name + '">Complete job</button>';
+    return '<span class="rr-table-secondary">No action</span>';
+  }
+
+  function renderCustomers() {
+    const customers = getCustomers();
+    const members = state.memberships.length;
+    const completedVisits = state.bookings.filter(function (b) { return b.status === "completed"; }).length;
+    const lifetimeValue = customers.reduce(function (sum,c) { return sum+c.spend; },0);
+    const ownerView = currentRole === "owner";
+    const metrics = ownerView
+      ? [["KNOWN CUSTOMERS",customers.length,"Demo customer profiles"],["MEMBERSHIPS",members,"Sample member sign-ups"],["COMPLETED VISITS",completedVisits,"Across the sample history"],["COMPLETED REVENUE",money(lifetimeValue),"Completed wash revenue"]]
+      : [["CUSTOMER PROFILES",customers.length,"For service and check-in support"],["MEMBERSHIPS",members,"Sample member sign-ups"],["COMPLETED VISITS",completedVisits,"Across the sample history"],["TODAY'S ARRIVALS",state.bookings.filter(function (b) { return b.date === dateKey(new Date()) && b.status !== "cancelled"; }).length,"Scheduled customer visits"]];
+    const spendHeading = ownerView ? "<th>Lifetime spend</th>" : "";
+    return pageHeader("Customers & members","A clear view of sample visits, memberships and customer value.") +
+      '<div class="rr-ops-grid">' + metrics.map(function (metric) { return '<div class="rr-kpi"><span>' + metric[0] + '</span><strong>' + metric[1] + '</strong><small>' + metric[2] + '</small></div>'; }).join("") + '</div>' +
+      '<section class="rr-ops-panel rr-ops-panel-gap"><h3>Customer register</h3><div class="rr-ops-table-wrap" role="region" aria-label="Customer records" tabindex="0"><table class="rr-ops-table"><thead><tr><th>Customer</th><th>Mobile</th><th>Completed visits</th>' + spendHeading + '<th>Last activity</th><th>Membership</th></tr></thead><tbody>' + customers.map(function (c) {
+        const spendCell = ownerView ? '<td data-label="Lifetime spend"><strong>' + money(c.spend) + '</strong></td>' : "";
+        return '<tr><td data-label="Customer"><span class="rr-table-primary">' + escapeHTML(c.name) + '</span></td><td data-label="Mobile">' + escapeHTML(c.phone) + '</td><td data-label="Completed visits">' + c.visits + '</td>' + spendCell + '<td data-label="Last activity">' + prettyDate(c.last) + '</td><td data-label="Membership">' + (c.membership ? '<span class="rr-status completed">' + escapeHTML(c.membership) + '</span>' : '<span class="rr-table-secondary">—</span>') + '</td></tr>';
+      }).join("") + '</tbody></table></div></section>';
+  }
+
+  function renderInventory() {
+    return pageHeader("Stock & supplies","Keep the products and consumables ready for the next vehicle.") +
+      '<div class="rr-stock-grid">' + state.inventory.map(function (item) {
+        const low = item.stock <= item.min;
+        return '<article class="rr-stock-card"><strong>' + escapeHTML(item.name) + '</strong><small>' + escapeHTML(item.unit) + '</small><div class="rr-stock-count">' + item.stock + '</div><span class="' + (low ? "rr-stock-low" : "rr-table-secondary") + '">' + (low ? "LOW STOCK · MIN " + item.min : "STOCK LEVEL HEALTHY") + '</span><div class="rr-stock-actions"><button type="button" data-stock-action="use" data-stock-id="' + escapeHTML(item.id) + '" aria-label="Use one unit of ' + escapeHTML(item.name) + '">− USE 1</button><button type="button" data-stock-action="add" data-stock-id="' + escapeHTML(item.id) + '" aria-label="Restock five units of ' + escapeHTML(item.name) + '">+ RESTOCK 5</button></div></article>';
+      }).join("") + '</div><p class="rr-demo-note">Inventory actions update this local demo. A live client system can add supplier records, purchase orders, stock movement history and cost-of-goods tracking.</p>';
+  }
+
+  function renderTeam() {
+    return pageHeader("Team & wash bays","See who is on shift and how each bay is set up.") +
+      '<section class="rr-ops-panel"><h3>Today&#39;s team roster</h3>' + state.staff.map(function (person) {
+        const initials = person.name.split(" ").map(function (x) { return x[0]; }).join("").slice(0,2);
+        return '<div class="rr-staff-row"><div class="rr-staff-person"><span class="rr-avatar" aria-hidden="true">' + escapeHTML(initials) + '</span><span><strong>' + escapeHTML(person.name) + '</strong><small>' + escapeHTML(person.role) + ' · ' + escapeHTML(person.shift) + '</small></span></div><div class="rr-action-row"><span class="rr-status ' + (person.active ? "completed" : "cancelled") + '">' + (person.active ? "On shift" : "Off shift") + '</span><button class="rr-action" data-staff-toggle="' + escapeHTML(person.id) + '" aria-label="' + (person.active ? "Clock out " : "Clock in ") + escapeHTML(person.name) + '">' + (person.active ? "Clock out" : "Clock in") + '</button></div></div>';
+      }).join("") + '</section><section class="rr-ops-panel rr-ops-panel-gap"><h3>Wash bay setup</h3><div class="rr-bay-grid">' + BAYS.map(function (bay,index) { return '<article class="rr-bay"><div class="rr-bay-top"><strong>' + bay + '</strong><span>' + ["EXPRESS","DETAIL","PROTECTION"][index] + '</span></div><div class="rr-bay-empty">' + ["Quick Reset and Signature Hand Wash","Interior Revival and Full Revival","Ceramic Shield and specialist treatments"][index] + '</div></article>'; }).join("") + '</div></section>';
+  }
+
+  function renderReports() {
+    const days = [];
+    for (let i=6;i>=0;i--) {
+      const day = offsetDate(-i);
+      const value = state.bookings.filter(function (b) { return b.date === day && b.status === "completed"; }).reduce(function (sum,b) { return sum + Number(b.price); },0);
+      days.push({date:day,value:value});
+    }
+    const max = Math.max.apply(null,days.map(function (d) { return d.value; }).concat([1]));
+    const total = days.reduce(function (sum,d) { return sum+d.value; },0);
+    const completed = state.bookings.filter(function (b) { return b.status === "completed"; });
+    const completedRevenue = completed.reduce(function (sum,b) { return sum + Number(b.price); },0);
+    const average = completed.length ? completedRevenue / completed.length : 0;
+    const serviceTotals = {};
+    completed.forEach(function (b) { serviceTotals[b.serviceName] = (serviceTotals[b.serviceName] || 0) + Number(b.price); });
+    const services = Object.keys(serviceTotals).sort(function (a,b) { return serviceTotals[b]-serviceTotals[a]; });
+    const chartDescription = days.map(function (d) { return new Date(d.date+"T12:00:00").toLocaleDateString("en-ZA",{weekday:"long"}) + ": " + money(d.value); }).join("; ");
+    return pageHeader("Revenue & reports","Review completed work, sample revenue and the services driving the mix.") +
+      '<div class="rr-ops-grid"><div class="rr-kpi"><span>7-DAY REVENUE</span><strong>' + money(total) + '</strong><small>Completed sample jobs in period</small></div><div class="rr-kpi"><span>COMPLETED JOBS</span><strong>' + completed.length + '</strong><small>All demo history</small></div><div class="rr-kpi"><span>AVERAGE TICKET</span><strong>' + money(average) + '</strong><small>Per completed wash</small></div><div class="rr-kpi"><span>MEMBER BASE</span><strong>' + state.memberships.length + '</strong><small>Sample sign-ups</small></div></div>' +
+      '<div class="rr-ops-two-col"><section class="rr-ops-panel"><h3>Revenue · last 7 days</h3><div class="rr-bar-chart" role="img" aria-label="Sample revenue by day for the last seven days. ' + escapeHTML(chartDescription) + '">' + days.map(function (d) { const height = Math.max(5,Math.round(d.value/max*100)); const label = new Date(d.date+"T12:00:00").toLocaleDateString("en-ZA",{weekday:"short"}); return '<div class="rr-bar-col" aria-hidden="true"><small>' + (d.value ? Math.round(d.value/100)/10 + "k" : "—") + '</small><div class="rr-bar" style="--bar-height:' + height + '%"></div><span>' + label + '</span></div>'; }).join("") + '</div></section><section class="rr-ops-panel"><h3>Service mix · revenue</h3>' + (services.length ? services.map(function (name) { return '<div class="rr-staff-row"><div><strong>' + escapeHTML(name) + '</strong><small class="rr-table-secondary">Completed sample services</small></div><b>' + money(serviceTotals[name]) + '</b></div>'; }).join("") : '<div class="rr-empty-state">Complete a sample booking to see the service mix.</div>') + '</section></div>';
+  }
+
+  function renderSettings() {
+    return pageHeader("Services & settings","Adjust sample service prices or restore the original demonstration workspace.") +
+      '<section class="rr-ops-panel"><h3>Wash menu pricing · sedan base price</h3>' + SERVICES.map(function (service) {
+        return '<div class="rr-price-control"><div><strong>' + escapeHTML(service.name) + '</strong><small>' + service.duration + ' minute estimate</small></div><b>' + money(getPrice(service.id)) + '</b><button class="rr-action" data-price-adjust="-25" data-service-id="' + service.id + '" aria-label="Reduce ' + escapeHTML(service.name) + ' price by R25">− R25</button><button class="rr-action" data-price-adjust="25" data-service-id="' + service.id + '" aria-label="Increase ' + escapeHTML(service.name) + ' price by R25">+ R25</button></div>';
+      }).join("") + '</section><section class="rr-reset-box"><strong>RESET THE DEMONSTRATION WORKSPACE</strong><p>Restore the original sample bookings, team roster, stock levels and prices. Any sample bookings or membership previews created in this browser will be cleared.</p><button class="rr-action danger" type="button" data-reset-demo>RESET SAMPLE DATA</button></section>';
+  }
+
+  function updateBookingStatus(id, action) {
+    const booking = state.bookings.find(function (b) { return b.id === id; });
+    if (!booking) return;
+    if (action === "cancel" && !window.confirm("Cancel sample booking " + booking.id + " for " + booking.name + "?")) return;
+    if ((action === "checkin" || action === "start") && booking.date !== dateKey(new Date())) { showToast(booking.date > dateKey(new Date()) ? "This booking is scheduled for a future date." : "This booking date has passed. Review it before checking in."); return; }
+    if (action === "checkin" && booking.status === "booked") booking.status = "checked-in";
+    if (action === "start" && booking.status === "checked-in") {
+      const occupied = state.bookings.filter(function (b) { return (b.status === "washing" || b.status === "ready") && b.date === dateKey(new Date()); }).map(function (b) { return b.bay; });
+      const free = BAYS.find(function (bay) { return occupied.indexOf(bay) === -1; });
+      if (!free) { showToast("All wash bays are occupied. Finish a job before assigning another vehicle."); return; }
+      booking.status = "washing";
+      booking.bay = free;
+    }
+    if (action === "ready" && booking.status === "washing") booking.status = "ready";
+    if (action === "complete" && booking.status === "ready") { booking.status = "completed"; booking.bay = ""; }
+    if (action === "cancel" && (booking.status === "booked" || booking.status === "checked-in")) { booking.status = "cancelled"; booking.bay = ""; }
+    saveState();
+    renderOpsPage(currentPage);
+    showToast("Booking " + booking.id + " updated.");
+  }
+
+  function addBooking(event) {
+    event.preventDefault();
+    const form = $("#bookingForm");
+    if (!form.reportValidity()) return;
+    const date = $("#bookingDate").value;
+    if (date < dateKey(new Date())) { showToast("Please choose today or a future date."); return; }
+    const slot = $("#selectedSlot").value;
+    if (!slot) { showToast("Please choose an available arrival time."); return; }
+    const now = new Date();
+    const currentTime = String(now.getHours()).padStart(2,"0") + ":" + String(now.getMinutes()).padStart(2,"0");
+    if (date === dateKey(now) && slot <= currentTime) { renderSlots(); showToast("That arrival time has already passed. Choose a later slot."); return; }
+    const taken = state.bookings.filter(function (booking) { return booking.date === date && booking.time === slot && booking.status !== "cancelled"; }).length;
+    if (taken >= 3) { renderSlots(); showToast("That arrival slot has just filled. Choose another time."); return; }
+    const quote = calculateQuote();
+    const name = $("#customerName").value.trim();
+    const phone = $("#customerPhone").value.trim();
+    const email = $("#customerEmail").value.trim();
+    const vehicle = VEHICLES[$("#vehicleType").value].label;
+    const booking = {
+      id:bookingId(),name:name,phone:phone,email:email,vehicle:vehicle,
+      serviceId:quote.service.id,serviceName:quote.service.name,date:date,time:slot,
+      price:quote.total,status:"booked",bay:"",createdAt:Date.now(),
+      addons:getSelectedAddons().map(function (addon) { return addon.name; })
+    };
+    state.bookings.unshift(booking);
+    saveState();
+    $("#confirmationRef").textContent = booking.id;
+    $("#confirmationDetails").textContent = booking.serviceName + " · " + vehicle + " · " + dateLabel(date) + " at " + slot + " · " + money(booking.price) + ". This sample entry is saved in this browser only.";
+    lastModalTrigger = document.activeElement;
+    setPublicSiteInert(true);
+    $("#bookingConfirmation").hidden = false;
+    form.reset();
+    $("#bookingService").value = "signature";
+    $("#vehicleType").value = "sedan";
+    $("#bookingDate").value = dateKey(new Date());
+    $("#selectedSlot").value = "09:30";
+    updateBookingForm();
+    requestAnimationFrame(function () {
+      const close = $("#bookingConfirmation").querySelector("[data-close-modal]");
+      if (close) close.focus({preventScroll:true});
+    });
+  }
+
+  function addMembership(event) {
+    event.preventDefault();
+    const form = $("#membershipForm");
+    if (!form.reportValidity()) return;
+    const name = $("#memberName").value.trim();
+    const phone = $("#memberPhone").value.trim();
+    const plan = $("#membershipPlan").value;
+    state.memberships.unshift({id:"MEM-" + String(Date.now()).slice(-6),name:name,phone:phone,plan:plan,joined:dateKey(new Date())});
+    saveState();
+    form.reset();
+    closeModalDialog($("#membershipModal"));
+    showToast(plan + " sample membership added to the demo workspace.");
+  }
+
+  document.addEventListener("keydown", function (event) {
+    const ops = $("#opsApp");
+    const membership = $("#membershipModal");
+    const confirmation = $("#bookingConfirmation");
+    const activeDialog = ops && !ops.hidden ? ops : confirmation && !confirmation.hidden ? confirmation : membership && !membership.hidden ? membership : null;
+    if (!activeDialog) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      if (activeDialog === ops) closeOps();
+      else closeModalDialog(activeDialog);
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusables = getDialogFocusables(activeDialog);
+    if (!focusables.length) {
+      event.preventDefault();
+      activeDialog.focus();
+      return;
+    }
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !activeDialog.contains(document.activeElement))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !activeDialog.contains(document.activeElement))) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+})();
 
   /* Pointer-reactive studio light and restrained 3D card tilt on fine pointers. */
   (function initHeroReaction() {

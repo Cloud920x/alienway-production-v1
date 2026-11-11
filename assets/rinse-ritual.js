@@ -488,13 +488,13 @@
     if (priceAction && currentRole === "owner") {
       const id = priceAction.dataset.serviceId;
       state.prices[id] = Math.max(50,getPrice(id) + Number(priceAction.dataset.priceAdjust));
-      saveState(); renderOpsPage(currentPage); showToast("Demo service price updated.");
+      saveState(); updateQuote(); renderOpsPage(currentPage); showToast("Demo service price updated.");
       return;
     }
     const resetButton = event.target.closest("[data-reset-demo]");
     if (resetButton && currentRole === "owner") {
       if (window.confirm("Reset all local Rinse / Ritual demo data to the original sample workspace?")) {
-        state = makeSeed(); saveState(); renderOpsPage("overview"); showToast("Demo workspace restored.");
+        state = makeSeed(); saveState(); updateQuote(); renderOpsPage("overview"); showToast("Demo workspace restored.");
       }
     }
   });

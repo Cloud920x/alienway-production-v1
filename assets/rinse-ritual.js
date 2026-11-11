@@ -118,6 +118,7 @@
   let bookingSearch = "";
   let bookingFilter = "all";
   let toastTimer = null;
+  let lastOverlayTrigger = null;
 
   const saveState = function () {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
@@ -246,6 +247,11 @@
     $("#confirmationRef").textContent = booking.id;
     $("#confirmationDetails").textContent = booking.serviceName + " · " + vehicle + " · " + dateLabel(date) + " at " + slot + " · " + money(booking.price) + ". This demo entry is saved in this browser only.";
     $("#bookingConfirmation").hidden = false;
+    window.requestAnimationFrame(function () {
+      const dialog = $("#bookingConfirmation .rr-modal-card");
+      if (dialog) dialog.focus();
+    });
+    lastOverlayTrigger = $("#bookingForm button[type='submit']");
     form.reset();
     $("#bookingService").value = "signature";
     $("#vehicleType").value = "sedan";
@@ -254,6 +260,8 @@
     updateBookingForm();
   }
   function openOps() {
+    const activeElement = document.activeElement;
+    lastOverlayTrigger = activeElement && activeElement.closest(".rr-modal") ? $(".rr-ops-launch") : activeElement;
     $("#membershipModal").hidden = true;
     $("#bookingConfirmation").hidden = true;
     $("#opsApp").hidden = false;
@@ -261,10 +269,15 @@
     $("#opsShell").hidden = true;
     document.body.classList.add("ops-open");
     window.scrollTo(0,0);
+    window.requestAnimationFrame(function () {
+      const firstRole = $("[data-enter-role]");
+      if (firstRole) firstRole.focus();
+    });
   }
   function closeOps() {
     $("#opsApp").hidden = true;
     document.body.classList.remove("ops-open");
+    if (lastOverlayTrigger && typeof lastOverlayTrigger.focus === "function") lastOverlayTrigger.focus();
   }
   function enterRole(role) {
     currentRole = role === "manager" ? "manager" : "owner";
@@ -346,7 +359,7 @@
       ];
       pulse = '<div class="rr-staff-row"><div><strong>Wash bays occupied</strong><small class="rr-table-secondary">Live floor activity</small></div><b>' + active.length + ' / 3</b></div><div class="rr-staff-row"><div><strong>Customers waiting</strong><small class="rr-table-secondary">Checked in, not yet assigned</small></div><b>' + waiting.length + '</b></div><div class="rr-staff-row"><div><strong>Vehicles ready</strong><small class="rr-table-secondary">Awaiting customer collection</small></div><b>' + ready.length + '</b></div><div class="rr-staff-row"><div><strong>Customer profiles</strong><small class="rr-table-secondary">For service and check-in support</small></div><b>' + customers.length + '</b></div>';
     }
-    return pageHeader("Good morning, team.","Here is the pulse of the studio today.") +
+    return pageHeader("Studio at a glance.","A live-style snapshot of today's bookings, wash-floor activity and team workload.") +
       '<div class="rr-ops-grid">' + kpis.map(function (k) { return '<div class="rr-kpi"><span>' + k[0] + '</span><strong>' + k[1] + '</strong><small>' + k[2] + '</small></div>'; }).join("") + '</div>' +
       '<div class="rr-ops-two-col"><section class="rr-ops-panel"><h3>Today&#39;s wash schedule</h3>' + bookingTable(rows) + '</section><section class="rr-ops-panel"><h3>Studio pulse</h3>' + pulse + '<button class="rr-btn rr-btn-dark rr-btn-small" style="margin-top:15px" data-ops-page="live">OPEN LIVE WASH BOARD ↗</button></section></div>';
   }
@@ -462,9 +475,16 @@
     showToast("Booking " + booking.id + " updated.");
   }
   function openMembership(plan) {
+    lastOverlayTrigger = document.activeElement;
     $("#membershipPlan").value = plan;
     $("#membershipIntro").textContent = "Preview a " + plan + " sign-up. No payment is taken and the sample member is stored only in this browser.";
     $("#membershipModal").hidden = false;
+    window.requestAnimationFrame(function () { $("#memberName").focus(); });
+  }
+  function closeModal(modal) {
+    if (!modal) return;
+    modal.hidden = true;
+    if (lastOverlayTrigger && typeof lastOverlayTrigger.focus === "function") lastOverlayTrigger.focus();
   }
   function addMembership(event) {
     event.preventDefault();
@@ -476,7 +496,7 @@
     state.memberships.unshift({id:"MEM-" + String(Date.now()).slice(-6),name:name,phone:phone,plan:plan,joined:dateKey(new Date())});
     saveState();
     form.reset();
-    $("#membershipModal").hidden = true;
+    closeModal($("#membershipModal"));
     showToast(plan + " sample membership added to the demo workspace.");
   }
 
@@ -502,9 +522,9 @@
     }
     const joinButton = event.target.closest("[data-join-membership]");
     if (joinButton) { openMembership(joinButton.dataset.joinMembership); return; }
-    const closeModal = event.target.closest("[data-close-modal]");
-    if (closeModal) { closeModal.closest(".rr-modal").hidden = true; return; }
-    if (event.target.classList.contains("rr-modal")) { event.target.hidden = true; return; }
+    const closeModalButton = event.target.closest("[data-close-modal]");
+    if (closeModalButton) { closeModal(closeModalButton.closest(".rr-modal")); return; }
+    if (event.target.classList.contains("rr-modal")) { closeModal(event.target); return; }
     const opsPageButton = event.target.closest("[data-ops-page]");
     if (opsPageButton) { renderOpsPage(opsPageButton.dataset.opsPage); return; }
     const bookingAction = event.target.closest("[data-booking-action]");
@@ -664,4 +684,43 @@
       card.style.setProperty("--rr-tilt-y", "0deg");
     });
   })();
+
+  /* Keyboard support for the demo overlays: Escape to close and keep Tab in the active dialog. */
+  document.addEventListener("keydown", function (event) {
+    const openModal = $(".rr-modal:not([hidden])");
+    const ops = $("#opsApp");
+    const opsOpen = ops && !ops.hidden;
+    if (event.key === "Escape") {
+      if (openModal) { closeModal(openModal); event.preventDefault(); return; }
+      if (opsOpen) { closeOps(); event.preventDefault(); return; }
+    }
+    if (event.key === "Escape" && !openModal && !opsOpen) {
+      const nav = $("#mainNav");
+      if (nav && nav.classList.contains("open")) {
+        nav.classList.remove("open");
+        $("#menuToggle").setAttribute("aria-expanded", "false");
+        $("#menuToggle").setAttribute("aria-label", "Open navigation");
+        $("#menuToggle").textContent = "☰";
+        $("#menuToggle").focus();
+        event.preventDefault();
+      }
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const scope = openModal ? $(".rr-modal-card", openModal) : (opsOpen ? ops : null);
+    if (!scope) return;
+    const focusable = $('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])', scope)
+      .filter(function (node) { return node.getClientRects().length > 0 && !node.closest("[hidden]"); });
+    if (!focusable.length) { event.preventDefault(); scope.focus(); return; }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (document.activeElement === scope) {
+      event.preventDefault();
+      (event.shiftKey ? last : first).focus();
+    } else if (event.shiftKey && (document.activeElement === first || !scope.contains(document.activeElement))) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !scope.contains(document.activeElement))) {
+      event.preventDefault(); first.focus();
+    }
+  });
 })();

@@ -172,7 +172,7 @@
       }).length;
       const now = new Date();
       const currentTime = String(now.getHours()).padStart(2,"0") + ":" + String(now.getMinutes()).padStart(2,"0");
-      const past = selectedDate === dateKey(now) && slot < currentTime;
+      const past = selectedDate === dateKey(now) && slot <= currentTime;
       const full = count >= 3 || past;
       if (!full && !firstAvailable) firstAvailable = slot;
       const button = document.createElement("button");
@@ -185,8 +185,11 @@
       button.title = full ? "This arrival slot is full" : (3-count) + " spaces available";
       grid.appendChild(button);
     });
+    const nowForCheck = new Date();
+    const currentTimeForCheck = String(nowForCheck.getHours()).padStart(2,"0") + ":" + String(nowForCheck.getMinutes()).padStart(2,"0");
     const stillAvailable = SLOTS.some(function (slot) {
-      return slot === chosen && state.bookings.filter(function (booking) {
+      const past = selectedDate === dateKey(nowForCheck) && slot <= currentTimeForCheck;
+      return slot === chosen && !past && state.bookings.filter(function (booking) {
         return booking.date === selectedDate && booking.time === slot && booking.status !== "cancelled";
       }).length < 3;
     });
@@ -215,6 +218,9 @@
     if (date < dateKey(new Date())) { showToast("Please choose today or a future date."); return; }
     const slot = $("#selectedSlot").value;
     if (!slot) { showToast("Please choose an available arrival time."); return; }
+    const now = new Date();
+    const currentTime = String(now.getHours()).padStart(2,"0") + ":" + String(now.getMinutes()).padStart(2,"0");
+    if (date === dateKey(now) && slot <= currentTime) { renderSlots(); showToast("That arrival time has already passed. Choose a later slot."); return; }
     const taken = state.bookings.filter(function (booking) {
       return booking.date === date && booking.time === slot && booking.status !== "cancelled";
     }).length;
@@ -311,18 +317,33 @@
     const completed = todays.filter(function (b) { return b.status === "completed"; });
     const revenue = completed.reduce(function (sum,b) { return sum + Number(b.price); },0);
     const active = state.bookings.filter(function (b) { return (b.status === "washing" || b.status === "ready") && b.date === today; });
+    const waiting = state.bookings.filter(function (b) { return b.date === today && b.status === "checked-in"; });
+    const ready = state.bookings.filter(function (b) { return b.date === today && b.status === "ready"; });
     const customers = getCustomers();
     const lowStock = state.inventory.filter(function (item) { return item.stock <= item.min; }).length;
     const rows = state.bookings.filter(function (b) { return b.date === today; }).slice().sort(function (a,b) { return a.time.localeCompare(b.time); }).slice(0,5);
-    const kpis = [
-      ["TODAY'S BOOKINGS",todays.length,"Scheduled arrivals"],
-      ["REVENUE COLLECTED",money(revenue),"Completed jobs only"],
-      ["ACTIVE WASHES",active.length,"On the wash floor"],
-      ["CUSTOMER PROFILES",customers.length,"Across demo bookings"]
-    ];
+    let kpis;
+    let pulse;
+    if (currentRole === "owner") {
+      kpis = [
+        ["BOOKINGS TODAY",todays.length,"Scheduled arrivals"],
+        ["REVENUE COLLECTED",money(revenue),"Completed jobs only"],
+        ["ACTIVE WASHES",active.length,"On the wash floor"],
+        ["CUSTOMER PROFILES",customers.length,"Across demo bookings"]
+      ];
+      pulse = '<div class="rr-staff-row"><div><strong>Wash bays occupied</strong><small class="rr-table-secondary">Live floor activity</small></div><b>' + active.length + ' / 3</b></div><div class="rr-staff-row"><div><strong>Memberships active</strong><small class="rr-table-secondary">Sample member accounts</small></div><b>' + state.memberships.length + '</b></div><div class="rr-staff-row"><div><strong>Stock items to watch</strong><small class="rr-table-secondary">At or below minimum level</small></div><b>' + lowStock + '</b></div><div class="rr-staff-row"><div><strong>Staff on shift</strong><small class="rr-table-secondary">Team availability</small></div><b>' + state.staff.filter(function (s) { return s.active; }).length + ' / ' + state.staff.length + '</b></div>';
+    } else {
+      kpis = [
+        ["BOOKINGS TODAY",todays.length,"Scheduled arrivals"],
+        ["VEHICLES IN WASH",active.length,"Currently on the wash floor"],
+        ["WAITING FOR A BAY",waiting.length,"Checked in and queued"],
+        ["READY TO COLLECT",ready.length,"Completed wash, awaiting pickup"]
+      ];
+      pulse = '<div class="rr-staff-row"><div><strong>Wash bays occupied</strong><small class="rr-table-secondary">Live floor activity</small></div><b>' + active.length + ' / 3</b></div><div class="rr-staff-row"><div><strong>Customers waiting</strong><small class="rr-table-secondary">Checked in, not yet assigned</small></div><b>' + waiting.length + '</b></div><div class="rr-staff-row"><div><strong>Vehicles ready</strong><small class="rr-table-secondary">Awaiting customer collection</small></div><b>' + ready.length + '</b></div><div class="rr-staff-row"><div><strong>Customer profiles</strong><small class="rr-table-secondary">For service and check-in support</small></div><b>' + customers.length + '</b></div>';
+    }
     return pageHeader("Good morning, team.","Here is the pulse of the studio today.") +
       '<div class="rr-ops-grid">' + kpis.map(function (k) { return '<div class="rr-kpi"><span>' + k[0] + '</span><strong>' + k[1] + '</strong><small>' + k[2] + '</small></div>'; }).join("") + '</div>' +
-      '<div class="rr-ops-two-col"><section class="rr-ops-panel"><h3>Today&#39;s wash schedule</h3>' + bookingTable(rows) + '</section><section class="rr-ops-panel"><h3>Studio pulse</h3><div class="rr-staff-row"><div><strong>Wash bays occupied</strong><small class="rr-table-secondary">Live floor activity</small></div><b>' + active.length + ' / 3</b></div><div class="rr-staff-row"><div><strong>Memberships active</strong><small class="rr-table-secondary">Sample member accounts</small></div><b>' + state.memberships.length + '</b></div><div class="rr-staff-row"><div><strong>Stock items to watch</strong><small class="rr-table-secondary">At or below minimum level</small></div><b>' + lowStock + '</b></div><div class="rr-staff-row"><div><strong>Staff on shift</strong><small class="rr-table-secondary">Team availability</small></div><b>' + state.staff.filter(function (s) { return s.active; }).length + ' / ' + state.staff.length + '</b></div><button class="rr-btn rr-btn-dark rr-btn-small" style="margin-top:15px" data-ops-page="live">OPEN LIVE WASH BOARD ↗</button></section></div>';
+      '<div class="rr-ops-two-col"><section class="rr-ops-panel"><h3>Today&#39;s wash schedule</h3>' + bookingTable(rows) + '</section><section class="rr-ops-panel"><h3>Studio pulse</h3>' + pulse + '<button class="rr-btn rr-btn-dark rr-btn-small" style="margin-top:15px" data-ops-page="live">OPEN LIVE WASH BOARD ↗</button></section></div>';
   }
   function renderLive() {
     const active = state.bookings.filter(function (b) { return b.date === dateKey(new Date()) && (b.status === "washing" || b.status === "ready"); });

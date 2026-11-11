@@ -440,9 +440,10 @@
   function updateBookingStatus(id, action) {
     const booking = state.bookings.find(function (b) { return b.id === id; });
     if (!booking) return;
+    if ((action === "checkin" || action === "start") && booking.date !== dateKey(new Date())) { showToast(booking.date > dateKey(new Date()) ? "This booking is scheduled for a future date." : "This booking date has passed. Review it before checking in."); return; }
     if (action === "checkin" && booking.status === "booked") booking.status = "checked-in";
     if (action === "start" && booking.status === "checked-in") {
-      const occupied = state.bookings.filter(function (b) { return b.status === "washing" || b.status === "ready"; }).map(function (b) { return b.bay; });
+      const occupied = state.bookings.filter(function (b) { return (b.status === "washing" || b.status === "ready") && b.date === dateKey(new Date()); }).map(function (b) { return b.bay; });
       const free = BAYS.find(function (bay) { return occupied.indexOf(bay) === -1; });
       if (!free) { showToast("All wash bays are occupied. Finish a job before assigning another vehicle."); return; }
       booking.status = "washing";

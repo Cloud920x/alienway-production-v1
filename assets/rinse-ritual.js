@@ -156,6 +156,11 @@
     $("#quoteAddons").textContent = money(quote.extras);
     $("#quoteTotal").textContent = money(quote.total);
     $("[data-service-price]").forEach(function (node) { node.innerHTML = money(getPrice(node.dataset.servicePrice)) + "<small>FROM · " + getService(node.dataset.servicePrice).duration + " MIN</small>"; });
+    $("[data-select-service]").forEach(function (card) {
+      const selected = card.dataset.selectService === quote.service.id;
+      card.setAttribute("aria-pressed", String(selected));
+      card.classList.toggle("selected", selected);
+    });
   }
   function renderSlots() {
     const dateInput = $("#bookingDate");
@@ -554,4 +559,109 @@
   $("#bookingDate").value = dateKey(new Date());
   $("#selectedSlot").value = "09:30";
   updateBookingForm();
+
+  /* Native-scroll story progress: no scroll-jacking or extra library required. */
+  (function initRitualScrollStory() {
+    const panels = Array.from(document.querySelectorAll("[data-ritual-step]"));
+    const progress = document.getElementById("ritualProgress");
+    const progressFill = document.getElementById("ritualProgressFill");
+    const stepCount = document.getElementById("ritualStepCount");
+    const currentLabel = document.getElementById("ritualCurrentLabel");
+    if (!panels.length) return;
+
+    const setActive = function (panel) {
+      const step = Number(panel.dataset.ritualStep) || 1;
+      const title = panel.dataset.ritualTitle || "Your ritual";
+      panels.forEach(function (item) {
+        const active = item === panel;
+        item.classList.toggle("is-active", active);
+        if (active) item.setAttribute("aria-current", "step");
+        else item.removeAttribute("aria-current");
+      });
+      if (stepCount) stepCount.textContent = String(step).padStart(2, "0");
+      if (progressFill) progressFill.style.width = ((step / panels.length) * 100) + "%";
+      if (progress) {
+        progress.setAttribute("aria-valuenow", String(step));
+        progress.setAttribute("aria-valuetext", "Step " + step + " of " + panels.length + ": " + title);
+      }
+      if (currentLabel) currentLabel.textContent = String(step).padStart(2, "0") + " · " + title.toUpperCase();
+    };
+
+    setActive(panels[0]);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reducedMotion && "IntersectionObserver" in window) {
+      document.documentElement.classList.add("rr-motion-ready");
+    }
+    if ("IntersectionObserver" in window) {
+      const visibleRatios = new Map();
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            visibleRatios.set(entry.target, entry.intersectionRatio);
+            entry.target.classList.add("is-visible");
+          } else {
+            visibleRatios.delete(entry.target);
+          }
+        });
+        const mostVisible = Array.from(visibleRatios.entries()).sort(function (a, b) {
+          return b[1] - a[1];
+        })[0];
+        if (mostVisible) setActive(mostVisible[0]);
+      }, {
+        root: null,
+        rootMargin: "-16% 0px -16% 0px",
+        threshold: [0.05, 0.2, 0.4, 0.6, 0.8]
+      });
+      panels.forEach(function (panel) { observer.observe(panel); });
+    } else {
+      panels.forEach(function (panel) { panel.classList.add("is-visible"); });
+    }
+  })();
+
+  /* Pointer-reactive studio light and restrained 3D card tilt on fine pointers. */
+  (function initHeroReaction() {
+    const hero = document.querySelector(".rr-hero");
+    const card = hero && hero.querySelector(".rr-hero-glass");
+    if (!hero || !card) return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (reducedMotion || !finePointer) return;
+
+    let frame = 0;
+    hero.addEventListener("pointermove", function (event) {
+      if (event.pointerType === "touch") return;
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(function () {
+        const rect = hero.getBoundingClientRect();
+        const x = Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100));
+        const y = Math.max(0, Math.min(100, ((event.clientY - rect.top) / rect.height) * 100));
+        hero.style.setProperty("--rr-pointer-x", x.toFixed(1) + "%");
+        hero.style.setProperty("--rr-pointer-y", y.toFixed(1) + "%");
+        frame = 0;
+      });
+    }, { passive: true });
+
+    hero.addEventListener("pointerleave", function () {
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      hero.style.setProperty("--rr-pointer-x", "76%");
+      hero.style.setProperty("--rr-pointer-y", "42%");
+      card.style.setProperty("--rr-tilt-x", "0deg");
+      card.style.setProperty("--rr-tilt-y", "0deg");
+    });
+
+    card.addEventListener("pointermove", function (event) {
+      if (event.pointerType === "touch") return;
+      const rect = card.getBoundingClientRect();
+      const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+      const y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+      card.style.setProperty("--rr-tilt-x", ((0.5 - y) * 4).toFixed(2) + "deg");
+      card.style.setProperty("--rr-tilt-y", ((x - 0.5) * 5).toFixed(2) + "deg");
+    }, { passive: true });
+
+    card.addEventListener("pointerleave", function () {
+      card.style.setProperty("--rr-tilt-x", "0deg");
+      card.style.setProperty("--rr-tilt-y", "0deg");
+    });
+  })();
 })();

@@ -683,6 +683,34 @@
     }
   })();
 
+  /* Match the wash menu and membership cards to the scroll-led journey. */
+  (function initCardReactions() {
+    const cards = $$(".rr-service-card, .rr-member-card");
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!("IntersectionObserver" in window)) return;
+    let observer;
+    function configure() {
+      if (observer) observer.disconnect();
+      cards.forEach(function (card) {
+        card.classList.remove("rr-card-reactive", "rr-card-in-view");
+      });
+      if (motionPreference.matches) return;
+      observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          entry.target.classList.toggle("rr-card-in-view", entry.isIntersecting);
+          if (entry.isIntersecting) entry.target.classList.add("rr-card-revealed");
+        });
+      }, {rootMargin:"0px 0px -8% 0px", threshold:.22});
+      cards.forEach(function (card, index) {
+        card.classList.add("rr-card-reactive");
+        card.style.setProperty("--rr-reveal-delay", ((index % 3) * 65) + "ms");
+        observer.observe(card);
+      });
+    }
+    configure();
+    motionPreference.addEventListener("change", configure);
+  })();
+
   /* Pointer-reactive studio light and restrained 3D card tilt on fine pointers. */
   (function initHeroReaction() {
     const hero = document.querySelector(".rr-hero");

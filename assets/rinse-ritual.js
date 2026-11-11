@@ -32,14 +32,14 @@
   const SLOTS = ["07:30","08:30","09:30","10:30","11:30","12:30","13:30","14:30","15:30","16:30"];
   const BAYS = ["Bay 01","Bay 02","Bay 03"];
   const OWNER_NAV = [
-    {id:"overview",icon:"◫",label:"Overview"},
-    {id:"live",icon:"◉",label:"Live wash board"},
-    {id:"bookings",icon:"▤",label:"Bookings"},
-    {id:"customers",icon:"♙",label:"Customers & members"},
-    {id:"inventory",icon:"▦",label:"Stock & chemicals"},
-    {id:"team",icon:"♧",label:"Team & wash bays"},
-    {id:"reports",icon:"▥",label:"Revenue & reports"},
-    {id:"settings",icon:"⚙",label:"Services & settings"}
+    {id:"overview",icon:'<svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>',label:"Overview"},
+    {id:"live",icon:'<svg viewBox="0 0 24 24"><path d="M4 19V9m5 10V5m5 14v-7m5 7V3"/><path d="M2.5 21h19"/></svg>',label:"Wash floor"},
+    {id:"bookings",icon:'<svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M7.5 3v4m9-4v4M3.5 9.5h17M7.5 13h3m-3 3h6"/></svg>',label:"Bookings"},
+    {id:"customers",icon:'<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.8 20a6.2 6.2 0 0 1 12.4 0M16 5.5a3.3 3.3 0 0 1 0 6.5m2 2a5 5 0 0 1 3.2 4.7"/></svg>',label:"Customers & members"},
+    {id:"inventory",icon:'<svg viewBox="0 0 24 24"><path d="m12 3 8.5 4.5v9L12 21l-8.5-4.5v-9L12 3Z"/><path d="m3.8 7.7 8.2 4.5 8.2-4.5M12 12.2V21"/></svg>',label:"Stock & supplies"},
+    {id:"team",icon:'<svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M2.5 20a5.5 5.5 0 0 1 11 0m1.5-4a4.5 4.5 0 0 1 6.5 4"/></svg>',label:"Team & wash bays"},
+    {id:"reports",icon:'<svg viewBox="0 0 24 24"><path d="M4 20V11m5 9V5m5 15v-7m5 7V3"/><path d="M2 20.5h20"/></svg>',label:"Revenue & reports"},
+    {id:"settings",icon:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1a1.8 1.8 0 1 1-2.5 2.5l-.1-.1a1.8 1.8 0 0 0-3 .9v.2a1.8 1.8 0 1 1-3.6 0v-.2a1.8 1.8 0 0 0-3-.9l-.1.1a1.8 1.8 0 1 1-2.5-2.5l.1-.1a1.8 1.8 0 0 0-.9-3h-.2a1.8 1.8 0 1 1 0-3.6h.2a1.8 1.8 0 0 0 .9-3l-.1-.1a1.8 1.8 0 1 1 2.5-2.5l.1.1a1.8 1.8 0 0 0 3-.9v-.2a1.8 1.8 0 1 1 3.6 0v.2a1.8 1.8 0 0 0 3 .9l.1-.1a1.8 1.8 0 1 1 2.5 2.5l-.1.1a1.8 1.8 0 0 0 .9 3h.2a1.8 1.8 0 1 1 0 3.6h-.2a1.8 1.8 0 0 0-.9 3Z"/></svg>',label:"Services & settings"}
   ];
   const MANAGER_NAV = OWNER_NAV.slice(0,4);
   const $ = function (selector, root) { return (root || document).querySelector(selector); };
@@ -1022,4 +1022,25 @@
       card.style.setProperty("--rr-tilt-y", "0deg");
     });
   })();
+  function renderOpsPage(page) {
+    currentPage = page || "overview";
+    renderNav();
+    const pages = {
+      overview:renderOverview,
+      live:renderLive,
+      bookings:renderBookings,
+      customers:renderCustomers,
+      inventory:renderInventory,
+      team:renderTeam,
+      reports:renderReports,
+      settings:renderSettings
+    };
+    $("#opsContent").innerHTML = (pages[currentPage] || renderOverview)();
+    if (currentPage === "bookings") renderBookingTableArea();
+    requestAnimationFrame(function () {
+      const heading = $("#opsPageTitle");
+      if (heading) heading.focus({preventScroll:true});
+    });
+  }
+
 })();

@@ -251,9 +251,9 @@
 <div class="rr-toast" id="toast" role="status" aria-live="polite"></div>
 
 <div class="rr-modal" id="membershipModal" hidden>
-  <form class="rr-modal-card" id="membershipForm">
+  <form class="rr-modal-card" id="membershipForm" role="dialog" aria-modal="true" aria-labelledby="membershipTitle" tabindex="-1">
     <button class="rr-modal-close" type="button" data-close-modal aria-label="Close">×</button>
-    <div class="rr-eyebrow">THE REGULARS CLUB</div><h3>Make clean a habit.</h3><p id="membershipIntro">Register a sample membership to preview the customer journey. This stays in the current browser only.</p>
+    <div class="rr-eyebrow">THE REGULARS CLUB</div><h3 id="membershipTitle">Make clean a habit.</h3><p id="membershipIntro">Register a sample membership to preview the customer journey. This stays in the current browser only.</p>
     <input type="hidden" id="membershipPlan">
     <div class="rr-field"><label for="memberName">Name</label><input id="memberName" type="text" maxlength="70" required></div>
     <div class="rr-field"><label for="memberPhone">Mobile number</label><input id="memberPhone" type="tel" maxlength="24" required></div>
@@ -262,13 +262,13 @@
   </form>
 </div>
 <div class="rr-modal" id="bookingConfirmation" hidden>
-  <div class="rr-modal-card">
+  <div class="rr-modal-card" role="dialog" aria-modal="true" aria-labelledby="bookingConfirmationTitle" tabindex="-1">
     <button class="rr-modal-close" type="button" data-close-modal aria-label="Close">×</button>
-    <div class="rr-eyebrow">BOOKING PREVIEW CREATED</div><h3>You're on the board.</h3><p>Your sample booking has been added to the Studio Ops workspace in this browser.</p><div class="rr-confirm-ref" id="confirmationRef">RR-000000</div><p id="confirmationDetails"></p><button class="rr-btn rr-btn-dark" type="button" data-open-ops>VIEW IN STUDIO OPS ↗</button>
+    <div class="rr-eyebrow">BOOKING PREVIEW CREATED</div><h3 id="bookingConfirmationTitle">You're on the board.</h3><p>Your sample booking has been added to the Studio Ops workspace in this browser.</p><div class="rr-confirm-ref" id="confirmationRef">RR-000000</div><p id="confirmationDetails"></p><button class="rr-btn rr-btn-dark" type="button" data-open-ops>VIEW IN STUDIO OPS ↗</button>
   </div>
 </div>
 
-<section class="rr-ops-app" id="opsApp" hidden aria-label="Rinse Ritual operations workspace">
+<section class="rr-ops-app" id="opsApp" hidden role="dialog" aria-modal="true" aria-label="Rinse Ritual operations workspace">
   <div class="rr-ops-login" id="opsLogin">
     <div class="rr-login-card">
       <div class="rr-login-head"><a class="rr-brand" href="#"><span class="rr-brand-mark">R/R</span><span class="rr-brand-name">RINSE <em>/</em> RITUAL<small>STUDIO OPERATIONS</small></span></a><span class="rr-chip">DEMO WORKSPACE</span></div>

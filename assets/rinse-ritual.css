@@ -1054,3 +1054,63 @@ body{
   .rr-process-panel-visual{height:clamp(190px,55vw,245px);min-height:0}
   .rr-process-panel-copy{padding:20px 19px 18px}
 }
+
+
+/* Accessibility finish pass — stronger small-text contrast across the light palette. */
+:root{
+  --rr-muted:#536b82;
+  --rr-accent:#2d6b9d;
+  --rr-accent-dark:#245f91;
+  --rr-lime:#dcecf9;
+}
+.rr-kicker,.rr-eyebrow,.rr-card-index,.rr-member-label,
+.rr-process-intro .rr-eyebrow,.rr-process-progress-card>p,
+.rr-process-panel-kicker,.rr-role-card span,.rr-kpi small,
+.rr-ops-nav button span,.rr-bay-top span,.rr-bar-col small,
+.rr-ops-sidebar-note strong{
+  color:#2d6b9d;
+}
+.rr-hero-note,.rr-hero-glass-top,.rr-hero-glass>p,.rr-hero-metric span,
+.rr-hero-glass-foot,.rr-section-head>p,.rr-service-body p,.rr-price-note,
+.rr-step p,.rr-member-card p,.rr-story-copy>p,.rr-benefit span,
+.rr-faq details p,.rr-process-intro>p,.rr-process-progress-meta,
+.rr-scroll-cue,.rr-process-panel-copy p,.rr-process-panel-foot,
+.rr-ops-sidebar-note,.rr-sidebar-label,.rr-ops-table th,.rr-kpi span{
+  color:#536b82;
+}
+.rr-hero-metric strong{color:#2d6b9d}
+.rr-btn-lime{
+  background:linear-gradient(135deg,#2f6fa5,#245f91);
+  color:#fff;
+  box-shadow:0 10px 24px rgba(36,95,145,.2);
+}
+.rr-btn-lime:hover{background:linear-gradient(135deg,#285f91,#1f4f78)}
+.rr-float-tag,.rr-story-badge,.rr-ops-launch{
+  background:linear-gradient(135deg,#2f6fa5,#245f91);
+  color:#fff;
+}
+.rr-member-card.featured{
+  background:linear-gradient(145deg,#2f6fa5,#214f78);
+}
+.rr-service-arrow{
+  background:linear-gradient(145deg,#2f6fa5,#245f91);
+  color:#fff;
+}
+.rr-process-panel-index,.rr-process-panel-chip{
+  background:rgba(20,51,80,.82);
+}
+.rr-process-progress-meta strong,.rr-process-panel-foot b{color:#2d6b9d}
+.rr-process-panel.is-active .rr-process-panel-foot b{
+  background:linear-gradient(145deg,#2f6fa5,#245f91);
+  color:#fff;
+}
+.rr-ops-launch{box-shadow:0 14px 32px rgba(36,81,125,.22)}
+.rr-ops-launch b{color:#dcecf9}
+.rr-member-card.featured .rr-btn-lime{
+  background:#e1effb;
+  color:#214565;
+}
+.rr-fleet .rr-btn-lime{
+  background:#e5f1fb;
+  color:#214767;
+}

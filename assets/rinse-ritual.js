@@ -105,7 +105,11 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && Array.isArray(parsed.bookings) && Array.isArray(parsed.inventory)) return parsed;
+        if (parsed && Array.isArray(parsed.bookings) && Array.isArray(parsed.inventory) &&
+            Array.isArray(parsed.staff) && Array.isArray(parsed.memberships)) {
+          parsed.prices = parsed.prices && typeof parsed.prices === "object" ? parsed.prices : {};
+          return parsed;
+        }
       }
     } catch (error) {}
     const initial = makeSeed();
@@ -126,7 +130,8 @@
   const getService = function (id) { return SERVICES.find(function (service) { return service.id === id; }) || SERVICES[0]; };
   const getPrice = function (id) {
     const service = getService(id);
-    return state.prices && state.prices[id] != null ? Number(state.prices[id]) : service.price;
+    const price = Number(state.prices[id]);
+    return Number.isFinite(price) && price >= 50 ? price : service.price;
   };
   const getSelectedAddons = function () {
     return $$(".rr-addon input:checked").map(function (input) { return ADDONS.find(function (addon) { return addon.id === input.value; }); }).filter(Boolean);
@@ -136,7 +141,7 @@
     const vehicleId = $("#vehicleType") ? $("#vehicleType").value : "sedan";
     const service = getService(serviceId);
     const vehicle = VEHICLES[vehicleId] || VEHICLES.sedan;
-    const base = Math.round((getPrice(serviceId) * vehicle.multiplier) / 5) * 5;
+    const base = Math.round(getPrice(serviceId) * vehicle.multiplier);
     const extras = getSelectedAddons().reduce(function (total, addon) { return total + addon.price; }, 0);
     return {service:service,vehicle:vehicle,base:base,extras:extras,total:base+extras};
   };
@@ -155,8 +160,9 @@
     $("#quoteDuration").textContent = quote.service.duration + " min";
     $("#quoteAddons").textContent = money(quote.extras);
     $("#quoteTotal").textContent = money(quote.total);
-    $("[data-service-price]").forEach(function (node) { node.innerHTML = money(getPrice(node.dataset.servicePrice)) + "<small>FROM · " + getService(node.dataset.servicePrice).duration + " MIN</small>"; });
-    $("[data-select-service]").forEach(function (card) {
+    $(".rr-float-tag strong").textContent = "FROM " + money(getPrice("quick"));
+    $$("[data-service-price]").forEach(function (node) { node.innerHTML = money(getPrice(node.dataset.servicePrice)) + "<small>FROM · " + getService(node.dataset.servicePrice).duration + " MIN</small>"; });
+    $$("[data-select-service]").forEach(function (card) {
       const selected = card.dataset.selectService === quote.service.id;
       card.setAttribute("aria-pressed", String(selected));
       card.classList.toggle("selected", selected);
@@ -169,44 +175,38 @@
     const selectedDate = dateInput.value || dateKey(new Date());
     const selectedInput = $("#selectedSlot");
     const chosen = selectedInput.value;
-    grid.innerHTML = "";
+    const now = new Date();
+    const currentTime = now.getHours() * 60 + now.getMinutes();
+    const duration = getService($("#bookingService").value).duration;
     let firstAvailable = "";
+    grid.replaceChildren();
     SLOTS.forEach(function (slot) {
+      const minutes = Number(slot.slice(0,2)) * 60 + Number(slot.slice(3));
       const count = state.bookings.filter(function (booking) {
         return booking.date === selectedDate && booking.time === slot && booking.status !== "cancelled";
       }).length;
-      const now = new Date();
-      const currentTime = String(now.getHours()).padStart(2,"0") + ":" + String(now.getMinutes()).padStart(2,"0");
-      const past = selectedDate === dateKey(now) && slot <= currentTime;
-      const full = count >= 3 || past;
-      if (!full && !firstAvailable) firstAvailable = slot;
+      const past = selectedDate < dateKey(now) || (selectedDate === dateKey(now) && minutes <= currentTime);
+      const tooLate = minutes + duration > 18 * 60;
+      const unavailable = past || tooLate || count >= 3;
+      if (!unavailable && !firstAvailable) firstAvailable = slot;
       const button = document.createElement("button");
       button.type = "button";
       button.className = "rr-slot";
       button.textContent = slot;
-      button.disabled = full;
-      button.setAttribute("aria-pressed", String(!full && slot === chosen));
-      button.setAttribute("data-slot", slot);
-      button.title = full ? "This arrival slot is full" : (3-count) + " spaces available";
+      button.disabled = unavailable;
+      button.dataset.slot = slot;
+      button.title = past ? "This time has passed" : tooLate ? "This wash would finish after closing" : count >= 3 ? "This arrival slot is full" : (3-count) + " arrival spaces available";
+      button.setAttribute("aria-label", slot + ". " + button.title);
       grid.appendChild(button);
     });
-    const nowForCheck = new Date();
-    const currentTimeForCheck = String(nowForCheck.getHours()).padStart(2,"0") + ":" + String(nowForCheck.getMinutes()).padStart(2,"0");
-    const stillAvailable = SLOTS.some(function (slot) {
-      const past = selectedDate === dateKey(nowForCheck) && slot <= currentTimeForCheck;
-      return slot === chosen && !past && state.bookings.filter(function (booking) {
-        return booking.date === selectedDate && booking.time === slot && booking.status !== "cancelled";
-      }).length < 3;
-    });
-    if (!stillAvailable) selectedInput.value = firstAvailable;
-    if (!selectedInput.value) {
-      selectedInput.value = "";
-      grid.insertAdjacentHTML("beforeend", '<span class="rr-demo-note">No arrival slots are available on this date. Please choose another day.</span>');
-    }
+    const available = $$("[data-slot]:not(:disabled)", grid);
+    selectedInput.value = available.some(function (button) { return button.dataset.slot === chosen; }) ? chosen : firstAvailable;
     $$("[data-slot]", grid).forEach(function (button) {
-      button.setAttribute("aria-pressed", String(button.dataset.slot === selectedInput.value));
+      button.setAttribute("aria-pressed", String(!button.disabled && button.dataset.slot === selectedInput.value));
     });
+    $("#slotStatus").textContent = selectedInput.value ? "Arrival selected: " + selectedInput.value + ". Wash time: approximately " + duration + " minutes." : "No suitable arrival times. Please choose another date.";
   }
+
   function updateBookingForm() {
     updateQuote();
     renderSlots();
@@ -221,7 +221,10 @@
     if (!form.reportValidity()) return;
     const date = $("#bookingDate").value;
     if (date < dateKey(new Date())) { showToast("Please choose today or a future date."); return; }
+    const requestedSlot = $("#selectedSlot").value;
+    renderSlots();
     const slot = $("#selectedSlot").value;
+    if (requestedSlot !== slot) { showToast("Availability changed. Please review the selected time and submit again."); return; }
     if (!slot) { showToast("Please choose an available arrival time."); return; }
     const now = new Date();
     const currentTime = String(now.getHours()).padStart(2,"0") + ":" + String(now.getMinutes()).padStart(2,"0");
@@ -233,6 +236,7 @@
     const quote = calculateQuote();
     const name = $("#customerName").value.trim();
     const phone = $("#customerPhone").value.trim();
+    if (!validContact(name, phone)) return;
     const email = $("#customerEmail").value.trim();
     const vehicle = VEHICLES[$("#vehicleType").value].label;
     const booking = {
@@ -245,7 +249,7 @@
     saveState();
     $("#confirmationRef").textContent = booking.id;
     $("#confirmationDetails").textContent = booking.serviceName + " · " + vehicle + " · " + dateLabel(date) + " at " + slot + " · " + money(booking.price) + ". This demo entry is saved in this browser only.";
-    $("#bookingConfirmation").hidden = false;
+    openModal($("#bookingConfirmation"));
     form.reset();
     $("#bookingService").value = "signature";
     $("#vehicleType").value = "sedan";
@@ -254,17 +258,24 @@
     updateBookingForm();
   }
   function openOps() {
-    $("#membershipModal").hidden = true;
-    $("#bookingConfirmation").hidden = true;
+    closeModal();
+    opsTrigger = document.activeElement;
+    closeMenu();
+    setBackgroundInert(true);
     $("#opsApp").hidden = false;
     $("#opsLogin").hidden = false;
     $("#opsShell").hidden = true;
     document.body.classList.add("ops-open");
-    window.scrollTo(0,0);
+    $("#opsApp").scrollTop = 0;
+    $("[data-enter-role]").focus();
   }
   function closeOps() {
     $("#opsApp").hidden = true;
     document.body.classList.remove("ops-open");
+    currentRole = "";
+    setBackgroundInert(false);
+    if (opsTrigger) opsTrigger.focus({preventScroll:true});
+    renderSlots();
   }
   function enterRole(role) {
     currentRole = role === "manager" ? "manager" : "owner";
@@ -276,6 +287,7 @@
     $("#rolePill").textContent = currentRole === "owner" ? "OWNER · FULL ACCESS" : "MANAGER · DAILY OPS";
     renderNav();
     renderOpsPage("overview");
+    $("#opsNav button").focus();
   }
   function renderNav() {
     const nav = $("#opsNav");
@@ -346,7 +358,7 @@
       ];
       pulse = '<div class="rr-staff-row"><div><strong>Wash bays occupied</strong><small class="rr-table-secondary">Live floor activity</small></div><b>' + active.length + ' / 3</b></div><div class="rr-staff-row"><div><strong>Customers waiting</strong><small class="rr-table-secondary">Checked in, not yet assigned</small></div><b>' + waiting.length + '</b></div><div class="rr-staff-row"><div><strong>Vehicles ready</strong><small class="rr-table-secondary">Awaiting customer collection</small></div><b>' + ready.length + '</b></div><div class="rr-staff-row"><div><strong>Customer profiles</strong><small class="rr-table-secondary">For service and check-in support</small></div><b>' + customers.length + '</b></div>';
     }
-    return pageHeader("Good morning, team.","Here is the pulse of the studio today.") +
+    return pageHeader("Your studio, at a glance.","Here is the pulse of the studio today.") +
       '<div class="rr-ops-grid">' + kpis.map(function (k) { return '<div class="rr-kpi"><span>' + k[0] + '</span><strong>' + k[1] + '</strong><small>' + k[2] + '</small></div>'; }).join("") + '</div>' +
       '<div class="rr-ops-two-col"><section class="rr-ops-panel"><h3>Today&#39;s wash schedule</h3>' + bookingTable(rows) + '</section><section class="rr-ops-panel"><h3>Studio pulse</h3>' + pulse + '<button class="rr-btn rr-btn-dark rr-btn-small" style="margin-top:15px" data-ops-page="live">OPEN LIVE WASH BOARD ↗</button></section></div>';
   }
@@ -364,10 +376,10 @@
   function renderBookings() {
     const statuses = ["all","booked","checked-in","washing","ready","completed","cancelled"];
     return pageHeader("Bookings & arrivals","Search, check in customers and move every wash through the workflow.") +
-      '<section class="rr-ops-panel"><div class="rr-ops-controls" style="margin-bottom:17px"><input id="bookingSearch" type="search" placeholder="Search customer, service or reference…" value="' + escapeHTML(bookingSearch) + '"><select id="bookingFilter">' + statuses.map(function (s) { return '<option value="' + s + '"' + (bookingFilter === s ? " selected" : "") + '>' + (s === "all" ? "All statuses" : s.replace("-"," ")) + '</option>'; }).join("") + '</select><span class="rr-table-secondary">Actions update the live wash board.</span></div><div id="bookingTableArea"></div></section>';
+      '<section class="rr-ops-panel"><div class="rr-ops-controls" style="margin-bottom:17px"><input aria-label="Search bookings" id="bookingSearch" type="search" placeholder="Search customer, service or reference…" value="' + escapeHTML(bookingSearch) + '"><select aria-label="Filter booking status" id="bookingFilter">' + statuses.map(function (s) { return '<option value="' + s + '"' + (bookingFilter === s ? " selected" : "") + '>' + (s === "all" ? "All statuses" : s.replace("-"," ")) + '</option>'; }).join("") + '</select><span class="rr-table-secondary">Actions update the live wash board.</span></div><div id="bookingTableArea"></div></section>';
   }
   function getCustomers() {
-    const map = {};
+    const map = Object.create(null);
     state.bookings.forEach(function (booking) {
       const key = booking.phone || booking.name;
       if (!map[key]) map[key] = {name:booking.name,phone:booking.phone,visits:0,spend:0,last:booking.date};
@@ -464,7 +476,7 @@
   function openMembership(plan) {
     $("#membershipPlan").value = plan;
     $("#membershipIntro").textContent = "Preview a " + plan + " sign-up. No payment is taken and the sample member is stored only in this browser.";
-    $("#membershipModal").hidden = false;
+    openModal($("#membershipModal"));
   }
   function addMembership(event) {
     event.preventDefault();
@@ -472,13 +484,66 @@
     if (!form.reportValidity()) return;
     const name = $("#memberName").value.trim();
     const phone = $("#memberPhone").value.trim();
+    if (!validContact(name, phone)) return;
     const plan = $("#membershipPlan").value;
     state.memberships.unshift({id:"MEM-" + String(Date.now()).slice(-6),name:name,phone:phone,plan:plan,joined:dateKey(new Date())});
     saveState();
     form.reset();
-    $("#membershipModal").hidden = true;
+    closeModal();
     showToast(plan + " sample membership added to the demo workspace.");
   }
+
+  let modalTrigger = null;
+  let opsTrigger = null;
+  function validContact(name, phone) {
+    if (name.length < 2) { showToast("Please enter a sample name with at least two characters."); return false; }
+    if (!/^[+\d\s().-]+$/.test(phone) || phone.replace(/\D/g, "").length < 9) {
+      showToast("Please enter a sample mobile number with at least nine digits."); return false;
+    }
+    return true;
+  }
+  function setBackgroundInert(value) {
+    $$("#publicSite, .rr-header, .rr-topline, .rr-ops-launch, .rr-skip").forEach(function (node) { node.inert = value; });
+  }
+  function openModal(modal) {
+    modalTrigger = document.activeElement;
+    modal.hidden = false;
+    document.body.classList.add("modal-open");
+    setBackgroundInert(true);
+    const exit = $(".awp-exit-button");
+    if (exit) exit.inert = true;
+    $("input:not([type=hidden]), button", modal).focus();
+  }
+  function closeModal() {
+    const modal = $(".rr-modal:not([hidden])");
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.classList.remove("modal-open");
+    setBackgroundInert(false);
+    const exit = $(".awp-exit-button");
+    if (exit) exit.inert = false;
+    if (modalTrigger) modalTrigger.focus({preventScroll:true});
+  }
+  function closeMenu() {
+    $("#mainNav").classList.remove("open");
+    $("#menuToggle").setAttribute("aria-expanded", "false");
+    $("#menuToggle").setAttribute("aria-label", "Open navigation");
+    $("#menuToggle").textContent = "☰";
+  }
+  document.addEventListener("keydown", function (event) {
+    const modal = $(".rr-modal:not([hidden])");
+    if (event.key === "Escape") {
+      if (modal) closeModal();
+      else if (!$("#opsApp").hidden) closeOps();
+      else if ($("#mainNav").classList.contains("open")) { closeMenu(); $("#menuToggle").focus(); }
+    }
+    if (modal && event.key === "Tab") {
+      const controls = $$("button, input:not([type=hidden]), select, a[href]", modal).filter(function (node) { return !node.disabled; });
+      const first = controls[0], last = controls[controls.length-1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+  });
 
   document.addEventListener("click", function (event) {
     const openButton = event.target.closest("[data-open-ops]");
@@ -490,7 +555,7 @@
     const serviceButton = event.target.closest("[data-select-service]");
     if (serviceButton) {
       $("#bookingService").value = serviceButton.dataset.selectService;
-      updateQuote();
+      updateBookingForm();
       $("#book").scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
       return;
     }
@@ -502,9 +567,9 @@
     }
     const joinButton = event.target.closest("[data-join-membership]");
     if (joinButton) { openMembership(joinButton.dataset.joinMembership); return; }
-    const closeModal = event.target.closest("[data-close-modal]");
-    if (closeModal) { closeModal.closest(".rr-modal").hidden = true; return; }
-    if (event.target.classList.contains("rr-modal")) { event.target.hidden = true; return; }
+    const closeModalButton = event.target.closest("[data-close-modal]");
+    if (closeModalButton) { closeModal(); return; }
+    if (event.target.classList.contains("rr-modal")) { closeModal(); return; }
     const opsPageButton = event.target.closest("[data-ops-page]");
     if (opsPageButton) { renderOpsPage(opsPageButton.dataset.opsPage); return; }
     const bookingAction = event.target.closest("[data-booking-action]");
@@ -525,13 +590,13 @@
     if (priceAction && currentRole === "owner") {
       const id = priceAction.dataset.serviceId;
       state.prices[id] = Math.max(50,getPrice(id) + Number(priceAction.dataset.priceAdjust));
-      saveState(); updateQuote(); renderOpsPage(currentPage); showToast("Demo service price updated.");
+      saveState(); updateBookingForm(); renderOpsPage(currentPage); showToast("Demo service price updated.");
       return;
     }
     const resetButton = event.target.closest("[data-reset-demo]");
     if (resetButton && currentRole === "owner") {
       if (window.confirm("Reset all local Rinse / Ritual demo data to the original sample workspace?")) {
-        state = makeSeed(); saveState(); updateQuote(); renderOpsPage("overview"); showToast("Demo workspace restored.");
+        state = makeSeed(); saveState(); updateBookingForm(); renderOpsPage("overview"); showToast("Demo workspace restored.");
       }
     }
   });
@@ -553,7 +618,7 @@
     $("#menuToggle").textContent = open ? "×" : "☰";
   });
   $$("#mainNav a").forEach(function (link) {
-    link.addEventListener("click",function () { $("#mainNav").classList.remove("open"); $("#menuToggle").setAttribute("aria-expanded","false"); $("#menuToggle").textContent = "☰"; });
+    link.addEventListener("click", closeMenu);
   });
   $("#bookingDate").min = dateKey(new Date());
   $("#bookingDate").value = dateKey(new Date());

@@ -13,7 +13,7 @@
 <link rel="canonical" href="https://cloud920x.github.io/alienway-production-v1/automotive/car-wash/">
 <meta property="og:url" content="https://cloud920x.github.io/alienway-production-v1/automotive/car-wash/">
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../assets/rinse-ritual.css">
+<link rel="stylesheet" href="../../assets/rinse-ritual.css?v=20261111">
 </head>
 <body>
 <a class="rr-skip" href="#mainContent">Skip to content</a>
@@ -117,7 +117,7 @@
 
       <article class="rr-process-panel" data-ritual-step="2" data-ritual-title="Lock in a time">
         <div class="rr-process-panel-visual">
-          <img src="https://images.unsplash.com/photo-1605164599901-8c4b6c3f5a6f?auto=format&fit=crop&w=1000&q=82" alt="Careful hands-on detailing inside a vehicle" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=1000&q=82" alt="Hands-on vehicle care at a wash studio" loading="lazy" decoding="async">
           <span class="rr-process-panel-index">02 / 04</span><span class="rr-process-panel-chip">YOUR TIME</span>
         </div>
         <div class="rr-process-panel-copy">
@@ -159,7 +159,7 @@
 
 <section class="rr-section rr-membership" id="memberships">
   <div class="rr-section-inner">
-    <div class="rr-section-head"><div><div class="rr-eyebrow">THE REGULARS CLUB</div><h2>Good habits.<br><span>Better value.</span></h2></div><p>For the people who like their cars looking right all month long. Memberships create predictable care for drivers and recurring revenue for the wash.</p></div>
+    <div class="rr-section-head"><div><div class="rr-eyebrow">THE REGULARS CLUB</div><h2>Good habits.<br><span>Better value.</span></h2></div><p>For the people who like their cars looking right all month long. Keep your routine simple with a monthly plan that suits how often you drive.</p></div>
     <div class="rr-member-grid">
       <article class="rr-member-card"><span class="rr-member-label">01 · THE STARTER</span><h3>Fresh Pass</h3><div class="rr-member-price">R 249<small> / month</small></div><p>A simple monthly reset for the daily driver.</p><ul><li>2 Quick Resets per month</li><li>Member pricing on extras</li><li>Easy online booking</li></ul><button class="rr-btn rr-btn-dark" type="button" data-join-membership="Fresh Pass">JOIN FRESH PASS ↗</button></article>
       <article class="rr-member-card featured"><span class="rr-member-label">02 · THE CROWD FAVOURITE</span><h3>Ritual Plus</h3><div class="rr-member-price">R 449<small> / month</small></div><p>More care, more often, with the good stuff included.</p><ul><li>2 Signature Hand Washes</li><li>2 Quick Resets</li><li>Priority booking windows</li><li>10% off selected extras</li></ul><button class="rr-btn rr-btn-lime" type="button" data-join-membership="Ritual Plus">JOIN RITUAL PLUS ↗</button></article>
@@ -170,8 +170,8 @@
 
 <section class="rr-section">
   <div class="rr-section-inner rr-story">
-    <div class="rr-story-image"><img src="https://images.unsplash.com/photo-1605164599901-8c4b6c3f5a6f?auto=format&fit=crop&w=1200&q=85" alt="Careful detailing work on a vehicle interior" loading="lazy"><div class="rr-story-badge"><strong>Details matter.</strong><span>Not just the big shine.</span></div></div>
-    <div class="rr-story-copy"><div class="rr-eyebrow">THE R/R STANDARD</div><h2>We don't rush<br>the <span>little things.</span></h2><p>A proper clean is more than water and soap. It's the right product for the right surface, clean tools, careful technique and a finish that feels considered. The demo showcases different service types so customers can choose what their vehicle actually needs.</p>
+    <div class="rr-story-image"><img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=1200&q=85" alt="Professional vehicle care at a wash studio" loading="lazy"><div class="rr-story-badge"><strong>Details matter.</strong><span>Not just the big shine.</span></div></div>
+    <div class="rr-story-copy"><div class="rr-eyebrow">THE R/R STANDARD</div><h2>We don't rush<br>the <span>little things.</span></h2><p>A proper clean is more than water and soap. It's the right product for the right surface, clean tools, careful technique and a finish that feels considered. Choose focused care for the surfaces and spaces that need it most.</p>
       <div class="rr-benefits"><div class="rr-benefit"><strong>Surface-safe products</strong><span>Gentle wash methods and clean mitts help protect the finish.</span></div><div class="rr-benefit"><strong>Separate interior care</strong><span>Cabin refreshes are treated as their own service, not an afterthought.</span></div><div class="rr-benefit"><strong>Useful add-ons</strong><span>Pet hair, odour, tyre dressing and child-seat refresh options.</span></div><div class="rr-benefit"><strong>Clear job progress</strong><span>Staff can update the wash status from check-in to ready.</span></div></div>
     </div>
   </div>
@@ -194,7 +194,7 @@
           <div class="rr-field"><label for="bookingService">Choose your ritual</label><select id="bookingService" required><option value="quick">Quick Reset</option><option value="signature" selected>Signature Hand Wash</option><option value="interior">Interior Revival</option><option value="full">Full Revival</option><option value="ceramic">Ceramic Shield</option></select></div>
           <div class="rr-field"><label for="vehicleType">Vehicle size</label><select id="vehicleType" required><option value="hatch">Hatchback / Compact</option><option value="sedan" selected>Sedan</option><option value="suv">SUV / Crossover</option><option value="bakkie">Bakkie / Double Cab</option><option value="van">Van / 7-Seater</option></select></div>
           <div class="rr-field"><label for="bookingDate">Preferred date</label><input id="bookingDate" type="date" required></div>
-          <div class="rr-field"><label>Arrival time</label><div class="rr-slot-grid" id="timeSlots" aria-label="Available arrival times"></div><input id="selectedSlot" type="hidden" value="09:00"></div>
+          <div class="rr-field"><span id="arrivalLabel" class="rr-field-label">Arrival time</span><div class="rr-slot-grid" id="timeSlots" role="group" aria-labelledby="arrivalLabel"></div><input id="selectedSlot" type="hidden" value=""><p id="slotStatus" class="rr-slot-status" role="status"></p></div>
           <fieldset class="rr-field full" style="border:0;padding:0;margin:0"><legend>Make it extra fresh · optional add-ons</legend><div class="rr-addons">
             <label class="rr-addon"><input type="checkbox" value="petHair"> Pet hair removal <span>+ R 90</span></label>
             <label class="rr-addon"><input type="checkbox" value="engineBay"> Engine bay refresh <span>+ R 120</span></label>
@@ -243,17 +243,17 @@
     <div><h4>EXPLORE</h4><div class="rr-footer-links"><a href="#services">Wash menu</a><a href="#memberships">Memberships</a><a href="#fleet">Fleet care</a><a href="#book">Book a wash</a></div></div>
     <div><h4>THE STUDIO</h4><div class="rr-footer-links"><a href="#" data-open-ops>Operations workspace ↗</a><a href="../../contact.html?template=Rinse%20Ritual">Build something like this</a><a href="../../index.html">Alienway Production</a></div></div>
   </div>
-  <div class="rr-footer-bottom"><span>© 2026 RINSE / RITUAL · FICTIONAL DEMONSTRATION BRAND</span><span>DESIGNED TO WORK AS GOOD AS IT LOOKS.</span><a href="../../index.html">BACK TO ALIENWAY PRODUCTION ↗</a></div>
+  <div class="rr-footer-bottom"><span>© 2026 RINSE / RITUAL · FICTIONAL DEMONSTRATION BRAND</span><span>DESIGNED TO WORK AS WELL AS IT LOOKS.</span><a href="../../index.html">BACK TO ALIENWAY PRODUCTION ↗</a></div>
 </footer>
 </div>
 
 <button class="rr-ops-launch" type="button" data-open-ops><b>✳</b> OPEN STUDIO OPS</button>
 <div class="rr-toast" id="toast" role="status" aria-live="polite"></div>
 
-<div class="rr-modal" id="membershipModal" hidden>
+<div class="rr-modal" id="membershipModal" role="dialog" aria-modal="true" aria-labelledby="membershipTitle" hidden>
   <form class="rr-modal-card" id="membershipForm">
     <button class="rr-modal-close" type="button" data-close-modal aria-label="Close">×</button>
-    <div class="rr-eyebrow">THE REGULARS CLUB</div><h3>Make clean a habit.</h3><p id="membershipIntro">Register a sample membership to preview the customer journey. This stays in the current browser only.</p>
+    <div class="rr-eyebrow">THE REGULARS CLUB</div><h3 id="membershipTitle">Make clean a habit.</h3><p id="membershipIntro">Register a sample membership to preview the customer journey. This stays in the current browser only.</p>
     <input type="hidden" id="membershipPlan">
     <div class="rr-field"><label for="memberName">Name</label><input id="memberName" type="text" maxlength="70" required></div>
     <div class="rr-field"><label for="memberPhone">Mobile number</label><input id="memberPhone" type="tel" maxlength="24" required></div>
@@ -261,10 +261,10 @@
     <div class="rr-demo-note">Demo only. No payment is taken and no details are sent to a server.</div>
   </form>
 </div>
-<div class="rr-modal" id="bookingConfirmation" hidden>
+<div class="rr-modal" id="bookingConfirmation" role="dialog" aria-modal="true" aria-labelledby="confirmationTitle" hidden>
   <div class="rr-modal-card">
     <button class="rr-modal-close" type="button" data-close-modal aria-label="Close">×</button>
-    <div class="rr-eyebrow">BOOKING PREVIEW CREATED</div><h3>You're on the board.</h3><p>Your sample booking has been added to the Studio Ops workspace in this browser.</p><div class="rr-confirm-ref" id="confirmationRef">RR-000000</div><p id="confirmationDetails"></p><button class="rr-btn rr-btn-dark" type="button" data-open-ops>VIEW IN STUDIO OPS ↗</button>
+    <div class="rr-eyebrow">BOOKING PREVIEW CREATED</div><h3 id="confirmationTitle">You're on the board.</h3><p>Your sample booking has been added to the Studio Ops workspace in this browser.</p><div class="rr-confirm-ref" id="confirmationRef">RR-000000</div><p id="confirmationDetails"></p><button class="rr-btn rr-btn-dark" type="button" data-open-ops>VIEW IN STUDIO OPS ↗</button>
   </div>
 </div>
 
@@ -295,7 +295,7 @@
   </div>
 </section>
 
-<script src="../../assets/rinse-ritual.js"></script>
+<script src="../../assets/rinse-ritual.js?v=20261111"></script>
 <script src="../../assets/awp-exit.js" data-home="../../index.html"></script>
 </body>
 </html>

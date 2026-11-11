@@ -379,9 +379,19 @@
   function renderCustomers() {
     const customers = getCustomers();
     const members = state.memberships.length;
+    const completedVisits = state.bookings.filter(function (b) { return b.status === "completed"; }).length;
+    const lifetimeValue = customers.reduce(function (sum,c) { return sum+c.spend; },0);
+    const ownerView = currentRole === "owner";
+    const metrics = ownerView
+      ? [["KNOWN CUSTOMERS",customers.length,"Demo customer profiles"],["MEMBERSHIPS",members,"Sample member sign-ups"],["COMPLETED VISITS",completedVisits,"Across the sample history"],["REPEAT VALUE",money(lifetimeValue),"Completed wash revenue"]]
+      : [["CUSTOMER PROFILES",customers.length,"For service and check-in support"],["MEMBERSHIPS",members,"Sample member sign-ups"],["COMPLETED VISITS",completedVisits,"Across the sample history"],["TODAY'S ARRIVALS",state.bookings.filter(function (b) { return b.date === dateKey(new Date()) && b.status !== "cancelled"; }).length,"Scheduled customer visits"]];
+    const spendHeading = ownerView ? "<th>Lifetime spend</th>" : "";
     return pageHeader("Customers & members","Understand repeat visits, customer value and your regulars club.") +
-      '<div class="rr-ops-grid"><div class="rr-kpi"><span>KNOWN CUSTOMERS</span><strong>' + customers.length + '</strong><small>Demo customer profiles</small></div><div class="rr-kpi"><span>MEMBERSHIPS</span><strong>' + members + '</strong><small>Sample sign-ups</small></div><div class="rr-kpi"><span>COMPLETED VISITS</span><strong>' + state.bookings.filter(function (b) { return b.status === "completed"; }).length + '</strong><small>Across the sample history</small></div><div class="rr-kpi"><span>REPEAT VALUE</span><strong>' + money(customers.reduce(function (sum,c) { return sum+c.spend; },0)) + '</strong><small>Completed wash revenue</small></div></div>' +
-      '<section class="rr-ops-panel" style="margin-top:13px"><h3>Customer register</h3><div class="rr-ops-table-wrap"><table class="rr-ops-table"><thead><tr><th>Customer</th><th>Mobile</th><th>Completed visits</th><th>Lifetime spend</th><th>Last activity</th><th>Membership</th></tr></thead><tbody>' + customers.map(function (c) { return '<tr><td><span class="rr-table-primary">' + escapeHTML(c.name) + '</span></td><td>' + escapeHTML(c.phone) + '</td><td>' + c.visits + '</td><td><strong>' + money(c.spend) + '</strong></td><td>' + prettyDate(c.last) + '</td><td>' + (c.membership ? '<span class="rr-status completed">' + escapeHTML(c.membership) + '</span>' : '<span class="rr-table-secondary">—</span>') + '</td></tr>'; }).join("") + '</tbody></table></div></section>';
+      '<div class="rr-ops-grid">' + metrics.map(function (metric) { return '<div class="rr-kpi"><span>' + metric[0] + '</span><strong>' + metric[1] + '</strong><small>' + metric[2] + '</small></div>'; }).join("") + '</div>' +
+      '<section class="rr-ops-panel" style="margin-top:13px"><h3>Customer register</h3><div class="rr-ops-table-wrap"><table class="rr-ops-table"><thead><tr><th>Customer</th><th>Mobile</th><th>Completed visits</th>' + spendHeading + '<th>Last activity</th><th>Membership</th></tr></thead><tbody>' + customers.map(function (c) {
+        const spendCell = ownerView ? '<td><strong>' + money(c.spend) + '</strong></td>' : "";
+        return '<tr><td><span class="rr-table-primary">' + escapeHTML(c.name) + '</span></td><td>' + escapeHTML(c.phone) + '</td><td>' + c.visits + '</td>' + spendCell + '<td>' + prettyDate(c.last) + '</td><td>' + (c.membership ? '<span class="rr-status completed">' + escapeHTML(c.membership) + '</span>' : '<span class="rr-table-secondary">—</span>') + '</td></tr>';
+      }).join("") + '</tbody></table></div></section>';
   }
   function renderInventory() {
     return pageHeader("Stock & chemicals","Keep consumables visible before they interrupt a wash.") +

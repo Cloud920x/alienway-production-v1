@@ -260,7 +260,8 @@
     updateBookingForm();
   }
   function openOps() {
-    lastOverlayTrigger = document.activeElement;
+    const activeElement = document.activeElement;
+    lastOverlayTrigger = activeElement && activeElement.closest(".rr-modal") ? $(".rr-ops-launch") : activeElement;
     $("#membershipModal").hidden = true;
     $("#bookingConfirmation").hidden = true;
     $("#opsApp").hidden = false;

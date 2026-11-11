@@ -156,6 +156,11 @@
     $("#quoteAddons").textContent = money(quote.extras);
     $("#quoteTotal").textContent = money(quote.total);
     $("[data-service-price]").forEach(function (node) { node.innerHTML = money(getPrice(node.dataset.servicePrice)) + "<small>FROM · " + getService(node.dataset.servicePrice).duration + " MIN</small>"; });
+    $("[data-select-service]").forEach(function (card) {
+      const selected = card.dataset.selectService === quote.service.id;
+      card.setAttribute("aria-pressed", String(selected));
+      card.classList.toggle("selected", selected);
+    });
   }
   function renderSlots() {
     const dateInput = $("#bookingDate");

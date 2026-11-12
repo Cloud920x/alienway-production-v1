@@ -279,7 +279,7 @@ const agents=[
 ];
 const state={purpose:'buy',quick:'all',location:'',type:'all',maxPrice:'',minPrice:0,advancedMax:0,minBeds:0,minBaths:0,features:[],favorites:new Set(),compare:new Set(),sort:'featured',currentProperty:null,workspaceRole:'agent',workspaceView:'overview',workspaceLeadStates:{},workspaceTasks:new Set()};
 const $=id=>document.getElementById(id);
-function money(n){return 'R'+Math.round(n).toLocaleString('en-ZA').replace(/,/g,' ')}
+function money(n){return 'R '+Math.round(n).toLocaleString('en-ZA').replace(/,/g,' ')}
 function photo(id,w){return imageBase+id+'?auto=format&fit=crop&w='+(w||900)+'&q=82'}
 function showToast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>t.classList.remove('show'),2600)}
 let lockedScrollY=0;

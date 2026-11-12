@@ -54,7 +54,7 @@ PRODUCTION
 
 
 
-<nav class="nav">
+<nav class="nav" aria-label="Main navigation">
 
 <a href="index.html">
 Home
@@ -72,7 +72,7 @@ Work
 About
 </a>
 
-<a href="contact.html">
+<a href="contact.html" aria-current="page">
 Contact
 </a>
 
@@ -155,9 +155,7 @@ presence, we are ready to help.
 EMAIL
 </strong>
 
-<span>
-hello@alienway.com
-</span>
+<a href="mailto:hello@alienway.com">hello@alienway.com</a>
 
 </div>
 
@@ -205,25 +203,34 @@ START YOUR PROJECT
 
 
 <form id="projectForm">
+<p class="enquiry-help">This form prepares an email draft. Review and send it in your email app, or copy your enquiry below.</p>
+<div id="enquiryContext" class="enquiry-context" hidden><label for="projectSelection">Your selection</label><textarea id="projectSelection" name="selection" readonly rows="3"></textarea></div>
 
 
-<input name="name" type="text" placeholder="Your Name" aria-label="Your name" autocomplete="name" required>
+<label for="project-name">Your name</label>
+<input id="project-name" name="name" type="text" placeholder="Your Name" aria-label="Your name" autocomplete="name" required>
 
 
-<input name="email" type="email" placeholder="Your Email" aria-label="Your email address" autocomplete="email" required>
+<label for="project-email">Email address</label>
+<input id="project-email" name="email" type="email" placeholder="Your Email" aria-label="Your email address" autocomplete="email" required>
 
 
-<input name="business" type="text" placeholder="Business Name" aria-label="Business name" autocomplete="organization">
+<label for="project-business">Business name (optional)</label>
+<input id="project-business" name="business" type="text" placeholder="Business Name" aria-label="Business name" autocomplete="organization">
 
 
-<textarea name="message" placeholder="Tell us about your project" aria-label="Tell us about your project" required></textarea>
+<label for="project-message">Project details</label>
+<textarea id="project-message" name="message" placeholder="Tell us about your project" aria-label="Tell us about your project" required></textarea>
 
 
 <button type="submit" class="button primary">
-SEND MESSAGE →
+OPEN EMAIL DRAFT →
 </button>
 
 
+<button type="button" class="button secondary" id="copyEnquiry">COPY ENQUIRY</button>
+<p id="enquiryStatus" class="enquiry-help" role="status" aria-live="polite"></p>
+<div id="enquiryFallback" hidden><label for="enquiryText">Your prepared enquiry</label><textarea id="enquiryText" readonly rows="8"></textarea></div>
 </form>
 
 
@@ -247,15 +254,7 @@ SEND MESSAGE →
 
 
 
-<script>
-document.getElementById("projectForm").addEventListener("submit", function(event) {
-  event.preventDefault();
-  const data = new FormData(this);
-  const subject = encodeURIComponent("New Alienway Production project enquiry");
-  const body = encodeURIComponent("Name: " + data.get("name") + "\nEmail: " + data.get("email") + "\nBusiness: " + (data.get("business") || "Not provided") + "\n\nProject details:\n" + data.get("message"));
-  window.location.href = "mailto:hello@alienway.com?subject=" + subject + "&body=" + body;
-});
-</script>
+<script src="assets/contact.js" defer></script>
 </body>
 
 </html>

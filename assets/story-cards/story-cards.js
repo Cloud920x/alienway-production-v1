@@ -6,17 +6,26 @@
   const toggle = section.querySelector('.story-motion');
   const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
   const timers = new WeakMap();
-  let paused = preference.matches;
+  // Keep the visitor's choice separate from their operating-system preference.
+  const storageKey = `awp-motion:${section.id}`;
+  let paused = false;
+  try { paused = sessionStorage.getItem(storageKey) === 'paused'; } catch (_) { /* Storage can be disabled. */ }
   function updateMotion() {
     section.dataset.paused = String(paused || preference.matches);
     toggle.setAttribute('aria-pressed', String(paused || preference.matches));
     toggle.querySelector('[data-motion-label]').textContent = preference.matches ? 'Reduced motion' : paused ? 'Resume motion' : 'Pause motion';
     toggle.disabled = preference.matches;
+    const context = { 'digital-gap':'Digital Gap', 'our-approach':'Our Approach', 'our-industries':'Industries', 'our-process':'Our Process' }[section.id];
+    toggle.setAttribute('aria-label', `${preference.matches ? 'Reduced motion' : paused ? 'Resume motion' : 'Pause motion'} — ${context}`);
   }
   section.classList.add('is-enhanced');
   updateMotion();
-  toggle.addEventListener('click', () => { paused = !paused; updateMotion(); });
-  preference.addEventListener('change', () => { paused = preference.matches; updateMotion(); });
+  toggle.addEventListener('click', () => {
+    paused = !paused;
+    try { sessionStorage.setItem(storageKey, paused ? 'paused' : 'playing'); } catch (_) { /* Optional preference only. */ }
+    updateMotion();
+  });
+  preference.addEventListener('change', updateMotion);
   function visibility() { section.dataset.hidden = String(document.hidden); }
   document.addEventListener('visibilitychange', visibility);
   visibility();
@@ -25,6 +34,8 @@
       entries.forEach(entry => entry.target.classList.toggle('is-inview', entry.isIntersecting));
     }, { threshold: .15 });
     cards.forEach(card => observer.observe(card));
+  } else {
+    cards.forEach(card => card.classList.add('is-inview'));
   }
   cards.forEach(card => {
     const button = card.querySelector('[data-story-action]');

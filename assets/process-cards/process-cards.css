@@ -1,0 +1,100 @@
+/* Full-surface process buttons: artwork is the card, not an inset illustration. */
+.wallpaper-grid,.wallpaper-toolbar { max-width:1200px; margin-left:auto; margin-right:auto; }
+.wallpaper-toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:24px; color:#aebdba; font:10px/1.5 monospace; letter-spacing:1.5px; }
+.wallpaper-motion { display:none; align-items:center; gap:9px; min-height:44px; padding:10px 16px; border:1px solid #ffffff30; border-radius:30px; background:#ffffff08; color:#d8e5dc; font:11px/1.4 sans-serif; cursor:pointer; white-space:nowrap; }
+.process-wallpapers.is-enhanced .wallpaper-motion { display:flex; }
+.wallpaper-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:26px; }
+.process-wallpaper { --wall-ink:#eef2cf; position:relative; isolation:isolate; overflow:hidden; min-width:0; min-height:650px; border:1px solid #cad9b740; border-radius:22px; display:flex; flex-direction:column; justify-content:flex-end; box-shadow:0 24px 50px #0004; transition:transform .4s,border-color .4s,box-shadow .4s; }
+.wallpaper-discover { background:repeating-linear-gradient(115deg,#76a26707 0 1px,transparent 1px 7px),#102d22; }
+.wallpaper-design { --wall-ink:#f3eccd; background:repeating-linear-gradient(90deg,#ceb68a0c 0 1px,transparent 1px 32px),repeating-linear-gradient(0deg,#ceb68a0c 0 1px,transparent 1px 32px),#3e4931; border-radius:12px; }
+.wallpaper-develop { --wall-ink:#b9f3c4; background:repeating-linear-gradient(0deg,#9bdf9d05 0 1px,transparent 1px 4px),#071c16; border-color:#80c99655; }
+.wallpaper-launch { --wall-ink:#f6e1cf; background:linear-gradient(#42405c,#171f31 80%); border-color:#e8b6a050; }
+.wallpaper-art { position:absolute; inset:0; z-index:-3; pointer-events:none; }
+.wallpaper-art svg { display:block; width:100%; height:auto; }
+.wallpaper-shade { position:absolute; inset:0; z-index:-2; background:linear-gradient(180deg,#0003 0%,transparent 17%,transparent 43%,#061912b8 67%,#061912ed 100%); pointer-events:none; }
+.wallpaper-design .wallpaper-shade { background:linear-gradient(180deg,#152e2510,transparent 43%,#182a1ed9 73%,#182a1ef5); }
+.wallpaper-develop .wallpaper-shade { background:linear-gradient(180deg,#03140b33,transparent 38%,#03170c9c 60%,#03170cf2); }
+.wallpaper-launch .wallpaper-shade { background:linear-gradient(180deg,#101b2f20,transparent 55%,#131c2f80 74%,#131c2ff5); }
+.wallpaper-meta { position:absolute; top:27px; left:30px; right:30px; color:var(--wall-ink); opacity:.78; font:9px/1.5 monospace; letter-spacing:2px; text-shadow:0 1px 7px #0008; }
+.wallpaper-copy { padding:35px; color:var(--wall-ink); pointer-events:none; }
+.wallpaper-step { display:block; font:9px/1.4 monospace; letter-spacing:2px; opacity:.7; margin-bottom:10px; }
+.process-wallpapers .wallpaper-copy h3 { margin:0 0 14px; font-size:clamp(34px,4vw,53px); line-height:1; letter-spacing:-1.7px; font-weight:850; color:var(--wall-ink); text-shadow:0 2px 18px #0005; }
+.process-wallpapers .wallpaper-copy p { margin:0; max-width:37ch; font-size:15px; line-height:1.7; color:var(--wall-ink); opacity:.86; }
+.wallpaper-cue { display:flex; justify-content:space-between; align-items:center; gap:16px; border-top:1px solid #e3edc935; padding-top:19px; margin-top:22px; min-height:40px; font:10px/1.5 monospace; letter-spacing:1.6px; }
+.wallpaper-arrow { position:relative; width:14px; height:14px; border-right:1.5px solid currentColor; border-top:1.5px solid currentColor; flex-shrink:0; transition:transform .3s; }
+.wallpaper-arrow::after { content:""; position:absolute; right:-2px; top:5px; height:1.5px; width:18px; background:currentColor; transform:rotate(-45deg); }
+.wallpaper-trigger { display:none; position:absolute; inset:0; width:100%; height:100%; z-index:2; border:0; border-radius:inherit; background:transparent; cursor:pointer; }
+.is-enhanced .wallpaper-trigger { display:block; }
+.wallpaper-trigger:focus-visible { outline:3px solid var(--wall-ink); outline-offset:-7px; }
+.wallpaper-motion:focus-visible { outline:2px solid #dbedbc; outline-offset:4px; }
+.process-download { display:flex; align-items:center; gap:16px; margin-top:17px; font:8px/1.5 monospace; letter-spacing:1.1px; color:#b3e5bc; }
+.download-track { display:block; height:4px; flex:1; background:#8ed29d26; overflow:hidden; }
+.download-track > span { display:block; width:100%; height:100%; background:#a6e2b3; transform:scaleX(.08); transform-origin:left; }
+.process-live { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.tree-number { transform-origin:250px 340px; }
+.jungle-canopy { transform-origin:300px 0; }
+.voxel-digit { transform-box:fill-box; transform-origin:bottom; }
+.rocket-flame { transform-origin:445px 296px; }
+.spectator { transform-box:fill-box; transform-origin:bottom; }
+.process-wallpaper.is-inview .jungle-canopy { animation:wall-canopy 7s ease-in-out infinite alternate; }
+.process-wallpaper.is-inview .jungle-fireflies { animation:wall-fireflies 4s ease-in-out infinite alternate; }
+.process-wallpaper.is-inview .voxel-clouds { animation:wall-clouds 10s ease-in-out infinite alternate; }
+.process-wallpaper.is-inview .code-column { animation:wall-code-rain 8s linear infinite; }
+.process-wallpaper.is-inview .column-1 { animation-duration:11s; animation-delay:-4s; }
+.process-wallpaper.is-inview .column-2 { animation-duration:9s; animation-delay:-2s; }
+.process-wallpaper.is-inview .column-3 { animation-duration:13s; animation-delay:-6s; }
+/* A low-contrast opacity flutter, never a rapid full-card flash. */
+.process-wallpaper.is-inview .matrix-number { animation:wall-flicker 7s ease-in-out infinite; }
+.process-wallpaper.is-inview .code-assembling { animation:wall-assemble-idle 5s ease-in-out infinite alternate; }
+.process-wallpaper.is-inview .launch-stars { animation:wall-fireflies 6s ease-in-out infinite alternate; }
+.process-wallpaper.is-inview .rocket-flame { animation:wall-flame 1.8s ease-in-out infinite alternate; }
+.process-wallpaper.is-reacting .tree-number { animation:wall-root-awaken 3.8s ease-in-out both; }
+.process-wallpaper.is-reacting .jungle-fireflies { animation:wall-jungle-wake 3.8s ease-in-out both; }
+.process-wallpaper.is-reacting .voxel-digit { animation:wall-block-build 1.3s ease-out both; }
+.process-wallpaper.is-reacting .block-row-1 { animation-delay:.12s; }
+.process-wallpaper.is-reacting .block-row-2 { animation-delay:.24s; }
+.process-wallpaper.is-reacting .block-row-3 { animation-delay:.36s; }
+.process-wallpaper.is-reacting .block-row-4 { animation-delay:.48s; }
+.process-wallpaper.is-reacting .block-row-5 { animation-delay:.6s; }
+.process-wallpaper.is-reacting .block-row-6 { animation-delay:.72s; }
+.process-wallpaper.is-reacting .voxel-cursor { animation:wall-place-block 3.8s ease-in-out both; }
+.process-wallpaper.is-reacting .code-panels { animation:wall-panel-build 3.8s ease-out both; transform-origin:center; }
+.process-wallpaper.is-reacting .code-scan { animation:wall-scanning 3.8s linear both; }
+.process-wallpaper.is-reacting .wallpaper-copy h3,.process-wallpaper.is-reacting .wallpaper-copy p { animation:none; }
+.wallpaper-develop.is-reacting .wallpaper-copy h3 { animation:wall-text-download 1.6s steps(7,end) both; }
+.wallpaper-develop.is-reacting .wallpaper-copy p { animation:wall-text-download 2.7s steps(20,end) both; }
+.wallpaper-develop.is-reacting .download-track > span { animation:wall-download 3.8s ease-in-out both; }
+.wallpaper-develop.is-built .download-track > span { transform:scaleX(1); }
+.process-wallpaper.is-reacting .launch-rocket { animation:wall-liftoff 3.8s cubic-bezier(.5,.05,.65,.9) both; }
+.process-wallpaper.is-reacting .launch-smoke { animation:wall-smoke 3.8s ease-out both; transform-origin:440px 400px; }
+.process-wallpaper.is-reacting .spectator { animation:wall-cheer .8s ease-in-out 4; }
+.process-wallpaper.is-reacting .spectator-1 { animation-delay:.15s; }
+.process-wallpaper.is-reacting .spectator-2 { animation-delay:.3s; }
+.process-wallpapers[data-paused="true"] .wallpaper-art *,.process-wallpapers[data-paused="true"] .wallpaper-copy *,.process-wallpapers[data-hidden="true"] .wallpaper-art *,.process-wallpapers[data-hidden="true"] .wallpaper-copy * { animation-play-state:paused!important; }
+.process-wallpapers[data-paused="true"] .is-reacting .wallpaper-copy h3,.process-wallpapers[data-paused="true"] .is-reacting .wallpaper-copy p { animation:none!important; clip-path:none; }
+.process-wallpapers[data-paused="true"] .is-reacting .tree-number,.process-wallpapers[data-paused="true"] .is-reacting .voxel-numbers { filter:brightness(1.2); }
+.process-wallpapers[data-paused="true"] .is-reacting .download-track > span { animation:none!important; transform:scaleX(1); }
+@keyframes wall-canopy { to { transform:rotate(1.5deg); } }
+@keyframes wall-fireflies { from { opacity:.4; } to { opacity:.9; } }
+@keyframes wall-clouds { to { transform:translateX(15px); } }
+@keyframes wall-code-rain { to { transform:translateY(100px); } }
+@keyframes wall-flicker { 0%,35%,55%,100% { opacity:1; } 40% { opacity:.65; } 46% { opacity:.9; } }
+@keyframes wall-assemble-idle { from { opacity:.5; } to { opacity:1; } }
+@keyframes wall-flame { to { transform:scaleY(.85); opacity:.7; } }
+@keyframes wall-root-awaken { 40%,65% { transform:scale(1.035); filter:brightness(1.25); } }
+@keyframes wall-jungle-wake { 40%,65% { transform:translate(0,-15px); filter:drop-shadow(0 0 8px #d4e6a8); } }
+@keyframes wall-block-build { from { transform:translateY(-30px); opacity:0; } to { transform:none; opacity:1; } }
+@keyframes wall-place-block { 30% { transform:translate(-55px,-85px); } 60% { transform:translate(-23px,-55px); } }
+@keyframes wall-panel-build { from { clip-path:inset(0 100% 0 0); } 65%,100% { clip-path:inset(0); } }
+@keyframes wall-scanning { from { transform:translateY(0); opacity:.8; } to { transform:translateY(400px); opacity:0; } }
+@keyframes wall-text-download { from { clip-path:inset(0 100% 0 0); } to { clip-path:inset(0); } }
+@keyframes wall-download { from { transform:scaleX(.08); } to { transform:scaleX(1); } }
+@keyframes wall-liftoff { 0% { transform:none; } 20% { transform:translateY(-12px); } 70% { transform:translateY(-420px); opacity:1; } 80% { transform:translateY(-550px); opacity:0; } 81% { transform:none; opacity:0; } 100% { transform:none; opacity:1; } }
+@keyframes wall-smoke { 40%,75% { transform:scale(1.6); opacity:.15; } }
+@keyframes wall-cheer { 50% { transform:translateY(-5px) rotate(3deg); } }
+@media(hover:hover) and (prefers-reduced-motion:no-preference) { .process-wallpaper:hover { transform:translateY(-4px); border-color:#e0edbe8c; box-shadow:0 30px 65px #0006; } .process-wallpaper:hover .wallpaper-arrow { transform:translate(3px,-3px); } }
+@media(max-width:1050px) { .wallpaper-grid { gap:20px; } .process-wallpaper { min-height:600px; } .wallpaper-copy { padding:28px; } .wallpaper-meta { left:28px; right:28px; font-size:8px; } .process-wallpapers .wallpaper-copy p { font-size:14px; } }
+@media(max-width:800px) { .wallpaper-grid { grid-template-columns:1fr; max-width:550px; gap:26px; } .wallpaper-toolbar { max-width:550px; font-size:8px; letter-spacing:1px; } .process-wallpaper { min-height:650px; } .process-wallpapers .wallpaper-copy h3 { font-size:46px; } .process-wallpapers .wallpaper-copy p { font-size:15px; } }
+@media(max-width:480px) { .process-wallpaper { min-height:570px; } .wallpaper-copy { padding:25px; } .wallpaper-meta { top:23px; left:25px; right:25px; font-size:7px; } .process-wallpapers .wallpaper-copy h3 { font-size:39px; } .process-wallpapers .wallpaper-copy p { font-size:14px; } .wallpaper-cue { font-size:9px; letter-spacing:1px; } .wallpaper-toolbar > span { max-width:24ch; } .wallpaper-motion { padding:9px 12px; } }
+@media(max-width:370px) { .process-wallpaper { min-height:540px; } .wallpaper-copy { padding:22px; } .process-wallpapers .wallpaper-copy h3 { font-size:34px; } .process-download { font-size:7px; gap:10px; } }
+@media(prefers-reduced-motion:reduce) { .process-wallpapers *,.process-wallpapers *::after { animation:none!important; transition:none!important; } .wallpaper-develop.is-reacting .wallpaper-copy h3,.wallpaper-develop.is-reacting .wallpaper-copy p { clip-path:none; } .wallpaper-develop.is-reacting .download-track > span { transform:scaleX(1); } .process-wallpaper.is-reacting .tree-number,.process-wallpaper.is-reacting .voxel-numbers { filter:brightness(1.2); } }

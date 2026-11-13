@@ -98,3 +98,8 @@
 @media(max-width:480px) { .process-wallpaper { min-height:570px; } .wallpaper-copy { padding:25px; } .wallpaper-meta { top:23px; left:25px; right:25px; font-size:7px; } .process-wallpapers .wallpaper-copy h3 { font-size:39px; } .process-wallpapers .wallpaper-copy p { font-size:14px; } .wallpaper-cue { font-size:9px; letter-spacing:1px; } .wallpaper-toolbar > span { max-width:24ch; } .wallpaper-motion { padding:9px 12px; } }
 @media(max-width:370px) { .process-wallpaper { min-height:540px; } .wallpaper-copy { padding:22px; } .process-wallpapers .wallpaper-copy h3 { font-size:34px; } .process-download { font-size:7px; gap:10px; } }
 @media(prefers-reduced-motion:reduce) { .process-wallpapers *,.process-wallpapers *::after { animation:none!important; transition:none!important; } .wallpaper-develop.is-reacting .wallpaper-copy h3,.wallpaper-develop.is-reacting .wallpaper-copy p { clip-path:none; } .wallpaper-develop.is-reacting .download-track > span { transform:scaleX(1); } .process-wallpaper.is-reacting .tree-number,.process-wallpaper.is-reacting .voxel-numbers { filter:brightness(1.2); } }
+
+/* A paused build uses its finished artwork, never an invisible first keyframe. */
+.process-wallpapers[data-paused="true"] .wallpaper-art *,
+.process-wallpapers[data-paused="true"] .wallpaper-copy * { animation:none!important; }
+.process-wallpaper:not(.is-inview) * { animation-play-state:paused!important; }

@@ -79,3 +79,16 @@
 .story-arrow { width:13px; height:13px; border-top:1.5px solid currentColor; border-right:1.5px solid currentColor; position:relative; }
 .story-arrow::after { content:""; position:absolute; width:18px; height:1.5px; background:currentColor; right:-2px; top:5px; transform:rotate(-45deg); }
 .motion-icon { width:8px; height:10px; border-left:2px solid currentColor; border-right:2px solid currentColor; box-sizing:border-box; }
+
+/* Paused scenes must stay complete, including when a visitor taps a replay. */
+.awp-stories[data-paused="true"] .awp-story * { animation:none!important; }
+.awp-story:not(.is-inview) * { animation-play-state:paused!important; }
+.story-motion { min-height:44px; touch-action:manipulation; }
+.story-action,.industry-play,.wallpaper-trigger,.wallpaper-motion { touch-action:manipulation; }
+.story-motion[aria-pressed="true"] .motion-icon,.wallpaper-motion[aria-pressed="true"] .motion-icon {
+  width:0; height:0; border:0; border-top:5px solid transparent; border-bottom:5px solid transparent; border-left:8px solid currentColor;
+}
+@media(max-width:900px) {
+  .story-toolbar > span { max-width:25ch; }
+  .story-motion { flex-shrink:0; }
+}

@@ -86,7 +86,7 @@
 .why-card-copy,.why-card-visual{position:relative;z-index:1;min-width:0}
 .why-card-copy{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;max-width:510px}
 .why-card-meta{display:flex;align-items:center;gap:12px;margin-bottom:27px;color:#bfd0dc;font:600 10px/1.4 Arial,Helvetica,sans-serif;letter-spacing:2.1px;text-transform:uppercase}
-.why-card-meta .why-card-number{display:inline-grid;place-items:center;width:29px;height:29px;border:1px solid rgba(174,213,232,.46);border-radius:50%;color:#d5edf8;font-size:10px;letter-spacing:0}
+.why-card-meta .why-card-number{display:inline-block;color:#b5e5f4;font-size:12px;font-weight:700;letter-spacing:1px}
 .why-card-meta .why-card-label{opacity:.82}
 .why-card-title{display:block;max-width:570px;margin:0 0 21px;color:#f7fbfe;font-size:clamp(38px,4.65vw,63px);font-weight:800;line-height:.98;letter-spacing:-2.8px;text-wrap:balance}
 .why-card-title em{display:block;color:#a9dced;font-style:normal;font-weight:700}
@@ -110,17 +110,15 @@
 .why-deck-card.is-entering .why-card-visual{animation:why-visual-in .82s cubic-bezier(.2,.8,.2,1) both}
 .why-deck-controls{display:flex;justify-content:center;align-items:center;gap:20px;margin:21px auto 0}
 .why-deck-control{
-  display:grid;place-items:center;width:46px;height:46px;padding:0;
-  border:1px solid rgba(205,229,241,.24);border-radius:50%;
-  background:rgba(221,239,248,.045);color:#eaf6fb;font-size:20px;
-  cursor:pointer;transition:background .25s ease,border-color .25s ease,transform .25s ease;
+  display:grid;place-items:center;width:42px;height:42px;padding:0;
+  border:0;border-radius:0;background:transparent;color:#eaf6fb;font-size:26px;
+  cursor:pointer;transition:color .25s ease,transform .25s ease;
 }
-.why-deck-control:hover{background:rgba(157,213,236,.12);border-color:rgba(173,223,242,.6);transform:translateY(-2px)}
-.why-deck-control:focus-visible,.why-deck-dot:focus-visible{outline:2px solid #b8e8f7;outline-offset:4px}
-.why-deck-progress{display:flex;align-items:center;gap:6px;width:76px}
-.why-deck-dot{display:block;width:17px;height:3px;padding:0;border:0;border-radius:4px;background:rgba(194,216,229,.28);cursor:pointer;transition:width .35s ease,background .35s ease}
-.why-deck-dot[aria-current="true"]{width:31px;background:#a8dced}
-.why-deck-count{min-width:53px;color:#c5d5df;text-align:center;font:600 10px/1.4 Arial,Helvetica,sans-serif;letter-spacing:1.5px;font-variant-numeric:tabular-nums}
+.why-deck-control:hover{color:#b9e8f6;transform:translateY(-1px)}
+.why-deck-control[data-why-prev]:hover{transform:translate(-3px,-1px)}
+.why-deck-control[data-why-next]:hover{transform:translate(3px,-1px)}
+.why-deck-control:focus-visible{outline:2px solid #b8e8f7;outline-offset:4px}
+.why-deck-count{min-width:65px;color:#c5d5df;text-align:center;font:600 10px/1.4 Arial,Helvetica,sans-serif;letter-spacing:1.8px;font-variant-numeric:tabular-nums}
 @keyframes why-atmosphere{from{opacity:.5;transform:translate(-50%,-47%) scale(.92)}to{opacity:1;transform:translate(-50%,-53%) scale(1.08)}}
 @keyframes why-drift-a{from{transform:translate3d(-12px,0,0)}to{transform:translate3d(25px,18px,0)}}
 @keyframes why-drift-b{from{transform:translate3d(14px,10px,0)}to{transform:translate3d(-22px,-16px,0)}}
@@ -159,7 +157,7 @@
   .why-card-visual{position:absolute;z-index:0;right:-15px;top:22px;width:60%;min-height:0;opacity:.24}
   .why-card-visual svg{max-width:100%}
   .why-deck-controls{margin-top:16px;gap:15px}
-  .why-deck-control{width:43px;height:43px}
+  .why-deck-control{width:40px;height:40px}
 }
 @media(max-width:390px){
   .why-deck{min-height:492px}

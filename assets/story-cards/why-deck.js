@@ -16,7 +16,7 @@
           <linearGradient id="why-design-edge" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d3f0fa" stop-opacity=".9"/><stop offset="1" stop-color="#8bbbd3" stop-opacity=".12"/></linearGradient>
         </defs>
         <path class="visual-line-soft" d="M36 269 211 37 385 269M62 269 211 70 360 269M92 269 211 105 330 269"/>
-        <g class="visual-float">
+        <g class="visual-design-shift">
           <path d="M105 224 210 70 315 224 210 285Z" fill="url(#why-design-glass)" stroke="url(#why-design-edge)" stroke-width="1.4"/>
           <path d="M105 224 210 163 315 224M210 70V163M210 163V285" class="visual-line"/>
           <path d="M145 247 210 210 275 247M145 247V171L210 132 275 171V247" class="visual-line-soft"/>
@@ -37,7 +37,7 @@
         <defs><linearGradient id="why-system-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c6eaf6" stop-opacity=".2"/><stop offset="1" stop-color="#79aeca" stop-opacity=".025"/></linearGradient></defs>
         <path d="M54 166H142L206 91H301M142 166 206 241H329M206 91V241" class="visual-line-soft"/>
         <path d="M54 166H142L206 91H301" class="visual-line visual-pulse"/>
-        <g class="visual-float">
+        <g class="visual-network-flow">
           <rect x="38" y="130" width="90" height="72" rx="13" class="visual-glass"/>
           <rect x="166" y="50" width="91" height="82" rx="13" fill="url(#why-system-fill)" stroke="rgba(193,229,244,.55)"/>
           <rect x="281" y="130" width="100" height="72" rx="13" class="visual-glass"/>
@@ -64,7 +64,7 @@
         <path d="M30 257C97 245 115 225 161 215S235 183 271 157 333 123 389 112" fill="none" stroke="url(#why-growth-path)" stroke-width="28" stroke-linecap="round"/>
         <path d="M30 257C97 245 115 225 161 215S235 183 271 157 333 123 389 112" class="visual-line visual-pulse"/>
         <path d="M37 287H384M68 270 118 254M125 284 172 262M206 276 248 247M284 263 322 235" class="visual-line-soft"/>
-        <g class="visual-float">
+        <g class="visual-horizon-rise">
           <path d="M82 224 82 180 116 180M152 204 152 145 188 145M224 173 224 112 260 112M300 142 300 83 337 83" class="visual-line"/>
           <circle cx="116" cy="180" r="5" class="visual-highlight"/>
           <circle cx="188" cy="145" r="5" class="visual-highlight"/>

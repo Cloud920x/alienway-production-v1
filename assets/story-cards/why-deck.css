@@ -169,7 +169,7 @@
 }
 @media(max-width:390px){
   .why-deck{min-height:492px}
-  .why-deck-card{width:82%;min-height:455px;padding:25px 21px}
+  .why-deck-card{width:80%;min-height:455px;padding:25px 21px}
   .why-deck-card[data-position="left"]{transform:translateX(calc(-50% - 137px)) translateY(22px) rotateY(6deg) scale(.8)}
   .why-deck-card[data-position="right"]{transform:translateX(calc(-50% + 137px)) translateY(22px) rotateY(-6deg) scale(.8)}
   .why-card-title{font-size:clamp(34px,9.2vw,43px)}

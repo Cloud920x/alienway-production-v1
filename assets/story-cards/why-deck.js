@@ -79,11 +79,10 @@
 
   const wrap=document.createElement('div');
   wrap.className='why-deck-wrap';
-  wrap.innerHTML='<div class="why-deck-caption"><span>THE ALIENWAY DIFFERENCE</span><span class="why-deck-index" aria-live="polite">01<span>/</span>03</span></div><div class="why-deck" role="group" aria-label="Why choose Alienway — interactive stacked cards"></div><div class="why-deck-controls"><button class="why-deck-control" type="button" data-why-prev aria-label="Previous reason">←</button><div class="why-deck-progress" aria-label="Choose a reason"></div><button class="why-deck-control" type="button" data-why-next aria-label="Next reason">→</button></div>';
+  wrap.innerHTML='<div class="why-deck-caption"><span>THE ALIENWAY DIFFERENCE</span></div><div class="why-deck" role="group" aria-label="Why choose Alienway — interactive stacked cards"></div><div class="why-deck-controls"><button class="why-deck-control" type="button" data-why-prev aria-label="Previous reason">←</button><span class="why-deck-count" aria-live="polite">01 / 03</span><button class="why-deck-control" type="button" data-why-next aria-label="Next reason">→</button></div>';
   source.replaceWith(wrap);
   const deck=wrap.querySelector('.why-deck');
-  const count=wrap.querySelector('.why-deck-index');
-  const progress=wrap.querySelector('.why-deck-progress');
+  const count=wrap.querySelector('.why-deck-count');
   const prev=wrap.querySelector('[data-why-prev]');
   const next=wrap.querySelector('[data-why-next]');
   let active=0,startX=0,pointerDown=false,suppressClick=false,enterTimer=null;
@@ -101,12 +100,7 @@
     });
     deck.appendChild(card);
 
-    const dot=document.createElement('button');
-    dot.type='button';
-    dot.className='why-deck-dot';
-    dot.setAttribute('aria-label','Show reason '+item.number);
-    dot.addEventListener('click',()=>setActive(index));
-    progress.appendChild(dot);
+
   });
 
   function setActive(index){
@@ -123,8 +117,7 @@
         card.classList.add('is-entering');
       }
     });
-    [...progress.children].forEach((dot,i)=>dot.setAttribute('aria-current',String(i===active)));
-    count.innerHTML=cards[active].number+'<span>/</span>03';
+    count.textContent=cards[active].number+' / 03';
     if(enterTimer)window.clearTimeout(enterTimer);
     enterTimer=window.setTimeout(()=>deck.querySelectorAll('.is-entering').forEach(card=>card.classList.remove('is-entering')),900);
   }

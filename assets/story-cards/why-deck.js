@@ -85,7 +85,7 @@
   const count=wrap.querySelector('.why-deck-count');
   const prev=wrap.querySelector('[data-why-prev]');
   const next=wrap.querySelector('[data-why-next]');
-  let active=0,startX=0,pointerDown=false,suppressClick=false,enterTimer=null;
+  let active=0,startX=0,pointerDown=false,pointerId=null,suppressClick=false,enterTimer=null;
 
   cards.forEach((item,index)=>{
     const card=document.createElement('button');
@@ -110,6 +110,7 @@
       const position=offset===0?'active':offset===1?'right':'left';
       card.dataset.position=position;
       card.setAttribute('aria-pressed',String(position==='active'));
+      card.setAttribute('aria-label',cards[i].title+' '+cards[i].emphasis+(position==='active'?', selected':', select to bring forward'));
       card.tabIndex=0;
       card.classList.remove('is-entering');
       if(position==='active'){
@@ -129,12 +130,16 @@
     if(event.key==='ArrowRight'){event.preventDefault();setActive(active+1);}
   });
   deck.addEventListener('pointerdown',event=>{
+    if(!event.isPrimary)return;
     if(event.pointerType==='mouse'&&event.button!==0)return;
-    pointerDown=true;startX=event.clientX;
+    pointerDown=true;
+    pointerId=event.pointerId;
+    startX=event.clientX;
   });
-  deck.addEventListener('pointerup',event=>{
-    if(!pointerDown)return;
+  window.addEventListener('pointerup',event=>{
+    if(!pointerDown||event.pointerId!==pointerId)return;
     pointerDown=false;
+    pointerId=null;
     const delta=event.clientX-startX;
     if(Math.abs(delta)>48){
       suppressClick=true;
@@ -142,6 +147,9 @@
       window.setTimeout(()=>{suppressClick=false;},350);
     }
   });
-  deck.addEventListener('pointercancel',()=>{pointerDown=false;});
+  window.addEventListener('pointercancel',event=>{
+    if(event.pointerId===pointerId){pointerDown=false;pointerId=null;}
+  });
+  window.addEventListener('blur',()=>{pointerDown=false;pointerId=null;});
   setActive(0);
 })();

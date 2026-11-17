@@ -103,8 +103,9 @@
 .why-card-visual .visual-highlight{fill:#b4e6f5}
 .why-card-visual .visual-glass{fill:rgba(176,220,239,.055);stroke:rgba(193,229,244,.44);stroke-width:1.2}
 .why-card-visual .visual-pulse{stroke-dasharray:8 12;animation:why-dash 8s linear infinite}
-.why-card-visual .visual-float{transform-box:fill-box;transform-origin:center;animation:why-float 6s ease-in-out infinite}
-.why-card-visual .visual-float-delay{animation-delay:-2.6s}
+.why-card-visual .visual-design-shift{transform-box:fill-box;transform-origin:center;animation:why-design-shift 10s ease-in-out infinite alternate}
+.why-card-visual .visual-network-flow{transform-box:fill-box;transform-origin:center;animation:why-network-flow 6.5s ease-in-out infinite}
+.why-card-visual .visual-horizon-rise{transform-box:fill-box;transform-origin:center;animation:why-horizon-rise 8s ease-in-out infinite alternate}
 .why-card-visual .visual-pulse-dot{transform-box:fill-box;transform-origin:center;animation:why-pulse 3.2s ease-in-out infinite}
 .why-deck-card.is-entering .why-card-copy{animation:why-copy-in .68s cubic-bezier(.2,.8,.2,1) both}
 .why-deck-card.is-entering .why-card-visual{animation:why-visual-in .82s cubic-bezier(.2,.8,.2,1) both}
@@ -123,7 +124,9 @@
 @keyframes why-drift-a{from{transform:translate3d(-12px,0,0)}to{transform:translate3d(25px,18px,0)}}
 @keyframes why-drift-b{from{transform:translate3d(14px,10px,0)}to{transform:translate3d(-22px,-16px,0)}}
 @keyframes why-dash{to{stroke-dashoffset:-160}}
-@keyframes why-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes why-design-shift{0%{transform:translateY(3px) rotate(-.6deg)}100%{transform:translateY(-6px) rotate(.45deg)}}
+@keyframes why-network-flow{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.012)}}
+@keyframes why-horizon-rise{0%{transform:translateY(5px)}100%{transform:translateY(-8px)}}
 @keyframes why-pulse{0%,100%{opacity:.5;transform:scale(.86)}50%{opacity:1;transform:scale(1.18)}}
 @keyframes why-copy-in{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
 @keyframes why-visual-in{from{opacity:0;transform:translate3d(12px,0,0) scale(.96)}to{opacity:.88;transform:translate3d(0,0,0) scale(1)}}
@@ -170,7 +173,7 @@
 }
 @media(prefers-reduced-motion:reduce){
   .why-alienway::before,.why-deck-wrap::before,.why-deck-wrap::after,
-  .why-card-visual .visual-pulse,.why-card-visual .visual-float,
+  .why-card-visual .visual-pulse,.why-card-visual .visual-design-shift,.why-card-visual .visual-network-flow,.why-card-visual .visual-horizon-rise,
   .why-card-visual .visual-pulse-dot{animation:none!important}
   .why-deck-card,.why-deck-control,.why-deck-dot{transition:none!important}
   .why-deck-card.is-entering .why-card-copy,.why-deck-card.is-entering .why-card-visual{animation:none!important}

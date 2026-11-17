@@ -151,5 +151,15 @@
     if(event.pointerId===pointerId){pointerDown=false;pointerId=null;}
   });
   window.addEventListener('blur',()=>{pointerDown=false;pointerId=null;});
+  if('IntersectionObserver' in window){
+    const motionObserver=new IntersectionObserver(entries=>{
+      const entry=entries[0];
+      if(entry)section.classList.toggle('is-inview',entry.isIntersecting);
+    },{threshold:0.08});
+    motionObserver.observe(section);
+  }else{
+    section.classList.add('is-inview');
+  }
+
   setActive(0);
 })();

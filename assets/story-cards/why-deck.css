@@ -117,6 +117,22 @@
 .why-deck-control[data-why-next]:hover{transform:translate(3px,-1px)}
 .why-deck-control:focus-visible{outline:2px solid #b8e8f7;outline-offset:4px}
 .why-deck-count{min-width:65px;color:#c5d5df;text-align:center;font:600 10px/1.4 Arial,Helvetica,sans-serif;letter-spacing:1.8px;font-variant-numeric:tabular-nums}
+/* Keep ambient motion idle until this section is actually visible. */
+.why-alienway::before,
+.why-deck-wrap::before,.why-deck-wrap::after,
+.why-card-visual .visual-pulse,
+.why-card-visual .visual-design-shift,
+.why-card-visual .visual-network-flow,
+.why-card-visual .visual-horizon-rise,
+.why-card-visual .visual-pulse-dot{animation-play-state:paused}
+.why-alienway.is-inview::before,
+.why-alienway.is-inview .why-deck-wrap::before,
+.why-alienway.is-inview .why-deck-wrap::after,
+.why-alienway.is-inview .why-card-visual .visual-pulse,
+.why-alienway.is-inview .why-card-visual .visual-design-shift,
+.why-alienway.is-inview .why-card-visual .visual-network-flow,
+.why-alienway.is-inview .why-card-visual .visual-horizon-rise,
+.why-alienway.is-inview .why-card-visual .visual-pulse-dot{animation-play-state:running}
 @media(hover:hover) and (prefers-reduced-motion:no-preference){
   .why-deck-card[data-position="active"]:hover{
     transform:translateX(-50%) translateY(-3px) rotateY(0) scale(1.003);

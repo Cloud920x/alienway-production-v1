@@ -11,6 +11,7 @@ This pass covers the ten main Alienway Production agency pages: Home, About, Ser
 ## Changes
 
 - Standardised the footer across all ten agency pages with the animated/reveal treatment, consistent brand lockup, useful Explore and Connect navigation, working project-builder links and a back-to-top control.
+- Elevated the brand promise into a distinct illuminated glass statement panel across all ten agency footers: a larger high-contrast headline with a blue-highlighted “WAY.”, a small promise kicker and brighter, more readable supporting copy. Added responsive sizing and refreshed the footer stylesheet cache version.
 - Preserved the About page story and its line, “Some people wait for a way. We create one.”
 - Routed the main About, Services and Portfolio conversion buttons to the dedicated three-step Project Builder instead of the general Contact page.
 - Routed both restaurant collection template CTAs to the Project Builder with the selected restaurant template carried in the URL.
@@ -33,4 +34,4 @@ This pass covers the ten main Alienway Production agency pages: Home, About, Ser
 
 ## Validation limits
 
-The published-main browser sweep was performed before these branch changes, so it validates the existing live layout rather than the new shared footers and touch-motion rules. Those changes still need a fresh visual check after PR #32 is merged and deployed, ideally on physical phones/tablets as well as desktop. The earlier 12 November audit documented a broader 64-page browser/layout sweep. No real emails, payments, bookings or external integrations were exercised in this pass.
+The published-main browser sweep was performed before these branch changes, so it validates the existing live layout rather than the new shared footers and touch-motion rules. Those changes—including the new brand statement panel—still need a fresh visual check after PR #33 is merged and deployed, ideally on physical phones/tablets as well as desktop. The earlier 12 November audit documented a broader 64-page browser/layout sweep. No real emails, payments, bookings or external integrations were exercised in this pass.

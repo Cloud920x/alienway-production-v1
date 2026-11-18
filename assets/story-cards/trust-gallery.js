@@ -155,17 +155,33 @@
     pointerId = null;
   });
 
+  function refreshViewportState() {
+    pointerId = null;
+
+    if (!media) {
+      fallbackMobile = window.innerWidth <= breakpoint;
+    }
+
+    render();
+
+    const rect = section.getBoundingClientRect();
+    const inView = rect.bottom > 0 && rect.top < window.innerHeight;
+    section.classList.toggle('is-inview', inView);
+  }
+
   if (media && typeof media.addEventListener === 'function') {
-    media.addEventListener('change', render);
+    media.addEventListener('change', refreshViewportState);
   } else if (media && typeof media.addListener === 'function') {
-    media.addListener(render);
-  } else {
-    window.addEventListener('resize', () => {
-      const nextMobile = window.innerWidth <= breakpoint;
-      if (nextMobile === fallbackMobile) return;
-      fallbackMobile = nextMobile;
-      render();
-    }, { passive: true });
+    media.addListener(refreshViewportState);
+  }
+
+  window.addEventListener('resize', refreshViewportState, { passive: true });
+  window.addEventListener('orientationchange', () => {
+    window.setTimeout(refreshViewportState, 90);
+  }, { passive: true });
+
+  if (window.visualViewport && typeof window.visualViewport.addEventListener === 'function') {
+    window.visualViewport.addEventListener('resize', refreshViewportState, { passive: true });
   }
 
   section.querySelectorAll('.trust-photo img').forEach(image => {

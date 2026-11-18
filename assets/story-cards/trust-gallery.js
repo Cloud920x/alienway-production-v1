@@ -163,6 +163,8 @@
   });
 
   let lastViewportSnapshot = null;
+  let pendingAnchorTop = null;
+  let anchorReleaseTimer = null;
 
   function captureViewportSnapshot() {
     if (lastViewportSnapshot &&
@@ -190,12 +192,22 @@
     const viewportChanged = previous &&
       (window.innerWidth !== previous.width || window.innerHeight !== previous.height);
 
-    if (viewportChanged && previous.inView) {
-      const correction = rect.top - previous.top;
+    if (viewportChanged && previous.inView && pendingAnchorTop === null) {
+      pendingAnchorTop = previous.top;
+    }
+
+    if (pendingAnchorTop !== null) {
+      const correction = rect.top - pendingAnchorTop;
       if (Math.abs(correction) > 1) {
         window.scrollTo(window.scrollX, window.scrollY + correction);
         rect = section.getBoundingClientRect();
       }
+
+      window.clearTimeout(anchorReleaseTimer);
+      anchorReleaseTimer = window.setTimeout(() => {
+        pendingAnchorTop = null;
+        captureViewportSnapshot();
+      }, 480);
     }
 
     const inView = rect.bottom > 0 && rect.top < window.innerHeight;
@@ -210,7 +222,16 @@
     };
   }
 
+  function cancelPendingAnchor() {
+    if (pendingAnchorTop === null) return;
+    pendingAnchorTop = null;
+    window.clearTimeout(anchorReleaseTimer);
+    captureViewportSnapshot();
+  }
+
   window.addEventListener('scroll', captureViewportSnapshot, { passive: true });
+  window.addEventListener('wheel', cancelPendingAnchor, { passive: true });
+  window.addEventListener('touchstart', cancelPendingAnchor, { passive: true });
 
   if (media && typeof media.addEventListener === 'function') {
     media.addEventListener('change', refreshViewportState);

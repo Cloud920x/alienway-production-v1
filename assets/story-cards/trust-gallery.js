@@ -171,7 +171,7 @@
         (window.innerWidth !== lastViewportSnapshot.width ||
          window.innerHeight !== lastViewportSnapshot.height)) return;
 
-    const rect = section.getBoundingClientRect();
+    const rect = gallery.getBoundingClientRect();
     lastViewportSnapshot = {
       width: window.innerWidth,
       height: window.innerHeight,
@@ -187,7 +187,7 @@
       fallbackMobile = window.innerWidth <= breakpoint;
     }
 
-    let rect = section.getBoundingClientRect();
+    let rect = gallery.getBoundingClientRect();
     const previous = lastViewportSnapshot;
     const viewportChanged = previous &&
       (window.innerWidth !== previous.width || window.innerHeight !== previous.height);
@@ -201,13 +201,13 @@
       if (Math.abs(correction) > 1) {
         const scroller = document.scrollingElement || document.documentElement;
         scroller.scrollTop += correction;
-        rect = section.getBoundingClientRect();
+        rect = gallery.getBoundingClientRect();
       }
 
       window.clearTimeout(anchorReleaseTimer);
       anchorReleaseTimer = window.setTimeout(() => {
         if (pendingAnchorTop !== null) {
-          const finalTop = section.getBoundingClientRect().top;
+          const finalTop = gallery.getBoundingClientRect().top;
           const finalCorrection = finalTop - pendingAnchorTop;
           if (Math.abs(finalCorrection) > 1) {
             const scroller = document.scrollingElement || document.documentElement;

@@ -4318,7 +4318,6 @@ section, footer { scroll-margin-top: 84px; }
     transition:
       transform .62s cubic-bezier(.2,.78,.18,1),
       opacity .42s ease,
-      visibility .42s ease,
       box-shadow .35s ease;
   }
   .trust-card:nth-child(1),

@@ -27,7 +27,7 @@
 
   const isMobile = () => media ? media.matches : fallbackMobile;
 
-  function render() {
+  function render(announce = false) {
     const phone = isMobile();
 
     gallery.setAttribute('aria-label', phone
@@ -36,8 +36,10 @@
 
     if (phone) {
       gallery.setAttribute('aria-roledescription', 'carousel');
+      gallery.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight Home End');
     } else {
       gallery.removeAttribute('aria-roledescription');
+      gallery.removeAttribute('aria-keyshortcuts');
     }
 
     cards.forEach((card, index) => {
@@ -74,16 +76,20 @@
     }
 
     if (live) {
-      const title = cards[active].querySelector('h3');
-      const name = title ? title.textContent.trim() : 'Trust commitment';
-      live.textContent = 'Showing ' + name + ', ' + (active + 1) +
-        ' of ' + cards.length;
+      if (announce) {
+        const title = cards[active].querySelector('h3');
+        const name = title ? title.textContent.trim() : 'Trust commitment';
+        live.textContent = 'Showing ' + name + ', ' + (active + 1) +
+          ' of ' + cards.length;
+      } else {
+        live.textContent = '';
+      }
     }
   }
 
   function goTo(index) {
     active = (index + cards.length) % cards.length;
-    render();
+    render(true);
   }
 
   previous.addEventListener('click', () => goTo(active - 1));

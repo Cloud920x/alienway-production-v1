@@ -6,7 +6,7 @@
 
   <title>Alienway Production | Digital Experiences</title>
 
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=20261118-2">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="description" content="Alienway Production builds distinctive, responsive websites and practical digital experiences for businesses. Explore our services, industry demos, professional services and portfolio.">
 <meta property="og:type" content="website">
@@ -594,13 +594,31 @@ websites that support business growth.
   <div class="trust-gallery">
     <div class="trust-string" aria-hidden="true"></div>
 
-    <div class="trust-grid" aria-label="Our commitments to every client">
-      <article class="trust-card" data-trust-card>
+    <div
+      class="trust-grid"
+      id="trust-commitments"
+      role="group"
+      aria-label="Our commitments to every client"
+      tabindex="0"
+      aria-describedby="trust-keyboard-hint"
+    >
+      <article class="trust-card" data-trust-card="quality">
         <span class="trust-peg" aria-hidden="true"></span>
-        <figure class="trust-photo">
-          <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1100&q=88"
-               alt="A bright, carefully arranged creative workspace"
-               loading="lazy" decoding="async" width="1100" height="825">
+        <figure class="trust-photo" data-fallback-label="THE STANDARD">
+          <img
+            src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1100&q=88"
+            srcset="
+              https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=640&q=85 640w,
+              https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1100&q=88 1100w
+            "
+            sizes="(max-width:680px) 87vw, (max-width:900px) 29vw, 355px"
+            alt="A bright, carefully arranged creative workspace"
+            loading="lazy"
+            decoding="async"
+            fetchpriority="low"
+            width="1100"
+            height="825"
+          >
           <figcaption class="trust-photo-caption">
             <span class="trust-photo-index">01 / THE STANDARD</span>
             <h3>QUALITY FOCUSED</h3>
@@ -610,12 +628,23 @@ websites that support business growth.
         <span class="trust-photo-mark" aria-hidden="true">AW / 01</span>
       </article>
 
-      <article class="trust-card" data-trust-card>
+      <article class="trust-card" data-trust-card="communication">
         <span class="trust-peg" aria-hidden="true"></span>
-        <figure class="trust-photo">
-          <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1100&q=88"
-               alt="A team working together and sharing ideas"
-               loading="lazy" decoding="async" width="1100" height="825">
+        <figure class="trust-photo" data-fallback-label="THE CONNECTION">
+          <img
+            src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1100&q=88"
+            srcset="
+              https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=640&q=85 640w,
+              https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1100&q=88 1100w
+            "
+            sizes="(max-width:680px) 87vw, (max-width:900px) 29vw, 355px"
+            alt="A team working together and sharing ideas"
+            loading="lazy"
+            decoding="async"
+            fetchpriority="low"
+            width="1100"
+            height="825"
+          >
           <figcaption class="trust-photo-caption">
             <span class="trust-photo-index">02 / THE CONNECTION</span>
             <h3>CLEAR COMMUNICATION</h3>
@@ -625,12 +654,23 @@ websites that support business growth.
         <span class="trust-photo-mark" aria-hidden="true">AW / 02</span>
       </article>
 
-      <article class="trust-card" data-trust-card>
+      <article class="trust-card" data-trust-card="support">
         <span class="trust-peg" aria-hidden="true"></span>
-        <figure class="trust-photo">
-          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1100&q=88"
-               alt="A person working at a laptop in a calm workspace"
-               loading="lazy" decoding="async" width="1100" height="825">
+        <figure class="trust-photo" data-fallback-label="THE COMMITMENT">
+          <img
+            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1100&q=88"
+            srcset="
+              https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=640&q=85 640w,
+              https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1100&q=88 1100w
+            "
+            sizes="(max-width:680px) 87vw, (max-width:900px) 29vw, 355px"
+            alt="A person working at a laptop in a calm workspace"
+            loading="lazy"
+            decoding="async"
+            fetchpriority="low"
+            width="1100"
+            height="825"
+          >
           <figcaption class="trust-photo-caption">
             <span class="trust-photo-index">03 / THE COMMITMENT</span>
             <h3>LONG-TERM SUPPORT</h3>
@@ -641,17 +681,37 @@ websites that support business growth.
       </article>
     </div>
 
+    <span class="trust-keyboard-hint" id="trust-keyboard-hint">
+      On mobile, focus the gallery and use the left and right arrow keys to browse the commitments.
+    </span>
+
     <div class="trust-mobile-controls" aria-label="Trust commitments navigation">
-      <button class="trust-control" type="button" data-trust-prev aria-label="Previous trust commitment">←</button>
+      <button
+        class="trust-control"
+        type="button"
+        data-trust-prev
+        aria-label="Previous commitment"
+        aria-controls="trust-commitments"
+      >←</button>
+
       <div class="trust-dots" role="group" aria-label="Choose a trust commitment">
-        <button class="trust-dot" type="button" data-trust-go="0" aria-label="Show quality focused" aria-current="true"></button>
-        <button class="trust-dot" type="button" data-trust-go="1" aria-label="Show clear communication" aria-current="false"></button>
-        <button class="trust-dot" type="button" data-trust-go="2" aria-label="Show long-term support" aria-current="false"></button>
+        <button class="trust-dot" type="button" data-trust-go="0" aria-label="Show quality focused" aria-controls="trust-commitments" aria-current="true"></button>
+        <button class="trust-dot" type="button" data-trust-go="1" aria-label="Show clear communication" aria-controls="trust-commitments" aria-current="false"></button>
+        <button class="trust-dot" type="button" data-trust-go="2" aria-label="Show long-term support" aria-controls="trust-commitments" aria-current="false"></button>
       </div>
-      <span class="trust-count" aria-live="polite">01 / 03</span>
-      <button class="trust-control" type="button" data-trust-next aria-label="Next trust commitment">→</button>
+
+      <span class="trust-count">01 / 03</span>
+
+      <button
+        class="trust-control"
+        type="button"
+        data-trust-next
+        aria-label="Next commitment"
+        aria-controls="trust-commitments"
+      >→</button>
     </div>
-    <span class="trust-live" role="status" aria-live="polite"></span>
+
+    <span class="trust-live" role="status" aria-live="polite" aria-atomic="true"></span>
   </div>
 
 </section>
@@ -817,6 +877,6 @@ websites that support business growth.
 <!-- FOOTER END -->
 
 
-  <script src="assets/story-cards/trust-gallery.js?v=20261118-1" defer></script>
+  <script src="assets/story-cards/trust-gallery.js?v=20261118-2" defer></script>
 </body>
 </html>

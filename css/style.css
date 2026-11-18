@@ -4149,6 +4149,7 @@ section, footer { scroll-margin-top: 84px; }
 .trust-photo img{
   display:block;
   width:100%;
+  height:auto;
   aspect-ratio:1.18/1;
   object-fit:cover;
   object-position:center;

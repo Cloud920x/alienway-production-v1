@@ -469,3 +469,30 @@
     transform:none;
   }
 }
+
+
+/* PERFORMANCE: keep the footer atmospheric, not continuously animated. */
+.footer-live-status i::after{
+  animation:none!important;
+  opacity:.28;
+  transform:none;
+}
+.footer-alive.is-inview .footer-brand-mark::after{
+  animation:none!important;
+}
+.footer-alive .footer-ambient-orbit,
+.footer-alive .footer-brand-mark::before,
+.footer-alive .footer-brand-mark::after{
+  will-change:auto;
+}
+@media(prefers-reduced-motion:reduce){
+  .footer-alive.is-inview .footer-topline,
+  .footer-alive.is-inview .footer-brand,
+  .footer-alive.is-inview .footer-links:nth-child(2),
+  .footer-alive.is-inview .footer-links:nth-child(3),
+  .footer-alive.is-inview .footer-bottom{
+    animation:none!important;
+    opacity:1;
+    transform:none;
+  }
+}

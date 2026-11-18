@@ -78,3 +78,11 @@
 .awp-approach[data-hidden="true"] *::after{
   animation-play-state:paused!important;
 }
+
+
+/* Touch-first performance: play the detailed scene when the visitor activates a card. */
+@media (hover:none) and (pointer:coarse) and (prefers-reduced-motion:no-preference){
+  .awp-approach .approach-scene:not(.is-reacting) *,
+  .awp-approach .approach-scene:not(.is-reacting) *::before,
+  .awp-approach .approach-scene:not(.is-reacting) *::after{animation-play-state:paused!important}
+}

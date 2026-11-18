@@ -199,7 +199,8 @@
     if (pendingAnchorTop !== null) {
       const correction = rect.top - pendingAnchorTop;
       if (Math.abs(correction) > 1) {
-        window.scrollTo(window.scrollX, window.scrollY + correction);
+        const scroller = document.scrollingElement || document.documentElement;
+        scroller.scrollTop += correction;
         rect = section.getBoundingClientRect();
       }
 

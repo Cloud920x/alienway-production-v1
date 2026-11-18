@@ -103,3 +103,11 @@
 .process-wallpapers[data-paused="true"] .wallpaper-art *,
 .process-wallpapers[data-paused="true"] .wallpaper-copy * { animation:none!important; }
 .process-wallpaper:not(.is-inview) * { animation-play-state:paused!important; }
+
+
+/* Touch-first performance: run wallpaper animation only after the visitor activates it. */
+@media (hover:none) and (pointer:coarse) and (prefers-reduced-motion:no-preference){
+  .process-wallpapers .process-wallpaper:not(.is-reacting) *,
+  .process-wallpapers .process-wallpaper:not(.is-reacting) *::before,
+  .process-wallpapers .process-wallpaper:not(.is-reacting) *::after{animation-play-state:paused!important}
+}

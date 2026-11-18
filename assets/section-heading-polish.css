@@ -1,0 +1,196 @@
+/* ==========================================================
+   ALIENWAY HOME — SECTION HEADING CONTRAST & HIERARCHY
+   Scoped to the homepage so demo and industry typography stays
+   intentionally art-directed.
+========================================================== */
+
+body.home-page .section-heading{
+  width:min(100%, 980px);
+  margin:0 auto clamp(36px,4.8vw,64px);
+  padding-inline:clamp(8px,1.6vw,18px);
+  text-align:center;
+}
+
+/* Section labels: readable glass badges instead of pale text
+   floating directly on the background. */
+body.home-page .section-heading .section-tag{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  max-width:100%;
+  margin:0 0 clamp(17px,2vw,23px);
+  padding:9px 15px;
+  border:1px solid rgba(143,211,237,.42);
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(91,161,194,.24),rgba(26,52,72,.76));
+  background-clip:border-box;
+  -webkit-background-clip:border-box;
+  color:#d9f4fc;
+  -webkit-text-fill-color:currentColor;
+  font-family:'Fredoka',Arial,Helvetica,sans-serif;
+  font-size:clamp(10px,1.05vw,12px);
+  font-weight:900;
+  line-height:1.25;
+  letter-spacing:2.1px;
+  text-transform:uppercase;
+  text-shadow:0 0 15px rgba(126,207,236,.25),0 1px 2px rgba(0,0,0,.35);
+  box-shadow:0 8px 24px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+body.home-page .section-heading .section-tag::before{
+  content:"";
+  display:block;
+  flex:0 0 7px;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#f5fdff,#78c9e8);
+  box-shadow:0 0 0 4px rgba(132,207,235,.10),0 0 13px rgba(132,207,235,.7);
+}
+
+/* Why Alienway keeps its signature side-lines, now brighter and
+   crisp against the glass label. */
+body.home-page .why-alienway .section-heading .section-tag::before,
+body.home-page .why-alienway .section-heading .section-tag::after{
+  content:"";
+  display:block;
+  flex:0 0 23px;
+  width:23px;
+  height:1px;
+  border-radius:0;
+  background:linear-gradient(90deg,transparent,#a9e7fa);
+  box-shadow:0 0 8px rgba(143,213,239,.35);
+}
+body.home-page .why-alienway .section-heading .section-tag::before{
+  background:linear-gradient(90deg,transparent,#a9e7fa);
+}
+body.home-page .why-alienway .section-heading .section-tag::after{
+  background:linear-gradient(90deg,transparent,#a9e7fa);
+  transform:rotate(180deg);
+}
+
+/* Main section statements: bright silver-to-ice-blue, with a
+   restrained glow and a clear visual anchor below the words. */
+body.home-page .section-heading h2{
+  max-width:960px;
+  margin:0 auto 20px;
+  color:#f5fbff;
+  -webkit-text-fill-color:currentColor;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:clamp(36px,5.45vw,68px);
+  font-weight:900;
+  line-height:1.015;
+  letter-spacing:-.055em;
+  text-align:center;
+  text-wrap:balance;
+  overflow-wrap:break-word;
+  text-shadow:0 2px 0 rgba(255,255,255,.06),0 9px 28px rgba(0,0,0,.42);
+}
+
+@supports (-webkit-background-clip:text){
+  body.home-page .section-heading h2{
+    background-image:linear-gradient(104deg,#f8fcff 0%,#d8eff8 35%,#91cde7 68%,#f4fbff 100%);
+    background-clip:text;
+    -webkit-background-clip:text;
+    color:transparent;
+    -webkit-text-fill-color:transparent;
+  }
+}
+
+body.home-page .section-heading h2::after{
+  content:"";
+  display:block;
+  width:clamp(42px,5vw,62px);
+  height:3px;
+  margin:19px auto 0;
+  border-radius:99px;
+  background:linear-gradient(90deg,#77c4e4,#e4f7fd 52%,#7cbfdd);
+  box-shadow:0 0 14px rgba(120,202,232,.38),0 0 30px rgba(120,202,232,.13);
+}
+
+body.home-page .section-heading>p:last-child{
+  max-width:720px;
+  margin:0 auto;
+  color:#c6d6df;
+  font-size:clamp(14px,1.45vw,17px);
+  font-weight:450;
+  line-height:1.78;
+  text-wrap:pretty;
+  text-shadow:0 1px 12px rgba(0,0,0,.2);
+}
+
+@media(max-width:800px){
+  body.home-page .section-heading{
+    margin-bottom:clamp(30px,6vw,44px);
+    padding-inline:5px;
+  }
+  body.home-page .section-heading h2{
+    font-size:clamp(32px,7.2vw,48px);
+    line-height:1.04;
+    letter-spacing:-.047em;
+  }
+  body.home-page .section-heading h2::after{
+    width:48px;
+    height:2px;
+    margin-top:15px;
+  }
+  body.home-page .section-heading>p:last-child{
+    max-width:590px;
+    font-size:15px;
+    line-height:1.7;
+  }
+}
+
+@media(max-width:480px){
+  body.home-page .section-heading .section-tag{
+    gap:8px;
+    margin-bottom:16px;
+    padding:8px 11px;
+    font-size:9px;
+    letter-spacing:1.65px;
+  }
+  body.home-page .section-heading .section-tag::before{
+    flex-basis:6px;
+    width:6px;
+    height:6px;
+  }
+  body.home-page .why-alienway .section-heading .section-tag::before,
+  body.home-page .why-alienway .section-heading .section-tag::after{
+    flex-basis:16px;
+    width:16px;
+  }
+  body.home-page .section-heading h2{
+    font-size:clamp(29px,8.7vw,40px);
+    line-height:1.055;
+    letter-spacing:-.045em;
+  }
+  body.home-page .section-heading h2::after{
+    width:42px;
+    margin-top:13px;
+  }
+  body.home-page .section-heading>p:last-child{
+    font-size:13.5px;
+    line-height:1.7;
+  }
+}
+
+@media(max-width:350px){
+  body.home-page .section-heading .section-tag{
+    font-size:8px;
+    letter-spacing:1.35px;
+    padding:7px 9px;
+  }
+  body.home-page .section-heading h2{
+    font-size:29px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  body.home-page .section-heading *,
+  body.home-page .section-heading *::before,
+  body.home-page .section-heading *::after{
+    animation:none!important;
+    transition:none!important;
+  }
+}

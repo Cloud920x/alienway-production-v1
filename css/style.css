@@ -4532,7 +4532,7 @@ section, footer { scroll-margin-top: 84px; }
     grid-template-columns:repeat(3,minmax(0,1fr));
     height:auto;
     min-height:540px;
-    padding:68px 12px 24px;
+    padding:68px 0 24px;
   }
   .trust-card{
     position:relative;

@@ -92,3 +92,11 @@
   .story-toolbar > span { max-width:25ch; }
   .story-motion { flex-shrink:0; }
 }
+
+
+/* Touch-first performance: keep ambient scenes still while preserving tap-triggered reactions. */
+@media (hover:none) and (pointer:coarse) and (prefers-reduced-motion:no-preference){
+  .awp-stories .awp-story:not(.is-reacting) *,
+  .awp-stories .awp-story:not(.is-reacting) *::before,
+  .awp-stories .awp-story:not(.is-reacting) *::after{animation-play-state:paused!important}
+}

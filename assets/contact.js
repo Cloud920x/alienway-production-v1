@@ -268,6 +268,9 @@
         renderStep(step, false);
         const invalid = panels[step].querySelector(':invalid');
         if (invalid) invalid.focus();
+        else if (step === 0 && !selectedType) typeChoices[0].focus();
+        else if (step === 1) fields.message.focus();
+        else if (step === 2) fields.name.focus();
         return;
       }
     }

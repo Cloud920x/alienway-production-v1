@@ -120,18 +120,6 @@ body.home-page .section-heading>p:last-child{
   text-shadow:0 1px 12px rgba(0,0,0,.2);
 }
 
-/* Preserve the warm photographic mood of Built on Trust while
-   keeping its section heading in the same clear brand language. */
-body.home-page .trust .section-heading .section-tag{
-  border-color:rgba(143,211,237,.42);
-  color:#d9f4fc;
-  -webkit-text-fill-color:currentColor;
-}
-body.home-page .trust .section-heading h2{
-  color:#f5fbff;
-  -webkit-text-fill-color:currentColor;
-}
-
 @media(max-width:800px){
   body.home-page .section-heading{
     margin-bottom:clamp(30px,6vw,44px);

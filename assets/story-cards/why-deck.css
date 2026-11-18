@@ -639,6 +639,7 @@
 }
 
 /* Motion only runs while the section is visible and the visitor allows it. */
+.why-alienway:not(.is-inview)::before{animation-play-state:paused;}
 .why-alienway.is-inview::before{
   animation-play-state:running;
 }

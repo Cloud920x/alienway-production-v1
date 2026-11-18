@@ -4,6 +4,7 @@
   const section = document.querySelector('.why-alienway');
   const source = section && section.querySelector('.why-grid');
   if (!section || !source || section.dataset.whyDeckReady === 'true') return;
+  section.dataset.whyDeckReady = 'true';
 
   const cards = [
     {

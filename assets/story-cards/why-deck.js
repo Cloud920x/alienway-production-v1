@@ -14,7 +14,7 @@
       emphasis: 'by design.',
       copy: 'Your business has its own character. We turn that into a digital identity with considered layouts, original visuals and details that feel unmistakably yours.',
       footer: 'A DIGITAL IDENTITY THAT FEELS LIKE YOU.',
-      art: \`<svg viewBox="0 0 620 470" role="img" aria-label="A creative studio scene with layered website layouts, a colour palette and a moving design cursor">
+      art: `<svg viewBox="0 0 620 470" role="img" aria-label="A creative studio scene with layered website layouts, a colour palette and a moving design cursor">
         <defs>
           <linearGradient id="why-studio-window" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9edff2" stop-opacity=".22"/><stop offset="1" stop-color="#6b9db9" stop-opacity=".045"/></linearGradient>
           <linearGradient id="why-studio-canvas" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a7e3f1" stop-opacity=".30"/><stop offset=".52" stop-color="#4f8ba9" stop-opacity=".14"/><stop offset="1" stop-color="#172e42" stop-opacity=".15"/></linearGradient>
@@ -69,7 +69,7 @@
         <circle cx="91" cy="150" r="4" class="studio-accent studio-spark"/>
         <circle cx="548" cy="192" r="3" class="studio-accent studio-spark"/>
         <path d="M58 414H560" stroke="#b4dfed" stroke-opacity=".24" stroke-width="1"/>
-      </svg>\`
+      </svg>`
     },
     {
       number: '02',
@@ -79,7 +79,7 @@
       emphasis: 'do real work.',
       copy: 'Bookings, enquiries, orders, inventory and management tools can work together in one clear experience — helping your website do more than simply look good.',
       footer: 'BEAUTIFUL ON THE FRONT. USEFUL BEHIND IT.',
-      art: \`<svg viewBox="0 0 620 470" role="img" aria-label="A live business operations dashboard connecting bookings, orders, stock and customer activity">
+      art: `<svg viewBox="0 0 620 470" role="img" aria-label="A live business operations dashboard connecting bookings, orders, stock and customer activity">
         <defs>
           <linearGradient id="why-system-panel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a8eadc" stop-opacity=".19"/><stop offset="1" stop-color="#4e9e91" stop-opacity=".045"/></linearGradient>
           <linearGradient id="why-system-chart" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#73d4c2" stop-opacity=".08"/><stop offset="1" stop-color="#9be9db" stop-opacity=".42"/></linearGradient>
@@ -137,7 +137,7 @@
         <circle cx="408" cy="300" r="5" class="system-accent system-signal"/>
         <circle cx="553" cy="145" r="4" class="system-accent system-signal"/>
         <path d="M552 162V185M541 174H563" stroke="#a5eadc" stroke-opacity=".5" stroke-width="1.3"/>
-      </svg>\`
+      </svg>`
     },
     {
       number: '03',
@@ -147,7 +147,7 @@
       emphasis: 'after launch.',
       copy: 'Going live is the beginning, not the finish line. We stay involved with maintenance, updates and thoughtful improvements as your business changes.',
       footer: 'A DIGITAL PARTNER BEYOND LAUNCH.',
-      art: \`<svg viewBox="0 0 620 470" role="img" aria-label="A website being maintained and improved, with a support panel, update milestones and a continuous care loop">
+      art: `<svg viewBox="0 0 620 470" role="img" aria-label="A website being maintained and improved, with a support panel, update milestones and a continuous care loop">
         <defs>
           <linearGradient id="why-support-panel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d1eab9" stop-opacity=".20"/><stop offset="1" stop-color="#79a78a" stop-opacity=".045"/></linearGradient>
           <linearGradient id="why-support-path" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#a9d99b" stop-opacity=".06"/><stop offset="1" stop-color="#d9f0c5" stop-opacity=".65"/></linearGradient>
@@ -194,7 +194,7 @@
         <circle cx="61" cy="205" r="5" class="support-accent support-signal"/>
         <circle cx="566" cy="189" r="5" class="support-accent support-signal"/>
         <circle cx="310" cy="31" r="4" class="support-accent support-signal"/>
-      </svg>\`
+      </svg>`
     }
   ];
 

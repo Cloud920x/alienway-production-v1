@@ -184,7 +184,21 @@
 
   window.addEventListener('resize', refreshViewportState, { passive: true });
   window.addEventListener('orientationchange', () => {
-    window.setTimeout(refreshViewportState, 90);
+    const before = section.getBoundingClientRect();
+    const wasViewingGallery = before.bottom > 0 && before.top < window.innerHeight;
+    const anchorTop = before.top;
+    pointerId = null;
+
+    window.setTimeout(() => {
+      if (wasViewingGallery) {
+        const afterTop = section.getBoundingClientRect().top;
+        const scrollCorrection = afterTop - anchorTop;
+        if (Math.abs(scrollCorrection) > 1) {
+          window.scrollBy(0, scrollCorrection);
+        }
+      }
+      refreshViewportState();
+    }, 180);
   }, { passive: true });
 
   if (window.visualViewport && typeof window.visualViewport.addEventListener === 'function') {

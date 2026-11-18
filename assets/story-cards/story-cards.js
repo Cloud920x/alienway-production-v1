@@ -25,7 +25,8 @@
     try { sessionStorage.setItem(storageKey, paused ? 'paused' : 'playing'); } catch (_) { /* Optional preference only. */ }
     updateMotion();
   });
-  preference.addEventListener('change', updateMotion);
+  if (typeof preference.addEventListener === 'function') preference.addEventListener('change', updateMotion);
+  else if (typeof preference.addListener === 'function') preference.addListener(updateMotion);
   function visibility() { section.dataset.hidden = String(document.hidden); }
   document.addEventListener('visibilitychange', visibility);
   visibility();

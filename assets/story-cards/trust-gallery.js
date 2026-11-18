@@ -193,7 +193,7 @@
       (window.innerWidth !== previous.width || window.innerHeight !== previous.height);
 
     if (viewportChanged && previous.inView && pendingAnchorTop === null) {
-      pendingAnchorTop = previous.top;
+      pendingAnchorTop = Math.min(previous.top, 20);
     }
 
     if (pendingAnchorTop !== null) {
@@ -283,7 +283,7 @@
       threshold: 0.08,
       rootMargin: '80px 0px'
     });
-    observer.observe(section);
+    observer.observe(gallery);
   } else {
     section.classList.add('is-inview');
   }

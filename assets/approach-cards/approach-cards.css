@@ -71,3 +71,10 @@
 @media(max-width:900px) { .awp-approach .story-copy h3 { font-size:clamp(40px,9vw,58px); } .awp-approach .story-meta { font-size:8px; } .approach-scene .story-copy p { max-width:36ch; min-height:0; } }
 @media(max-width:370px) { .awp-approach .story-copy h3 { font-size:36px; } .awp-approach .story-meta { font-size:7px; } }
 @media(prefers-reduced-motion:reduce) { .approach-scene.is-reacting .web-threads { stroke:#fff0ff; stroke-width:2; } .approach-scene.is-reacting .growth-summit { filter:drop-shadow(0 0 5px #e1f2a7); } }
+
+/* Pause animated scenes when the browser tab is backgrounded. */
+.awp-approach[data-hidden="true"] *,
+.awp-approach[data-hidden="true"] *::before,
+.awp-approach[data-hidden="true"] *::after{
+  animation-play-state:paused!important;
+}

@@ -937,3 +937,8 @@
     filter:none;
   }
 }
+
+/* Mobile: keep the blurred ambient backdrop still; the active card remains interactive. */
+@media (hover:none) and (pointer:coarse) and (prefers-reduced-motion:no-preference){
+  .why-alienway::before{animation:none!important}
+}

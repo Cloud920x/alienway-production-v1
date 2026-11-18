@@ -4721,3 +4721,326 @@ section, footer { scroll-margin-top: 84px; }
   }
   .trust-card{will-change:auto}
 }
+
+
+/* ==========================================================
+   ALIENWAY PRODUCTION — SITE-WIDE LAYOUT RHYTHM
+   Consistent gutters, section spacing, grid rhythm and
+   responsive alignment for the main agency website.
+========================================================== */
+:root{
+  --awp-site-gutter:clamp(18px,4.4vw,64px);
+  --awp-section-space:clamp(72px,8vw,120px);
+  --awp-grid-gap:clamp(16px,2.2vw,30px);
+  --awp-copy-measure:68ch;
+}
+
+html{
+  scroll-padding-top:96px;
+  -webkit-text-size-adjust:100%;
+}
+
+body{
+  min-width:320px;
+  overflow-x:clip;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+img,video,iframe{
+  max-width:100%;
+}
+
+h1,h2,h3,h4,h5,h6{
+  text-wrap:balance;
+}
+
+p{
+  text-wrap:pretty;
+}
+
+section[id],footer[id]{
+  scroll-margin-top:96px;
+}
+
+:focus-visible{
+  outline:2px solid #a9dff1;
+  outline-offset:4px;
+}
+
+.header{
+  padding-inline:var(--awp-site-gutter);
+  gap:clamp(12px,2vw,24px);
+}
+
+.logo{
+  flex:0 0 auto;
+}
+
+.nav{
+  gap:clamp(12px,1.8vw,28px);
+}
+
+.nav a{
+  font-size:clamp(12px,.95vw,14px);
+}
+
+.nav-button,
+.button{
+  min-height:44px;
+  align-items:center;
+  justify-content:center;
+}
+
+.hero,
+.page-hero,
+.industry-hero,
+.auto-hero,
+.construction-hero,
+.retail-hero,
+.restaurant-hero{
+  padding-inline:var(--awp-site-gutter);
+}
+
+.hero-content,
+.page-hero>div,
+.industry-hero>div,
+.auto-hero-content,
+.construction-hero-inner,
+.retail-hero-inner{
+  min-width:0;
+}
+
+.digital-gap,
+.solution,
+.services,
+.process,
+.portfolio,
+.services-page,
+.portfolio-page,
+.industry-section,
+.retail-section,
+.contact-section,
+.about-cta,
+.trust{
+  padding-inline:var(--awp-site-gutter);
+}
+
+.digital-gap,
+.solution,
+.services,
+.process,
+.portfolio,
+.services-page,
+.portfolio-page,
+.industry-section,
+.retail-section,
+.contact-section,
+.about-cta,
+.trust{
+  padding-block:var(--awp-section-space);
+}
+
+.industry-section+.industry-section{
+  padding-top:clamp(56px,6vw,88px);
+}
+
+.section-heading{
+  width:min(100%,900px);
+  margin:0 auto clamp(36px,5vw,64px);
+}
+
+.section-heading p:last-child,
+.section-heading p:not(.section-tag){
+  max-width:var(--awp-copy-measure);
+  margin-inline:auto;
+}
+
+.gap-grid,
+.solution-grid,
+.services-grid,
+.process-grid,
+.portfolio-grid,
+.industry-cards,
+.auto-grid,
+.build-grid,
+.restaurant-template-grid{
+  column-gap:var(--awp-grid-gap);
+  row-gap:var(--awp-grid-gap);
+}
+
+.hero-buttons{
+  flex-wrap:wrap;
+  align-items:center;
+  gap:clamp(12px,1.8vw,20px);
+}
+
+.button,
+.nav-button{
+  -webkit-tap-highlight-color:transparent;
+  text-align:center;
+}
+
+.footer{
+  padding-inline:var(--awp-site-gutter);
+}
+
+.footer-grid{
+  gap:clamp(24px,4vw,50px);
+}
+
+.footer-bottom{
+  margin-top:clamp(40px,5vw,60px);
+}
+
+/* Tablet: preserve useful two-column density without squeezing cards. */
+@media(min-width:801px) and (max-width:1100px){
+  .gap-grid,
+  .solution-grid,
+  .services-grid,
+  .portfolio-grid,
+  .industry-cards,
+  .auto-grid,
+  .build-grid,
+  .restaurant-template-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .process-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .header{
+    padding-block:16px;
+  }
+
+  .nav{
+    gap:clamp(10px,1.35vw,18px);
+  }
+}
+
+/* Phone and compact tablet: one clean column, no squeezed gutters. */
+@media(max-width:800px){
+  :root{
+    --awp-site-gutter:20px;
+    --awp-section-space:clamp(64px,10vw,82px);
+    --awp-grid-gap:18px;
+  }
+
+  .header{
+    padding-block:15px;
+  }
+
+  .hero,
+  .page-hero,
+  .industry-hero,
+  .auto-hero,
+  .construction-hero,
+  .retail-hero,
+  .restaurant-hero{
+    padding-inline:var(--awp-site-gutter);
+  }
+
+  .digital-gap,
+  .solution,
+  .services,
+  .process,
+  .portfolio,
+  .services-page,
+  .portfolio-page,
+  .industry-section,
+  .retail-section,
+  .contact-section,
+  .about-cta,
+  .trust{
+    padding-block:var(--awp-section-space);
+    padding-inline:var(--awp-site-gutter);
+  }
+
+  .gap-grid,
+  .solution-grid,
+  .services-grid,
+  .process-grid,
+  .portfolio-grid,
+  .industry-cards,
+  .auto-grid,
+  .build-grid,
+  .restaurant-template-grid{
+    grid-template-columns:minmax(0,1fr);
+  }
+
+  .section-heading{
+    margin-bottom:clamp(30px,6vw,42px);
+  }
+
+  .hero-buttons{
+    width:100%;
+  }
+
+  .hero-buttons .button{
+    width:min(100%,380px);
+  }
+
+  .footer{
+    padding-top:clamp(52px,9vw,68px);
+    padding-bottom:26px;
+  }
+
+  .footer-grid{
+    grid-template-columns:minmax(0,1fr);
+    gap:30px;
+  }
+
+  .footer-bottom{
+    margin-top:38px;
+    padding-top:20px;
+  }
+}
+
+@media(max-width:480px){
+  :root{
+    --awp-site-gutter:16px;
+    --awp-grid-gap:15px;
+  }
+
+  .header{
+    padding-block:13px;
+  }
+
+  .logo{
+    gap:9px;
+  }
+
+  .logo-mark{
+    font-size:25px;
+  }
+
+  .logo-text strong{
+    font-size:15px;
+    letter-spacing:1.5px;
+  }
+
+  .logo-text small{
+    font-size:9px;
+    letter-spacing:3px;
+  }
+
+  .hero-buttons .button{
+    width:100%;
+    max-width:none;
+  }
+
+  .footer-links{
+    gap:13px;
+  }
+
+  .footer-easter{
+    margin-bottom:42px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{
+    scroll-behavior:auto;
+  }
+}

@@ -206,9 +206,17 @@
 
       window.clearTimeout(anchorReleaseTimer);
       anchorReleaseTimer = window.setTimeout(() => {
+        if (pendingAnchorTop !== null) {
+          const finalTop = section.getBoundingClientRect().top;
+          const finalCorrection = finalTop - pendingAnchorTop;
+          if (Math.abs(finalCorrection) > 1) {
+            const scroller = document.scrollingElement || document.documentElement;
+            scroller.scrollTop += finalCorrection;
+          }
+        }
         pendingAnchorTop = null;
         captureViewportSnapshot();
-      }, 480);
+      }, 220);
     }
 
     const inView = rect.bottom > 0 && rect.top < window.innerHeight;
@@ -243,7 +251,7 @@
   window.addEventListener('resize', refreshViewportState, { passive: true });
   window.addEventListener('orientationchange', () => {
     pointerId = null;
-    window.setTimeout(refreshViewportState, 180);
+    window.setTimeout(refreshViewportState, 120);
   }, { passive: true });
 
   if (window.visualViewport && typeof window.visualViewport.addEventListener === 'function') {

@@ -18,6 +18,9 @@
   const media = typeof window.matchMedia === 'function'
     ? window.matchMedia('(max-width: ' + breakpoint + 'px)')
     : null;
+  const compactLandscape = typeof window.matchMedia === 'function'
+    ? window.matchMedia('(orientation: landscape) and (max-height: 520px)')
+    : null;
 
   let fallbackMobile = window.innerWidth <= breakpoint;
   let active = 0;
@@ -25,7 +28,11 @@
   let startX = 0;
   let startY = 0;
 
-  const isMobile = () => media ? media.matches : fallbackMobile;
+  const isMobile = () => {
+    const compactLandscapeMode = compactLandscape && compactLandscape.matches;
+    return media ? media.matches && !compactLandscapeMode
+      : fallbackMobile && !compactLandscapeMode;
+  };
 
   function render(announce = false) {
     const phone = isMobile();

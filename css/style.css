@@ -4553,6 +4553,17 @@ section, footer { scroll-margin-top: 84px; }
   .trust-card:nth-child(2){margin-top:22px}
   .trust-mobile-controls{display:none}
 }
+@media(orientation:landscape) and (max-height:520px) and (prefers-reduced-motion:no-preference){
+  .trust.is-inview .trust-card:nth-child(1){
+    animation:trust-swing-left 8.8s cubic-bezier(.45,0,.55,1) -.8s infinite;
+  }
+  .trust.is-inview .trust-card:nth-child(2){
+    animation:trust-swing-middle 10.2s cubic-bezier(.45,0,.55,1) -3.1s infinite;
+  }
+  .trust.is-inview .trust-card:nth-child(3){
+    animation:trust-swing-right 9.6s cubic-bezier(.45,0,.55,1) -5.4s infinite;
+  }
+}
 @media(prefers-reduced-motion:reduce){
   .trust-card,
   .trust-photo img,

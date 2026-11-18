@@ -162,6 +162,22 @@
     pointerId = null;
   });
 
+  let lastViewportSnapshot = null;
+
+  function captureViewportSnapshot() {
+    if (lastViewportSnapshot &&
+        (window.innerWidth !== lastViewportSnapshot.width ||
+         window.innerHeight !== lastViewportSnapshot.height)) return;
+
+    const rect = section.getBoundingClientRect();
+    lastViewportSnapshot = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      top: rect.top,
+      inView: rect.bottom > 0 && rect.top < window.innerHeight
+    };
+  }
+
   function refreshViewportState() {
     pointerId = null;
 
@@ -169,12 +185,32 @@
       fallbackMobile = window.innerWidth <= breakpoint;
     }
 
-    render();
+    let rect = section.getBoundingClientRect();
+    const previous = lastViewportSnapshot;
+    const viewportChanged = previous &&
+      (window.innerWidth !== previous.width || window.innerHeight !== previous.height);
 
-    const rect = section.getBoundingClientRect();
+    if (viewportChanged && previous.inView) {
+      const correction = rect.top - previous.top;
+      if (Math.abs(correction) > 1) {
+        window.scrollTo(window.scrollX, window.scrollY + correction);
+        rect = section.getBoundingClientRect();
+      }
+    }
+
     const inView = rect.bottom > 0 && rect.top < window.innerHeight;
     section.classList.toggle('is-inview', inView);
+    render();
+
+    lastViewportSnapshot = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      top: rect.top,
+      inView
+    };
   }
+
+  window.addEventListener('scroll', captureViewportSnapshot, { passive: true });
 
   if (media && typeof media.addEventListener === 'function') {
     media.addEventListener('change', refreshViewportState);
@@ -184,21 +220,8 @@
 
   window.addEventListener('resize', refreshViewportState, { passive: true });
   window.addEventListener('orientationchange', () => {
-    const before = section.getBoundingClientRect();
-    const wasViewingGallery = before.bottom > 0 && before.top < window.innerHeight;
-    const anchorTop = before.top;
     pointerId = null;
-
-    window.setTimeout(() => {
-      if (wasViewingGallery) {
-        const afterTop = section.getBoundingClientRect().top;
-        const scrollCorrection = afterTop - anchorTop;
-        if (Math.abs(scrollCorrection) > 1) {
-          window.scrollBy(0, scrollCorrection);
-        }
-      }
-      refreshViewportState();
-    }, 180);
+    window.setTimeout(refreshViewportState, 180);
   }, { passive: true });
 
   if (window.visualViewport && typeof window.visualViewport.addEventListener === 'function') {
@@ -236,5 +259,5 @@
   }
 
   section.dataset.trustReady = 'true';
-  render();
+  refreshViewportState();
 })();

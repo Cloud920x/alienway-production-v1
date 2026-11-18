@@ -34,4 +34,4 @@ This pass covers the ten main Alienway Production agency pages: Home, About, Ser
 
 ## Validation limits
 
-The published-main browser sweep was performed before these branch changes, so it validates the existing live layout rather than the new shared footers and touch-motion rules. Those changes—including the new brand statement panel—still need a fresh visual check after PR #32 is merged and deployed, ideally on physical phones/tablets as well as desktop. The earlier 12 November audit documented a broader 64-page browser/layout sweep. No real emails, payments, bookings or external integrations were exercised in this pass.
+The published-main browser sweep was performed before these branch changes, so it validates the existing live layout rather than the new shared footers and touch-motion rules. Those changes—including the new brand statement panel—still need a fresh visual check after PR #33 is merged and deployed, ideally on physical phones/tablets as well as desktop. The earlier 12 November audit documented a broader 64-page browser/layout sweep. No real emails, payments, bookings or external integrations were exercised in this pass.

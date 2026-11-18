@@ -9,7 +9,8 @@
 
 <title>Contact | Alienway Production</title>
 
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=20261118-4">
+<link rel="stylesheet" href="assets/project-starter.css?v=20261118-1">
 
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="description" content="Contact Alienway Production in Cape Town, South Africa, to discuss a new business website or digital project.">
@@ -128,116 +129,168 @@ stand out online.
 
 
 
-<!-- CONTACT SECTION -->
+<!-- CONTACT SECTION / INTERACTIVE PROJECT STARTER -->
 
+<section class="contact-section project-starter" id="start-project" aria-labelledby="project-intro-title">
+  <div class="project-intro">
+    <p class="project-eyebrow"><span class="project-live-dot"></span> YOUR NEXT CHAPTER STARTS HERE</p>
+    <h2 id="project-intro-title">LET'S MAKE<br><span>IT HAPPEN.</span></h2>
+    <p class="project-intro-copy">A good project starts with a conversation. Tell us what you're imagining and we'll take it from there.</p>
 
-<section class="contact-section">
+    <div class="project-promise-list">
+      <div class="project-promise"><span class="promise-index">01</span><div><strong>YOUR VISION FIRST</strong><small>We listen before we build.</small></div><span class="promise-check" aria-hidden="true">↗</span></div>
+      <div class="project-promise"><span class="promise-index">02</span><div><strong>BUILT AROUND YOU</strong><small>A solution shaped around your business.</small></div><span class="promise-check" aria-hidden="true">↗</span></div>
+      <div class="project-promise"><span class="promise-index">03</span><div><strong>ALWAYS A WAY</strong><small>A clear next step, without the pressure.</small></div><span class="promise-check" aria-hidden="true">↗</span></div>
+    </div>
 
+    <a class="project-direct-contact" href="mailto:hello@alienway.com">
+      <span class="direct-icon" aria-hidden="true">↗</span>
+      <span><small>PREFER A DIRECT CONVERSATION?</small><strong>hello@alienway.com</strong></span>
+    </a>
+    <div class="project-location"><span class="location-pulse"></span> CAPE TOWN, SOUTH AFRICA <span class="location-separator">/</span> WORKING EVERYWHERE</div>
+  </div>
 
-<div class="contact-info">
+  <div class="project-builder" data-project-builder>
+    <div class="builder-topline">
+      <div><span class="builder-overline">PROJECT INITIATION</span><strong>Let's get to know your idea.</strong></div>
+      <span class="builder-index"><span data-current-step>01</span><i>/</i>03</span>
+    </div>
 
+    <div class="builder-progress" role="progressbar" aria-label="Project enquiry progress" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1">
+      <span class="progress-fill" data-progress-fill></span>
+    </div>
+    <div class="builder-step-labels" aria-hidden="true">
+      <span class="is-current" data-step-label="0">THE IDEA</span>
+      <span data-step-label="1">THE DETAILS</span>
+      <span data-step-label="2">THE CONNECTION</span>
+    </div>
 
-<h2>
-BUILD WITH ALIENWAY
-</h2>
+    <form id="projectForm" class="project-form" novalidate>
+      <div class="project-step is-active" data-step-panel="0" aria-labelledby="step-one-title">
+        <div class="step-heading">
+          <span class="step-kicker">01 / THE IDEA</span>
+          <h3 id="step-one-title">What are we creating?</h3>
+          <p>Choose the closest starting point. We can shape the rest together.</p>
+        </div>
 
+        <div class="project-choice-grid" role="radiogroup" aria-label="What do you want to build?" data-project-types>
+          <button class="project-choice" type="button" role="radio" aria-checked="false" data-project-type="New website" data-choice-title="A brand-new website">
+            <span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="4" y="5" width="24" height="21" rx="3"/><path d="M4 11h24M9 8h.1M13 8h.1M17 8h.1M9 16h8M9 20h14"/></svg></span>
+            <span class="choice-copy"><strong>New website</strong><small>Build my digital home from scratch.</small></span>
+            <span class="choice-indicator" aria-hidden="true"></span>
+          </button>
+          <button class="project-choice" type="button" role="radio" aria-checked="false" data-project-type="Website redesign" data-choice-title="A fresh new look">
+            <span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 24 8 17 22 3l7 7-14 14-7 2Z"/><path d="m18 7 7 7M6 28h22"/></svg></span>
+            <span class="choice-copy"><strong>Website redesign</strong><small>Give my current website a new life.</small></span>
+            <span class="choice-indicator" aria-hidden="true"></span>
+          </button>
+          <button class="project-choice" type="button" role="radio" aria-checked="false" data-project-type="Online store" data-choice-title="An online store">
+            <span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M5 11h22l-2 16H7L5 11Z"/><path d="M11 12V8a5 5 0 0 1 10 0v4M11 17v.1M21 17v.1"/></svg></span>
+            <span class="choice-copy"><strong>Online store</strong><small>Products, payments and orders.</small></span>
+            <span class="choice-indicator" aria-hidden="true"></span>
+          </button>
+          <button class="project-choice" type="button" role="radio" aria-checked="false" data-project-type="Booking & management system" data-choice-title="A smarter business system">
+            <span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="4" y="6" width="24" height="22" rx="3"/><path d="M10 3v6M22 3v6M4 12h24M9 18h5M9 22h10M21 18h2"/></svg></span>
+            <span class="choice-copy"><strong>Booking & operations</strong><small>Bookings, dashboards and workflows.</small></span>
+            <span class="choice-indicator" aria-hidden="true"></span>
+          </button>
+          <button class="project-choice project-choice-wide" type="button" role="radio" aria-checked="false" data-project-type="Not sure yet" data-choice-title="Let's explore an idea">
+            <span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 4a9 9 0 0 0-5.5 16.1c1.2.9 1.5 2 1.5 3.4h8c0-1.4.3-2.5 1.5-3.4A9 9 0 0 0 16 4Z"/><path d="M12 27h8M13 30h6M16 9v6M13 12h6"/></svg></span>
+            <span class="choice-copy"><strong>Something different?</strong><small>Not sure yet. Let's figure it out together.</small></span>
+            <span class="choice-indicator" aria-hidden="true"></span>
+          </button>
+        </div>
 
-<p>
-Whether you need a new website, a digital upgrade or a complete online
-presence, we are ready to help.
-</p>
+        <label class="field-label" for="project-industry">WHAT INDUSTRY ARE YOU IN?</label>
+        <div class="select-wrap">
+          <select id="project-industry" name="industry" required>
+            <option value="">Choose your industry</option>
+            <option>Automotive</option><option>Construction</option><option>Food & hospitality</option>
+            <option>Retail & e-commerce</option><option>Real estate</option><option>Professional services</option>
+            <option>Health & wellness</option><option>Education</option><option>Other / still exploring</option>
+          </select>
+          <span aria-hidden="true">⌄</span>
+        </div>
+        <p class="step-error" data-step-error="0" role="alert"></p>
+      </div>
 
+      <div class="project-step" data-step-panel="1" aria-labelledby="step-two-title" hidden>
+        <div class="step-heading">
+          <span class="step-kicker">02 / THE DETAILS</span>
+          <h3 id="step-two-title">Give the idea some shape.</h3>
+          <p>A little context helps us understand what success looks like.</p>
+        </div>
 
+        <label class="field-label" for="project-business">BUSINESS OR BRAND NAME <span>OPTIONAL</span></label>
+        <input id="project-business" name="business" type="text" placeholder="What do people call your business?" autocomplete="organization" maxlength="100">
 
-<div class="contact-item">
+        <span class="field-label">WHAT INVESTMENT RANGE FEELS COMFORTABLE?</span>
+        <div class="budget-grid" role="radiogroup" aria-label="Project investment range">
+          <button type="button" class="budget-choice" role="radio" aria-checked="false" data-budget="Under R10,000">Under <strong>R10k</strong></button>
+          <button type="button" class="budget-choice" role="radio" aria-checked="false" data-budget="R10,000 – R20,000"><strong>R10k–20k</strong></button>
+          <button type="button" class="budget-choice" role="radio" aria-checked="false" data-budget="R20,000 – R40,000"><strong>R20k–40k</strong></button>
+          <button type="button" class="budget-choice" role="radio" aria-checked="false" data-budget="R40,000+"><strong>R40k+</strong></button>
+          <button type="button" class="budget-choice budget-choice-wide" role="radio" aria-checked="false" data-budget="Let's discuss">I'd like to discuss it</button>
+        </div>
+        <p class="budget-note">Just a guide for the conversation — not a quote or commitment.</p>
 
-<strong>
-EMAIL
-</strong>
+        <label class="field-label" for="project-message">TELL US WHAT YOU HAVE IN MIND</label>
+        <textarea id="project-message" name="message" rows="4" maxlength="1800" placeholder="What should your website or system help your business do?" required></textarea>
+        <div class="message-meta"><span>Even a rough idea is a great start.</span><span data-char-count>0 / 1800</span></div>
+        <p class="step-error" data-step-error="1" role="alert"></p>
+      </div>
 
-<a href="mailto:hello@alienway.com">hello@alienway.com</a>
+      <div class="project-step" data-step-panel="2" aria-labelledby="step-three-title" hidden>
+        <div class="step-heading">
+          <span class="step-kicker">03 / THE CONNECTION</span>
+          <h3 id="step-three-title">Let's put a name to the idea.</h3>
+          <p>Where can we reach you to continue the conversation?</p>
+        </div>
 
-</div>
+        <label class="field-label" for="project-name">YOUR NAME</label>
+        <input id="project-name" name="name" type="text" placeholder="Your name" autocomplete="name" maxlength="100" required>
 
+        <label class="field-label" for="project-email">EMAIL ADDRESS</label>
+        <input id="project-email" name="email" type="email" placeholder="you@yourbusiness.com" autocomplete="email" maxlength="160" required>
 
+        <div class="enquiry-context" id="enquiryContext" hidden>
+          <label class="field-label" for="projectSelection">YOUR SELECTED DEMO / SERVICE</label>
+          <textarea id="projectSelection" name="selection" readonly rows="3"></textarea>
+        </div>
 
-<div class="contact-item">
+        <div class="project-review">
+          <div class="review-heading"><span>YOUR PROJECT SO FAR</span><span class="review-live-dot"></span></div>
+          <div class="review-line"><span>PROJECT</span><strong data-summary-type>Not selected yet</strong></div>
+          <div class="review-line"><span>INDUSTRY</span><strong data-summary-industry>Not selected yet</strong></div>
+          <div class="review-line"><span>INVESTMENT</span><strong data-summary-budget>Open conversation</strong></div>
+        </div>
+        <p class="step-error" data-step-error="2" role="alert"></p>
+      </div>
 
-<strong>
-LOCATION
-</strong>
+      <div class="builder-actions">
+        <button type="button" class="builder-back" data-step-back disabled><span aria-hidden="true">←</span> BACK</button>
+        <button type="button" class="builder-next" data-step-next>NEXT STEP <span aria-hidden="true">↗</span></button>
+        <button type="submit" class="builder-submit" data-step-submit hidden>PREPARE MY ENQUIRY <span aria-hidden="true">↗</span></button>
+      </div>
+      <div class="builder-footnote"><span class="footnote-lock" aria-hidden="true">◇</span> YOUR DETAILS STAY BETWEEN YOU AND ALIENWAY. NO PRESSURE. JUST A CONVERSATION.</div>
+      <p id="enquiryStatus" class="enquiry-status" role="status" aria-live="polite"></p>
+      <div id="enquiryFallback" class="enquiry-fallback" hidden>
+        <label class="field-label" for="enquiryText">YOUR PREPARED ENQUIRY</label>
+        <textarea id="enquiryText" readonly rows="7"></textarea>
+        <button type="button" class="copy-enquiry" id="copyEnquiry">COPY ENQUIRY</button>
+      </div>
+    </form>
 
-<span>
-Cape Town, South Africa
-</span>
-
-</div>
-
-
-
-<div class="contact-item">
-
-<strong>
-PROJECTS
-</strong>
-
-<span>
-Web Design • Development • Digital Growth
-</span>
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="contact-form">
-
-
-<h2>
-START YOUR PROJECT
-</h2>
-
-
-<form id="projectForm">
-<p class="enquiry-help">This form prepares an email draft. Review and send it in your email app, or copy your enquiry below.</p>
-<div id="enquiryContext" class="enquiry-context" hidden><label for="projectSelection">Your selection</label><textarea id="projectSelection" name="selection" readonly rows="3"></textarea></div>
-
-
-<label for="project-name">Your name</label>
-<input id="project-name" name="name" type="text" placeholder="Your Name" aria-label="Your name" autocomplete="name" required>
-
-
-<label for="project-email">Email address</label>
-<input id="project-email" name="email" type="email" placeholder="Your Email" aria-label="Your email address" autocomplete="email" required>
-
-
-<label for="project-business">Business name (optional)</label>
-<input id="project-business" name="business" type="text" placeholder="Business Name" aria-label="Business name" autocomplete="organization">
-
-
-<label for="project-message">Project details</label>
-<textarea id="project-message" name="message" placeholder="Tell us about your project" aria-label="Tell us about your project" required></textarea>
-
-
-<button type="submit" class="button primary">
-OPEN EMAIL DRAFT →
-</button>
-
-
-<button type="button" class="button secondary" id="copyEnquiry">COPY ENQUIRY</button>
-<p id="enquiryStatus" class="enquiry-help" role="status" aria-live="polite"></p>
-<div id="enquiryFallback" hidden><label for="enquiryText">Your prepared enquiry</label><textarea id="enquiryText" readonly rows="8"></textarea></div>
-</form>
-
-
-</div>
-
-
+    <div class="project-live-preview" aria-hidden="true">
+      <span class="preview-orbit orbit-one"></span><span class="preview-orbit orbit-two"></span>
+      <span class="preview-core"><span>AW</span></span>
+      <span class="preview-caption">IDEA IN MOTION</span>
+      <span class="preview-spark spark-one">✳</span><span class="preview-spark spark-two">✦</span>
+    </div>
+  </div>
 </section>
+
+<!-- CONTACT SECTION END -->
 
 
 <footer class="footer">
@@ -254,7 +307,7 @@ OPEN EMAIL DRAFT →
 
 
 
-<script src="assets/contact.js" defer></script>
+<script src="assets/contact.js?v=20261118-2" defer></script>
 </body>
 
 </html>

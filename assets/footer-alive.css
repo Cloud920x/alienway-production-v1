@@ -156,7 +156,7 @@
   inset:-5px;
   border:1px solid rgba(139,212,232,.42);
   border-radius:50%;
-  animation:footer-status-pulse 2.6s ease-out infinite;
+  animation:none; opacity:.28;
 }
 .footer-grid{
   display:grid;
@@ -394,7 +394,7 @@
 .footer-alive.is-inview .footer-links:nth-child(2){animation:footer-rise .8s .22s both}
 .footer-alive.is-inview .footer-links:nth-child(3){animation:footer-rise .8s .32s both}
 .footer-alive.is-inview .footer-bottom{animation:footer-rise .7s .42s both}
-.footer-alive.is-inview .footer-brand-mark::after{animation:footer-orbit 26s linear infinite}
+.footer-alive.is-inview .footer-brand-mark::after{animation:none}
 @keyframes footer-rise{
   from{opacity:0;transform:translate3d(0,22px,0)}
   to{opacity:1;transform:translate3d(0,0,0)}

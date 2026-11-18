@@ -33,6 +33,7 @@
     gallery.setAttribute('aria-label', phone
       ? 'Trust commitments, one photograph at a time'
       : 'Our three commitments to every client');
+    gallery.setAttribute('tabindex', phone ? '0' : '-1');
 
     if (phone) {
       gallery.setAttribute('aria-roledescription', 'carousel');

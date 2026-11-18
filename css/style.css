@@ -4551,6 +4551,14 @@ section, footer { scroll-margin-top: 84px; }
   .trust-card:nth-child(1),
   .trust-card:nth-child(3){margin-top:0}
   .trust-card:nth-child(2){margin-top:22px}
+  .trust-card{padding:7px}
+  .trust-photo{aspect-ratio:1.42/1}
+  .trust-card-copy{padding:12px 8px 6px}
+  .trust-photo-index{margin-bottom:7px;font-size:6.5px}
+  .trust-card-copy h3{font-size:15px;margin-bottom:6px}
+  .trust-card-copy p{min-height:0;font-size:10px;line-height:1.42}
+  .trust-card-footer{margin-top:9px;padding-top:7px;font-size:5.5px}
+  .trust-card-footer span:last-child{width:19px;height:19px}
   .trust-mobile-controls{display:none}
 }
 @media(orientation:landscape) and (max-height:520px) and (prefers-reduced-motion:no-preference){

@@ -4419,6 +4419,7 @@ section, footer { scroll-margin-top: 84px; }
   }
   .trust.is-inview .trust-card.is-active{
     animation:trust-hang-mobile 7.5s ease-in-out infinite;
+    animation-delay:.65s;
   }
 }
 @media(max-width:390px){
@@ -4437,5 +4438,21 @@ section, footer { scroll-margin-top: 84px; }
   .trust-dot{
     animation:none!important;
     transition:none!important;
+  }
+}
+
+
+/* Final interaction refinements */
+.trust-photo img{
+  user-select:none;
+  -webkit-user-drag:none;
+}
+@media(hover:hover) and (pointer:fine){
+  .trust-control:hover{
+    background:rgba(218,191,160,.16);
+    border-color:rgba(225,195,159,.78);
+  }
+  .trust-dot:hover:not([aria-current="true"]){
+    background:rgba(225,211,193,.68);
   }
 }

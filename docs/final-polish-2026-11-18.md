@@ -18,6 +18,7 @@ This pass covers the ten main Alienway Production agency pages: Home, About, Ser
 - Removed the global Google Fonts CSS import. Fredoka now loads only on the homepage where it is used, with font/image preconnects and swap behaviour.
 - Reduced idle animation work on touch-first screens: decorative card scenes pause while idle and still play their designed reactions when tapped. The trust gallery no longer animates an expensive shadow filter, and only its active mobile card swings.
 - Added older Safari-compatible change-listener fallbacks for reduced-motion preferences.
+- Added a semantic `main` landmark and page-level `h1` to Start Your Project, while preserving its visual heading treatment.
 - Refreshed homepage asset query versions so browsers do not keep stale card, footer or CTA assets after deployment.
 
 ## Validation performed
@@ -28,7 +29,8 @@ This pass covers the ten main Alienway Production agency pages: Home, About, Ser
 - Confirmed each of the ten pages has exactly one shared footer, a valid back-to-top target, and the footer CSS/JS references.
 - Confirmed all four industry collections expose the full main navigation, including About.
 - Confirmed the About narrative copy was not edited.
+- Ran a live Chromium smoke sweep against the published main-branch site: all ten in-scope routes returned HTTP 200 at 320, 768 and 1366 px (30 page/viewport combinations). No horizontal overflow, JavaScript console errors, uncaught page errors or failed network requests were detected. This exposed the Project Builder's missing `main`/`h1`, which is corrected on this branch.
 
 ## Validation limits
 
-This is a source-level polish and validation pass. It does not replace a fresh live-browser visual sweep on physical phones, tablets and desktops. The earlier 12 November audit documented a 64-page browser/layout sweep at 320, 768 and 1366 px, but the new footer and touch-motion changes still need visual confirmation after deployment. No real emails, payments, bookings or external integrations were exercised in this pass.
+The published-main browser sweep was performed before these branch changes, so it validates the existing live layout rather than the new shared footers and touch-motion rules. Those changes still need a fresh visual check after PR #32 is merged and deployed, ideally on physical phones/tablets as well as desktop. The earlier 12 November audit documented a broader 64-page browser/layout sweep. No real emails, payments, bookings or external integrations were exercised in this pass.

@@ -4495,7 +4495,7 @@ section, footer { scroll-margin-top: 84px; }
     text-align:center;
   }
   @media(prefers-reduced-motion:no-preference){
-    .trust.is-inview .trust-card{animation:none}
+    .trust.is-inview .trust-card:not(.is-active){animation:none}
     .trust.is-inview .trust-card.is-active{
       animation:trust-swing-mobile 8.4s cubic-bezier(.45,0,.55,1) -.9s infinite;
     }

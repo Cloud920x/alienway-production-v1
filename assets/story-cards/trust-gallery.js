@@ -11,45 +11,73 @@
   const next = section.querySelector('[data-trust-next]');
   const count = section.querySelector('.trust-count');
   const live = section.querySelector('.trust-live');
-  const mobile = window.matchMedia ? window.matchMedia('(max-width: 680px)') : { matches: false };
 
   if (!gallery || cards.length !== 3 || !previous || !next) return;
-  section.dataset.trustReady = 'true';
 
+  const breakpoint = 680;
+  const media = typeof window.matchMedia === 'function'
+    ? window.matchMedia('(max-width: ' + breakpoint + 'px)')
+    : null;
+
+  let fallbackMobile = window.innerWidth <= breakpoint;
   let active = 0;
-  let pointer = null;
+  let pointerId = null;
   let startX = 0;
   let startY = 0;
 
-  function isMobile() {
-    return Boolean(mobile.matches);
-  }
+  const isMobile = () => media ? media.matches : fallbackMobile;
 
   function render() {
     const phone = isMobile();
+
+    gallery.setAttribute('aria-label', phone
+      ? 'Trust commitments, one photograph at a time'
+      : 'Our three commitments to every client');
+
+    if (phone) {
+      gallery.setAttribute('aria-roledescription', 'carousel');
+    } else {
+      gallery.removeAttribute('aria-roledescription');
+    }
 
     cards.forEach((card, index) => {
       if (!phone) {
         card.classList.remove('is-active', 'is-before', 'is-after');
         card.setAttribute('aria-hidden', 'false');
+        if ('inert' in card) card.inert = false;
+        else card.removeAttribute('inert');
         return;
       }
 
       const relative = (index - active + cards.length) % cards.length;
-      card.classList.toggle('is-active', relative === 0);
-      card.classList.toggle('is-after', relative === 1);
-      card.classList.toggle('is-before', relative === 2);
-      card.setAttribute('aria-hidden', String(relative !== 0));
+      const isActive = relative === 0;
+      const isAfter = relative === 1;
+      const isBefore = relative === 2;
+
+      card.classList.toggle('is-active', isActive);
+      card.classList.toggle('is-after', isAfter);
+      card.classList.toggle('is-before', isBefore);
+      card.setAttribute('aria-hidden', String(!isActive));
+
+      if ('inert' in card) card.inert = !isActive;
+      else if (!isActive) card.setAttribute('inert', '');
+      else card.removeAttribute('inert');
     });
 
     dots.forEach((dot, index) => {
       dot.setAttribute('aria-current', String(index === active));
     });
 
-    if (count) count.textContent = String(active + 1).padStart(2, '0') + ' / 03';
+    if (count) {
+      count.textContent = String(active + 1).padStart(2, '0') + ' / ' +
+        String(cards.length).padStart(2, '0');
+    }
+
     if (live) {
       const title = cards[active].querySelector('h3');
-      live.textContent = 'Showing ' + (title ? title.textContent.trim() : 'trust commitment') + ', ' + (active + 1) + ' of ' + cards.length;
+      const name = title ? title.textContent.trim() : 'Trust commitment';
+      live.textContent = 'Showing ' + name + ', ' + (active + 1) +
+        ' of ' + cards.length;
     }
   }
 
@@ -60,60 +88,109 @@
 
   previous.addEventListener('click', () => goTo(active - 1));
   next.addEventListener('click', () => goTo(active + 1));
-  dots.forEach((dot, index) => dot.addEventListener('click', () => goTo(index)));
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => goTo(index));
+  });
 
   gallery.addEventListener('keydown', event => {
-    if (!isMobile()) return;
-    if (event.key === 'ArrowLeft') {
-      event.preventDefault();
-      goTo(active - 1);
-    } else if (event.key === 'ArrowRight') {
-      event.preventDefault();
-      goTo(active + 1);
-    } else if (event.key === 'Home') {
-      event.preventDefault();
-      goTo(0);
-    } else if (event.key === 'End') {
-      event.preventDefault();
-      goTo(cards.length - 1);
+    if (!isMobile() || event.target !== gallery) return;
+
+    switch (event.key) {
+      case 'ArrowLeft':
+        event.preventDefault();
+        goTo(active - 1);
+        break;
+      case 'ArrowRight':
+        event.preventDefault();
+        goTo(active + 1);
+        break;
+      case 'Home':
+        event.preventDefault();
+        goTo(0);
+        break;
+      case 'End':
+        event.preventDefault();
+        goTo(cards.length - 1);
+        break;
+      default:
+        break;
     }
   });
 
   gallery.addEventListener('pointerdown', event => {
-    if (!isMobile() || !event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) return;
-    pointer = event.pointerId;
+    if (!isMobile() || !event.isPrimary) return;
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    if (event.target.closest && event.target.closest('button, a, input, textarea, select')) return;
+
+    pointerId = event.pointerId;
     startX = event.clientX;
     startY = event.clientY;
   });
 
   window.addEventListener('pointerup', event => {
-    if (pointer === null || event.pointerId !== pointer) return;
-    pointer = null;
-    const dx = event.clientX - startX;
-    const dy = event.clientY - startY;
-    if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.2) {
-      goTo(active + (dx < 0 ? 1 : -1));
-    }
+    if (pointerId === null || event.pointerId !== pointerId) return;
+
+    pointerId = null;
+    const deltaX = event.clientX - startX;
+    const deltaY = event.clientY - startY;
+    const horizontalSwipe = Math.abs(deltaX) > 44 &&
+      Math.abs(deltaX) > Math.abs(deltaY) * 1.25;
+
+    if (horizontalSwipe) goTo(active + (deltaX < 0 ? 1 : -1));
   });
 
   window.addEventListener('pointercancel', event => {
-    if (event.pointerId === pointer) pointer = null;
+    if (event.pointerId === pointerId) pointerId = null;
   });
-  window.addEventListener('blur', () => { pointer = null; });
 
-  if (mobile.addEventListener) mobile.addEventListener('change', render);
-  else if (mobile.addListener) mobile.addListener(render);
-  window.addEventListener('resize', render, { passive: true });
+  window.addEventListener('blur', () => {
+    pointerId = null;
+  });
+
+  if (media && typeof media.addEventListener === 'function') {
+    media.addEventListener('change', render);
+  } else if (media && typeof media.addListener === 'function') {
+    media.addListener(render);
+  } else {
+    window.addEventListener('resize', () => {
+      const nextMobile = window.innerWidth <= breakpoint;
+      if (nextMobile === fallbackMobile) return;
+      fallbackMobile = nextMobile;
+      render();
+    }, { passive: true });
+  }
+
+  section.querySelectorAll('.trust-photo img').forEach(image => {
+    const figure = image.closest('.trust-photo');
+    if (!figure) return;
+
+    image.addEventListener('error', () => {
+      figure.classList.add('is-image-fallback');
+    }, { once: true });
+
+    image.addEventListener('load', () => {
+      figure.classList.remove('is-image-fallback');
+    }, { once: true });
+
+    if (image.complete && image.naturalWidth === 0) {
+      figure.classList.add('is-image-fallback');
+    }
+  });
 
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => {
       const entry = entries[0];
       if (entry) section.classList.toggle('is-inview', entry.isIntersecting);
-    }, { threshold: 0.08, rootMargin: '80px 0px' });
+    }, {
+      threshold: 0.08,
+      rootMargin: '80px 0px'
+    });
     observer.observe(section);
   } else {
     section.classList.add('is-inview');
   }
 
+  section.dataset.trustReady = 'true';
   render();
 })();

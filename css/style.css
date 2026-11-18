@@ -4460,3 +4460,264 @@ section, footer { scroll-margin-top: 84px; }
 @media(max-width:340px){
   .trust-grid{height:425px}
 }
+
+
+/* ==========================================================
+   BUILT ON TRUST — MATERIAL, MOVEMENT & EDITORIAL FINISH
+   ========================================================== */
+
+/* A real-looking sagging braided cord, rather than a flat bar. */
+.trust-string{
+  top:9px;
+  left:2%;
+  right:2%;
+  height:43px;
+  border:0;
+  border-radius:0;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 44' preserveAspectRatio='none'%3E%3Cpath d='M2 7 Q600 37 1198 7' fill='none' stroke='%23351f13' stroke-width='9' stroke-linecap='round' opacity='.55'/%3E%3Cpath d='M2 4 Q600 34 1198 4' fill='none' stroke='%235b3924' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M2 2 Q600 32 1198 2' fill='none' stroke='%23c89a66' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpath d='M2 5 Q600 35 1198 5' fill='none' stroke='%23e2c49a' stroke-width='.8' stroke-dasharray='2 3' opacity='.9'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  box-shadow:none;
+  transform:none;
+  filter:drop-shadow(0 3px 2px rgba(0,0,0,.35));
+}
+.trust-string::before,
+.trust-string::after{
+  top:0;
+  width:9px;
+  height:9px;
+  background:radial-gradient(circle at 32% 25%,#f0d4a9 0 8%,#a16a3e 40%,#50301d 100%);
+  box-shadow:0 2px 4px rgba(0,0,0,.5),inset 0 1px 1px rgba(255,229,189,.55);
+}
+
+/* A wooden spring peg: two shaped jaws, central metal coil and pin shadow. */
+.trust-peg{
+  top:-29px;
+  width:27px;
+  height:36px;
+  border:0;
+  border-radius:5px 5px 4px 4px;
+  background:
+    linear-gradient(90deg,rgba(48,27,15,.48),transparent 17%,rgba(255,224,178,.30) 43%,transparent 57%,rgba(54,29,15,.38) 100%),
+    repeating-linear-gradient(90deg,#704222 0 2px,#b77b46 2px 5px,#d09a60 5px 7px,#8a552f 7px 10px);
+  box-shadow:
+    2px 5px 7px rgba(0,0,0,.38),
+    inset 0 1px 1px rgba(255,232,198,.65),
+    inset 0 -2px 3px rgba(49,26,12,.35);
+  transform:translateX(-50%) rotate(-1deg);
+}
+.trust-peg::before{
+  left:50%;
+  top:11px;
+  width:18px;
+  height:8px;
+  border:0;
+  border-top:2px solid #d8d9d3;
+  border-bottom:2px solid #737a7a;
+  border-radius:50%;
+  background:
+    radial-gradient(ellipse at center,#e8ece7 0 16%,#747d7d 19% 27%,transparent 30%);
+  box-shadow:0 1px 2px rgba(0,0,0,.45);
+  transform:translateX(-50%) rotate(-8deg);
+}
+.trust-peg::after{
+  left:50%;
+  top:2px;
+  width:21px;
+  height:30px;
+  border:0;
+  border-left:1px solid rgba(255,222,176,.4);
+  border-right:1px solid rgba(57,31,15,.34);
+  border-radius:4px;
+  background:
+    linear-gradient(180deg,rgba(255,220,174,.17),transparent 42%,rgba(49,26,12,.18)),
+    linear-gradient(90deg,transparent 47%,rgba(54,31,18,.42) 49%,rgba(255,220,176,.25) 53%,transparent 57%);
+  transform:translateX(-50%);
+}
+
+/* The print itself gets a crafted paper edge and a more editorial layout. */
+.trust-card{
+  border:1px solid rgba(255,255,255,.76);
+  border-radius:2px;
+  padding:10px 10px 27px;
+  background:
+    linear-gradient(90deg,rgba(116,86,54,.035) 0 1px,transparent 1px 100%),
+    repeating-linear-gradient(0deg,rgba(116,86,54,.025) 0 1px,transparent 1px 4px),
+    linear-gradient(145deg,#fffdf7 0%,#f2eee4 65%,#e7e0d3 100%);
+  box-shadow:
+    0 2px 2px rgba(0,0,0,.18),
+    0 12px 20px rgba(0,0,0,.22),
+    0 28px 42px rgba(0,0,0,.22),
+    inset 0 1px 0 #fff;
+  transform-origin:50% -16px;
+  will-change:transform;
+}
+.trust-card::before{
+  content:"";
+  position:absolute;
+  z-index:2;
+  top:7px;
+  left:7px;
+  right:7px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.92),transparent);
+  pointer-events:none;
+}
+.trust-card:nth-child(1){--trust-angle:-2.25deg}
+.trust-card:nth-child(2){--trust-angle:1.65deg}
+.trust-card:nth-child(3){--trust-angle:-1.15deg}
+
+/* Photographs have richer contrast, a print-like finish and a proper image edge. */
+.trust-photo{
+  overflow:hidden;
+  background:#d8d4c9;
+}
+.trust-photo img{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:1.18/1;
+  object-fit:cover;
+  filter:saturate(1.08) contrast(1.055);
+  transform:scale(1.012);
+  transition:filter .55s ease,transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.trust-photo::after{
+  content:"";
+  position:absolute;
+  z-index:1;
+  inset:0 0 auto;
+  height:72%;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(9,18,24,.26),transparent 28%,transparent 65%,rgba(9,18,24,.23));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);
+}
+.trust-card:nth-child(1) .trust-photo img{object-position:center 48%}
+.trust-card:nth-child(2) .trust-photo img{object-position:center 42%}
+.trust-card:nth-child(3) .trust-photo img{object-position:center 50%}
+.trust-photo-caption{
+  padding:18px 11px 3px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,0));
+}
+.trust-photo-index{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:10px;
+  color:#87613d;
+  font:800 9px/1.2 Arial,Helvetica,sans-serif;
+  letter-spacing:2px;
+}
+.trust-photo-index::after{
+  content:"";
+  display:block;
+  width:27px;
+  height:1px;
+  background:#b58a5b;
+}
+.trust-photo-caption h3{
+  max-width:95%;
+  margin:0 0 9px;
+  color:#172630;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(19px,2vw,25px);
+  font-weight:700;
+  line-height:1.04;
+  letter-spacing:-.45px;
+  text-transform:uppercase;
+}
+.trust-photo-caption p{
+  max-width:34ch;
+  color:#47545a;
+  font-size:13px;
+  line-height:1.58;
+}
+.trust-photo-mark{
+  right:14px;
+  bottom:9px;
+  color:#947653;
+  font-size:8px;
+  letter-spacing:1.8px;
+}
+.trust-card:nth-child(1) .trust-photo-caption{border-top:2px solid #b68a5c}
+.trust-card:nth-child(2) .trust-photo-caption{border-top:2px solid #6f8e91}
+.trust-card:nth-child(3) .trust-photo-caption{border-top:2px solid #9b7657}
+
+/* Pendulum motion is active on touch, tablet and desktop — not only a mouse. */
+@keyframes trust-pendulum{
+  0%,100%{transform:rotate(calc(var(--trust-angle) - 2.2deg))}
+  50%{transform:rotate(calc(var(--trust-angle) + 2.2deg))}
+}
+@keyframes trust-pendulum-mobile{
+  0%,100%{transform:translateX(-50%) rotate(-2.1deg)}
+  50%{transform:translateX(-50%) rotate(2.1deg)}
+}
+@keyframes trust-rope-breathe{
+  0%,100%{filter:drop-shadow(0 3px 2px rgba(0,0,0,.35))}
+  50%{filter:drop-shadow(0 4px 3px rgba(0,0,0,.42))}
+}
+
+/* The swing is tied to viewport visibility, not hover capability. */
+.trust.is-inview .trust-card{
+  animation:trust-pendulum 5.8s cubic-bezier(.45,.05,.55,.95) infinite;
+}
+.trust.is-inview .trust-card:nth-child(2){animation-delay:-1.9s}
+.trust.is-inview .trust-card:nth-child(3){animation-delay:-3.8s}
+.trust.is-inview .trust-string{
+  animation:trust-rope-breathe 5.8s ease-in-out infinite;
+}
+.trust.is-inview .trust-card:hover{
+  animation-play-state:paused;
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+  .trust-card:hover{
+    z-index:5;
+    box-shadow:0 3px 4px rgba(0,0,0,.2),0 22px 36px rgba(0,0,0,.34),0 38px 54px rgba(0,0,0,.24);
+  }
+  .trust-card:hover .trust-photo img{
+    filter:saturate(1.18) contrast(1.08);
+    transform:scale(1.055);
+  }
+}
+
+/* Rotation across the 680px breakpoint re-applies the correct swing geometry. */
+@media(max-width:680px){
+  .trust-string{
+    top:5px;
+    left:5%;
+    right:5%;
+    height:32px;
+  }
+  .trust-card{
+    top:27px;
+    transform-origin:50% -15px;
+    padding:9px 9px 24px;
+  }
+  .trust-peg{
+    top:-27px;
+    width:25px;
+    height:34px;
+  }
+  .trust-peg::after{height:28px}
+  .trust.is-inview .trust-card{
+    animation:trust-pendulum-mobile 5.2s cubic-bezier(.45,.05,.55,.95) infinite;
+  }
+  .trust.is-inview .trust-card:nth-child(2){animation-delay:-1.7s}
+  .trust.is-inview .trust-card:nth-child(3){animation-delay:-3.4s}
+  .trust-photo-caption{padding:15px 9px 3px}
+  .trust-photo-caption h3{font-size:21px}
+}
+@media(max-width:390px){
+  .trust-card{padding:8px 8px 22px}
+  .trust-photo-caption{padding:13px 8px 3px}
+  .trust-photo-caption h3{font-size:19px}
+  .trust-photo-caption p{font-size:12.5px}
+}
+@media(prefers-reduced-motion:reduce){
+  .trust.is-inview .trust-card,
+  .trust.is-inview .trust-string{
+    animation:none!important;
+  }
+  .trust-card{will-change:auto}
+}

@@ -183,3 +183,453 @@ body.home-page .section-heading>p:last-child{
     transition:none!important;
   }
 }
+
+
+/* ==========================================================
+   HOMEPAGE SECTION HEADING PANELS
+   Each major section gets its own visual world — no flat
+   black heading blocks. The colour system stays blue/grey.
+========================================================== */
+.section-heading.heading-panel{
+  --panel-ink:#102b40;
+  --panel-muted:#36566b;
+  --panel-tag:#286d91;
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  width:min(100%,1040px);
+  max-width:none;
+  margin:0 auto clamp(38px,5vw,66px);
+  padding:clamp(34px,4.3vw,62px) clamp(24px,5.2vw,72px);
+  border:1px solid rgba(190,225,239,.48);
+  border-radius:clamp(22px,2.6vw,32px);
+  background:#dcebf2;
+  box-shadow:0 24px 70px rgba(1,14,25,.2),inset 0 1px 0 rgba(255,255,255,.7);
+  text-align:center;
+  color:var(--panel-ink);
+}
+.section-heading.heading-panel::before,
+.section-heading.heading-panel::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  pointer-events:none;
+}
+.section-heading.heading-panel::before{
+  inset:0;
+  opacity:.9;
+}
+.section-heading.heading-panel::after{
+  width:clamp(150px,24vw,290px);
+  aspect-ratio:1;
+  top:-48%;
+  right:-8%;
+  border:1px solid currentColor;
+  border-radius:50%;
+  opacity:.12;
+  box-shadow:0 0 0 18px rgba(255,255,255,.06),0 0 0 38px rgba(255,255,255,.04),0 0 0 60px rgba(255,255,255,.025);
+}
+.section-heading.heading-panel > *{
+  position:relative;
+  z-index:1;
+}
+.section-heading.heading-panel .section-tag{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin:0 auto 20px;
+  padding:9px 14px;
+  border:1px solid rgba(28,91,123,.2);
+  border-radius:999px;
+  background:rgba(255,255,255,.32);
+  color:var(--panel-tag);
+  font:800 10px/1.2 Arial,Helvetica,sans-serif;
+  letter-spacing:2.4px;
+}
+.section-heading.heading-panel .section-tag::before{
+  content:"";
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+  border-radius:50%;
+  background:currentColor;
+  box-shadow:0 0 0 4px rgba(255,255,255,.28),0 0 14px currentColor;
+}
+.section-heading.heading-panel h2{
+  max-width:900px;
+  margin:0 auto 18px;
+  color:var(--panel-ink);
+  font-size:clamp(32px,4.2vw,58px);
+  line-height:1.02;
+  font-weight:900;
+  letter-spacing:clamp(-2px,-.13vw,-.7px);
+  text-wrap:balance;
+  text-shadow:0 1px 0 rgba(255,255,255,.35);
+}
+.section-heading.heading-panel p:last-child{
+  max-width:660px;
+  margin:0 auto;
+  color:var(--panel-muted);
+  font-size:clamp(14px,1.2vw,17px);
+  line-height:1.75;
+  text-wrap:pretty;
+}
+
+/* 01 — THE DIGITAL GAP: bright blueprint glass and fine grid. */
+.section-heading.heading-panel--gap{
+  --panel-ink:#12344a;
+  --panel-muted:#345d73;
+  --panel-tag:#147aa4;
+  border-color:rgba(138,213,239,.75);
+  background:linear-gradient(122deg,#e8f8fd 0%,#b9e4f2 48%,#8cc8df 100%);
+  box-shadow:0 24px 70px rgba(23,109,145,.16),inset 0 1px 0 rgba(255,255,255,.9);
+}
+.section-heading.heading-panel--gap::before{
+  opacity:.42;
+  background:
+    linear-gradient(rgba(33,111,147,.12) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(33,111,147,.12) 1px,transparent 1px),
+    radial-gradient(circle at 12% 18%,rgba(255,255,255,.9),transparent 30%),
+    radial-gradient(circle at 90% 88%,rgba(66,170,205,.22),transparent 34%);
+  background-size:34px 34px,34px 34px,auto,auto;
+}
+.section-heading.heading-panel--gap::after{
+  color:#1d8cb5;
+  right:-5%;
+  top:-55%;
+}
+
+/* 02 — OUR APPROACH: layered ocean glass with a soft light beam. */
+.section-heading.heading-panel--approach{
+  --panel-ink:#f2fbff;
+  --panel-muted:#d1e8f1;
+  --panel-tag:#d5f5ff;
+  border-color:rgba(150,220,240,.5);
+  background:linear-gradient(118deg,#164765 0%,#176b89 48%,#3a91ad 100%);
+  box-shadow:0 24px 70px rgba(0,32,53,.26),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.section-heading.heading-panel--approach::before{
+  background:
+    radial-gradient(ellipse at 12% 0%,rgba(180,239,255,.3),transparent 42%),
+    radial-gradient(ellipse at 100% 100%,rgba(110,207,226,.28),transparent 44%),
+    linear-gradient(135deg,transparent 35%,rgba(255,255,255,.08) 50%,transparent 67%);
+}
+.section-heading.heading-panel--approach::after{
+  color:#d2f5ff;
+  right:-4%;
+  top:-56%;
+  opacity:.2;
+  box-shadow:0 0 0 18px rgba(220,249,255,.08),0 0 0 42px rgba(220,249,255,.05),0 0 0 70px rgba(220,249,255,.03);
+}
+.section-heading.heading-panel--approach .section-tag{
+  border-color:rgba(219,247,255,.28);
+  background:rgba(226,248,255,.12);
+}
+.section-heading.heading-panel--approach h2{
+  text-shadow:0 3px 26px rgba(2,31,48,.24);
+}
+
+/* 03 — INDUSTRIES: silver-blue architecture with diagonal facets. */
+.section-heading.heading-panel--industries{
+  --panel-ink:#1d3448;
+  --panel-muted:#4b6274;
+  --panel-tag:#496f8e;
+  border-color:rgba(202,220,232,.95);
+  background:linear-gradient(132deg,#f0f4f7 0%,#cbd9e4 48%,#a9c0d0 100%);
+  box-shadow:0 24px 70px rgba(9,32,50,.17),inset 0 1px 0 rgba(255,255,255,.95);
+}
+.section-heading.heading-panel--industries::before{
+  opacity:.58;
+  background:
+    linear-gradient(135deg,transparent 0 37%,rgba(255,255,255,.48) 37.2% 37.8%,transparent 38%),
+    linear-gradient(45deg,transparent 0 68%,rgba(68,115,146,.12) 68.2% 68.8%,transparent 69%),
+    repeating-linear-gradient(135deg,rgba(255,255,255,.11) 0 1px,transparent 1px 22px),
+    radial-gradient(ellipse at 4% 100%,rgba(255,255,255,.75),transparent 42%);
+}
+.section-heading.heading-panel--industries::after{
+  color:#5b829f;
+  top:auto;
+  bottom:-62%;
+  right:4%;
+  width:clamp(180px,27vw,330px);
+}
+
+/* 04 — OUR PROCESS: frosted steel, luminous route and checkpoints. */
+.section-heading.heading-panel--process{
+  --panel-ink:#17364b;
+  --panel-muted:#456174;
+  --panel-tag:#267c9e;
+  border-color:rgba(162,207,226,.82);
+  background:linear-gradient(112deg,#e6f0f5 0%,#b8d2df 50%,#dce9ef 100%);
+  box-shadow:0 24px 70px rgba(9,43,64,.18),inset 0 1px 0 rgba(255,255,255,.92);
+}
+.section-heading.heading-panel--process::before{
+  opacity:.8;
+  background:
+    radial-gradient(circle at 18% 80%,rgba(255,255,255,.86) 0 4px,transparent 5px),
+    radial-gradient(circle at 42% 80%,rgba(255,255,255,.86) 0 4px,transparent 5px),
+    radial-gradient(circle at 66% 80%,rgba(255,255,255,.86) 0 4px,transparent 5px),
+    radial-gradient(circle at 90% 80%,rgba(255,255,255,.86) 0 4px,transparent 5px),
+    linear-gradient(90deg,transparent 8%,rgba(69,150,183,.2) 18%,rgba(69,150,183,.2) 90%,transparent 96%) 0 80%/100% 1px no-repeat,
+    radial-gradient(ellipse at 100% 0%,rgba(113,195,222,.24),transparent 45%);
+}
+.section-heading.heading-panel--process::after{
+  color:#5d9fba;
+  top:-60%;
+  right:auto;
+  left:-8%;
+}
+
+/* 05 — WHY ALIENWAY: confident electric blue with a moving-light feel. */
+.section-heading.heading-panel--why{
+  --panel-ink:#f5fbff;
+  --panel-muted:#d7eafa;
+  --panel-tag:#e1f4ff;
+  border-color:rgba(157,207,245,.58);
+  background:linear-gradient(118deg,#1b477b 0%,#236da5 52%,#3b8fbd 100%);
+  box-shadow:0 24px 70px rgba(3,31,68,.28),inset 0 1px 0 rgba(255,255,255,.22);
+}
+.section-heading.heading-panel--why::before{
+  background:
+    radial-gradient(ellipse at 15% 100%,rgba(122,199,245,.34),transparent 40%),
+    radial-gradient(ellipse at 90% 8%,rgba(192,231,255,.24),transparent 35%),
+    repeating-linear-gradient(125deg,transparent 0 42px,rgba(255,255,255,.045) 43px 44px,transparent 45px 84px);
+}
+.section-heading.heading-panel--why::after{
+  color:#d6efff;
+  right:-2%;
+  top:-48%;
+  opacity:.2;
+  box-shadow:0 0 0 18px rgba(220,243,255,.08),0 0 0 42px rgba(220,243,255,.05),0 0 0 70px rgba(220,243,255,.03);
+}
+.section-heading.heading-panel--why .section-tag{
+  border-color:rgba(225,245,255,.3);
+  background:rgba(226,246,255,.12);
+}
+
+/* 06 — BUILT ON TRUST: calm pearl-blue, soft light and a fine dot field. */
+.section-heading.heading-panel--trust{
+  --panel-ink:#1c3448;
+  --panel-muted:#4b6375;
+  --panel-tag:#467c9c;
+  border-color:rgba(192,218,230,.92);
+  background:linear-gradient(130deg,#edf5f8 0%,#d1e4eb 52%,#b7d2dc 100%);
+  box-shadow:0 24px 70px rgba(8,38,54,.17),inset 0 1px 0 rgba(255,255,255,.95);
+}
+.section-heading.heading-panel--trust::before{
+  opacity:.7;
+  background:
+    radial-gradient(rgba(55,120,150,.16) .8px,transparent .9px) 0 0/18px 18px,
+    radial-gradient(ellipse at 10% 0%,rgba(255,255,255,.9),transparent 42%),
+    radial-gradient(ellipse at 100% 100%,rgba(98,171,192,.2),transparent 45%);
+}
+.section-heading.heading-panel--trust::after{
+  color:#6099b3;
+  right:auto;
+  left:-7%;
+  top:-58%;
+}
+.section-heading.heading-panel--trust .section-tag{
+  border-color:rgba(61,119,147,.2);
+  background:rgba(255,255,255,.42);
+}
+
+/* Responsive composition: retain the individual artwork on small screens. */
+@media(max-width:680px){
+  .section-heading.heading-panel{
+    width:100%;
+    margin-bottom:clamp(30px,7vw,42px);
+    padding:30px 21px 32px;
+    border-radius:22px;
+  }
+  .section-heading.heading-panel .section-tag{
+    margin-bottom:16px;
+    padding:8px 11px;
+    font-size:9px;
+    letter-spacing:1.8px;
+  }
+  .section-heading.heading-panel h2{
+    font-size:clamp(28px,7.2vw,39px);
+    line-height:1.06;
+    letter-spacing:-1.15px;
+    margin-bottom:14px;
+  }
+  .section-heading.heading-panel p:last-child{
+    font-size:14px;
+    line-height:1.7;
+  }
+  .section-heading.heading-panel::after{
+    width:190px;
+    right:-17%;
+    top:-38%;
+  }
+}
+@media(max-width:360px){
+  .section-heading.heading-panel{
+    padding:27px 17px 29px;
+    border-radius:19px;
+  }
+  .section-heading.heading-panel h2{
+    font-size:28px;
+  }
+  .section-heading.heading-panel .section-tag{
+    letter-spacing:1.4px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .section-heading.heading-panel,
+  .section-heading.heading-panel::before,
+  .section-heading.heading-panel::after{
+    animation:none!important;
+    transition:none!important;
+  }
+}
+
+
+
+/* ==========================================================
+   UNIQUE SECTION WORLDS — FINAL CASCADE OVERRIDES
+   These rules intentionally follow the original high-contrast
+   heading polish so none of the labels sit on black anymore.
+========================================================== */
+body.home-page .section-heading.heading-panel{
+  width:min(100%,1040px);
+  max-width:none;
+  padding:clamp(34px,4.3vw,62px) clamp(24px,5.2vw,72px);
+  border-radius:clamp(22px,2.6vw,32px);
+}
+body.home-page .section-heading.heading-panel .section-tag{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  max-width:100%;
+  margin:0 auto 20px;
+  padding:9px 15px;
+  border:1px solid var(--panel-tag-border);
+  border-radius:999px;
+  background:var(--panel-tag-bg);
+  color:var(--panel-tag-ink);
+  -webkit-text-fill-color:var(--panel-tag-ink);
+  font-family:'Fredoka','Arial Black',Arial,Helvetica,sans-serif;
+  font-size:clamp(12px,1.15vw,15px);
+  font-weight:900;
+  line-height:1.2;
+  letter-spacing:2px;
+  text-shadow:none;
+  box-shadow:0 7px 20px rgba(9,36,53,.12),inset 0 1px 0 rgba(255,255,255,.22);
+}
+body.home-page .section-heading.heading-panel .section-tag::before{
+  content:"";
+  display:block;
+  flex:0 0 7px;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--panel-accent);
+  box-shadow:0 0 0 4px rgba(255,255,255,.2),0 0 13px var(--panel-accent);
+}
+body.home-page .section-heading.heading-panel h2{
+  color:var(--panel-ink);
+  -webkit-text-fill-color:var(--panel-ink);
+  background:none;
+  background-image:none;
+  text-shadow:0 1px 0 rgba(255,255,255,.18);
+}
+body.home-page .section-heading.heading-panel h2::after{
+  background:var(--panel-accent);
+  box-shadow:0 0 0 2px color-mix(in srgb,var(--panel-accent) 18%,transparent),0 0 18px color-mix(in srgb,var(--panel-accent) 58%,transparent);
+}
+body.home-page .section-heading.heading-panel>p:last-child{
+  color:var(--panel-muted);
+  text-shadow:none;
+}
+
+/* Each heading gets a different label, ink and accent treatment. */
+body.home-page .section-heading.heading-panel--gap{
+  --panel-tag-bg:#187da5;
+  --panel-tag-ink:#f5fbff;
+  --panel-tag-border:rgba(16,102,138,.28);
+  --panel-accent:#2a96b8;
+}
+body.home-page .section-heading.heading-panel--approach{
+  --panel-tag-bg:rgba(8,39,58,.25);
+  --panel-tag-ink:#e7faff;
+  --panel-tag-border:rgba(225,247,255,.35);
+  --panel-accent:#a5eaff;
+}
+body.home-page .section-heading.heading-panel--industries{
+  --panel-tag-bg:#577a95;
+  --panel-tag-ink:#f8fcff;
+  --panel-tag-border:rgba(49,91,120,.35);
+  --panel-accent:#567f9a;
+}
+body.home-page .section-heading.heading-panel--process{
+  --panel-tag-bg:#357e9b;
+  --panel-tag-ink:#f7fcff;
+  --panel-tag-border:rgba(39,110,140,.35);
+  --panel-accent:#2b92b3;
+}
+body.home-page .section-heading.heading-panel--why{
+  --panel-tag-bg:rgba(11,42,79,.32);
+  --panel-tag-ink:#e8f7ff;
+  --panel-tag-border:rgba(213,239,255,.35);
+  --panel-accent:#9bdcff;
+}
+body.home-page .section-heading.heading-panel--trust{
+  --panel-tag-bg:#5b8197;
+  --panel-tag-ink:#f5fbff;
+  --panel-tag-border:rgba(66,116,141,.35);
+  --panel-accent:#5b9bb4;
+}
+
+@media(max-width:800px){
+  body.home-page .section-heading.heading-panel{
+    padding:30px 21px 32px;
+  }
+  body.home-page .section-heading.heading-panel .section-tag{
+    margin-bottom:16px;
+    padding:8px 12px;
+    font-size:clamp(11px,3vw,13px);
+    letter-spacing:1.6px;
+  }
+  body.home-page .section-heading.heading-panel h2{
+    font-size:clamp(28px,7.2vw,39px);
+    line-height:1.06;
+    letter-spacing:-1.15px;
+    margin-bottom:14px;
+  }
+  body.home-page .section-heading.heading-panel>p:last-child{
+    font-size:14px;
+    line-height:1.7;
+  }
+}
+@media(max-width:360px){
+  body.home-page .section-heading.heading-panel{
+    padding:27px 17px 29px;
+    border-radius:19px;
+  }
+  body.home-page .section-heading.heading-panel .section-tag{
+    gap:8px;
+    padding:8px 10px;
+    font-size:11px;
+    letter-spacing:1.2px;
+  }
+  body.home-page .section-heading.heading-panel h2{
+    font-size:28px;
+  }
+}
+
+
+/* Brighter, distinct label fills — avoid black-on-black capsules. */
+body.home-page .section-heading.heading-panel--approach{
+  --panel-tag-bg:#c5edf6;
+  --panel-tag-ink:#174e68;
+  --panel-tag-border:rgba(226,250,255,.9);
+}
+body.home-page .section-heading.heading-panel--why{
+  --panel-tag-bg:#d6edff;
+  --panel-tag-ink:#1d5680;
+  --panel-tag-border:rgba(230,246,255,.9);
+}

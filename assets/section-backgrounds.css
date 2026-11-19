@@ -1,0 +1,300 @@
+/* ==========================================================
+   ALIENWAY PRODUCTION — FULL-BLEED HOMEPAGE SECTION WORLDS
+   No heading cards, panels, borders or rounded containers.
+   Each section gets its own photographic atmosphere.
+   Unsplash free-photo sources are credited per section below.
+========================================================== */
+
+/* Shared image treatment. Keep the photo visible while allowing
+   the lower part of each long section to settle into the site base. */
+body.home-page #digital-gap,
+body.home-page #our-approach,
+body.home-page #our-industries,
+body.home-page #our-process,
+body.home-page .why-alienway,
+body.home-page .trust{
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-attachment:scroll;
+  background-color:#0b1722;
+}
+
+/* THE DIGITAL GAP — blue-hour city: the online world is already moving.
+   Photo: XS Xue / Unsplash — free Unsplash License. */
+body.home-page #digital-gap{
+  --awp-heading-accent:#8bdcf2;
+  --awp-heading-ink:#f5fbff;
+  --awp-heading-copy:#dceaf2;
+  background-image:
+    linear-gradient(180deg,rgba(5,17,31,.25) 0%,rgba(5,17,31,.52) 34%,rgba(6,18,31,.88) 72%,#0b1722 100%),
+    url("https://images.unsplash.com/photo-1782743549510-926bf57fc98c?auto=format&fit=crop&w=2000&h=1100&q=80");
+  background-position:center 38%;
+}
+
+/* OUR APPROACH — flowing blue light: design, strategy and technology.
+   Photo: 灿雄 邱 / Unsplash — free Unsplash License. */
+body.home-page #our-approach{
+  --awp-heading-accent:#a9dcff;
+  --awp-heading-ink:#f7fbff;
+  --awp-heading-copy:#d9e9f5;
+  background-image:
+    linear-gradient(180deg,rgba(5,23,42,.23) 0%,rgba(5,23,42,.54) 38%,rgba(6,20,35,.89) 74%,#0b1722 100%),
+    url("https://images.unsplash.com/photo-1773053525998-8cb667020fa7?auto=format&fit=crop&w=2000&h=1100&q=80");
+  background-position:center 42%;
+}
+
+/* INDUSTRIES — reflective glass architecture, with a brighter opening.
+   Photo: Olga Schraven / Unsplash — free Unsplash License. */
+body.home-page #our-industries{
+  --awp-heading-accent:#236f94;
+  --awp-heading-ink:#15384d;
+  --awp-heading-copy:#294e63;
+  --awp-heading-shadow:none;
+  --awp-copy-shadow:none;
+  background-image:
+    linear-gradient(180deg,rgba(224,239,247,.26) 0%,rgba(202,224,237,.48) 30%,rgba(10,28,43,.82) 70%,#0b1722 100%),
+    url("https://images.unsplash.com/photo-1758830596893-7aa7c7caf245?auto=format&fit=crop&w=2000&h=1100&q=80");
+  background-position:center 34%;
+}
+
+/* OUR PROCESS — misty forest path: a clear journey from first step to launch.
+   Photo: Mike Tilley / Unsplash — free Unsplash License. */
+body.home-page #our-process{
+  --awp-heading-accent:#b9e6d7;
+  --awp-heading-ink:#f5fbf8;
+  --awp-heading-copy:#dcebe5;
+  background-image:
+    linear-gradient(180deg,rgba(7,25,27,.27) 0%,rgba(7,25,27,.57) 38%,rgba(6,21,29,.9) 74%,#0b1722 100%),
+    url("https://images.unsplash.com/photo-1786488868167-3d7c7845fba2?auto=format&fit=crop&w=2000&h=1100&q=80");
+  background-position:center 40%;
+}
+
+/* WHY ALIENWAY — turquoise surf: movement, energy and a different direction.
+   Photo: Hameen Reynolds / Unsplash — free Unsplash License. */
+body.home-page .why-alienway{
+  --awp-heading-accent:#9ee6f5;
+  --awp-heading-ink:#f7fcff;
+  --awp-heading-copy:#deedf4;
+  background-image:
+    linear-gradient(180deg,rgba(5,24,42,.27) 0%,rgba(5,24,42,.58) 42%,rgba(6,21,36,.9) 76%,#0b1722 100%),
+    url("https://images.unsplash.com/photo-1744648617182-519c4bf39e30?auto=format&fit=crop&w=2000&h=1100&q=80");
+  background-position:center 45%;
+}
+
+/* BUILT ON TRUST — calm open horizon: a lighter, more confident finish.
+   Photo: Yunfan Li / Unsplash — free Unsplash License. */
+body.home-page .trust{
+  --awp-heading-accent:#1f789d;
+  --awp-heading-ink:#17394d;
+  --awp-heading-copy:#31566b;
+  --awp-heading-shadow:none;
+  --awp-copy-shadow:none;
+  background-image:
+    linear-gradient(180deg,rgba(222,239,247,.2) 0%,rgba(196,222,235,.44) 30%,rgba(10,28,43,.84) 70%,#0b1722 100%),
+    url("https://images.unsplash.com/photo-1769779671837-713b7e4c6872?auto=format&fit=crop&w=2000&h=1100&q=80");
+  background-position:center 35%;
+}
+
+/* The heading copy floats directly on the section background.
+   Explicitly remove the previous black tag capsule treatment. */
+body.home-page #digital-gap .section-heading,
+body.home-page #our-approach .section-heading,
+body.home-page #our-industries .section-heading,
+body.home-page #our-process .section-heading,
+body.home-page .why-alienway .section-heading,
+body.home-page .trust .section-heading{
+  width:min(100%,980px);
+  max-width:980px;
+  margin:0 auto clamp(38px,5vw,66px);
+  padding:0 clamp(6px,1.6vw,18px);
+  text-align:center;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+
+body.home-page #digital-gap .section-heading .section-tag,
+body.home-page #our-approach .section-heading .section-tag,
+body.home-page #our-industries .section-heading .section-tag,
+body.home-page #our-process .section-heading .section-tag,
+body.home-page .why-alienway .section-heading .section-tag,
+body.home-page .trust .section-heading .section-tag{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  max-width:100%;
+  margin:0 auto clamp(17px,2vw,23px);
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:var(--awp-heading-accent)!important;
+  -webkit-text-fill-color:var(--awp-heading-accent)!important;
+  font-family:'Fredoka','Arial Black',Arial,Helvetica,sans-serif;
+  font-size:clamp(12px,1.15vw,15px);
+  font-weight:900;
+  line-height:1.3;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  text-shadow:var(--awp-heading-shadow,0 2px 14px rgba(0,0,0,.38));
+}
+
+body.home-page #digital-gap .section-heading .section-tag::before,
+body.home-page #our-approach .section-heading .section-tag::before,
+body.home-page #our-industries .section-heading .section-tag::before,
+body.home-page #our-process .section-heading .section-tag::before,
+body.home-page .why-alienway .section-heading .section-tag::before,
+body.home-page .trust .section-heading .section-tag::before{
+  content:"";
+  display:block;
+  flex:0 0 6px;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:currentColor;
+  box-shadow:0 0 0 4px rgba(255,255,255,.13),0 0 13px currentColor;
+}
+
+body.home-page #digital-gap .section-heading .section-tag::after,
+body.home-page #our-approach .section-heading .section-tag::after,
+body.home-page #our-industries .section-heading .section-tag::after,
+body.home-page #our-process .section-heading .section-tag::after,
+body.home-page .why-alienway .section-heading .section-tag::after,
+body.home-page .trust .section-heading .section-tag::after{
+  content:none!important;
+  display:none!important;
+}
+
+body.home-page #digital-gap .section-heading h2,
+body.home-page #our-approach .section-heading h2,
+body.home-page #our-industries .section-heading h2,
+body.home-page #our-process .section-heading h2,
+body.home-page .why-alienway .section-heading h2,
+body.home-page .trust .section-heading h2{
+  max-width:960px;
+  margin:0 auto 18px;
+  color:var(--awp-heading-ink)!important;
+  -webkit-text-fill-color:var(--awp-heading-ink)!important;
+  background:none!important;
+  background-image:none!important;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:clamp(34px,5.35vw,68px);
+  font-weight:900;
+  line-height:1.02;
+  letter-spacing:-.055em;
+  text-align:center;
+  text-wrap:balance;
+  overflow-wrap:break-word;
+  text-shadow:var(--awp-heading-shadow,0 3px 24px rgba(0,0,0,.38));
+}
+
+body.home-page #digital-gap .section-heading h2::after,
+body.home-page #our-approach .section-heading h2::after,
+body.home-page #our-industries .section-heading h2::after,
+body.home-page #our-process .section-heading h2::after,
+body.home-page .why-alienway .section-heading h2::after,
+body.home-page .trust .section-heading h2::after{
+  content:"";
+  display:block;
+  width:clamp(48px,5vw,66px);
+  height:3px;
+  margin:19px auto 0;
+  border-radius:99px;
+  background:var(--awp-heading-accent);
+  box-shadow:0 0 17px color-mix(in srgb,var(--awp-heading-accent) 42%,transparent);
+}
+
+body.home-page #digital-gap .section-heading>p:last-child,
+body.home-page #our-approach .section-heading>p:last-child,
+body.home-page #our-industries .section-heading>p:last-child,
+body.home-page #our-process .section-heading>p:last-child,
+body.home-page .why-alienway .section-heading>p:last-child,
+body.home-page .trust .section-heading>p:last-child{
+  max-width:720px;
+  margin:0 auto;
+  color:var(--awp-heading-copy)!important;
+  font-size:clamp(14px,1.35vw,17px);
+  font-weight:500;
+  line-height:1.75;
+  text-wrap:pretty;
+  text-shadow:var(--awp-copy-shadow,0 2px 12px rgba(0,0,0,.36));
+}
+
+@media(max-width:680px){
+  body.home-page #digital-gap,
+  body.home-page #our-approach,
+  body.home-page #our-industries,
+  body.home-page #our-process,
+  body.home-page .why-alienway,
+  body.home-page .trust{
+    background-position:center 32%;
+  }
+
+  body.home-page #digital-gap .section-heading,
+  body.home-page #our-approach .section-heading,
+  body.home-page #our-industries .section-heading,
+  body.home-page #our-process .section-heading,
+  body.home-page .why-alienway .section-heading,
+  body.home-page .trust .section-heading{
+    margin-bottom:clamp(32px,7vw,44px);
+    padding:0 5px;
+  }
+
+  body.home-page #digital-gap .section-heading .section-tag,
+  body.home-page #our-approach .section-heading .section-tag,
+  body.home-page #our-industries .section-heading .section-tag,
+  body.home-page #our-process .section-heading .section-tag,
+  body.home-page .why-alienway .section-heading .section-tag,
+  body.home-page .trust .section-heading .section-tag{
+    margin-bottom:16px;
+    font-size:11px;
+    letter-spacing:1.9px;
+  }
+
+  body.home-page #digital-gap .section-heading h2,
+  body.home-page #our-approach .section-heading h2,
+  body.home-page #our-industries .section-heading h2,
+  body.home-page #our-process .section-heading h2,
+  body.home-page .why-alienway .section-heading h2,
+  body.home-page .trust .section-heading h2{
+    font-size:clamp(29px,8vw,42px);
+    line-height:1.06;
+    letter-spacing:-1.25px;
+    margin-bottom:15px;
+  }
+
+  body.home-page #digital-gap .section-heading h2::after,
+  body.home-page #our-approach .section-heading h2::after,
+  body.home-page #our-industries .section-heading h2::after,
+  body.home-page #our-process .section-heading h2::after,
+  body.home-page .why-alienway .section-heading h2::after,
+  body.home-page .trust .section-heading h2::after{
+    width:48px;
+    height:3px;
+    margin-top:15px;
+  }
+
+  body.home-page #digital-gap .section-heading>p:last-child,
+  body.home-page #our-approach .section-heading>p:last-child,
+  body.home-page #our-industries .section-heading>p:last-child,
+  body.home-page #our-process .section-heading>p:last-child,
+  body.home-page .why-alienway .section-heading>p:last-child,
+  body.home-page .trust .section-heading>p:last-child{
+    font-size:14px;
+    line-height:1.68;
+  }
+}
+
+@media(max-width:360px){
+  body.home-page #digital-gap .section-heading h2,
+  body.home-page #our-approach .section-heading h2,
+  body.home-page #our-industries .section-heading h2,
+  body.home-page #our-process .section-heading h2,
+  body.home-page .why-alienway .section-heading h2,
+  body.home-page .trust .section-heading h2{
+    font-size:28px;
+  }
+}

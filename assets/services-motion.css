@@ -39,3 +39,46 @@
 @media (prefers-reduced-motion: reduce) {
   :is(.service-large, .industry-detail-card, .process-card):hover { transform: none; }
 }
+
+.services-view .hero-tag,
+.services-view .section-tag {
+  display: block;
+  padding: 0;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--section-ink, #9edaf0);
+  text-shadow: none;
+  font: 900 clamp(2rem, calc(1.25rem + 3.1vw), 4rem)/1.05 'Archivo Black', 'Arial Black', system-ui, sans-serif;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+  margin: 0 0 clamp(2.5rem, calc(2rem + 2vw), 4rem);
+}
+.services-view .services-page { --section-ink: #91dfc9; }
+.services-view .process { --section-ink: #c6acf0; }
+.services-view .cta { --section-ink: #f1c786; }
+.services-view .cta-box {
+  background: radial-gradient(ellipse at top right, #443a2d 0, transparent 60%), #15212d;
+}
+.services-view .cta-buttons .button:focus-visible { outline-offset: 5px; }
+.services-view .service-track { scroll-padding-inline: .25rem; }
+.services-view :is(.industry-cards, .process-grid).service-track {
+  grid-template-columns: none;
+  grid-auto-columns: min(84%, 28rem);
+  max-width: 72rem;
+  margin-inline: auto;
+}
+.services-view :is(.industry-detail-card, .process-card) {
+  min-width: 0;
+  scroll-snap-align: start;
+  background: linear-gradient(145deg, #1f353d, #14222d 70%);
+  border-top: 2px solid var(--section-ink);
+}
+.services-view .process-card {
+  background: linear-gradient(150deg, #302c40, #17212d 70%);
+}
+.services-view .process-card > span { color: var(--section-ink); }
+.services-view .service-controls { max-width: 72rem; margin-inline: auto; }
+@media (min-width: 1000px) {
+  .services-view .industry-cards.service-track { grid-auto-columns: minmax(0, 1fr); }
+  .services-view .process-grid.service-track { grid-auto-columns: minmax(0, 1fr); }
+}

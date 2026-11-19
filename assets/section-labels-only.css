@@ -11,7 +11,7 @@ body.home-page :is(#digital-gap, #our-approach, #our-industries, #our-process, .
   box-sizing: border-box;
   width: fit-content;
   max-width: 100%;
-  margin: 0 auto clamp(1.625rem, 3vw, 2.25rem) !important;
+  margin: 0 auto clamp(2.5rem, calc(2rem + 2vw), 4rem) !important;
   padding: 0 !important;
   border: 0 !important;
   border-radius: 0 !important;

@@ -21,6 +21,8 @@
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#090d14">
   <link rel="stylesheet" href="assets/footer-alive.css?v=20261118-final2">
+  <link rel="stylesheet" href="assets/services-motion.css">
+  <script src="assets/services-motion.js" defer></script>
 </head>
 
 
@@ -130,7 +132,8 @@ and your goals.
 <!-- SERVICES LIST START -->
 
 
-<section class="services-page">
+<section class="services-page service-showcase" aria-label="Our services">
+<div class="service-track" id="service-track" tabindex="0" role="region" aria-label="Browse four services">
 
 
 <div class="service-large">
@@ -209,6 +212,11 @@ updates, improvements and changes as your business grows.
 
 
 
+</div>
+<div class="service-controls" hidden>
+  <button type="button" data-step="-1" aria-controls="service-track">Previous</button>
+  <button type="button" data-step="1" aria-controls="service-track">Next</button>
+</div>
 </section>
 
 

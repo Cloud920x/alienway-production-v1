@@ -20,9 +20,9 @@
   align-items:start;
   gap:clamp(38px,6vw,92px);
   background:
-    radial-gradient(ellipse at 12% 22%,rgba(61,137,175,.18),transparent 36%),
-    radial-gradient(ellipse at 92% 82%,rgba(77,119,151,.15),transparent 34%),
-    linear-gradient(145deg,#0b1723 0%,#122638 52%,#0a1622 100%);
+    radial-gradient(ellipse at 12% 22%,rgba(61,137,175,.12),transparent 36%),
+    radial-gradient(ellipse at 92% 82%,rgba(77,119,151,.10),transparent 34%),
+    linear-gradient(145deg,#0b1723 0%,#102131 52%,#0a1622 100%);
 }
 .project-starter::before,
 .project-starter::after{

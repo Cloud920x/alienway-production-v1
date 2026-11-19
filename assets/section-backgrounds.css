@@ -26,7 +26,7 @@ body.home-page #digital-gap{
   --awp-heading-ink:#f5fbff;
   --awp-heading-copy:#dceaf2;
   background-image:
-    linear-gradient(180deg,rgba(5,17,31,.25) 0%,rgba(5,17,31,.52) 34%,rgba(6,18,31,.88) 72%,#0b1722 100%),
+    linear-gradient(180deg,rgba(5,17,31,.64) 0%,rgba(5,17,31,.72) 34%,rgba(6,18,31,.88) 72%,#0b1722 100%),
     url("https://images.unsplash.com/photo-1782743549510-926bf57fc98c?auto=format&fit=crop&w=2000&h=1100&q=80");
   background-position:center 38%;
 }
@@ -38,21 +38,21 @@ body.home-page #our-approach{
   --awp-heading-ink:#f7fbff;
   --awp-heading-copy:#d9e9f5;
   background-image:
-    linear-gradient(180deg,rgba(5,23,42,.23) 0%,rgba(5,23,42,.54) 38%,rgba(6,20,35,.89) 74%,#0b1722 100%),
+    linear-gradient(180deg,rgba(5,23,42,.62) 0%,rgba(5,23,42,.72) 38%,rgba(6,20,35,.89) 74%,#0b1722 100%),
     url("https://images.unsplash.com/photo-1773053525998-8cb667020fa7?auto=format&fit=crop&w=2000&h=1100&q=80");
   background-position:center 42%;
 }
 
-/* INDUSTRIES — reflective glass architecture, with a brighter opening.
+/* INDUSTRIES — reflective glass architecture, behind a slate overlay.
    Photo: Olga Schraven / Unsplash — free Unsplash License. */
 body.home-page #our-industries{
-  --awp-heading-accent:#236f94;
-  --awp-heading-ink:#15384d;
-  --awp-heading-copy:#294e63;
+  --awp-heading-accent:#91caff;
+  --awp-heading-ink:#f3f8ff;
+  --awp-heading-copy:#d9e6ef;
   --awp-heading-shadow:none;
   --awp-copy-shadow:none;
   background-image:
-    linear-gradient(180deg,rgba(224,239,247,.26) 0%,rgba(202,224,237,.48) 30%,rgba(10,28,43,.82) 70%,#0b1722 100%),
+    linear-gradient(180deg,rgba(16,32,48,.72) 0%,rgba(16,32,48,.76) 30%,rgba(10,28,43,.82) 70%,#0b1722 100%),
     url("https://images.unsplash.com/photo-1758830596893-7aa7c7caf245?auto=format&fit=crop&w=2000&h=1100&q=80");
   background-position:center 34%;
 }
@@ -64,7 +64,7 @@ body.home-page #our-process{
   --awp-heading-ink:#f5fbf8;
   --awp-heading-copy:#dcebe5;
   background-image:
-    linear-gradient(180deg,rgba(7,25,27,.27) 0%,rgba(7,25,27,.57) 38%,rgba(6,21,29,.9) 74%,#0b1722 100%),
+    linear-gradient(180deg,rgba(7,25,27,.64) 0%,rgba(7,25,27,.72) 38%,rgba(6,21,29,.9) 74%,#0b1722 100%),
     url("https://images.unsplash.com/photo-1786488868167-3d7c7845fba2?auto=format&fit=crop&w=2000&h=1100&q=80");
   background-position:center 40%;
 }
@@ -76,21 +76,21 @@ body.home-page .why-alienway{
   --awp-heading-ink:#f7fcff;
   --awp-heading-copy:#deedf4;
   background-image:
-    linear-gradient(180deg,rgba(5,24,42,.16) 0%,rgba(5,24,42,.43) 42%,rgba(6,21,36,.82) 76%,#0b1722 100%),
+    linear-gradient(180deg,rgba(5,24,42,.65) 0%,rgba(5,24,42,.72) 42%,rgba(6,21,36,.82) 76%,#0b1722 100%),
     url("https://images.unsplash.com/photo-1744648617182-519c4bf39e30?auto=format&fit=crop&w=2000&h=1100&q=80");
   background-position:center 45%;
 }
 
-/* BUILT ON TRUST — calm open horizon: a lighter, more confident finish.
+/* BUILT ON TRUST — calm open horizon: under a muted blue-grey overlay.
    Photo: Yunfan Li / Unsplash — free Unsplash License. */
 body.home-page .trust{
-  --awp-heading-accent:#1f789d;
-  --awp-heading-ink:#17394d;
-  --awp-heading-copy:#31566b;
+  --awp-heading-accent:#f1c780;
+  --awp-heading-ink:#faf7f1;
+  --awp-heading-copy:#e4e7e8;
   --awp-heading-shadow:none;
   --awp-copy-shadow:none;
   background-image:
-    linear-gradient(180deg,rgba(222,239,247,.2) 0%,rgba(196,222,235,.44) 30%,rgba(10,28,43,.84) 70%,#0b1722 100%),
+    linear-gradient(180deg,rgba(20,37,50,.72) 0%,rgba(20,37,50,.76) 30%,rgba(10,28,43,.84) 70%,#0b1722 100%),
     url("https://images.unsplash.com/photo-1769779671837-713b7e4c6872?auto=format&fit=crop&w=2000&h=1100&q=80");
   background-position:center 35%;
 }

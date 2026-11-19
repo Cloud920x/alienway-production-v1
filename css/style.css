@@ -190,7 +190,7 @@ a {
   linear-gradient(
   120deg,
   rgba(9,13,20,.95),
-  rgba(9,13,20,.65)
+  rgba(9,13,20,.77)
   ),
 
   url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=80")
@@ -1389,7 +1389,7 @@ gap:40px;
   linear-gradient(
   120deg,
   rgba(9,13,20,.95),
-  rgba(9,13,20,.65)
+  rgba(9,13,20,.77)
   ),
 
   url("https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1800&q=80")
@@ -1748,7 +1748,7 @@ background:
 linear-gradient(
 120deg,
 rgba(9,13,20,.95),
-rgba(9,13,20,.65)
+rgba(9,13,20,.77)
 ),
 
 url("https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=80")
@@ -2453,7 +2453,7 @@ background:
 linear-gradient(
 90deg,
 rgba(8,10,15,.96),
-rgba(8,10,15,.55),
+rgba(8,10,15,.70),
 rgba(8,10,15,.85)
 ),
 
@@ -3049,11 +3049,7 @@ z-index:2;
 }
 
 
-.industry-section {
 
-scroll-margin-top:80px;
-
-}
 
 /* ===================================
    PREMIUM CTA
@@ -3445,7 +3441,7 @@ margin-bottom:25px;
     linear-gradient(
     120deg,
     rgba(9,13,20,.95),
-    rgba(9,13,20,.65)
+    rgba(9,13,20,.77)
     ),
 
     url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=80")
@@ -3793,12 +3789,12 @@ font-size:45px;
    FINAL RESPONSIVE POLISH — ALIENWAY
    Shared layout safety across screen sizes
 =================================== */
-html { scroll-padding-top: 90px; }
+
 body { min-width: 0; }
 img, video, iframe { max-width: 100%; }
 button, input, textarea, select { max-width: 100%; }
 p, h1, h2, h3, h4, a, span { overflow-wrap: anywhere; }
-section, footer { scroll-margin-top: 84px; }
+
 :focus-visible { outline: 2px solid rgba(255,255,255,.9); outline-offset: 4px; }
 .header { gap: 18px; }
 .logo { flex: 0 0 auto; min-width: 0; }
@@ -3904,7 +3900,7 @@ section, footer { scroll-margin-top: 84px; }
 @media (max-width: 480px) {
   .header { padding: 14px 15px; }
   .header .nav { gap: 7px 13px; }
-  .header .nav a { font-size: 11px; }
+
   .header .nav-button { padding: 8px 10px; font-size: 9px; }
   .hero { padding: 62px 18px; }
   .hero h1 { font-size: clamp(37px, 10.5vw, 52px); letter-spacing: -1.2px; }
@@ -3952,13 +3948,14 @@ section, footer { scroll-margin-top: 84px; }
 .contact-form [hidden] { display: none; }
 .contact-info a { color: inherit; text-underline-offset: 4px; }
 @media (max-width:800px) {
-  .header .nav { gap: 4px 18px; }
-  .header .nav a { min-height: 40px; display: inline-flex; align-items: center; }
+  html { --header-clearance: 9rem; }
+  .header .nav { gap: 4px 8px; justify-content: space-between; }
+  .header .nav a { min-height: 44px; min-width: 44px; justify-content: center; font-size: 13px; display: inline-flex; align-items: center; }
   .contact-form input, .contact-form textarea { font-size: 16px; }
 }
 
 .contact-form input, .contact-form textarea { font-family: inherit; }
-@media(max-width:800px){html{scroll-padding-top:150px}}
+
 
 
 /* ===================================
@@ -4734,7 +4731,7 @@ section, footer { scroll-margin-top: 84px; }
 }
 
 html{
-  scroll-padding-top:96px;
+  scroll-padding-top:var(--header-clearance, 6rem);
   -webkit-text-size-adjust:100%;
 }
 
@@ -4757,9 +4754,7 @@ p{
   text-wrap:pretty;
 }
 
-section[id],footer[id]{
-  scroll-margin-top:96px;
-}
+
 
 :focus-visible{
   outline:2px solid #a9dff1;

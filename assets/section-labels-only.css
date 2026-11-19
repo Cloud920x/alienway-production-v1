@@ -1,10 +1,10 @@
 /* Accent colours for the six homepage section labels. */
 body.home-page #digital-gap .section-heading > .section-tag { --label-ink: #ff998a; }
 body.home-page #our-approach .section-heading > .section-tag { --label-ink: #72e7de; }
-body.home-page #our-industries .section-heading > .section-tag { --label-ink: #123e87; }
+body.home-page #our-industries .section-heading > .section-tag { --label-ink: #91caff; }
 body.home-page #our-process .section-heading > .section-tag { --label-ink: #c4a5ff; }
 body.home-page .why-alienway .section-heading > .section-tag { --label-ink: #ff9dcd; }
-body.home-page .trust .section-heading > .section-tag { --label-ink: #773a05; }
+body.home-page .trust .section-heading > .section-tag { --label-ink: #f1c780; }
 
 body.home-page :is(#digital-gap, #our-approach, #our-industries, #our-process, .why-alienway, .trust) .section-heading > .section-tag {
   display: block !important;

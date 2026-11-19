@@ -140,7 +140,7 @@ body.home-page #our-industries{
   body.home-page .why-alienway .section-heading .section-tag,
   body.home-page .trust .section-heading .section-tag{
     margin-bottom:17px;
-    font-size:12px;
+    font-size:clamp(12px,3.4vw,13.5px);
     letter-spacing:2.2px;
   }
 
@@ -174,7 +174,7 @@ body.home-page #our-industries{
   body.home-page .why-alienway .section-heading>p:last-child,
   body.home-page .trust .section-heading>p:last-child{
     max-width:560px;
-    font-size:clamp(16px,4.35vw,18px);
+    font-size:clamp(17px,4.35vw,18px);
     font-weight:600;
     line-height:1.68;
   }
@@ -197,6 +197,6 @@ body.home-page #our-industries{
   body.home-page #our-process .section-heading>p:last-child,
   body.home-page .why-alienway .section-heading>p:last-child,
   body.home-page .trust .section-heading>p:last-child{
-    font-size:16px;
+    font-size:17px;
   }
 }

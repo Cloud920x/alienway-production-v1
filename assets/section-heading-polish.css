@@ -620,3 +620,16 @@ body.home-page .section-heading.heading-panel--trust{
     font-size:28px;
   }
 }
+
+
+/* Brighter, distinct label fills — avoid black-on-black capsules. */
+body.home-page .section-heading.heading-panel--approach{
+  --panel-tag-bg:#c5edf6;
+  --panel-tag-ink:#174e68;
+  --panel-tag-border:rgba(226,250,255,.9);
+}
+body.home-page .section-heading.heading-panel--why{
+  --panel-tag-bg:#d6edff;
+  --panel-tag-ink:#1d5680;
+  --panel-tag-border:rgba(230,246,255,.9);
+}

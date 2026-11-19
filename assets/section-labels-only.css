@@ -1,10 +1,10 @@
-/* The six homepage section labels share a shape and carry individual colours. */
-body.home-page #digital-gap .section-heading > .section-tag { --bubble: #ff998a; }
-body.home-page #our-approach .section-heading > .section-tag { --bubble: #72e7de; }
-body.home-page #our-industries .section-heading > .section-tag { --bubble: #89c6ff; }
-body.home-page #our-process .section-heading > .section-tag { --bubble: #c4a5ff; }
-body.home-page .why-alienway .section-heading > .section-tag { --bubble: #ff9dcd; }
-body.home-page .trust .section-heading > .section-tag { --bubble: #ffd477; }
+/* Rounded lettering for the six homepage section labels. */
+body.home-page #digital-gap .section-heading > .section-tag { --label-ink: #ff998a; }
+body.home-page #our-approach .section-heading > .section-tag { --label-ink: #72e7de; }
+body.home-page #our-industries .section-heading > .section-tag { --label-ink: #123e87; --letter-edge: #edf6ff; }
+body.home-page #our-process .section-heading > .section-tag { --label-ink: #c4a5ff; }
+body.home-page .why-alienway .section-heading > .section-tag { --label-ink: #ff9dcd; }
+body.home-page .trust .section-heading > .section-tag { --label-ink: #773a05; --letter-edge: #fff4da; }
 
 body.home-page :is(#digital-gap, #our-approach, #our-industries, #our-process, .why-alienway, .trust) .section-heading > .section-tag {
   display: block !important;
@@ -12,18 +12,20 @@ body.home-page :is(#digital-gap, #our-approach, #our-industries, #our-process, .
   width: fit-content;
   max-width: 100%;
   margin: 0 auto clamp(1.625rem, 3vw, 2.25rem) !important;
-  padding: .5em 1.1em .55em !important;
-  border: 1px solid rgba(255, 255, 255, .75) !important;
-  border-radius: 999px !important;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, .42), transparent 62%), var(--bubble) !important;
-  box-shadow: inset 0 2px 1px #ffffff80, inset 0 -2px 2px #15213222, 0 3px 8px #10192638 !important;
-  color: #172337 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  color: var(--label-ink) !important;
   -webkit-text-fill-color: currentColor !important;
-  font: 700 clamp(1rem, 2vw, 1.375rem)/1.2 'Fredoka', 'Arial Rounded MT Bold', Arial, sans-serif !important;
+  font: 700 clamp(1.25rem, 2.4vw, 1.75rem)/1.2 'Fredoka', 'Arial Rounded MT Bold', Arial, sans-serif !important;
   letter-spacing: .06em !important;
   text-align: center;
   text-transform: uppercase;
-  text-shadow: none;
+  -webkit-text-stroke: 2px var(--letter-edge, #162336);
+  paint-order: stroke fill;
+  text-shadow: 0 2px 0 var(--letter-edge, #162336);
   white-space: normal;
   overflow-wrap: anywhere;
 }

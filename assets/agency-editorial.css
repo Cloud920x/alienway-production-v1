@@ -1,0 +1,82 @@
+/* Portfolio prints, founder's notebook and studio correspondence. */
+:is(.studio-work,.studio-about,.studio-contact) .hero-tag {
+  font: 800 .88rem/1.3 Arial, sans-serif; letter-spacing: .16em;
+  color: #b8dae8; opacity: 1; margin-bottom: 1.5rem;
+}
+:is(.studio-work,.studio-about,.studio-contact) .page-hero h1 {
+  font-size: clamp(2.75rem,6vw,6.2rem); line-height: .98; letter-spacing: -.055em;
+}
+.studio-action {
+  display: inline-flex; align-items: center; min-height: 44px; margin-top: 1.3rem;
+  color: #fff; font-weight: 700; text-decoration: underline; text-underline-offset: .4em;
+}
+.studio-work .portfolio-hero {
+  display: grid; grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr);
+  align-items: center; gap: clamp(2rem,5vw,5rem); padding-block: clamp(3rem,8vw,8rem);
+  background: linear-gradient(125deg,#101c27,#203344 70%,#172936);
+}
+.project-prints { display: flex; align-items: stretch; height: clamp(18rem,32vw,29rem); gap: .45rem; }
+.project-prints a {
+  position: relative; isolation: isolate; flex: 1 1 0; min-width: 0;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: clamp(.6rem,1.5vw,1.4rem); color: white; text-decoration: none;
+  background-color: #27343d; background-size: cover; background-position: center;
+  border: 1px solid #ffffff38; border-radius: 3px;
+}
+.project-prints a::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg,#071219ef,transparent 75%); }
+.project-prints span { font: 600 .72rem/1.4 Arial,sans-serif; letter-spacing: .04em; }
+.project-prints strong { font: 700 clamp(1.05rem,2.2vw,2.35rem)/1.04 Georgia,serif; margin-top: .4rem; overflow-wrap: normal; }
+.print-olive { background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=640&q=80'); }
+.print-atelier { background-image: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=640&q=80'); }
+.print-margin,.margin-case { background-image: url('../blog/assets/images/kai-coast.webp'); }
+.industry-index { display:flex; flex-wrap:wrap; gap:.25rem 1.3rem; padding: .6rem 0; margin-bottom:2rem; border-block:1px solid #607381; }
+.industry-index a { display:inline-flex; align-items:center; min-height:44px; color:#d4e8f1; text-underline-offset:.25em; }
+.studio-work .case-study { border-radius:4px; background:#142430; border-color:#4d626e; }
+.studio-work .case-content { padding:clamp(1.5rem,4vw,4rem); align-items:flex-start; }
+.studio-work .case-content p { color:#a7d5e6; opacity:1; letter-spacing:.13em; }
+.studio-work .case-content h2 { font-size:clamp(1.9rem,3vw,3.5rem); }
+.studio-work .showcase-link { font-size:.81rem; }
+.studio-work .cta-box { background:linear-gradient(120deg,#253c48,#112330); }
+.studio-about .about-hero,.studio-contact .contact-hero {
+  color:#fff; background-color:#14212d; background-size:cover; background-position:62% center;
+  min-height:clamp(26rem,42vw,40rem); padding-block:clamp(3rem,7vw,7rem);
+}
+.studio-about .about-hero { background-image:linear-gradient(90deg,#141411ed,rgba(16,18,17,.62) 52%,transparent),url('agency-art/founder.webp'); }
+.studio-contact .contact-hero { background-image:linear-gradient(90deg,#091625ed,rgba(10,25,43,.65) 51%,transparent),url('agency-art/correspondence.webp'); }
+.studio-contact .contact-hero > div,.studio-about .about-hero > div { max-width:42rem; }
+.studio-about .about-hero .hero-tag { color:#f1c68b; }
+.studio-about .about-story {
+  max-width:none; padding:clamp(3rem,8vw,7.5rem) max(1.4rem,calc((100% - 55rem)/2));
+  background:#f3eee3; color:#222b28; border-top:5px solid #b8854f;
+}
+.studio-about .about-story-block { max-width:43rem; padding-bottom:clamp(1.5rem,4vw,3rem); border-bottom:1px solid #bdb6a6; }
+.studio-about .about-story-block:nth-child(2) { margin-left:auto; }
+.studio-about .about-story p { color:#38413e; font:400 clamp(1.08rem,1.65vw,1.3rem)/1.72 Georgia,serif; }
+.studio-about .about-story h2 { color:#182c32; letter-spacing:-.045em; }
+.studio-about .about-story .highlight { color:#69401f!important; border-color:#b08450; font:700 clamp(1.25rem,2.6vw,2.2rem)/1.25 Georgia,serif!important; }
+.studio-about .about-story-ending h1 { color:#253d46; }
+.studio-about .about-cta { border-radius:4px; border-color:#796348; background:linear-gradient(135deg,#342e27,#17232b 80%); }
+.studio-contact .contact-project-card { border-radius:4px; border-top:5px solid #84aace; background:linear-gradient(145deg,#eae2d2,#faf5e8); color:#182e43; box-shadow:4px 5px 0 #5a7186; }
+.studio-contact .contact-project-card :is(h2,p,small) { color:#233a4e; }
+.studio-contact .contact-project-card .button { background:#193d59; border-color:#193d59; color:white; }
+.studio-contact .contact-project-orbit { display:none; }
+.studio-clock { display:block; margin-top:.45rem; color:#c1e2ef; font-style:normal; font-variant-numeric:tabular-nums; }
+.copy-address:not([hidden]) { justify-self:start; color:#c8e6f2; min-height:44px; padding:0 .4rem; background:none; border:0; font:inherit; text-decoration:underline; text-underline-offset:.25em; cursor:pointer; }
+.copy-status:empty { display:none; }
+@media (min-width:901px) {
+  .studio-work .case-study:nth-of-type(even) .case-image { order:2; }
+}
+@media (prefers-reduced-motion:no-preference) and (hover:hover) {
+  .project-prints a { transition:flex-grow .3s ease,transform .3s ease; }
+  .project-prints a:is(:hover,:focus-visible) { flex-grow:1.35; transform:translateY(-.35rem); }
+}
+@media(max-width:850px){
+  .studio-work .portfolio-hero { grid-template-columns:1fr; }
+  .project-prints { height:clamp(13rem,40vw,20rem); }
+}
+@media(max-width:600px){
+  .studio-about .about-hero,.studio-contact .contact-hero { background-size:auto 100%,auto 100%; background-position:center,64% center; }
+  .project-prints { gap:.3rem; }
+  .project-prints strong { font-size:clamp(.95rem,4vw,1.3rem); }
+  .studio-contact .contact-hero > div,.studio-about .about-hero > div { background:linear-gradient(90deg,#0c1623b8,transparent); }
+}

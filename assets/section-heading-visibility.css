@@ -1,0 +1,202 @@
+/* ==========================================================
+   ALIENWAY PRODUCTION — SECTION HEADING VISIBILITY
+   Stronger typography and contrast. No boxes or text panels.
+========================================================== */
+
+body.home-page #digital-gap .section-heading,
+body.home-page #our-approach .section-heading,
+body.home-page #our-industries .section-heading,
+body.home-page #our-process .section-heading,
+body.home-page .why-alienway .section-heading,
+body.home-page .trust .section-heading{
+  width:min(100%,1020px);
+  max-width:1020px;
+  margin:0 auto clamp(46px,5.4vw,76px);
+  padding:0 clamp(7px,1.8vw,20px);
+  text-align:center;
+}
+
+/* The small section label becomes a clear, intentional eyebrow —
+   still floating directly on the photo, never inside a capsule. */
+body.home-page #digital-gap .section-heading .section-tag,
+body.home-page #our-approach .section-heading .section-tag,
+body.home-page #our-industries .section-heading .section-tag,
+body.home-page #our-process .section-heading .section-tag,
+body.home-page .why-alienway .section-heading .section-tag,
+body.home-page .trust .section-heading .section-tag{
+  margin:0 auto clamp(19px,2.3vw,28px);
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  font-size:clamp(12px,1.05vw,14px);
+  font-weight:900;
+  line-height:1.35;
+  letter-spacing:clamp(2px,.24vw,3.1px);
+  text-transform:uppercase;
+  text-shadow:0 2px 13px rgba(0,0,0,.34);
+}
+
+/* Main headline: larger, heavier and with enough separation from the image. */
+body.home-page #digital-gap .section-heading h2,
+body.home-page #our-approach .section-heading h2,
+body.home-page #our-industries .section-heading h2,
+body.home-page #our-process .section-heading h2,
+body.home-page .why-alienway .section-heading h2,
+body.home-page .trust .section-heading h2{
+  max-width:1000px;
+  margin:0 auto 22px;
+  color:var(--awp-heading-ink)!important;
+  -webkit-text-fill-color:var(--awp-heading-ink)!important;
+  background:none!important;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:clamp(46px,6vw,78px);
+  font-weight:950;
+  line-height:1.015;
+  letter-spacing:-.052em;
+  text-align:center;
+  text-wrap:balance;
+  overflow-wrap:normal;
+  text-shadow:var(--awp-heading-shadow,0 4px 24px rgba(0,0,0,.58));
+}
+
+/* A stronger, cleaner accent stroke gives the headline a clear finish. */
+body.home-page #digital-gap .section-heading h2::after,
+body.home-page #our-approach .section-heading h2::after,
+body.home-page #our-industries .section-heading h2::after,
+body.home-page #our-process .section-heading h2::after,
+body.home-page .why-alienway .section-heading h2::after,
+body.home-page .trust .section-heading h2::after{
+  width:clamp(58px,6vw,82px);
+  height:4px;
+  margin:22px auto 0;
+  border-radius:99px;
+  background:var(--awp-heading-accent);
+  box-shadow:0 0 20px color-mix(in srgb,var(--awp-heading-accent) 55%,transparent);
+}
+
+/* Subheading: increase size, weight and line spacing so it reads at a glance. */
+body.home-page #digital-gap .section-heading>p:last-child,
+body.home-page #our-approach .section-heading>p:last-child,
+body.home-page #our-industries .section-heading>p:last-child,
+body.home-page #our-process .section-heading>p:last-child,
+body.home-page .why-alienway .section-heading>p:last-child,
+body.home-page .trust .section-heading>p:last-child{
+  max-width:790px;
+  margin:0 auto;
+  color:var(--awp-heading-copy)!important;
+  font-size:clamp(18px,1.5vw,20px);
+  font-weight:650;
+  line-height:1.72;
+  letter-spacing:.005em;
+  text-wrap:pretty;
+  text-shadow:var(--awp-copy-shadow,0 2px 15px rgba(0,0,0,.55));
+}
+
+/* WHY ALIENWAY: gently deepen the upper image so white type stays crisp. */
+body.home-page .why-alienway{
+  background-image:
+    linear-gradient(180deg,rgba(4,16,29,.30) 0%,rgba(4,16,29,.54) 38%,rgba(6,21,36,.87) 76%,#0b1722 100%),
+    url("https://images.unsplash.com/photo-1744648617182-519c4bf39e30?auto=format&fit=crop&w=2000&h=1100&q=80");
+}
+
+/* BUILT ON TRUST: lift the photo behind the navy typography and use a
+   deeper ink tone for the supporting sentence. */
+body.home-page .trust{
+  --awp-heading-accent:#176f96;
+  --awp-heading-ink:#102f43;
+  --awp-heading-copy:#183d53;
+  --awp-heading-shadow:0 2px 15px rgba(255,255,255,.72);
+  --awp-copy-shadow:0 1px 12px rgba(255,255,255,.78);
+  background-image:
+    linear-gradient(180deg,rgba(230,243,249,.46) 0%,rgba(213,234,244,.66) 36%,rgba(10,28,43,.84) 72%,#0b1722 100%),
+    url("https://images.unsplash.com/photo-1769779671837-713b7e4c6872?auto=format&fit=crop&w=2000&h=1100&q=80");
+}
+
+/* The other bright section keeps its own deep-blue text treatment. */
+body.home-page #our-industries{
+  --awp-heading-ink:#12374d;
+  --awp-heading-copy:#173e54;
+  --awp-heading-shadow:0 2px 15px rgba(255,255,255,.68);
+  --awp-copy-shadow:0 1px 12px rgba(255,255,255,.72);
+}
+
+@media(max-width:680px){
+  body.home-page #digital-gap .section-heading,
+  body.home-page #our-approach .section-heading,
+  body.home-page #our-industries .section-heading,
+  body.home-page #our-process .section-heading,
+  body.home-page .why-alienway .section-heading,
+  body.home-page .trust .section-heading{
+    margin-bottom:clamp(38px,9vw,52px);
+    padding:0 6px;
+  }
+
+  body.home-page #digital-gap .section-heading .section-tag,
+  body.home-page #our-approach .section-heading .section-tag,
+  body.home-page #our-industries .section-heading .section-tag,
+  body.home-page #our-process .section-heading .section-tag,
+  body.home-page .why-alienway .section-heading .section-tag,
+  body.home-page .trust .section-heading .section-tag{
+    margin-bottom:17px;
+    font-size:12px;
+    letter-spacing:2.2px;
+  }
+
+  body.home-page #digital-gap .section-heading h2,
+  body.home-page #our-approach .section-heading h2,
+  body.home-page #our-industries .section-heading h2,
+  body.home-page #our-process .section-heading h2,
+  body.home-page .why-alienway .section-heading h2,
+  body.home-page .trust .section-heading h2{
+    font-size:clamp(36px,9.3vw,46px);
+    line-height:1.045;
+    letter-spacing:-.045em;
+    margin-bottom:17px;
+  }
+
+  body.home-page #digital-gap .section-heading h2::after,
+  body.home-page #our-approach .section-heading h2::after,
+  body.home-page #our-industries .section-heading h2::after,
+  body.home-page #our-process .section-heading h2::after,
+  body.home-page .why-alienway .section-heading h2::after,
+  body.home-page .trust .section-heading h2::after{
+    width:58px;
+    height:3px;
+    margin-top:17px;
+  }
+
+  body.home-page #digital-gap .section-heading>p:last-child,
+  body.home-page #our-approach .section-heading>p:last-child,
+  body.home-page #our-industries .section-heading>p:last-child,
+  body.home-page #our-process .section-heading>p:last-child,
+  body.home-page .why-alienway .section-heading>p:last-child,
+  body.home-page .trust .section-heading>p:last-child{
+    max-width:560px;
+    font-size:clamp(16px,4.35vw,18px);
+    font-weight:600;
+    line-height:1.68;
+  }
+}
+
+@media(max-width:360px){
+  body.home-page #digital-gap .section-heading h2,
+  body.home-page #our-approach .section-heading h2,
+  body.home-page #our-industries .section-heading h2,
+  body.home-page #our-process .section-heading h2,
+  body.home-page .why-alienway .section-heading h2,
+  body.home-page .trust .section-heading h2{
+    font-size:34px;
+    letter-spacing:-1.2px;
+  }
+
+  body.home-page #digital-gap .section-heading>p:last-child,
+  body.home-page #our-approach .section-heading>p:last-child,
+  body.home-page #our-industries .section-heading>p:last-child,
+  body.home-page #our-process .section-heading>p:last-child,
+  body.home-page .why-alienway .section-heading>p:last-child,
+  body.home-page .trust .section-heading>p:last-child{
+    font-size:16px;
+  }
+}

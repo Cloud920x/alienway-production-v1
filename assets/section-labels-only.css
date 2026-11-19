@@ -1,87 +1,35 @@
-/* ==========================================================
-   ALIENWAY HOMEPAGE — SIX SECTION LABELS ONLY
-   Intentionally styles only the six short section names.
-   Main headlines, supporting copy and all wording stay untouched.
-   No cards, boxes, capsules or background panels.
-========================================================== */
+/* The six homepage section labels share a shape and carry individual colours. */
+body.home-page #digital-gap .section-heading > .section-tag { --bubble: #ff998a; }
+body.home-page #our-approach .section-heading > .section-tag { --bubble: #72e7de; }
+body.home-page #our-industries .section-heading > .section-tag { --bubble: #89c6ff; }
+body.home-page #our-process .section-heading > .section-tag { --bubble: #c4a5ff; }
+body.home-page .why-alienway .section-heading > .section-tag { --bubble: #ff9dcd; }
+body.home-page .trust .section-heading > .section-tag { --bubble: #ffd477; }
 
-body.home-page #digital-gap .section-heading > .section-tag,
-body.home-page #our-approach .section-heading > .section-tag,
-body.home-page #our-industries .section-heading > .section-tag,
-body.home-page #our-process .section-heading > .section-tag,
-body.home-page .why-alienway .section-heading > .section-tag,
-body.home-page .trust .section-heading > .section-tag{
-  display:block!important;
-  width:max-content;
-  max-width:100%;
-  margin:0 auto clamp(28px,3vw,36px)!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-  color:var(--awp-heading-accent,#8bdcf2)!important;
-  -webkit-text-fill-color:var(--awp-heading-accent,#8bdcf2)!important;
-  font-family:'Arial Black',Arial,Helvetica,sans-serif!important;
-  font-size:clamp(18px,1.65vw,22px)!important;
-  font-weight:900!important;
-  line-height:1.25!important;
-  letter-spacing:clamp(1.6px,.18vw,2.5px)!important;
-  text-align:center;
-  text-transform:uppercase;
-  text-shadow:
-    0 2px 12px rgba(0,0,0,.46),
-    0 0 18px color-mix(in srgb,var(--awp-heading-accent,#8bdcf2) 35%,transparent);
+body.home-page :is(#digital-gap, #our-approach, #our-industries, #our-process, .why-alienway, .trust) .section-heading > .section-tag {
+  display: block !important;
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto clamp(1.625rem, 3vw, 2.25rem) !important;
+  padding: .5em 1.1em .55em !important;
+  border: 1px solid rgba(255, 255, 255, .75) !important;
+  border-radius: 999px !important;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, .42), transparent 62%), var(--bubble) !important;
+  box-shadow: inset 0 2px 1px #ffffff80, inset 0 -2px 2px #15213222, 0 3px 8px #10192638 !important;
+  color: #172337 !important;
+  -webkit-text-fill-color: currentColor !important;
+  font: 700 clamp(1rem, 2vw, 1.375rem)/1.2 'Fredoka', 'Arial Rounded MT Bold', Arial, sans-serif !important;
+  letter-spacing: .06em !important;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: none;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
-/* A clean underline adds emphasis without putting the words in a box. */
-body.home-page #digital-gap .section-heading > .section-tag::before,
-body.home-page #our-approach .section-heading > .section-tag::before,
-body.home-page #our-industries .section-heading > .section-tag::before,
-body.home-page #our-process .section-heading > .section-tag::before,
-body.home-page .why-alienway .section-heading > .section-tag::before,
-body.home-page .trust .section-heading > .section-tag::before{
-  content:none!important;
-  display:none!important;
-}
-
-body.home-page #digital-gap .section-heading > .section-tag::after,
-body.home-page #our-approach .section-heading > .section-tag::after,
-body.home-page #our-industries .section-heading > .section-tag::after,
-body.home-page #our-process .section-heading > .section-tag::after,
-body.home-page .why-alienway .section-heading > .section-tag::after,
-body.home-page .trust .section-heading > .section-tag::after{
-  content:""!important;
-  display:block!important;
-  width:48px;
-  height:3px;
-  margin:10px auto 0;
-  border:0;
-  border-radius:99px;
-  background:currentColor;
-  box-shadow:0 0 14px color-mix(in srgb,var(--awp-heading-accent,#8bdcf2) 58%,transparent);
-}
-
-@media(max-width:680px){
-  body.home-page #digital-gap .section-heading > .section-tag,
-  body.home-page #our-approach .section-heading > .section-tag,
-  body.home-page #our-industries .section-heading > .section-tag,
-  body.home-page #our-process .section-heading > .section-tag,
-  body.home-page .why-alienway .section-heading > .section-tag,
-  body.home-page .trust .section-heading > .section-tag{
-    margin-bottom:26px!important;
-    font-size:clamp(16px,4.5vw,18px)!important;
-    letter-spacing:1.8px!important;
-  }
-
-  body.home-page #digital-gap .section-heading > .section-tag::after,
-  body.home-page #our-approach .section-heading > .section-tag::after,
-  body.home-page #our-industries .section-heading > .section-tag::after,
-  body.home-page #our-process .section-heading > .section-tag::after,
-  body.home-page .why-alienway .section-heading > .section-tag::after,
-  body.home-page .trust .section-heading > .section-tag::after{
-    width:42px;
-    height:3px;
-    margin-top:9px;
-  }
+body.home-page :is(#digital-gap, #our-approach, #our-industries, #our-process, .why-alienway, .trust) .section-heading > .section-tag::before,
+body.home-page :is(#digital-gap, #our-approach, #our-industries, #our-process, .why-alienway, .trust) .section-heading > .section-tag::after {
+  content: none !important;
+  display: none !important;
 }

@@ -42,3 +42,5 @@
 @media (forced-colors: active) {
   .header .nav [aria-current] { text-decoration: underline; }
 }
+
+:root { -webkit-tap-highlight-color: transparent; }

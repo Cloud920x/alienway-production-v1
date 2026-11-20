@@ -222,3 +222,5 @@ body.page-privacy main>section:nth-of-type(2),body.page-disclaimer main>section:
 @media(prefers-reduced-motion:reduce){.skip-link{transition:none}}
 
 .section-ink .eyebrow{color:var(--copper-soft)}
+
+:root { -webkit-tap-highlight-color: transparent; }

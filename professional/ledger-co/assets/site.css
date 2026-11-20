@@ -174,3 +174,5 @@ p{overflow-wrap:break-word}
 @media(prefers-reduced-motion:reduce){
  .js [data-reveal],.js [data-reveal="left"],.js [data-reveal="right"]{opacity:1;transform:none}
 }
+
+:root { -webkit-tap-highlight-color: transparent; }

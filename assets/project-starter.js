@@ -204,7 +204,7 @@
   });
 
   budgetChoices.forEach((choice, index) => {
-    choice.tabIndex = -1;
+    choice.tabIndex = index === 0 ? 0 : -1;
     choice.addEventListener('click', () => setBudget(choice));
     choice.addEventListener('keydown', event => {
       if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(event.key)) return;
@@ -318,6 +318,9 @@
   });
 
   builder.addEventListener('pointerleave', () => {
+    cancelAnimationFrame(pointerFrame);
+    pointerFrame = 0;
+    pointerPoint = null;
     builder.style.removeProperty('--pointer-x');
     builder.style.removeProperty('--pointer-y');
   });

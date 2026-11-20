@@ -1,0 +1,44 @@
+/* The underline sits inside the tap target so navigation never shifts. */
+.header .nav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 44px;
+  color: #d3dee6;
+  text-decoration: none;
+}
+.header .nav a::after {
+  content: "";
+  position: absolute;
+  inset-inline: 8%;
+  bottom: 5px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #83c4e6, #d5f5ff);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+.header .nav a:is([aria-current], :focus-visible, :active)::after { transform: scaleX(1); }
+.header .nav a:is([aria-current], :focus-visible, :active) { color: white; }
+.header a:focus-visible { outline: 2px solid #bceaff; outline-offset: 3px; }
+.header .nav-button[aria-current] { border-color: #acd8e9; }
+@media (hover: hover) {
+  .header .nav a:hover::after { transform: scaleX(1); }
+  .header .nav a:hover { color: white; }
+  .header .logo:hover .logo-mark { color: #bceaff; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .header .nav a::after { transition: transform 180ms cubic-bezier(.2,.7,.2,1); }
+  .header .logo-mark { transition: color 160ms, transform 160ms; }
+  .header .nav a:active, .header .nav-button:active { transform: translateY(1px); }
+  .header .logo:active .logo-mark { transform: scale(.94); }
+}
+@media (max-width: 800px) {
+  .header .nav { justify-content: space-between; gap: 0 .25rem; }
+  .header .nav a { min-inline-size: 44px; font-size: .8125rem; }
+}
+@media (forced-colors: active) {
+  .header .nav [aria-current] { text-decoration: underline; }
+}

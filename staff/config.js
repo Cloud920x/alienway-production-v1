@@ -1,3 +1,2 @@
-// Set the project's public publishable key after alienway-core is reactivated.
 export const projectUrl = 'https://deqokqorcukbubirosqg.supabase.co';
-export const publishableKey = '';
+export const publishableKey = 'sb_publishable_k8wfn3vQd8-FBMAX0lckGQ_RIlsTU-w';

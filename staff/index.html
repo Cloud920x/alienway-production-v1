@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Call list · Alienway Production</title><link rel="stylesheet" href="calls.css"></head>
+<body><main><header><a href="../">AW / ALIENWAY PRODUCTION</a><button id="logout" hidden>Sign out</button></header>
+<h1>Business call list</h1>
+<p id="message" role="status"></p>
+<form id="login"><label>Staff email<input name="email" type="email" required autocomplete="username"></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><button>Sign in</button></form>
+<section id="desk" hidden><details><summary>Add a business</summary><form id="add"><label>Business name<input name="business" maxlength="160" required></label><label>Contact number<input name="phone" type="tel" required></label><label>Business details<textarea name="details" rows="3" maxlength="2000" placeholder="Contact person, industry and what to discuss"></textarea></label><button>Save business</button></form></details>
+<div class="bar"><label>Show<select id="filter"><option value="queue">To call now</option><option value="callback">All callbacks</option><option value="approved">Approved</option><option value="declined">Declined</option></select></label><button id="refresh">Refresh</button></div><div id="list"></div><button hidden id="more">Load more</button></section></main><script type="module" src="calls.js"></script></body></html>

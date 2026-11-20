@@ -8,6 +8,7 @@ let offset = 0;
 let revision = 0;
 
 function signedIn(active) {
+  el('verify').hidden = true;
   el('desk').hidden = !active;
   el('logout').hidden = !active;
   el('login').hidden = active;
@@ -28,7 +29,12 @@ async function request(path, method = 'GET', body, prefer) {
     signedIn(false);
     throw Error('Your session expired. Sign in again.');
   }
-  if (!response.ok) throw Error(path.includes('/token') ? 'Sign-in failed. Check your staff credentials.' : 'Request failed. Refresh to check the latest saved details.');
+  if (!response.ok) {
+    if (response.status === 429) throw Error('Please wait before requesting another PIN.');
+    if (path.endsWith('/verify')) throw Error('That PIN could not be verified. Check the code or request a new one.');
+    if (path.endsWith('/otp')) throw Error('Unable to send a PIN. Check your staff email or contact the owner.');
+    throw Error('Request failed. Refresh to check the latest saved details.');
+  }
   const data = await response.text();
   return data ? JSON.parse(data) : null;
 }
@@ -109,8 +115,22 @@ async function load(append = false) {
 
 action(el('login'),'submit',async () => {
   if (!publishableKey) throw Error('Staff access is awaiting backend activation.');
-  const data = Object.fromEntries(new FormData(el('login')));
-  const auth = await request('/auth/v1/token?grant_type=password','POST',data);
+  const email = el('login').elements.email.value.trim();
+  await request('/auth/v1/otp','POST',{email, create_user:false});
+  el('login').hidden = true;
+  el('verify').reset();
+  el('verify').hidden = false;
+  message('Check your staff email for your one-time PIN.');
+  el('verify').elements.token.focus();
+});
+action(el('back'),'click',async () => {
+  signedIn(false);
+  el('login').elements.email.focus();
+});
+action(el('verify'),'submit',async () => {
+  const email = el('login').elements.email.value.trim();
+  const pin = el('verify').elements.token.value.trim();
+  const auth = await request('/auth/v1/verify','POST',{email,token:pin,type:'email'});
   if (!['sales','owner'].includes(auth.user?.app_metadata?.agency_role)) throw Error('This account needs staff access.');
   token = auth.access_token;
   signedIn(true);

@@ -1254,4 +1254,4 @@ body.modal-open{overflow:hidden}
  .rr-card-reactive.rr-card-in-view .rr-service-photo,.rr-card-reactive.rr-card-in-view .rr-service-arrow{transform:none;transition:none}
 }
 
-:root { -webkit-tap-highlight-color: transparent; }
+* { -webkit-tap-highlight-color: transparent; }

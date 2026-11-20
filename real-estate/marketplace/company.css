@@ -126,4 +126,4 @@ button:focus-visible,a:focus-visible{outline:3px solid #ed795e;outline-offset:3p
 @media(max-width:370px){.wrap{width:calc(100% - 24px)}.company-proof-item{gap:6px}.company-proof-item small{font-size:7px}.company-values-grid,.company-steps-grid,.why-grid,.company-audience-grid{grid-template-columns:1fr}.company-value-card,.why-card{min-height:0}.company-visual{height:280px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
-:root { -webkit-tap-highlight-color: transparent; }
+* { -webkit-tap-highlight-color: transparent; }

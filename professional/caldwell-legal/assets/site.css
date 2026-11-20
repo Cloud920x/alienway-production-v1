@@ -223,4 +223,4 @@ body.page-privacy main>section:nth-of-type(2),body.page-disclaimer main>section:
 
 .section-ink .eyebrow{color:var(--copper-soft)}
 
-:root { -webkit-tap-highlight-color: transparent; }
+* { -webkit-tap-highlight-color: transparent; }

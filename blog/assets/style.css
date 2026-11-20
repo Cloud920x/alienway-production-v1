@@ -24,4 +24,4 @@
 .kai-portrait{width:100%;aspect-ratio:1;object-fit:cover;object-position:72% center;border:2px solid #171919;border-radius:16px;transform:rotate(-3deg);box-shadow:8px 8px 0 #171919}.collage-main img{object-position:65% center}.cover img{object-position:65% center}.hero>img{object-position:65% center}.article-cover{object-position:center 35%}
 @media(max-width:560px){.hero>img{object-position:72% center}.hero:after{background:linear-gradient(0deg,#071513eb,transparent 95%)}.article-cover{object-position:65% center}}
 
-:root { -webkit-tap-highlight-color: transparent; }
+* { -webkit-tap-highlight-color: transparent; }

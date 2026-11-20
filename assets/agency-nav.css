@@ -43,4 +43,4 @@
   .header .nav [aria-current] { text-decoration: underline; }
 }
 
-:root { -webkit-tap-highlight-color: transparent; }
+* { -webkit-tap-highlight-color: transparent; }

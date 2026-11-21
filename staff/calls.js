@@ -7,12 +7,19 @@ let token = '';
 let offset = 0;
 let revision = 0;
 
+const sessionKey = 'alienway.staff.session';
+let expiryTimer;
+function screen(name) {
+  for (const id of ['login','send','verify','choose']) el(id).hidden = id !== name;
+}
 function signedIn(active) {
-  el('verify').hidden = true;
+  screen(active ? '' : 'login');
   el('desk').hidden = !active;
   el('logout').hidden = !active;
   el('login').hidden = active;
   if (!active) {
+    clearTimeout(expiryTimer);
+    sessionStorage.removeItem(sessionKey);
     token = '';
     revision++;
     el('list').replaceChildren();
@@ -30,9 +37,11 @@ async function request(path, method = 'GET', body, prefer) {
     throw Error('Your session expired. Sign in again.');
   }
   if (!response.ok) {
-    if (response.status === 429) throw Error('Please wait before requesting another PIN.');
+    if (response.status === 429) throw Error('Too many requests. Please try again later.');
+    if (path.startsWith('/auth/v1/token')) throw Error('Sign-in failed. Check your email and password.');
+    if (path === '/auth/v1/user' && method === 'PUT') throw Error('Password could not be saved. Check the password or request a fresh setup email.');
     if (path.endsWith('/verify')) throw Error('That PIN could not be verified. Check the code or request a new one.');
-    if (path.endsWith('/otp')) throw Error('Unable to send a PIN. Check your staff email or contact the owner.');
+    if (path.startsWith('/auth/v1/otp')) throw Error('Unable to send a PIN. Check your staff email or contact the owner.');
     throw Error('Request failed. Refresh to check the latest saved details.');
   }
   const data = await response.text();
@@ -113,33 +122,93 @@ async function load(append = false) {
   if (!offset) el('list').append(node('p','No businesses in this list.'));
 }
 
+function checkStaff(user) {
+  if (!['sales','owner'].includes(user?.app_metadata?.agency_role)) throw Error('This account needs staff access.');
+}
+
+async function openDesk(accessToken, expiresAt) {
+  token = accessToken;
+  try {
+    checkStaff(await request('/auth/v1/user'));
+    if (!(expiresAt > Date.now())) throw Error('Session expired. Please sign in again.');
+    sessionStorage.setItem(sessionKey, JSON.stringify({accessToken, expiresAt}));
+  } catch (error) {
+    signedIn(false);
+    throw error;
+  }
+  signedIn(true);
+  clearTimeout(expiryTimer);
+  expiryTimer = setTimeout(() => {
+    signedIn(false);
+    message('Session expired. Please sign in again.');
+  }, expiresAt - Date.now());
+  await load();
+}
+
 action(el('login'),'submit',async () => {
-  if (!publishableKey) throw Error('Staff access is awaiting backend activation.');
-  const email = el('login').elements.email.value.trim();
-  await request('/auth/v1/otp','POST',{email, create_user:false});
-  el('login').hidden = true;
-  el('verify').reset();
-  el('verify').hidden = false;
-  message('Check your staff email for your one-time PIN.');
+  const fields = el('login').elements;
+  const auth = await request('/auth/v1/token?grant_type=password','POST',{
+    email:fields.email.value.trim(), password:fields.password.value
+  });
+  fields.password.value = '';
+  await openDesk(auth.access_token, Date.now() + auth.expires_in * 1000);
+});
+action(el('setup'),'click',async () => {
+  el('send').elements.email.value = el('login').elements.email.value;
+  screen('send');
+  el('send').elements.email.focus();
+});
+for (const button of document.querySelectorAll('.cancel')) {
+  action(button,'click',async () => {
+    signedIn(false);
+    el('choose').reset();
+    el('verify').reset();
+  });
+}
+action(el('send'),'submit',async () => {
+  const email = el('send').elements.email.value.trim();
+  const redirect = new URL('./',location.href).href;
+  await request('/auth/v1/otp?redirect_to='+encodeURIComponent(redirect),'POST',{email,create_user:false});
+  screen('verify');
   el('verify').elements.token.focus();
 });
-action(el('back'),'click',async () => {
-  signedIn(false);
-  el('login').elements.email.focus();
-});
+async function choosePassword(accessToken) {
+  token = accessToken;
+  try { checkStaff(await request('/auth/v1/user')); }
+  catch (error) { signedIn(false); throw error; }
+  screen('choose');
+  el('choose').elements.password.focus();
+}
 action(el('verify'),'submit',async () => {
-  const email = el('login').elements.email.value.trim();
-  const pin = el('verify').elements.token.value.trim();
-  const auth = await request('/auth/v1/verify','POST',{email,token:pin,type:'email'});
-  if (!['sales','owner'].includes(auth.user?.app_metadata?.agency_role)) throw Error('This account needs staff access.');
-  token = auth.access_token;
-  signedIn(true);
-  el('login').reset();
-  await load();
+  const auth = await request('/auth/v1/verify','POST',{
+    email:el('send').elements.email.value.trim(),token:el('verify').elements.token.value.trim(),type:'email'
+  });
+  el('verify').reset();
+  await choosePassword(auth.access_token);
+});
+action(el('choose'),'submit',async () => {
+  await request('/auth/v1/user','PUT',{password:el('choose').elements.password.value});
+  el('choose').reset();
+  try { await request('/auth/v1/logout?scope=local','POST'); }
+  finally { signedIn(false); message('Password saved. Sign in with your staff email and password.'); }
 });
 action(el('logout'),'click',async () => {
   try { await request('/auth/v1/logout?scope=local','POST'); } finally { signedIn(false); }
 });
+async function resume() {
+  const hash = new URLSearchParams(location.hash.slice(1));
+  if (hash.has('access_token') || hash.has('error') || hash.has('error_code')) {
+    history.replaceState(null,'',location.pathname + location.search);
+    signedIn(false);
+    if (!hash.get('access_token')) throw Error('That email link expired. Request a fresh one.');
+    await choosePassword(hash.get('access_token'));
+    return;
+  }
+  const saved = JSON.parse(sessionStorage.getItem(sessionKey) || 'null');
+  if (saved && saved.expiresAt > Date.now()) await openDesk(saved.accessToken,saved.expiresAt);
+  else signedIn(false);
+}
+resume().catch(error => { signedIn(false); message(error.message); });
 action(el('add'),'submit',async () => {
   const data = Object.fromEntries(new FormData(el('add')));
   data.business = data.business.trim();

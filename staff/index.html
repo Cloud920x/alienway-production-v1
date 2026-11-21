@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Call list · Alienway Production</title><link rel="stylesheet" href="calls.css"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Staff workspace · Alienway Production</title><link rel="stylesheet" href="calls.css?v=studio2"></head>
 <body><main><header><a href="../">AW / ALIENWAY PRODUCTION</a><button id="logout" hidden>Sign out</button></header>
-<h1>Business call list</h1>
+<h1 id="page-title">Staff sign in</h1>
 <p id="message" role="status"></p>
 <form id="login">
   <label>Staff email<input name="email" type="email" autocomplete="username" required></label>
@@ -21,5 +21,17 @@
   <label>Choose a password (at least 12 characters)<input name="password" type="password" autocomplete="new-password" minlength="12" required></label>
   <button>Save password</button><button type="button" class="cancel">Cancel</button>
 </form>
-<section id="desk" hidden><details><summary>Add a business</summary><form id="add"><label>Business name<input name="business" maxlength="160" required></label><label>Contact number<input name="phone" type="tel" required></label><label>Business details<textarea name="details" rows="3" maxlength="2000" placeholder="Contact person, industry and what to discuss"></textarea></label><button>Save business</button></form></details>
-<div class="bar"><label>Show<select id="filter"><option value="queue">To call now</option><option value="callback">All callbacks</option><option value="approved">Approved</option><option value="declined">Declined</option></select></label><button id="refresh">Refresh</button></div><div id="list"></div><button hidden id="more">Load more</button></section></main><script type="module" src="calls.js?v=password1"></script></body></html>
+<section id="desk" hidden>
+<nav id="tabs" aria-label="Workspace"></nav>
+<section id="overview" hidden><div class="hero"><div><small id="workdate"></small><h2 id="hero-title"></h2><p id="priority"></p><button id="primary"></button></div><div class="monogram" aria-hidden="true">AW</div></div>
+<div class="metrics" id="metrics"></div><div class="columns"><section><h2>Coming up</h2><div id="agenda"></div></section><section><h2>Sales pipeline</h2><div id="pipeline"></div><p id="growth"></p></section></div></section>
+<section id="calls" hidden><h2>Business call list</h2><details><summary>Add a business</summary><form id="add"><label>Business name<input name="business" maxlength="160" required></label><label>Contact number<input name="phone" type="tel" required></label><label>Business details<textarea name="details" rows="3" maxlength="2000" placeholder="Contact person, industry and what to discuss"></textarea></label><button>Save business</button></form></details>
+<div class="bar"><label>Show<select id="filter"><option value="new">New leads</option><option value="queue" selected>To call now</option><option value="callback">All callbacks</option><option value="approved">Approved</option><option value="declined">Declined</option></select></label><button id="refresh">Refresh</button></div><div id="list"></div><button hidden id="more">Load more</button></section>
+<section id="meetings" hidden><h2>Meetings</h2><details><summary>Schedule meeting</summary><form id="book">
+<label>Business<select name="lead_id" required></select></label><label>Date and time<input name="starts_at" type="datetime-local" required></label><label>Meeting details<textarea name="notes" maxlength="2000"></textarea></label><button>Schedule meeting</button></form></details><div id="meeting-list"></div></section>
+<section id="projects" hidden><h2>Quotes &amp; projects</h2><details><summary>Create quote</summary><form id="quote">
+<label>Business<select name="lead_id" required></select></label><label>Project name<input name="title" required maxlength="160"></label><label>Agreed scope / package<textarea name="scope" required maxlength="3000"></textarea></label>
+<label>Build fee (R)<input type="number" min="0.01" max="9999999999" step=".01" name="build_fee" required></label><label>Upfront extras (R)<input type="number" name="extras" value="0" min="0" step=".01" required></label><label>Monthly care (R)<input type="number" name="monthly" value="0" min="0" step=".01" required></label><label>Domain renewal (optional)<input name="renewal" type="date"></label><button>Save quote</button></form></details><div id="project-list"></div></section>
+<section id="money" hidden><h2>Payments</h2><details><summary>Record a payment</summary><form id="payment">
+<label>Project<select name="project_id" required></select></label><label>Amount received (R)<input name="amount" type="number" min=".01" step=".01" required></label><label>EFT reference or receipt note<input name="reference" maxlength="160" required></label><label>Received on<input type="date" name="received_at" required></label><button>Save payment</button></form></details><div id="balances"></div><h3>Payment history</h3><div id="payments-list"></div></section>
+</section></main><script type="module" src="calls.js?v=studio2"></script></body></html>

@@ -20,6 +20,7 @@ function signedIn(active) {
   if (!active) {
     clearTimeout(expiryTimer);
     sessionStorage.removeItem(sessionKey);
+    resetWorkspace();
     token = '';
     revision++;
     el('list').replaceChildren();
@@ -101,7 +102,20 @@ function businessCard(lead) {
     });
     actions.append(button);
   }
-  card.append(actions,schedule);
+  const notePanel=node('details','');
+  const noteForm=node('form',''), noteLabel=node('label','Call notes');
+  const notes=document.createElement('textarea');
+  notes.value=lead.details; notes.maxLength=2000;noteLabel.append(notes);
+  noteForm.append(noteLabel,node('button','Save notes'));
+  action(noteForm,'submit',async()=>{
+    const match=new URLSearchParams({id:'eq.'+lead.id,updated_at:'eq.'+lead.updated_at,select:'id'});
+    const result=await request('/rest/v1/call_leads?'+match,'PATCH',{details:notes.value},'return=representation');
+    await refreshList(result.length?'Call notes saved.':'Another person updated this business. Review the latest notes.');
+  });
+  notePanel.append(node('summary','Edit call notes'),noteForm);
+  actions.append(command('Book meeting',()=>startForLead('meetings','book',lead.id)));
+  if(role==='owner' && lead.status==='approved') actions.append(command('Create quote',()=>startForLead('projects','quote',lead.id)));
+  card.append(actions,schedule,notePanel);
   return card;
 }
 
@@ -142,7 +156,9 @@ function checkStaff(user) {
 async function openDesk(accessToken, expiresAt) {
   token = accessToken;
   try {
-    checkStaff(await request('/auth/v1/user'));
+    const user = await request('/auth/v1/user');
+    checkStaff(user);
+    role = user.app_metadata.agency_role;
     if (!(expiresAt > Date.now())) throw Error('Session expired. Please sign in again.');
     sessionStorage.setItem(sessionKey, JSON.stringify({accessToken, expiresAt}));
   } catch (error) {
@@ -155,7 +171,7 @@ async function openDesk(accessToken, expiresAt) {
     signedIn(false);
     message('Session expired. Please sign in again.');
   }, expiresAt - Date.now());
-  await refreshList();
+  await enterWorkspace();
 }
 
 action(el('login'),'submit',async () => {
@@ -221,7 +237,7 @@ async function resume() {
   if (saved && saved.expiresAt > Date.now()) await openDesk(saved.accessToken,saved.expiresAt);
   else signedIn(false);
 }
-resume().catch(error => { signedIn(false); message(error.message); });
+
 action(el('add'),'submit',async () => {
   const data = Object.fromEntries(new FormData(el('add')));
   data.business = data.business.trim();
@@ -235,3 +251,223 @@ action(el('add'),'submit',async () => {
 action(el('filter'),'change',() => refreshList());
 action(el('refresh'),'click',() => refreshList());
 action(el('more'),'click',() => load(true));
+
+let role = '';
+let view = 'overview';
+let generation = 0;
+let data;
+const titles = {overview:'Today',calls:'Call queue',meetings:'Meetings',projects:'Projects',money:'Payments'};
+const stages = ['Quoted','Accepted','In build','In review','Approved','Live'];
+const money = value => new Intl.NumberFormat('en-ZA',{style:'currency',currency:'ZAR'}).format(value);
+const stamp = value => new Date(value).toLocaleString('en-ZA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+function localDay(date=new Date()) {
+  return new Date(date.getTime()-date.getTimezoneOffset()*60000).toISOString().slice(0,10);
+}
+function resetWorkspace() {
+  role = '';
+  el('growth').textContent='';
+  generation++;
+  data = null;
+  el('page-title').textContent = 'Staff sign in';
+  for (const id of Object.keys(titles)) el(id).hidden = true;
+  for (const id of ['metrics','agenda','pipeline','balances','meeting-list','project-list','payments-list','tabs']) el(id).replaceChildren();
+  for (const id of ['quote','book','payment']) {
+    el(id).reset();
+    delete el(id).dataset.id;
+    el(id).querySelector('select').replaceChildren();
+  }
+}
+function command(label, task) {
+  const button = node('button',label);
+  button.type = 'button';
+  action(button,'click',task);
+  return button;
+}
+async function enterWorkspace() {
+  el('page-title').textContent = role === 'owner' ? 'Owner dashboard' : 'Sales dashboard';
+  el('workdate').textContent = new Date().toLocaleDateString('en-ZA',{weekday:'long',day:'numeric',month:'long'});
+  el('tabs').replaceChildren();
+  for (const [id,label] of Object.entries(titles)) {
+    if (role !== 'owner' && ['projects','money'].includes(id)) continue;
+    const button = command(label,()=>navigate(id));
+    button.dataset.view = id;
+    el('tabs').append(button);
+  }
+  el('tabs').append(command('Refresh',()=>navigate(view)));
+  await navigate('overview');
+}
+async function allRows(table,columns='*') {
+  const rows = [];
+  while (true) {
+    const batch = await request('/rest/v1/'+table+'?order=id&select='+columns+'&limit=200&offset='+rows.length);
+    rows.push(...batch);
+    if (batch.length < 200) return rows;
+  }
+}
+async function navigate(id,filter) {
+  if (!role || (['projects','money'].includes(id) && role!=='owner')) return;
+  const current = ++generation;
+  view = id;
+  for (const section of Object.keys(titles)) el(section).hidden = section !== id;
+  for (const button of el('tabs').querySelectorAll('[data-view]')) button.setAttribute('aria-pressed',String(button.dataset.view===id));
+  if (id === 'calls') {
+    if (filter) el('filter').value = filter;
+    await refreshList();
+    return;
+  }
+  message('Updating dashboard…');
+  try {
+    const [leads,meetings,projects,payments] = await Promise.all([
+      allRows('call_leads','id,business,status,callback_at'),allRows('agency_meetings'),
+      role==='owner'?allRows('agency_projects'):[],role==='owner'?allRows('agency_payments'):[]
+    ]);
+    if (current!==generation) return;
+    data={leads,meetings,projects,payments};
+    message('');
+    renderWorkspace();
+  } catch {
+    if (current===generation) message('Dashboard could not refresh. Tap Refresh to retry.');
+  }
+}
+async function startForLead(page,formId,leadId) {
+  await navigate(page);
+  if (!role || view!==page) return;
+  const form=el(formId);
+  form.elements.lead_id.value=leadId;
+  form.closest('details').open=true;
+  form.scrollIntoView({block:'center'});
+}
+function fillSelect(select,items,label) {
+  const selected=select.value;
+  select.replaceChildren(new Option('Select…',''));
+  for (const item of items) select.add(new Option(label(item),item.id));
+  select.value=items.some(item=>item.id===selected)?selected:'';
+}
+function business(id) { return data.leads.find(l=>l.id===id)?.business || 'Business'; }
+function paid(project) { return data.payments.filter(p=>p.project_id===project.id).reduce((sum,p)=>sum+Math.round(Number(p.amount)*100),0)/100; }
+function total(project) { return Number(project.build_fee)+Number(project.extras); }
+function deposit(project) { return Math.round(Number(project.build_fee)*50)/100+Number(project.extras); }
+function entry(title,description) {
+  const row=node('article','');
+  row.append(node('h3',title),node('p',description));
+  return row;
+}
+function empty(id,copy) { if (!el(id).childElementCount) el(id).append(node('p',copy)); }
+function renderWorkspace() {
+  const {leads,meetings,projects,payments}=data;
+  leads.sort((a,b)=>a.business.localeCompare(b.business));
+  meetings.sort((a,b)=>a.starts_at.localeCompare(b.starts_at));
+  projects.sort((a,b)=>b.created_at.localeCompare(a.created_at));
+  fillSelect(el('book').elements.lead_id,leads,l=>l.business);
+  if (role==='owner') {
+    fillSelect(el('quote').elements.lead_id,leads,l=>l.business);
+    fillSelect(el('payment').elements.project_id,projects,p=>business(p.lead_id)+' · '+p.title);
+    if (!el('payment').elements.received_at.value) el('payment').elements.received_at.value=localDay();
+  }
+  if (view==='overview') drawToday();
+  if (view==='meetings') {
+    el('meeting-list').replaceChildren();
+    for (const m of meetings) {
+      const row=entry(business(m.lead_id),stamp(m.starts_at)+' · '+(m.completed?'Completed':'Scheduled')+'\n'+m.notes);
+      row.append(command(m.completed?'Reopen meeting':'Mark complete',async()=>{
+        await request('/rest/v1/agency_meetings?id=eq.'+m.id,'PATCH',{completed:!m.completed});
+        await navigate('meetings');
+      }));
+      el('meeting-list').append(row);
+    }
+    empty('meeting-list','Scheduled meetings will appear here. Add a business in Call queue to book its first meeting.');
+  }
+  if (view==='projects') {
+    el('project-list').replaceChildren();
+    for (const p of projects) {
+      const row=entry(p.title,business(p.lead_id)+' · '+p.stage+'\n'+p.scope);
+      row.append(node('p','Quote '+money(total(p))+' · Upfront '+money(deposit(p))+' · Monthly '+money(p.monthly)));
+      const form=node('form',''), label=node('label','Project stage'), select=document.createElement('select');
+      for (const stage of stages) select.add(new Option(stage,stage));
+      select.value=p.stage;label.append(select);
+      const renewal=node('label','Domain renewal'),date=document.createElement('input');
+      date.type='date'; date.value=p.renewal || '';renewal.append(date);
+      form.append(label,renewal,node('button','Save changes'));
+      action(form,'submit',async()=>{
+        const match=new URLSearchParams({id:'eq.'+p.id,stage:'eq.'+p.stage,renewal:p.renewal?'eq.'+p.renewal:'is.null',select:'id'});
+        const rows=await request('/rest/v1/agency_projects?'+match,'PATCH',{stage:select.value,renewal:date.value||null},'return=representation');
+        await navigate('projects');
+        if (!rows.length) message('Project changed on another device. Review the latest details.');
+      });
+      row.append(form);el('project-list').append(row);
+    }
+    empty('project-list','Create your first quote for a business from the call queue.');
+  }
+  if (view==='money') {
+    el('balances').replaceChildren();el('payments-list').replaceChildren();
+    for (const p of projects) el('balances').append(entry(p.title,'Received '+money(paid(p))+' · Balance '+money(total(p)-paid(p))+' · Upfront still due '+money(Math.max(0,deposit(p)-paid(p)))));
+    for (const pay of payments.slice().sort((a,b)=>b.received_at.localeCompare(a.received_at))) {
+      const p=projects.find(p=>p.id===pay.project_id);
+      el('payments-list').append(entry(money(pay.amount)+' · '+(p?.title||'Project'),pay.received_at+' · '+pay.reference));
+    }
+    empty('payments-list','Recorded EFTs and deposits will appear here.');
+  }
+}
+function drawToday() {
+  const {leads,meetings,projects}=data;
+  const callbacks=leads.filter(l=>l.status==='callback').sort((a,b)=>a.callback_at.localeCompare(b.callback_at));
+  const due=callbacks.filter(l=>Date.parse(l.callback_at)<=Date.now());
+  const open=meetings.filter(m=>!m.completed);
+  const count=status=>leads.filter(l=>l.status===status).length;
+  const calls=due.length+count('new');
+  const awaiting=projects.filter(p=>p.stage==='Accepted' && paid(p)<deposit(p));
+  const owner=role==='owner';
+  el('hero-title').textContent=owner?'Agency overview':'Sales desk';
+  const priority=owner&&awaiting.length?'payments':due.length?'callback':calls?'queue':open.length?'meetings':'queue';
+  const actions={
+    payments:[awaiting.length+' accepted project(s) awaiting deposit.','Review deposits','money'],
+    callback:[due.length+' callback(s) due now.','Open due calls','calls','queue'],
+    queue:[calls?calls+' businesses ready to call.':'Your queue is clear. Add a business to start outreach.','Open call queue','calls','queue'],
+    meetings:['Next meeting: '+(open[0]?business(open[0].lead_id):'')+'.','View meetings','meetings']
+  };
+  const [description,label,destination,filter]=actions[priority];
+  el('priority').textContent=description;
+  const primary=command(label+' →',()=>navigate(destination,filter));primary.id='primary';el('primary').replaceWith(primary);
+  const metrics=[['To call',calls,'calls','queue'],['Callbacks',callbacks.length,'calls','callback'],['Meetings',open.length,'meetings']];
+  if(owner) metrics.push(['Active projects',projects.filter(p=>!['Quoted','Live'].includes(p.stage)).length,'projects']);
+  else metrics.push(['Approved',count('approved'),'calls','approved']);
+  el('metrics').replaceChildren();
+  for(const [name,value,page,choice] of metrics) {
+    const tile=command('',()=>navigate(page,choice));tile.append(node('strong',String(value)),node('span',name+' ↗'));el('metrics').append(tile);
+  }
+  el('agenda').replaceChildren();
+  const agenda=[...callbacks.map(l=>[l.callback_at,business(l.id),'Callback','calls','callback']),...open.map(m=>[m.starts_at,business(m.lead_id),'Meeting','meetings'])];
+  if(owner) for(const p of projects.filter(p=>p.renewal)) agenda.push([p.renewal+'T09:00:00',p.title,'Domain renewal','projects']);
+  for(const [when,name,kind,page,choice] of agenda.sort((a,b)=>Date.parse(a[0])-Date.parse(b[0])).slice(0,6)) {
+    el('agenda').append(command(kind+' · '+name+' · '+stamp(when),()=>navigate(page,choice)));
+  }
+  empty('agenda','Your callbacks and meetings will appear here.');
+  const reviewed=count('approved')+count('declined');
+  el('growth').textContent=reviewed
+    ? count('approved')+' of '+reviewed+' decided leads approved ('+Math.round(100*count('approved')/reviewed)+'%).'
+    : 'Approval rate will appear after the first call decision.';
+  if(owner && projects.length) {
+    const live=projects.filter(p=>p.stage==='Live');
+    el('growth').textContent+=' Live monthly care: '+money(live.reduce((sum,p)=>sum+Number(p.monthly),0))+'.';
+  }
+  el('pipeline').replaceChildren();
+  for(const status of ['new','callback','approved','declined']) {
+    const n=count(status),row=command('',()=>navigate('calls',status));
+    row.append(node('span',statusNames[status]),node('b',String(n)));
+    const meter=document.createElement('progress');meter.max=Math.max(1,leads.length);meter.value=n;row.append(meter);el('pipeline').append(row);
+  }
+}
+for(const [formId,table,page] of [['book','agency_meetings','meetings'],['quote','agency_projects','projects'],['payment','agency_payments','money']]) {
+  const form=el(formId);
+  action(form,'submit',async()=>{
+    const fields=Object.fromEntries(new FormData(form));
+    if(formId==='book') fields.starts_at=new Date(fields.starts_at).toISOString();
+    if(formId==='quote') fields.renewal=fields.renewal || null;
+    const id=form.dataset.id ||= crypto.randomUUID();
+    const prior=await request('/rest/v1/'+table+'?select=id&id=eq.'+id);
+    if(!prior.length) await request('/rest/v1/'+table,'POST',{...fields,id});
+    form.reset();delete form.dataset.id;form.closest('details').open=false;
+    await navigate(page);
+  });
+}
+resume().catch(error=>{signedIn(false);message(error.message);});

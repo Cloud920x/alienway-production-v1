@@ -86,8 +86,7 @@ function businessCard(lead) {
   async function save(status, callback_at = null) {
     const match = new URLSearchParams({id:'eq.'+lead.id,updated_at:'eq.'+lead.updated_at,select:'id'});
     const rows = await request('/rest/v1/call_leads?'+match,'PATCH',{status,callback_at},'return=representation');
-    await load();
-    message(rows.length ? lead.business + ' · ' + statusNames[status] : 'Someone already updated this business. The list has been refreshed.');
+    await refreshList(rows.length ? lead.business + ' · ' + statusNames[status] : 'Someone already updated this business. Check the latest status below.');
   }
   action(schedule,'submit',async () => {
     const when = new Date(time.value);
@@ -104,6 +103,20 @@ function businessCard(lead) {
   }
   card.append(actions,schedule);
   return card;
+}
+
+async function refreshList(successMessage = '') {
+  const version = revision + 1;
+  try {
+    await load();
+    if (version === revision) message(successMessage);
+  } catch (error) {
+    if (!token) throw error;
+    if (version !== revision) return;
+    el('list').replaceChildren();
+    el('more').hidden = true;
+    message([successMessage, 'Could not load the call list. Tap Refresh to try again.'].filter(Boolean).join(' '));
+  }
 }
 
 async function load(append = false) {
@@ -142,7 +155,7 @@ async function openDesk(accessToken, expiresAt) {
     signedIn(false);
     message('Session expired. Please sign in again.');
   }, expiresAt - Date.now());
-  await load();
+  await refreshList();
 }
 
 action(el('login'),'submit',async () => {
@@ -216,9 +229,9 @@ action(el('add'),'submit',async () => {
   if (!data.business || !/^\+?\d{7,15}$/.test(data.phone)) throw Error('Enter a business name and a valid contact number.');
   await request('/rest/v1/call_leads','POST',data);
   el('add').reset();
-  await load();
-  message('Business saved to the call list.');
+  el('filter').value = 'queue';
+  await refreshList('Business saved. Showing the call queue.');
 });
-action(el('filter'),'change',() => load());
-action(el('refresh'),'click',() => load());
+action(el('filter'),'change',() => refreshList());
+action(el('refresh'),'click',() => refreshList());
 action(el('more'),'click',() => load(true));

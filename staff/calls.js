@@ -2,7 +2,7 @@ import {projectUrl, publishableKey} from './config.js';
 
 const el = id => document.getElementById(id);
 const message = words => { el('message').textContent = words; };
-const statusNames = {new:'New', callback:'Call back', approved:'Approved', declined:'Declined'};
+const statusNames = {new:'New', callback:'Call back', approved:'Interested', declined:'Not interested'};
 let token = '';
 let offset = 0;
 let revision = 0;
@@ -94,7 +94,7 @@ function businessCard(lead) {
     if (when <= new Date()) throw Error('Choose a future callback time.');
     await save('callback',when.toISOString());
   });
-  for (const [value, title] of [['declined','Decline'],['callback','Call back'],['approved','Approve']]) {
+  for (const [value, title] of [['approved','Interested'],['callback','Call back later'],['declined','Not interested']]) {
     const button = node('button',title);
     action(button,'click',async () => {
       if (value === 'callback') { schedule.hidden = false; time.focus(); }
@@ -113,9 +113,11 @@ function businessCard(lead) {
     await refreshList(result.length?'Call notes saved.':'Another person updated this business. Review the latest notes.');
   });
   notePanel.append(node('summary','Edit call notes'),noteForm);
-  actions.append(command('Book meeting',()=>startForLead('meetings','book',lead.id)));
-  if(role==='owner' && lead.status==='approved') actions.append(command('Create quote',()=>startForLead('projects','quote',lead.id)));
-  card.append(actions,schedule,notePanel);
+  const nextSteps=node('div','');
+  nextSteps.className='actions secondary';
+  nextSteps.append(command('Book meeting',()=>startForLead('meetings','book',lead.id)));
+  if(role==='owner' && lead.status==='approved') nextSteps.append(command('Create quote',()=>startForLead('projects','quote',lead.id)));
+  card.append(node('h3','How did the call go?'),actions,schedule,nextSteps,notePanel);
   return card;
 }
 
@@ -137,7 +139,7 @@ async function load(append = false) {
   const version = ++revision;
   const start = append ? offset : 0;
   const filter = el('filter').value;
-  const params = new URLSearchParams({select:'*',order:'callback_at.asc.nullslast,business.asc,id.asc',limit:'51',offset:String(start)});
+  const params = new URLSearchParams({select:'*',order:'callback_at.asc.nullslast,created_at.asc,business.asc,id.asc',limit:'51',offset:String(start)});
   if (filter === 'queue') params.set('or','(status.eq.new,and(status.eq.callback,callback_at.lte.'+new Date().toISOString()+'))');
   else params.set('status','eq.'+filter);
   const rows = await request('/rest/v1/call_leads?'+params);
@@ -238,6 +240,10 @@ async function resume() {
   else signedIn(false);
 }
 
+action(el('jump-add'),'click',async()=>{
+  el('add-panel').open=true;
+  el('add').elements.business.focus();
+});
 action(el('add'),'submit',async () => {
   const data = Object.fromEntries(new FormData(el('add')));
   data.business = data.business.trim();
@@ -245,8 +251,9 @@ action(el('add'),'submit',async () => {
   if (!data.business || !/^\+?\d{7,15}$/.test(data.phone)) throw Error('Enter a business name and a valid contact number.');
   await request('/rest/v1/call_leads','POST',data);
   el('add').reset();
+  el('add-panel').open = false;
   el('filter').value = 'queue';
-  await refreshList('Business saved. Showing the call queue.');
+  await refreshList('Business saved at the end of the call list.');
 });
 action(el('filter'),'change',() => refreshList());
 action(el('refresh'),'click',() => refreshList());
@@ -256,7 +263,7 @@ let role = '';
 let view = 'overview';
 let generation = 0;
 let data;
-const titles = {overview:'Today',calls:'Call queue',meetings:'Meetings',projects:'Projects',money:'Payments'};
+const titles = {overview:'Today',calls:'Calls',meetings:'Meetings',projects:'Projects',money:'Payments'};
 const stages = ['Quoted','Accepted','In build','In review','Approved','Live'];
 const money = value => new Intl.NumberFormat('en-ZA',{style:'currency',currency:'ZAR'}).format(value);
 const stamp = value => new Date(value).toLocaleString('en-ZA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
@@ -420,9 +427,9 @@ function drawToday() {
   el('hero-title').textContent=owner?'Agency overview':'Sales desk';
   const priority=owner&&awaiting.length?'payments':due.length?'callback':calls?'queue':open.length?'meetings':'queue';
   const actions={
-    payments:[awaiting.length+' accepted project(s) awaiting deposit.','Review deposits','money'],
-    callback:[due.length+' callback(s) due now.','Open due calls','calls','queue'],
-    queue:[calls?calls+' businesses ready to call.':'Your queue is clear. Add a business to start outreach.','Open call queue','calls','queue'],
+    payments:[awaiting.length+(awaiting.length===1?' project needs a deposit.':' projects need deposits.'),'Review deposits','money'],
+    callback:[due.length+(due.length===1?' callback is due now.':' callbacks are due now.'),'View calls due','calls','queue'],
+    queue:[calls?calls+(calls===1?' business is ready to call.':' businesses are ready to call.'):'Your call list is clear. Add a business when you’re ready.','Open call list','calls','queue'],
     meetings:['Next meeting: '+(open[0]?business(open[0].lead_id):'')+'.','View meetings','meetings']
   };
   const [description,label,destination,filter]=actions[priority];
@@ -430,7 +437,7 @@ function drawToday() {
   const primary=command(label+' →',()=>navigate(destination,filter));primary.id='primary';el('primary').replaceWith(primary);
   const metrics=[['To call',calls,'calls','queue'],['Callbacks',callbacks.length,'calls','callback'],['Meetings',open.length,'meetings']];
   if(owner) metrics.push(['Active projects',projects.filter(p=>!['Quoted','Live'].includes(p.stage)).length,'projects']);
-  else metrics.push(['Approved',count('approved'),'calls','approved']);
+  else metrics.push(['Interested',count('approved'),'calls','approved']);
   el('metrics').replaceChildren();
   for(const [name,value,page,choice] of metrics) {
     const tile=command('',()=>navigate(page,choice));tile.append(node('strong',String(value)),node('span',name+' ↗'));el('metrics').append(tile);
@@ -444,8 +451,8 @@ function drawToday() {
   empty('agenda','Your callbacks and meetings will appear here.');
   const reviewed=count('approved')+count('declined');
   el('growth').textContent=reviewed
-    ? count('approved')+' of '+reviewed+' decided leads approved ('+Math.round(100*count('approved')/reviewed)+'%).'
-    : 'Approval rate will appear after the first call decision.';
+    ? count('approved')+' of '+reviewed+' businesses with a decision were interested ('+Math.round(100*count('approved')/reviewed)+'%).'
+    : 'Record a call outcome to start tracking interest.';
   if(owner && projects.length) {
     const live=projects.filter(p=>p.stage==='Live');
     el('growth').textContent+=' Live monthly care: '+money(live.reduce((sum,p)=>sum+Number(p.monthly),0))+'.';

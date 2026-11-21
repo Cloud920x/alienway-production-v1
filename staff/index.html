@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Staff workspace · Alienway Production</title><link rel="stylesheet" href="calls.css?v=warmdesk1"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Staff workspace · Alienway Production</title><link rel="stylesheet" href="calls.css?v=clients1"></head>
 <body><main><header><a href="../">AW / ALIENWAY PRODUCTION</a><button id="logout" hidden>Sign out</button></header>
 <h1 id="page-title">Staff sign in</h1>
 <p id="message" role="status"></p>
@@ -34,4 +34,14 @@
 <label>Build fee (R)<input type="number" min="0.01" max="9999999999" step=".01" name="build_fee" required></label><label>Upfront extras (R)<input type="number" name="extras" value="0" min="0" step=".01" required></label><label>Monthly care (R)<input type="number" name="monthly" value="0" min="0" step=".01" required></label><label>Domain renewal (optional)<input name="renewal" type="date"></label><button>Save quote</button></form></details><div id="project-list"></div></section>
 <section id="money" hidden><h2>Payments</h2><details><summary>Record a payment</summary><form id="payment">
 <label>Project<select name="project_id" required></select></label><label>Amount received (R)<input name="amount" type="number" min=".01" step=".01" required></label><label>EFT reference or receipt note<input name="reference" maxlength="160" required></label><label>Received on<input type="date" name="received_at" required></label><button>Save payment</button></form></details><div id="balances"></div><h3>Payment history</h3><div id="payments-list"></div></section>
-</section></main><script type="module" src="calls.js?v=warmdesk1"></script></body></html>
+<section id="clients" hidden><h2>Existing clients</h2>
+<details id="client-entry" hidden><summary>Add existing client</summary><form id="client-form">
+<label>Business<select name="existing"><option value="">Enter a new business</option></select></label>
+<div id="client-contact"><label>Business name<input name="business" maxlength="160" required></label><label>Contact number<input name="phone" type="tel" required></label><label>Contact person and notes<textarea name="notes" maxlength="2000"></textarea></label></div>
+<button>Save client</button></form></details>
+<label>Find a client<input id="client-search" type="search" placeholder="Business name or phone number"></label><div id="client-list"></div></section>
+<section id="packages" hidden><h2>Client packages</h2>
+<details><summary>Create package</summary><form id="package-form"><label>Package name<input name="name" maxlength="100" required></label><label>Included services<textarea name="inclusions" maxlength="2500" required></textarea></label><label>Once-off fee (R)<input name="setup_fee" type="number" min="0" max="9999999999" step=".01" value="0" required></label><label>Monthly fee (R)<input name="monthly_fee" type="number" min="0" max="9999999999" step=".01" value="0" required></label><button>Save package</button></form></details>
+<details id="assignment"><summary>Assign or change a client’s package</summary><form id="assign-form"><label>Client<select name="client_id" required></select></label><label>Package<select name="package_id" required></select></label><label>Effective date<input name="starts_on" type="date" required></label><label>Agreed add-ons<textarea name="addons" maxlength="1500"></textarea></label><label>Once-off add-ons (R)<input name="extra_once" type="number" min="0" max="9999999999" step=".01" value="0" required></label><label>Monthly add-ons (R)<input name="extra_monthly" type="number" min="0" max="9999999999" step=".01" value="0" required></label><button>Save agreement</button></form></details>
+<h3>Package catalogue</h3><div id="package-list"></div></section>
+</section></main><script type="module" src="calls.js?v=clients1"></script></body></html>

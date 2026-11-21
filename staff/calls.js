@@ -139,7 +139,7 @@ async function load(append = false) {
   const version = ++revision;
   const start = append ? offset : 0;
   const filter = el('filter').value;
-  const params = new URLSearchParams({select:'*',order:'callback_at.asc.nullslast,created_at.asc,business.asc,id.asc',limit:'51',offset:String(start)});
+  const params = new URLSearchParams({select:'*',is_client:'eq.false',order:'callback_at.asc.nullslast,created_at.asc,business.asc,id.asc',limit:'51',offset:String(start)});
   if (filter === 'queue') params.set('or','(status.eq.new,and(status.eq.callback,callback_at.lte.'+new Date().toISOString()+'))');
   else params.set('status','eq.'+filter);
   const rows = await request('/rest/v1/call_leads?'+params);
@@ -263,7 +263,7 @@ let role = '';
 let view = 'overview';
 let generation = 0;
 let data;
-const titles = {overview:'Today',calls:'Calls',meetings:'Meetings',projects:'Projects',money:'Payments'};
+const titles = {overview:'Today',calls:'Calls',meetings:'Meetings',clients:'Clients',packages:'Packages',projects:'Projects',money:'Payments'};
 const stages = ['Quoted','Accepted','In build','In review','Approved','Live'];
 const money = value => new Intl.NumberFormat('en-ZA',{style:'currency',currency:'ZAR'}).format(value);
 const stamp = value => new Date(value).toLocaleString('en-ZA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
@@ -271,6 +271,13 @@ function localDay(date=new Date()) {
   return new Date(date.getTime()-date.getTimezoneOffset()*60000).toISOString().slice(0,10);
 }
 function resetWorkspace() {
+  for(const id of ['client-list','package-list']) el(id).replaceChildren();
+  for(const id of ['client-form','package-form','assign-form']) {
+    const form=el(id);form.reset();delete form.dataset.id;
+    for(const select of form.querySelectorAll('select')) select.replaceChildren();
+  }
+  el('client-search').value='';
+  el('client-entry').hidden=true;
   role = '';
   el('growth').textContent='';
   generation++;
@@ -295,7 +302,7 @@ async function enterWorkspace() {
   el('workdate').textContent = new Date().toLocaleDateString('en-ZA',{weekday:'long',day:'numeric',month:'long'});
   el('tabs').replaceChildren();
   for (const [id,label] of Object.entries(titles)) {
-    if (role !== 'owner' && ['projects','money'].includes(id)) continue;
+    if (role !== 'owner' && ['packages','projects','money'].includes(id)) continue;
     const button = command(label,()=>navigate(id));
     button.dataset.view = id;
     el('tabs').append(button);
@@ -312,7 +319,7 @@ async function allRows(table,columns='*') {
   }
 }
 async function navigate(id,filter) {
-  if (!role || (['projects','money'].includes(id) && role!=='owner')) return;
+  if (!role || (['packages','projects','money'].includes(id) && role!=='owner')) return;
   const current = ++generation;
   view = id;
   for (const section of Object.keys(titles)) el(section).hidden = section !== id;
@@ -325,11 +332,23 @@ async function navigate(id,filter) {
   message('Updating dashboard…');
   try {
     const [leads,meetings,projects,payments] = await Promise.all([
-      allRows('call_leads','id,business,status,callback_at'),allRows('agency_meetings'),
+      allRows('call_leads',id==='clients'?'id,business,phone,details,status,callback_at,is_client':'id,business,status,callback_at,is_client'),allRows('agency_meetings'),
       role==='owner'?allRows('agency_projects'):[],role==='owner'?allRows('agency_payments'):[]
     ]);
     if (current!==generation) return;
-    data={leads,meetings,projects,payments};
+    let catalogue=[],agreements=[],services=[];
+    if(role==='owner' && ['clients','packages'].includes(id)) {
+      [catalogue,agreements]=await Promise.all([allRows('agency_packages'),allRows('client_packages')]);
+    }
+    if(current!==generation) return;
+    if(role==='sales' && id==='clients') {
+      for(let offset=0;;offset+=200) {
+        const batch=await request('/rest/v1/rpc/client_service_summaries?order=client_id&limit=200&offset='+offset);
+        services.push(...batch);if(batch.length<200) break;
+      }
+    }
+    if(current!==generation) return;
+    data={leads,meetings,projects,payments,catalogue,agreements,services};
     message('');
     renderWorkspace();
   } catch {
@@ -372,6 +391,7 @@ function renderWorkspace() {
     if (!el('payment').elements.received_at.value) el('payment').elements.received_at.value=localDay();
   }
   if (view==='overview') drawToday();
+  if (view==='clients' || view==='packages') drawClientWorkspace();
   if (view==='meetings') {
     el('meeting-list').replaceChildren();
     for (const m of meetings) {
@@ -417,10 +437,10 @@ function renderWorkspace() {
 }
 function drawToday() {
   const {leads,meetings,projects}=data;
-  const callbacks=leads.filter(l=>l.status==='callback').sort((a,b)=>a.callback_at.localeCompare(b.callback_at));
+  const callbacks=leads.filter(l=>!l.is_client && l.status==='callback').sort((a,b)=>a.callback_at.localeCompare(b.callback_at));
   const due=callbacks.filter(l=>Date.parse(l.callback_at)<=Date.now());
   const open=meetings.filter(m=>!m.completed);
-  const count=status=>leads.filter(l=>l.status===status).length;
+  const count=status=>leads.filter(l=>!l.is_client && l.status===status).length;
   const calls=due.length+count('new');
   const awaiting=projects.filter(p=>p.stage==='Accepted' && paid(p)<deposit(p));
   const owner=role==='owner';
@@ -475,6 +495,109 @@ for(const [formId,table,page] of [['book','agency_meetings','meetings'],['quote'
     if(!prior.length) await request('/rest/v1/'+table,'POST',{...fields,id});
     form.reset();delete form.dataset.id;form.closest('details').open=false;
     await navigate(page);
+  });
+}
+function contactMode() {
+  const form=el('client-form'), manual=!form.elements.existing.value;
+  el('client-contact').hidden=!manual;
+  for(const field of el('client-contact').querySelectorAll('input,textarea')) field.disabled=!manual;
+}
+function packagePrice(offer,agreement) {
+  const once=Number(offer.setup_fee)+Number(agreement?.extra_once||0);
+  const monthly=Number(offer.monthly_fee)+Number(agreement?.extra_monthly||0);
+  return money(once)+' once-off · '+money(monthly)+' per month';
+}
+function drawClientWorkspace() {
+  const owner=role==='owner';
+  const clients=data.leads.filter(l=>l.is_client);
+  if(view==='packages') {
+    const assign=el('assign-form').elements;
+    fillSelect(assign.client_id,clients,l=>l.business);
+    fillSelect(assign.package_id,data.catalogue,p=>p.name+' · '+money(p.monthly_fee)+'/month');
+    if(!assign.starts_on.value) assign.starts_on.value=localDay();
+    el('package-list').replaceChildren();
+    for(const offer of data.catalogue.slice().sort((a,b)=>a.name.localeCompare(b.name))) {
+      el('package-list').append(entry(offer.name,packagePrice(offer)+'\n'+offer.inclusions));
+    }
+    empty('package-list','Create a package with your agreed services and prices, then assign it to a client.');
+    return;
+  }
+  el('client-entry').hidden=!owner;
+  if(owner) {
+    const select=el('client-form').elements.existing;
+    fillSelect(select,data.leads.filter(l=>!l.is_client),l=>l.business);
+    select.options[0].text='Enter a new business';
+    contactMode();
+  }
+  const query=el('client-search').value.trim().toLowerCase();
+  el('client-list').replaceChildren();
+  for(const client of clients.filter(l=>(l.business+' '+l.phone).toLowerCase().includes(query))) {
+    const row=document.createElement('details');
+    row.append(node('summary',client.business));
+    const dial=node('a','Call '+client.phone);
+    dial.className='dial';dial.href='tel:'+client.phone;
+    row.append(dial,node('p',client.details));
+    row.append(command('Book meeting',()=>startForLead('meetings','book',client.id)));
+    if(!owner) {
+      const service=data.services.find(s=>s.client_id===client.id);
+      row.append(entry(service?.package_name || 'No active package',service?[service.inclusions,service.addons].filter(Boolean).join('\n'):''));
+    }
+    if(owner) {
+      const history=data.agreements.filter(a=>a.client_id===client.id).sort((a,b)=>b.starts_on.localeCompare(a.starts_on));
+      const active=history.find(a=>a.starts_on<=localDay());
+      row.append(node('h3','Package agreement'));
+      if(!active) row.append(node('p','No active package.'));
+      for(const agreement of history) {
+        const offer=data.catalogue.find(p=>p.id===agreement.package_id);
+        if(!offer) continue;
+        const state=agreement===active?'Active':agreement.starts_on>localDay()?'Scheduled':'Previous';
+        row.append(entry(offer.name,state+' from '+agreement.starts_on+'\n'+packagePrice(offer,agreement)+'\n'+offer.inclusions+(agreement.addons?'\nAdd-ons: '+agreement.addons:'')));
+      }
+      row.append(command(active?'Change package':'Assign package',async()=>{
+        await navigate('packages');
+        if(view!=='packages'||role!=='owner'||!data?.catalogue) return;
+        if(!data.catalogue.length) {
+          el('package-form').closest('details').open=true;el('package-form').elements.name.focus();
+          message('Create your first package, then assign it to this client.');return;
+        }
+        el('assignment').open=true;el('assign-form').elements.client_id.value=client.id;el('assign-form').elements.package_id.focus();
+      }));
+      for(const project of data.projects.filter(p=>p.lead_id===client.id)) row.append(entry(project.title,project.stage+' · Balance '+money(total(project)-paid(project))));
+    }
+    el('client-list').append(row);
+  }
+  empty('client-list',query?'No matching clients.':owner?'Add an existing client or accept a project quote to start your client list.':'Your existing clients will appear here.');
+}
+el('client-form').elements.existing.addEventListener('change',contactMode);
+el('client-search').addEventListener('input',()=>{if(data && view==='clients') drawClientWorkspace();});
+action(el('client-form'),'submit',async()=>{
+  const form=el('client-form'), fields=form.elements;
+  const existing=fields.existing.value;
+  const payload={business_id:existing || (form.dataset.id ||=crypto.randomUUID())};
+  if(!existing) {
+    const phone=fields.phone.value.replace(/[\s().-]/g,'');
+    if(!/^\+?\d{7,15}$/.test(phone)) throw Error('Enter a valid contact number.');
+    Object.assign(payload,{business_name:fields.business.value.trim(),contact_phone:phone,contact_notes:fields.notes.value.trim()});
+  }
+  await request('/rest/v1/rpc/save_agency_client','POST',payload);
+  form.reset();delete form.dataset.id;el('client-entry').open=false;el('client-search').value='';
+  await navigate('clients');
+});
+for(const [formId,table] of [['package-form','agency_packages'],['assign-form','client_packages']]) {
+  const form=el(formId);
+  action(form,'submit',async()=>{
+    const values=Object.fromEntries(new FormData(form));
+    const id=form.dataset.id ||=crypto.randomUUID();
+    const saved=await request('/rest/v1/'+table+'?select=id&id=eq.'+id);
+    if(!saved.length) {
+      if(formId==='assign-form') {
+        const existing=await request('/rest/v1/client_packages?select=id&client_id=eq.'+values.client_id+'&starts_on=eq.'+values.starts_on);
+        if(existing.length) throw Error('This client already has an agreement starting on that date. Choose the date the new terms begin.');
+      }
+      await request('/rest/v1/'+table,'POST',{id,...values});
+    }
+    form.reset();delete form.dataset.id;form.closest('details').open=false;
+    await navigate(formId==='assign-form'?'clients':'packages');
   });
 }
 resume().catch(error=>{signedIn(false);message(error.message);});

@@ -49,6 +49,7 @@
     template: 'Selected demo',
     service: 'Service',
     package: 'Package',
+    extras: 'Selected extras',
     vehicle: 'Sample vehicle',
     vehiclePrice: 'Sample vehicle price (R)',
     deposit: 'Sample deposit (R)',
@@ -56,7 +57,7 @@
   };
 
   const importedContext = Object.entries(queryLabels).flatMap(([key, label]) => {
-    const value = (params.get(key) || '').trim().slice(0, 200);
+    const value = (params.get(key) || '').trim().slice(0, key === 'extras' ? 1800 : 200);
     return value ? [label + ': ' + value] : [];
   }).join('\n');
 

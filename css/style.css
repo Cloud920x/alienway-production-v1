@@ -3558,7 +3558,7 @@ margin-bottom:25px;
 
 
 
-.about-story-ending h1 {
+.about-story-ending h2 {
 
     font-size:clamp(60px,10vw,110px);
 
@@ -3759,7 +3759,7 @@ padding-left:18px;
 }
 
 
-.about-story-ending h1 {
+.about-story-ending h2 {
 
 letter-spacing:-2px;
 
@@ -3893,7 +3893,7 @@ p, h1, h2, h3, h4, a, span { overflow-wrap: anywhere; }
   .about-story-block p, .about-story-ending p { font-size: 16px; line-height: 1.8; }
   .about-story-block h2, .about-story-ending h2 { font-size: clamp(28px, 7vw, 42px); letter-spacing: -1px; }
   .highlight { font-size: 18px !important; line-height: 1.65 !important; padding-left: 16px; }
-  .about-story-ending h1 { font-size: clamp(46px, 11vw, 72px); line-height: .98; letter-spacing: -2px; }
+  .about-story-ending h2 { font-size: clamp(46px, 11vw, 72px); line-height: .98; letter-spacing: -2px; }
   .about-cta { margin: 36px 18px; padding: 44px 22px; }
 }
 

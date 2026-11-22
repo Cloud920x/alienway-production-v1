@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Preview MARGIN, Alienway Production’s editorial website package. See the journal design, what is included and the price.">
+<title>MARGIN journal template | Alienway Production</title>
+<link rel="icon" href="../favicon.svg">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#ebe6da;color:#232d26;font:1rem/1.55 system-ui,sans-serif}
+.wrap{width:min(1120px,90%);margin:auto}
+header{border-bottom:1px solid #c3bdae}
+nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0}
+a{color:inherit;text-underline-offset:.24em}
+.brand{font-weight:800;text-decoration:none;letter-spacing:.03em}
+main{padding:clamp(2rem,6vw,5rem) 0}
+h1,h2,.masthead,.story{font-family:Georgia,serif}
+h1{font-size:clamp(2.6rem,6vw,5rem);line-height:1.04;letter-spacing:-.055em;margin:0 0 .45em}
+.card{display:grid;grid-template-columns:1.1fr 1fr;background:#fffcf4;box-shadow:0 16px 40px #342d1d16;border:1px solid #c5bead}
+.preview{display:flex;flex-direction:column;justify-content:center;padding:clamp(1rem,3vw,2.5rem);background:linear-gradient(125deg,#362f29c9,#484438ba),url("../blog/assets/images/kai-journal.webp") center/cover;text-decoration:none}
+.sheet{background:#f8f3e7;color:#24382a;padding:clamp(.9rem,2vw,1.6rem);transform:rotate(-1deg);box-shadow:0 8px 28px #17160f45}
+.masthead{display:block;font-size:clamp(2.9rem,7vw,5.4rem);letter-spacing:-.075em;line-height:1.05;border-block:2px solid;padding-bottom:.09em}
+.sheet img{display:block;width:100%;aspect-ratio:1.82;object-fit:cover;margin:.9rem 0}
+.story{display:block;font-size:clamp(1.4rem,3vw,2.1rem);line-height:1.09}
+.info{padding:clamp(1.3rem,3.4vw,2.8rem)}
+h2{font-size:clamp(2rem,4vw,3.1rem);line-height:1.1;margin:0}
+.price{margin:1rem 0;padding:.8rem 0;border-block:1px solid #c5bead}
+.price strong{font-size:1.7rem}.price span{display:block}
+ul{padding-left:1.2rem}li+li{margin-top:.32rem}
+small{display:block;font-size:.9rem;color:#50594e}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem 1.1rem;margin-top:1.4rem}
+.actions a{font-weight:700;padding:.65rem .15rem}
+.actions a:first-child{background:#294132;color:white;text-decoration:none;padding:.7rem 1rem;border-radius:4px}
+a:focus-visible{outline:3px solid #ac5426;outline-offset:4px}
+@media(max-width:720px){.card{grid-template-columns:1fr}.preview{padding:1.35rem}.sheet img{aspect-ratio:2.4}.wrap{width:92%}nav{font-size:.86rem}}
+</style>
+</head>
+<body>
+<header><nav class="wrap" aria-label="Alienway navigation"><a class="brand" href="../index.html">AW / ALIENWAY</a><a href="../portfolio.html#work-editorial">Back to Work</a></nav></header>
+<main class="wrap">
+<h1>Blog &amp; editorial</h1>
+<article class="card" aria-labelledby="margin-title">
+<a class="preview" href="../blog/index.html" aria-label="Open the MARGIN journal demo">
+<span class="sheet"><b class="masthead">MARGIN</b><img src="../blog/assets/images/kai-coast.webp" alt="Cape Town coastal journal photography"><i class="story">The art of noticing.</i></span>
+</a>
+<div class="info"><h2 id="margin-title">MARGIN journal</h2>
+<p>A photo-led website for independent writers, with an editing screen where you can publish and organise your stories.</p>
+<div class="price"><strong>R 8,400</strong> once-off<span>R 465 per month for care from launch</span></div>
+<ul><li>Journal website and staff editing screen · R 7,500</li><li>Your video playing behind one section · R 450</li><li>Stories and photos appearing as you scroll on one page · R 450</li></ul>
+<small>Reader accounts, saved stories and custom analytics are priced separately.</small>
+<div class="actions"><a href="../blog/index.html">View live demo ↗</a><a href="../pricing.html?design=blog">Customise this package →</a></div>
+</div></article></main></body></html>

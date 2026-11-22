@@ -119,7 +119,8 @@ const designs = {
     "t": 2,
     "scope": "Manage grocery stock and customer orders with owner and manager views and one sales report.",
     "opts": [
-      "filter"
+      "filter",
+      "tabs"
     ],
     "custom": "Live checkout, delivery slots and till connections"
   },
@@ -178,7 +179,8 @@ const designs = {
     "custom": "Reader accounts, saved stories and custom analytics"
   }
 };
-const packages = [["Starter", 3500, 350, 3, 15, 20, 30], ["Business", 7500, 750, 6, 30, 40, 60], ["Stacked", 15000, 1500, 8, 50, 60, 120]];
+const monthlyCare = 465;
+const packages = [["Starter", 3500, 3, 15, 20, 30], ["Business", 7500, 6, 30, 40, 60], ["Stacked", 15000, 8, 50, 60, 120]];
 const extras = {
   "intro": [
     "Animated opening",
@@ -189,7 +191,7 @@ const extras = {
     450
   ],
   "tabs": [
-    "Menu with switchable tabs",
+    "Switchable category tabs",
     500
   ],
   "faq": [
@@ -230,19 +232,23 @@ const selected = new URLSearchParams(location.search).get('design');
 if (Object.hasOwn(designs, selected)) design.value = selected;
 
 function render() {
+  get('unavailable').hidden = true;
+  get('configuration').hidden = false;
+  get('receipt').hidden = false;
   const item = designs[design.value];
   const tier = simple.checked ? 0 : item.t;
-  const [label, base, monthly, pages, photos, items, minutes] = packages[tier];
+  const [label, base, pages, photos, items, minutes] = packages[tier];
   get('name').textContent = item.name;
   get('preview').href = item.demo;
-  get('simpleRow').hidden = item.t === 0;
+  get('simpleRow').hidden = item.t === 0 && !item.opts.length;
   get('scope').textContent = simple.checked ? 'Use this look for a simple site with your services, photos and direct enquiries. Staff tools are separate.' : item.scope;
   get('limits').textContent = label + ' covers up to ' + pages + ' pages, ' + photos + ' supplied photos and ' + items + ' simple listings.';
   get('custom').textContent = item.custom ? 'Priced separately if needed: ' + item.custom + '. We confirm the cost before you commit.' : '';
   get('options').replaceChildren();
-  const suggestedTotal = item.opts.reduce((sum, key) => sum + extras[key][1], base);
-  get('example').textContent = item.opts.length ? 'With the listed design options: ' + money(suggestedTotal) + ' once-off. Pick any of them individually below.' : 'This version works at the starting price. Choose extras only if you need them.';
-  get('applyExtras').hidden = !item.opts.length;
+  const included = simple.checked ? [] : item.opts;
+  const suggestedTotal = included.reduce((sum, key) => sum + extras[key][1], base);
+  get('headlinePrice').textContent = money(suggestedTotal) + ' once-off';
+  get('example').textContent = included.length ? 'These features are selected in the advertised package. Untick any you don’t need.' : 'Your website is ready at the base price. Choose an extra only if you need it.';
   const more = document.createElement('details');
   const summary = document.createElement('summary');
   summary.textContent = 'Other extras you can choose';
@@ -252,6 +258,7 @@ function render() {
     const input = document.createElement('input');
     input.type = 'checkbox';
     input.value = key;
+    input.checked = included.includes(key);
     const row = document.createElement('label');
     row.append(input, name + ' · +' + money(cost));
     (item.opts.includes(key) ? get('options') : more).append(row);
@@ -270,14 +277,14 @@ function render() {
   }
   get('baseLabel').textContent = label + ' website';
   get('base').textContent = money(base);
-  get('monthly').textContent = money(monthly);
+  get('monthly').textContent = money(monthlyCare);
   get('care').textContent = 'Monthly care includes ' + minutes + ' minutes of content updates. Fixes to delivered features are included separately.';
   update();
 }
 
 function update() {
   const item = designs[design.value];
-  const [tier, base, monthly] = packages[simple.checked ? 0 : item.t];
+  const [tier, base] = packages[simple.checked ? 0 : item.t];
   let added = 0;
   const lines = [];
   for (const input of get('options').querySelectorAll(':checked')) {
@@ -295,6 +302,7 @@ function update() {
       lines.push(count + ' ' + label.toLowerCase() + ' ' + money(count * rate));
     }
   });
+  get('headlinePrice').textContent = valid ? money(base + added) + ' once-off' : 'Check quantities';
   get('extra').textContent = valid ? money(added) : 'Check quantities';
   get('total').textContent = valid ? money(base + added) : 'Enter whole quantities from 0 to 1,000,000';
   const enquiry = get('enquire');
@@ -302,7 +310,7 @@ function update() {
     enquiry.removeAttribute('href');
     return;
   }
-  const query = new URLSearchParams({template:item.name, package:tier + ' · ' + money(base + added) + ' once-off + ' + money(monthly) + '/month', extras:lines.join(' / ') || 'None selected'});
+  const query = new URLSearchParams({template:item.name, package:tier + ' · ' + money(base + added) + ' once-off + ' + money(monthlyCare) + '/month', extras:lines.join(' / ') || 'None selected'});
   enquiry.href = 'start-project.html?' + query;
 }
 design.addEventListener('change', () => {
@@ -310,13 +318,14 @@ design.addEventListener('change', () => {
   history.replaceState(null, '', '?design=' + design.value);
   render();
 });
-get('applyExtras').addEventListener('click', () => {
-  for (const input of get('options').querySelectorAll('input')) {
-    if (designs[design.value].opts.includes(input.value)) input.checked = true;
-  }
-  update();
-});
 simple.addEventListener('change', render);
 get('options').addEventListener('change', update);
 get('quantity').addEventListener('input', update);
-render();
+if (selected && !Object.hasOwn(designs, selected)) {
+  get('unavailable').hidden = false;
+  design.selectedIndex = -1;
+  get('configuration').hidden = true;
+  get('receipt').hidden = true;
+} else {
+  render();
+}

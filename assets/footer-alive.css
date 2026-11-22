@@ -592,3 +592,8 @@
   .footer-brand-message{padding-inline:14px}
   .footer-brand-message .footer-brand-tagline{font-size:21px!important}
 }
+
+@media(max-width:700px){
+ .footer-links a,.footer-backtop{min-height:44px;display:inline-flex;align-items:center}
+ .footer-links a{width:100%}
+}

@@ -9,7 +9,18 @@ let revision = 0;
 
 const sessionKey = 'alienway.staff.session';
 let expiryTimer;
+const passwordToggles = document.querySelectorAll('.password-toggle input');
+function syncPasswordVisibility(toggle) {
+  el(toggle.getAttribute('aria-controls')).type = toggle.checked ? 'text' : 'password';
+}
+for (const toggle of passwordToggles) {
+  toggle.addEventListener('change', () => syncPasswordVisibility(toggle));
+}
 function screen(name) {
+  for (const toggle of passwordToggles) {
+    toggle.checked = false;
+    syncPasswordVisibility(toggle);
+  }
   for (const id of ['login','send','verify','choose']) el(id).hidden = id !== name;
 }
 function signedIn(active) {

@@ -49,3 +49,6 @@ article details{margin:1rem 0 0;padding:.4rem 0 0;border:0;border-top:1px solid 
 @media(prefers-reduced-motion:no-preference){button,.dial{transition:transform .12s,border-color .15s,box-shadow .15s}}
 
 #client-contact,#package-list{display:grid;gap:1.1rem}#client-list>details{margin:1rem 0}#client-list article{margin:1rem 0}#client-list .dial{margin-right:.75rem}#client-search{max-width:35rem}
+
+form .password-toggle{display:flex;align-items:center;gap:.6rem;width:fit-content;min-height:44px;cursor:pointer}
+.password-toggle input{width:1.15rem;height:1.15rem;min-height:0;margin:0;accent-color:var(--forest)}

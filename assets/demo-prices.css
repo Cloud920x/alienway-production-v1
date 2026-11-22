@@ -1,3 +1,8 @@
 .aw-demo-price{display:block;margin:1rem 0;padding:1rem 0;border-block-start:1px solid currentColor;font:500 .92rem/1.55 system-ui;text-align:left;letter-spacing:normal;text-transform:none}.aw-demo-price strong,.aw-demo-price span{display:block}.aw-demo-price strong{font:750 1.2rem/1.35 system-ui}.aw-demo-price span{margin:.4rem 0}.aw-demo-price a{display:inline-block!important;margin:0!important;padding:.4rem 0!important;color:inherit!important;background:transparent!important;font:700 .88rem/1.5 system-ui!important;text-decoration:underline!important;text-underline-offset:4px}.aw-estate-option{min-width:0}.aw-estate-option .choice-card{display:block}.aw-demo-price strong{letter-spacing:-.025em;font-variant-numeric:tabular-nums}
 .aw-demo-price span{max-width:55ch}
 .aw-demo-price a:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+
+.aw-demo-price{margin-block:1.4rem;padding-block:1rem .25rem;border-block-start-color:currentColor}
+.aw-demo-price strong{font-size:clamp(1.3rem,2vw,1.65rem);line-height:1.25;margin-bottom:.18rem}
+.aw-demo-price span{margin-block:.55rem;line-height:1.6}
+.aw-demo-price a{box-sizing:border-box;min-height:44px;align-content:center;text-decoration-thickness:1.5px!important}

@@ -17,3 +17,11 @@ input[type=checkbox]{flex-shrink:0}
  main>h1,main>p,main>details {grid-column:1/-1}
  .receipt {position:sticky;top:1rem}
 }
+
+.aw-skip{position:fixed;top:.6rem;left:.6rem;z-index:10000;padding:.7rem 1rem;border-radius:6px;background:#fff;color:#172b36;font:700 1rem/1.5 system-ui;transform:translateY(-180%)}
+.aw-skip:focus{transform:none;outline:3px solid #916b36}
+
+.price-actions{display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
+.price-actions a{display:inline-flex;min-height:44px;align-items:center}
+#receipt{scroll-margin-top:1rem}
+@media(min-width:54rem){.price-actions .jump-price{display:none}}

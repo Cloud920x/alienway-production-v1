@@ -44,3 +44,6 @@
 }
 
 * { -webkit-tap-highlight-color: transparent; }
+
+.aw-skip{position:fixed;top:.6rem;left:.6rem;z-index:10000;padding:.7rem 1rem;border-radius:6px;background:#fff;color:#172b36;font:700 1rem/1.5 system-ui;transform:translateY(-180%)}
+.aw-skip:focus{transform:none;outline:3px solid #916b36}

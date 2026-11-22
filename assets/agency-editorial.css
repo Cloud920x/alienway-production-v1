@@ -54,7 +54,7 @@
 .studio-about .about-story p { color:#38413e; font:400 clamp(1.08rem,1.65vw,1.3rem)/1.72 Georgia,serif; }
 .studio-about .about-story h2 { color:#182c32; letter-spacing:-.045em; }
 .studio-about .about-story .highlight { color:#69401f!important; border-color:#b08450; font:700 clamp(1.25rem,2.6vw,2.2rem)/1.25 Georgia,serif!important; }
-.studio-about .about-story-ending h1 { color:#253d46; }
+.studio-about .about-story-ending h2 { color:#253d46; }
 .studio-about .about-cta { border-radius:4px; border-color:#796348; background:linear-gradient(135deg,#342e27,#17232b 80%); }
 .studio-contact .contact-project-card { border-radius:4px; border-top:5px solid #84aace; background:linear-gradient(145deg,#eae2d2,#faf5e8); color:#182e43; box-shadow:4px 5px 0 #5a7186; }
 .studio-contact .contact-project-card :is(h2,p,small) { color:#233a4e; }
@@ -79,4 +79,13 @@
   .project-prints { gap:.3rem; }
   .project-prints strong { font-size:clamp(.95rem,4vw,1.3rem); }
   .studio-contact .contact-hero > div,.studio-about .about-hero > div { background:linear-gradient(90deg,#0c1623b8,transparent); }
+}
+
+.studio-work .case-content>span,.studio-contact .contact-project-card p{max-width:58ch;line-height:1.65}
+.studio-work .showcase-link{display:inline-flex;align-items:center;min-height:44px;text-underline-offset:.3em}
+@media(max-width:480px){
+ .project-prints{height:auto;display:grid;grid-template-columns:1fr;gap:.55rem}
+ .project-prints a{min-height:5.5rem;padding:.85rem 1rem;background-position:center 47%}
+ .project-prints strong{font-size:1.4rem}
+ .studio-work .case-content{padding:1.25rem}
 }

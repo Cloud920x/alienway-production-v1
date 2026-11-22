@@ -281,7 +281,7 @@
     fallback.hidden = false;
     status.textContent = 'Your project enquiry is prepared. Your email app should open with the details ready — nothing is sent by this website.';
     const subject = 'New Alienway Production project enquiry';
-    const mailto = 'mailto:hello@alienway.com?subject=' +
+    const mailto = 'mailto:alienway920@gmail.com?subject=' +
       encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 
     window.location.href = mailto;
@@ -292,11 +292,11 @@
     try {
       if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error('Clipboard unavailable');
       await navigator.clipboard.writeText(body);
-      status.textContent = 'Copied. Paste your enquiry into an email to hello@alienway.com. Nothing has been sent yet.';
+      status.textContent = 'Copied. Paste your enquiry into an email to alienway920@gmail.com. Nothing has been sent yet.';
     } catch (error) {
       enquiryText.focus();
       enquiryText.select();
-      status.textContent = 'Your enquiry is selected below. Copy it and email hello@alienway.com.';
+      status.textContent = 'Your enquiry is selected below. Copy it and email alienway920@gmail.com.';
     }
   });
 

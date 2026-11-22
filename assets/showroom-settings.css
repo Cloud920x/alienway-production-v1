@@ -1,0 +1,45 @@
+/* Each collection uses its own photograph and a tint that preserves text contrast. */
+#restaurant-templates {
+  background: linear-gradient(120deg,rgba(65,38,22,.76),rgba(65,38,22,.87)), url("https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=1280&q=72") center / cover, #422e21;
+}
+#automotive-templates {
+  background: linear-gradient(120deg,rgba(23,47,55,.74),rgba(23,47,55,.86)), url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1280&q=72") center / cover, #233d45;
+}
+#construction-templates {
+  background: linear-gradient(120deg,rgba(247,235,212,.83),rgba(247,235,212,.91)), url("https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1280&q=72") center / cover, #eadcc5;
+}
+#fashion-showcase {
+  background: linear-gradient(120deg,rgba(249,231,227,.83),rgba(249,231,227,.90)), url("https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1280&q=72") center / cover, #ead7d2;
+}
+#electronics-showcase {
+  background: linear-gradient(120deg,rgba(21,38,54,.82),rgba(21,38,54,.9)), url("https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=1280&q=72") center / cover, #203645;
+}
+#grocery-showcase {
+  background: linear-gradient(120deg,rgba(233,240,219,.85),rgba(233,240,219,.92)), url("https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1280&q=72") center / cover, #e4ead9;
+}
+.property-collection {
+  background: linear-gradient(120deg,rgba(238,242,232,.85),rgba(238,242,232,.94)), url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1280&q=72") center / cover, #e6eae1;
+}
+.practice-collection {
+  background: linear-gradient(120deg,rgba(218,208,184,.72),rgba(218,208,184,.86)), url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1280&q=72") center / cover, #c0b7a5;
+}
+#work-editorial {
+  background: linear-gradient(120deg,rgba(244,236,217,.81),rgba(244,236,217,.9)), url("../blog/assets/images/kai-journal.webp") center / cover, #e8e2d2;
+}
+
+#restaurant-templates {color:#fff4e6}
+#restaurant-templates .restaurant-template {background:#31251f}
+#automotive-templates {color:#f3f8f7}
+#automotive-templates .auto-card {background:#1b2b31}
+#construction-templates {color:#282e31}
+.practice-collection {display:flow-root; padding-bottom:clamp(32px,6vw,80px)}
+#work-editorial {padding:clamp(12px,2.4vw,32px)}
+#work-editorial .case-content {background:#f7f3e9;color:#21372c}
+#work-editorial .case-content :is(h2,p,span,a,strong) {color:inherit}
+@media (max-width: 720px) {
+  :is(#restaurant-templates,#automotive-templates,#construction-templates,.practice-collection,.property-collection) {
+    background-size:100% 100%, auto 960px, auto;
+    background-repeat:no-repeat, repeat-y, repeat;
+    background-position:center, center top, center;
+  }
+}

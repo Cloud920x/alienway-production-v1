@@ -183,45 +183,57 @@ const monthlyCare = 465;
 const packages = [["Starter", 3500, 3, 15, 20, 30], ["Business", 7500, 6, 30, 40, 60], ["Stacked", 15000, 8, 50, 60, 120]];
 const extras = {
   "intro": [
-    "Animated opening",
+    "Opening animation",
     350
   ],
   "scroll": [
-    "Sections that animate as you scroll · one page",
+    "Animation as you scroll",
     450
   ],
   "tabs": [
-    "Switchable category tabs",
+    "Category buttons",
     500
   ],
   "faq": [
-    "Questions that expand when tapped",
+    "Tap-to-open answers",
     200
   ],
   "reservation": [
-    "Reservation request sent to your inbox",
+    "Booking request by email",
     750
   ],
   "filter": [
-    "Search and filter one catalogue",
+    "Catalogue search and filters",
     950
   ],
   "gallery": [
-    "Full-screen photo gallery",
+    "Full-screen photos",
     450
   ],
   "carousel": [
-    "Swipeable photo gallery",
+    "Swipe-through photos",
     400
   ],
   "form": [
-    "Second enquiry form",
+    "Extra enquiry form",
     450
   ],
   "video": [
-    "Supplied video as a background",
+    "Video background",
     450
   ]
+};
+const featureDescriptions = {
+  "intro": "Your first photo and headline move into view.",
+  "scroll": "Text or pictures appear as visitors move down one page. Ordinary scrolling is included.",
+  "tabs": "Visitors tap a category, such as Lunch or Drinks, to see its items.",
+  "faq": "Visitors tap a question to reveal the answer.",
+  "reservation": "Guests send a date, time and party size. Your team confirms the booking.",
+  "filter": "Visitors narrow a list by up to three agreed details, such as brand or price.",
+  "gallery": "Visitors tap a photo to enlarge it and browse the gallery.",
+  "carousel": "Visitors swipe sideways through one set of photos.",
+  "form": "A second form sends up to six answers to one inbox.",
+  "video": "A clip you supply plays behind one section of the page."
 };
 const get = id => document.getElementById(id);
 const money = value => 'R ' + value.toLocaleString('en-ZA').replace(/[^0-9]/g, ',');
@@ -260,7 +272,13 @@ function render() {
     input.value = key;
     input.checked = included.includes(key);
     const row = document.createElement('label');
-    row.append(input, name + ' · +' + money(cost));
+    const description = document.createElement('span');
+    const title = document.createElement('strong');
+    title.textContent = name + ' · ' + money(cost);
+    const help = document.createElement('small');
+    help.textContent = featureDescriptions[key];
+    description.append(title, help);
+    row.append(input, description);
     (item.opts.includes(key) ? get('options') : more).append(row);
   }
   get('options').append(more);
@@ -278,7 +296,7 @@ function render() {
   get('baseLabel').textContent = label + ' website';
   get('base').textContent = money(base);
   get('monthly').textContent = money(monthlyCare);
-  get('care').textContent = 'Monthly care includes ' + minutes + ' minutes of content updates. Fixes to delivered features are included separately.';
+  get('care').textContent = 'Monthly care includes ' + minutes + ' minutes of content updates. Fixes to features we built are also covered and do not use your editing time.';
   update();
 }
 

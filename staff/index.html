@@ -1,11 +1,12 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Staff workspace · Alienway Production</title><link rel="stylesheet" href="calls.css?v=clients1"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Staff workspace · Alienway Production</title><link rel="stylesheet" href="calls.css?v=password2"></head>
 <body><main><header><a href="../">AW / ALIENWAY PRODUCTION</a><button id="logout" hidden>Sign out</button></header>
 <h1 id="page-title">Staff sign in</h1>
 <p id="message" role="status"></p>
 <form id="login">
   <label>Staff email<input name="email" type="email" autocomplete="username" required></label>
-  <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+  <label>Password<input id="login-password" autocapitalize="none" spellcheck="false" name="password" type="password" autocomplete="current-password" required></label>
+  <label class="password-toggle"><input type="checkbox" aria-controls="login-password"> Show password</label>
   <button>Sign in</button><button type="button" id="setup">Set or reset my password</button>
 </form>
 <form id="send" hidden>
@@ -18,7 +19,8 @@
   <button>Verify code</button><button type="button" class="cancel">Back to sign in</button>
 </form>
 <form id="choose" hidden>
-  <label>Choose a password (at least 12 characters)<input name="password" type="password" autocomplete="new-password" minlength="12" required></label>
+  <label>Choose a password (at least 12 characters)<input id="choose-password" autocapitalize="none" spellcheck="false" name="password" type="password" autocomplete="new-password" minlength="12" required></label>
+  <label class="password-toggle"><input type="checkbox" aria-controls="choose-password"> Show password</label>
   <button>Save password</button><button type="button" class="cancel">Cancel</button>
 </form>
 <section id="desk" hidden>
@@ -44,4 +46,4 @@
 <details><summary>Create package</summary><form id="package-form"><label>Package name<input name="name" maxlength="100" required></label><label>Included services<textarea name="inclusions" maxlength="2500" required></textarea></label><label>Once-off fee (R)<input name="setup_fee" type="number" min="0" max="9999999999" step=".01" value="0" required></label><label>Monthly fee (R)<input name="monthly_fee" type="number" min="0" max="9999999999" step=".01" value="465" required></label><button>Save package</button></form></details>
 <details id="assignment"><summary>Assign or change a client’s package</summary><form id="assign-form"><label>Client<select name="client_id" required></select></label><label>Package<select name="package_id" required></select></label><label>Effective date<input name="starts_on" type="date" required></label><label>Agreed add-ons<textarea name="addons" maxlength="1500"></textarea></label><label>Once-off add-ons (R)<input name="extra_once" type="number" min="0" max="9999999999" step=".01" value="0" required></label><label>Monthly add-ons (R)<input name="extra_monthly" type="number" min="0" max="9999999999" step=".01" value="0" required></label><button>Save agreement</button></form></details>
 <h3>Package catalogue</h3><div id="package-list"></div></section>
-</section></main><script type="module" src="calls.js?v=packages2"></script></body></html>
+</section></main><script type="module" src="calls.js?v=password2"></script></body></html>

@@ -32,8 +32,6 @@
   let currentStep = 0;
   let selectedType = '';
   let selectedBudget = '';
-  let pointerFrame = 0;
-  let pointerPoint = null;
 
   const fields = {
     name: form.elements.namedItem('name'),
@@ -63,7 +61,9 @@
 
   if (importedContext) {
     contextBox.hidden = false;
-    contextText.value = importedContext;
+    contextText.textContent = importedContext;
+    const chosen = (params.get('template') || params.get('service') || '').trim().slice(0, 100);
+    document.getElementById('contextTitle').textContent = chosen ? 'Your selection · ' + chosen : 'Your selection';
   }
 
   const importedIndustry = (params.get('industry') || '').trim();
@@ -186,7 +186,7 @@
       const heading = panels[currentStep].querySelector('h3');
       if (heading) {
         heading.setAttribute('tabindex', '-1');
-        requestAnimationFrame(() => heading.focus({ preventScroll: true }));
+        requestAnimationFrame(() => heading.focus());
       }
     }
   }
@@ -298,32 +298,6 @@
       enquiryText.select();
       status.textContent = 'Your enquiry is selected below. Copy it and email hello@alienway.com.';
     }
-  });
-
-  // A restrained pointer glow follows the user's hand without moving the form itself.
-  builder.addEventListener('pointermove', event => {
-    if (event.pointerType === 'touch') return;
-    const rect = builder.getBoundingClientRect();
-    pointerPoint = {
-      x: Math.max(0, Math.min(100, (event.clientX - rect.left) / rect.width * 100)),
-      y: Math.max(0, Math.min(100, (event.clientY - rect.top) / rect.height * 100))
-    };
-    if (pointerFrame) return;
-    pointerFrame = requestAnimationFrame(() => {
-      if (pointerPoint) {
-        builder.style.setProperty('--pointer-x', pointerPoint.x + '%');
-        builder.style.setProperty('--pointer-y', pointerPoint.y + '%');
-      }
-      pointerFrame = 0;
-    });
-  });
-
-  builder.addEventListener('pointerleave', () => {
-    cancelAnimationFrame(pointerFrame);
-    pointerFrame = 0;
-    pointerPoint = null;
-    builder.style.removeProperty('--pointer-x');
-    builder.style.removeProperty('--pointer-y');
   });
 
   // Cards begin with a real keyboard focus target and the first stage is rendered immediately.

@@ -328,7 +328,9 @@ function update() {
     enquiry.removeAttribute('href');
     return;
   }
-  const query = new URLSearchParams({template:item.name, package:tier + ' · ' + money(base + added) + ' once-off + ' + money(monthlyCare) + '/month', extras:lines.join(' / ') || 'None selected'});
+  const group = design.selectedOptions[0].parentElement.label;
+  const industry = {Restaurants:'Food & hospitality', Retail:'Retail & e-commerce', Editorial:'Blog & editorial'}[group] || group;
+  const query = new URLSearchParams({industry, template:item.name, package:tier + ' · ' + money(base + added) + ' once-off + ' + money(monthlyCare) + '/month', extras:lines.join(' / ') || 'None selected'});
   enquiry.href = 'start-project.html?' + query;
 }
 design.addEventListener('change', () => {

@@ -337,8 +337,8 @@ async function navigate(id,filter) {
     ]);
     if (current!==generation) return;
     let catalogue=[],agreements=[],services=[];
-    if(role==='owner' && ['clients','packages'].includes(id)) {
-      [catalogue,agreements]=await Promise.all([allRows('agency_packages'),allRows('client_packages')]);
+    if(role==='owner' && ['clients','packages','projects'].includes(id)) {
+      [catalogue,agreements]=await Promise.all([allRows('agency_packages'),id==='projects'?[]:allRows('client_packages')]);
     }
     if(current!==generation) return;
     if(role==='sales' && id==='clients') {
@@ -405,6 +405,8 @@ function renderWorkspace() {
     empty('meeting-list','Scheduled meetings will appear here. Add a business in Call queue to book its first meeting.');
   }
   if (view==='projects') {
+    fillSelect(el('quote-package'),data.catalogue,p=>p.name+' · '+money(p.setup_fee));
+    el('quote-package').options[0].textContent='Custom quote';
     el('project-list').replaceChildren();
     for (const p of projects) {
       const row=entry(p.title,business(p.lead_id)+' · '+p.stage+'\n'+p.scope);
@@ -484,6 +486,15 @@ function drawToday() {
     const meter=document.createElement('progress');meter.max=Math.max(1,leads.length);meter.value=n;row.append(meter);el('pipeline').append(row);
   }
 }
+el('quote-package').addEventListener('change',event=>{
+  const offer=data?.catalogue.find(item=>item.id===event.target.value);
+  if (!offer) return;
+  const fields=el('quote').elements;
+  fields.title.value=offer.name;
+  fields.scope.value=offer.inclusions;
+  fields.build_fee.value=offer.setup_fee;
+  fields.monthly.value=offer.monthly_fee;
+});
 for(const [formId,table,page] of [['book','agency_meetings','meetings'],['quote','agency_projects','projects'],['payment','agency_payments','money']]) {
   const form=el(formId);
   action(form,'submit',async()=>{

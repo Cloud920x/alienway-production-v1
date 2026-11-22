@@ -78,6 +78,25 @@ function node(tag, words) {
   return item;
 }
 
+function deleteBusinessButton(business) {
+  return command('Delete business', async () => {
+    if (!window.confirm('Permanently delete ' + business.business + ' and its call notes?')) return;
+    const result = await request('/rest/v1/rpc/delete_business', 'POST', {
+      business_id: business.id, expected_updated_at: business.updated_at
+    });
+    if (result === 'linked_history') {
+      message('This business has a meeting, quote, project or package on record. Its history has been kept.');
+      return;
+    }
+    const feedback = result === 'deleted' ? business.business + ' deleted.' : 'The business changed or was already removed. Check the refreshed list.';
+    if (view === 'calls') await refreshList(feedback);
+    else if (view === 'clients') {
+      await navigate('clients');
+      if (!el('message').textContent) message(feedback);
+    }
+  });
+}
+
 function businessCard(lead) {
   const card = node('article','');
   const info = lead.callback_at ? ' · ' + new Date(lead.callback_at).toLocaleString('en-ZA') : '';
@@ -129,6 +148,7 @@ function businessCard(lead) {
   nextSteps.append(command('Book meeting',()=>startForLead('meetings','book',lead.id)));
   if(role==='owner' && lead.status==='approved') nextSteps.append(command('Create quote',()=>startForLead('projects','quote',lead.id)));
   card.append(node('h3','How did the call go?'),actions,schedule,nextSteps,notePanel);
+  if (role === 'owner') card.append(deleteBusinessButton(lead));
   return card;
 }
 
@@ -343,7 +363,7 @@ async function navigate(id,filter) {
   message('Updating dashboard…');
   try {
     const [leads,meetings,projects,payments] = await Promise.all([
-      allRows('call_leads',id==='clients'?'id,business,phone,details,status,callback_at,is_client':'id,business,status,callback_at,is_client'),allRows('agency_meetings'),
+      allRows('call_leads',id==='clients'?'id,business,phone,details,status,callback_at,is_client,updated_at':'id,business,status,callback_at,is_client'),allRows('agency_meetings'),
       role==='owner'?allRows('agency_projects'):[],role==='owner'?allRows('agency_payments'):[]
     ]);
     if (current!==generation) return;
@@ -586,6 +606,7 @@ function drawClientWorkspace() {
       }));
       for(const project of data.projects.filter(p=>p.lead_id===client.id)) row.append(entry(project.title,project.stage+' · Balance '+money(total(project)-paid(project))));
     }
+    if (owner) row.append(deleteBusinessButton(client));
     el('client-list').append(row);
   }
   empty('client-list',query?'No matching clients.':owner?'Add an existing client or accept a project quote to start your client list.':'Your existing clients will appear here.');

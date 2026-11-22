@@ -9,8 +9,8 @@
 
 <title>Start Your Project | Alienway Production</title>
 
-<link rel="stylesheet" href="css/style.css?v=20261119-polish">
-<link rel="stylesheet" href="assets/project-starter.css?v=paper-form">
+<link rel="stylesheet" href="css/style.css?v=journey2">
+<link rel="stylesheet" href="assets/project-starter.css?v=journey2">
 
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="description" content="Start a project with Alienway Production. Tell us about your business, goals and the digital experience you want to build.">
@@ -21,12 +21,13 @@
 <meta property="og:url" content="https://cloud920x.github.io/alienway-production-v1/start-project.html">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#102638">
-  <link rel="stylesheet" href="assets/footer-alive.css?v=20261118-final2">
-  <link rel="stylesheet" href="assets/agency-nav.css?v=tap-targets2">
+  <link rel="stylesheet" href="assets/footer-alive.css?v=journey2">
+  <link rel="stylesheet" href="assets/agency-nav.css?v=journey2">
 </head>
 
 
 <body id="top">
+<a class="aw-skip" href="#main-content">Skip to main content</a>
 
 
 <!-- HEADER START -->
@@ -100,7 +101,7 @@ START PROJECT →
 
 <!-- CONTACT SECTION / INTERACTIVE PROJECT STARTER -->
 
-<main id="main-content">
+<main id="main-content" tabindex="-1">
 <section class="contact-section project-starter" id="start-project" aria-labelledby="project-intro-title">
   <div class="project-intro">
 
@@ -129,6 +130,11 @@ START PROJECT →
       <span data-step-label="1">DETAILS</span>
       <span data-step-label="2">CONTACT</span>
     </div>
+
+    <details class="enquiry-context" id="enquiryContext" hidden>
+      <summary id="contextTitle">Your selection</summary>
+      <pre id="projectSelection"></pre>
+    </details>
 
     <form id="projectForm" class="project-form" novalidate>
       <div class="project-step is-active" data-step-panel="0" aria-labelledby="step-one-title">
@@ -172,7 +178,7 @@ START PROJECT →
             <option value="">Choose your industry</option>
             <option>Automotive</option><option>Construction</option><option>Food & hospitality</option>
             <option>Retail & e-commerce</option><option>Real estate</option><option>Professional services</option>
-            <option>Health & wellness</option><option>Education</option><option>Other / still exploring</option>
+            <option>Health & wellness</option><option>Education</option><option>Blog &amp; editorial</option><option>Other / still exploring</option>
           </select>
           <span aria-hidden="true">⌄</span>
         </div>
@@ -218,10 +224,6 @@ START PROJECT →
         <label class="field-label" for="project-email">EMAIL ADDRESS</label>
         <input id="project-email" name="email" type="email" placeholder="you@yourbusiness.com" autocomplete="email" maxlength="160" required>
 
-        <div class="enquiry-context" id="enquiryContext" hidden>
-          <label class="field-label" for="projectSelection">YOUR SELECTED DEMO / SERVICE</label>
-          <textarea id="projectSelection" name="selection" readonly rows="3"></textarea>
-        </div>
 
         <div class="project-review">
           <div class="review-heading"><span>YOUR PROJECT SO FAR</span><span class="review-live-dot"></span></div>
@@ -308,7 +310,7 @@ START PROJECT →
 
 
 
-<script src="assets/project-starter.js?v=20261120" defer></script>
+<script src="assets/project-starter.js?v=journey2" defer></script>
   <script src="assets/footer-alive.js?v=20261118-final1" defer></script>
 </body>
 

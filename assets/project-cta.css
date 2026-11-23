@@ -463,3 +463,77 @@
   }
   .cta-alive{opacity:1;transform:none}
 }
+
+
+/* START PROJECT — a more dimensional, current finish without changing the interaction. */
+.cta.cta-stage{
+  background:
+    radial-gradient(ellipse at 8% 18%,rgba(255,255,255,.82),transparent 42%),
+    radial-gradient(ellipse at 94% 82%,rgba(91,159,190,.16),transparent 38%),
+    linear-gradient(128deg,#e4eef3 0%,#d7e6ed 52%,#f0f6f9 100%);
+}
+.cta-alive{
+  border:1px solid rgba(107,165,190,.38);
+  border-radius:25px;
+  background:
+    radial-gradient(ellipse at 92% 8%,rgba(117,190,218,.17),transparent 36%),
+    radial-gradient(ellipse at 7% 100%,rgba(255,255,255,.84),transparent 48%),
+    linear-gradient(138deg,#f9fcfd 0%,#edf5f8 48%,#e1edf2 100%);
+  box-shadow:0 32px 82px rgba(24,66,88,.2),0 3px 12px rgba(24,66,88,.08),inset 0 1px 0 rgba(255,255,255,.98);
+}
+.cta-alive::before{
+  content:"";
+  position:absolute;
+  z-index:1;
+  inset:1px;
+  border:1px solid rgba(255,255,255,.64);
+  border-radius:24px;
+  pointer-events:none;
+}
+.cta-visual{
+  border:1px solid rgba(145,203,225,.34);
+  border-radius:20px;
+  background:
+    radial-gradient(ellipse at 50% 38%,rgba(63,151,190,.25),transparent 58%),
+    linear-gradient(150deg,#15374d 0%,#0a1e2d 72%,#102c40 100%);
+  box-shadow:0 22px 48px rgba(8,32,48,.27),inset 0 1px 0 rgba(255,255,255,.14);
+}
+.cta-node{
+  border-radius:12px;
+  border-color:rgba(160,208,229,.32);
+  box-shadow:0 13px 26px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.1);
+}
+.cta-stage-caption{
+  border-radius:12px;
+  border-color:rgba(159,206,228,.23);
+  background:linear-gradient(110deg,rgba(255,255,255,.09),rgba(255,255,255,.035));
+}
+.cta-alive .cta-buttons .button{
+  border-radius:13px;
+}
+.cta-alive .cta-buttons .cta-primary{
+  box-shadow:0 12px 26px rgba(31,119,157,.24),inset 0 1px 0 rgba(255,255,255,.22);
+}
+@media(max-width:800px){
+  .cta-alive{border-radius:23px}
+  .cta-alive::before{border-radius:22px}
+  .cta-visual{width:100%;max-width:470px}
+}
+@media(max-width:560px){
+  .cta.cta-stage{padding:52px 14px}
+  .cta-alive{gap:19px;padding:24px 18px 19px;border-radius:21px}
+  .cta-alive::before{border-radius:20px}
+  .cta-alive h2{font-size:clamp(34px,9.5vw,47px);line-height:1.02}
+  .cta-alive .cta-description{font-size:13px;line-height:1.65;margin-bottom:19px}
+  .cta-proofline{margin-top:18px}
+  .cta-visual{padding:12px;border-radius:17px}
+  .cta-universe{height:246px}
+  .cta-stage-caption{margin-top:6px}
+}
+@media(max-width:370px){
+  .cta-alive{padding:22px 14px 18px;gap:17px}
+  .cta-universe{height:226px}
+  .cta-node{min-width:104px}
+  .cta-node-discover{left:-4px}
+  .cta-node-design{right:-4px}
+}

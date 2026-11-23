@@ -5044,3 +5044,48 @@ p{
 @media(max-width:680px) and (hover:none) and (pointer:coarse) and (prefers-reduced-motion:no-preference){
   .trust.is-inview .trust-card:not(.is-active){animation:none!important}
 }
+
+
+/* ==========================================================
+   QUALITY CARD — TEXT CLEARANCE & PHOTO TONE
+   Keep the hanging-card idea; give the copy proper breathing room.
+========================================================== */
+.trust-card[data-trust-card="quality"] .trust-photo img{
+  filter:brightness(.78) saturate(.9) contrast(1.045);
+}
+.trust-card[data-trust-card="quality"] .trust-photo::after{
+  background:linear-gradient(180deg,rgba(6,17,26,.28),rgba(6,17,26,.08) 42%,rgba(6,17,26,.24));
+}
+.trust-card[data-trust-card="quality"] .trust-photo-caption{
+  padding:18px 12px 20px;
+}
+.trust-card[data-trust-card="quality"] .trust-photo-caption h3{
+  margin-bottom:16px;
+  line-height:1.1;
+}
+.trust-card[data-trust-card="quality"] .trust-photo-caption p{
+  max-width:34ch;
+  margin:0;
+  font-size:13px!important;
+  line-height:1.52!important;
+  letter-spacing:0;
+}
+.trust-card[data-trust-card="quality"] .trust-photo-mark{
+  bottom:8px;
+}
+.trust-card[data-trust-card="quality"]:hover .trust-photo img{
+  filter:brightness(.84) saturate(.96) contrast(1.055);
+}
+@media(max-width:390px){
+  .trust-card[data-trust-card="quality"] .trust-photo-caption{
+    padding:15px 10px 20px;
+  }
+  .trust-card[data-trust-card="quality"] .trust-photo-caption h3{
+    margin-bottom:14px;
+    font-size:18px;
+  }
+  .trust-card[data-trust-card="quality"] .trust-photo-caption p{
+    font-size:12.5px!important;
+    line-height:1.5!important;
+  }
+}

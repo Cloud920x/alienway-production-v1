@@ -131,7 +131,7 @@
   color:rgba(238,247,251,.82);
   font-size:.7rem;
   letter-spacing:.09em;
-  text-transform:uppercase;
+  /* Keep the original editorial label casing. */
 }
 .studio-work .project-prints strong{
   max-width:12ch;

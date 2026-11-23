@@ -59,7 +59,7 @@
 .step-error{color:#9b3026}
 .step-error:empty,.enquiry-status:empty{display:none}
 @media(hover:hover){#start-project button[role=radio]:hover{border-color:#4a4437;background:#faf6ed}}
-@media(max-width:800px){#start-project{grid-template-columns:1fr;gap:24px;padding:38px 5%}.project-intro h1 br{display:none}.project-intro h1 span::before{content:" "}.project-direct-contact{margin:.65rem 0}.project-location{display:none}}
+@media(max-width:800px){#start-project{grid-template-columns:1fr;gap:24px;padding:38px 5%}.project-intro h1 br{display:none}.project-direct-contact{margin:.65rem 0}.project-location{display:none}}
 @media(max-width:520px){.project-choice-grid{grid-template-columns:1fr}.choice-copy small{font-size:.875rem}.builder-step-labels{font-size:.7rem}.budget-grid{gap:7px}#start-project .budget-choice{padding:10px 8px}}
 @media(prefers-reduced-motion:reduce){.progress-fill{transition:none}}
 

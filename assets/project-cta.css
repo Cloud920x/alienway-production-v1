@@ -537,3 +537,13 @@
   .cta-node-discover{left:-4px}
   .cta-node-design{right:-4px}
 }
+
+
+/* Keep the light Start Project card readable even when legacy .cta-box
+   paragraph rules are loaded earlier in the homepage cascade. */
+.cta-alive.cta-box .cta-copy > p.cta-description{
+  color:#405b6b;
+  -webkit-text-fill-color:#405b6b;
+  opacity:1;
+  text-shadow:none;
+}

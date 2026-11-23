@@ -1,0 +1,45 @@
+.home-page .story-footnote {
+  display: flex;
+  align-items: baseline;
+  gap: .6em;
+  padding-top: clamp(1.25rem, 3vw, 2rem);
+  color: #e9f0f8;
+  font: 650 clamp(1rem, 1.5vw, 1.2rem)/1.55 system-ui, sans-serif;
+  letter-spacing: .035em;
+  text-wrap: pretty;
+}
+.home-page .story-footnote > span {
+  flex: none;
+  padding: 0;
+}
+
+.home-page :is(.story-toolbar, .wallpaper-toolbar, .story-meta) {
+  flex-wrap: wrap;
+  row-gap: .5rem;
+}
+.home-page :is(.story-toolbar, .wallpaper-toolbar) > span:first-child {
+  color: #e1ebf5;
+  font: 650 clamp(.9375rem, 1.2vw, 1.0625rem)/1.5 system-ui, sans-serif;
+  letter-spacing: .04em;
+}
+.home-page .awp-story .story-meta,
+.home-page .industry-scene .story-meta,
+.home-page .industry-kicker,
+.home-page .wallpaper-meta,
+.home-page .trust-photo-index,
+.home-page .cta-caption-index {
+  font-size: .8125rem;
+  line-height: 1.45;
+  letter-spacing: .045em;
+}
+.home-page .wallpaper-meta { opacity: 1; }
+.home-page .trust-photo-index { color: #735032; }
+
+.home-page .awp-story .story-copy p,
+.home-page .industry-scene .industry-body p,
+.home-page .process-wallpapers .wallpaper-copy p,
+.home-page .trust-photo-caption p,
+.home-page .cta-caption-copy {
+  font-size: clamp(1rem, 1.15vw, 1.0625rem);
+  line-height: 1.55;
+}

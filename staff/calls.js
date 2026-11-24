@@ -257,6 +257,23 @@ action(el('choose'),'submit',async () => {
 action(el('logout'),'click',async () => {
   try { await request('/auth/v1/logout?scope=local','POST'); } finally { signedIn(false); }
 });
+action(el('staff-invite'),'submit',async () => {
+  const email = el('staff-invite').elements.email.value.trim();
+  const response = await fetch(projectUrl + '/functions/v1/invite-staff', {
+    method: 'POST',
+    headers: {
+      apikey: publishableKey,
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({email}),
+    cache: 'no-store'
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) throw Error(result.error || 'The invitation could not be sent. Please try again.');
+  el('staff-invite').reset();
+  message(result.message || 'Invitation sent.');
+});
 async function resume() {
   const hash = new URLSearchParams(location.hash.slice(1));
   if (hash.has('access_token') || hash.has('error') || hash.has('error_code')) {
@@ -294,7 +311,7 @@ let role = '';
 let view = 'overview';
 let generation = 0;
 let data;
-const titles = {overview:'Today',calls:'Calls',meetings:'Meetings',clients:'Clients',packages:'Packages',projects:'Projects',money:'Payments'};
+const titles = {overview:'Today',calls:'Calls',meetings:'Meetings',clients:'Clients',packages:'Packages',projects:'Projects',money:'Payments',staff:'Staff access'};
 const stages = ['Quoted','Accepted','In build','In review','Approved','Live'];
 const money = value => new Intl.NumberFormat('en-ZA',{style:'currency',currency:'ZAR'}).format(value);
 const stamp = value => new Date(value).toLocaleString('en-ZA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
@@ -333,7 +350,7 @@ async function enterWorkspace() {
   el('workdate').textContent = new Date().toLocaleDateString('en-ZA',{weekday:'long',day:'numeric',month:'long'});
   el('tabs').replaceChildren();
   for (const [id,label] of Object.entries(titles)) {
-    if (role !== 'owner' && ['packages','projects','money'].includes(id)) continue;
+    if (role !== 'owner' && ['packages','projects','money','staff'].includes(id)) continue;
     const button = command(label,()=>navigate(id));
     button.dataset.view = id;
     el('tabs').append(button);
@@ -350,11 +367,12 @@ async function allRows(table,columns='*') {
   }
 }
 async function navigate(id,filter) {
-  if (!role || (['packages','projects','money'].includes(id) && role!=='owner')) return;
+  if (!role || (['packages','projects','money','staff'].includes(id) && role!=='owner')) return;
   const current = ++generation;
   view = id;
   for (const section of Object.keys(titles)) el(section).hidden = section !== id;
   for (const button of el('tabs').querySelectorAll('[data-view]')) button.setAttribute('aria-pressed',String(button.dataset.view===id));
+  if (id === 'staff') { message(''); return; }
   if (id === 'calls') {
     if (filter) el('filter').value = filter;
     await refreshList();

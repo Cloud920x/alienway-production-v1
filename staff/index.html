@@ -9,6 +9,7 @@
   <label class="password-toggle"><input type="checkbox" aria-controls="login-password"> Show password</label>
   <button>Sign in</button><button type="button" id="setup">Set or reset my password</button>
 </form>
+<p class="helper">New staff? Ask the Alienway owner for a secure invitation. You will set your own password from the email.</p>
 <form id="send" hidden>
   <label>Invited staff email<input name="email" type="email" autocomplete="email" required></label>
   <button>Email setup instructions</button><button type="button" class="cancel">Back to sign in</button>
@@ -46,4 +47,13 @@
 <details><summary>Create package</summary><form id="package-form"><label>Package name<input name="name" maxlength="100" required></label><label>Included services<textarea name="inclusions" maxlength="2500" required></textarea></label><label>Once-off fee (R)<input name="setup_fee" type="number" min="0" max="9999999999" step=".01" value="0" required></label><label>Monthly fee (R)<input name="monthly_fee" type="number" min="0" max="9999999999" step=".01" value="465" required></label><button>Save package</button></form></details>
 <details id="assignment"><summary>Assign or change a client’s package</summary><form id="assign-form"><label>Client<select name="client_id" required></select></label><label>Package<select name="package_id" required></select></label><label>Effective date<input name="starts_on" type="date" required></label><label>Agreed add-ons<textarea name="addons" maxlength="1500"></textarea></label><label>Once-off add-ons (R)<input name="extra_once" type="number" min="0" max="9999999999" step=".01" value="0" required></label><label>Monthly add-ons (R)<input name="extra_monthly" type="number" min="0" max="9999999999" step=".01" value="0" required></label><button>Save agreement</button></form></details>
 <h3>Package catalogue</h3><div id="package-list"></div></section>
-</section></main><script type="module" src="calls.js?v=business-delete1"></script></body></html>
+<section id="staff" hidden>
+<h2>Staff access</h2>
+<p class="helper">Invite a trusted team member to Alienway Production. Invitations create a separate Sales account; new staff choose their own password from the secure email link.</p>
+<form id="staff-invite">
+<label>Staff email<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<button>Send secure invitation</button>
+</form>
+<p class="helper">Only the Owner can send invitations. Sales accounts cannot access owner-only quotes, projects, package administration or payment records.</p>
+</section>
+</section></main><script type="module" src="calls.js?v=staff-invite1"></script></body></html>

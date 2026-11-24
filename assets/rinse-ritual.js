@@ -709,7 +709,7 @@
     if (event.key !== "Tab") return;
     const scope = openModal ? $(".rr-modal-card", openModal) : (opsOpen ? ops : null);
     if (!scope) return;
-    const focusable = $('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])', scope)
+    const focusable = $( 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])', scope)
       .filter(function (node) { return node.getClientRects().length > 0 && !node.closest("[hidden]"); });
     if (!focusable.length) { event.preventDefault(); scope.focus(); return; }
     const first = focusable[0];

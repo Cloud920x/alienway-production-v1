@@ -8,8 +8,8 @@ Migration `202611250001_restrict_sales_to_prospects.sql`:
 - Splits `call_leads` policies by operation: Sales can read and manage prospects only; deletion is Owner-only.
 - Preserves Owner access to all leads and clients.
 - Restricts Sales meetings to non-client prospects.
-- Converts `save_agency_client()`, `delete_business()`, and `client_service_summaries()` to SECURITY INVOKER. Owner-only RPC checks remain, while RLS and column grants enforce the actual database permissions.
-- Keeps direct DELETE Owner-only through its own RLS policy.
+- Converts `save_agency_client()` and `client_service_summaries()` to SECURITY INVOKER so caller permissions and RLS remain in force.
+- Keeps `delete_business()` as an intentionally guarded SECURITY DEFINER RPC because it preserves compare-and-delete behavior and handles linked-history errors; it checks the Owner claim and pins its search path.
 
 Database policies are the security boundary; hiding a browser tab is only a usability measure.
 

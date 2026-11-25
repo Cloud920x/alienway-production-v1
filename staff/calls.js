@@ -350,7 +350,7 @@ async function enterWorkspace() {
   el('workdate').textContent = new Date().toLocaleDateString('en-ZA',{weekday:'long',day:'numeric',month:'long'});
   el('tabs').replaceChildren();
   for (const [id,label] of Object.entries(titles)) {
-    if (role !== 'owner' && ['packages','projects','money','staff'].includes(id)) continue;
+    if (role !== 'owner' && ['clients','packages','projects','money','staff'].includes(id)) continue;
     const button = command(label,()=>navigate(id));
     button.dataset.view = id;
     el('tabs').append(button);
@@ -367,7 +367,7 @@ async function allRows(table,columns='*') {
   }
 }
 async function navigate(id,filter) {
-  if (!role || (['packages','projects','money','staff'].includes(id) && role!=='owner')) return;
+  if (!role || (['clients','packages','projects','money','staff'].includes(id) && role!=='owner')) return;
   const current = ++generation;
   view = id;
   for (const section of Object.keys(titles)) el(section).hidden = section !== id;
@@ -385,19 +385,13 @@ async function navigate(id,filter) {
       role==='owner'?allRows('agency_projects'):[],role==='owner'?allRows('agency_payments'):[]
     ]);
     if (current!==generation) return;
-    let catalogue=[],agreements=[],services=[];
+    let catalogue=[],agreements=[];
     if(role==='owner' && ['clients','packages','projects'].includes(id)) {
       [catalogue,agreements]=await Promise.all([allRows('agency_packages'),id==='projects'?[]:allRows('client_packages')]);
     }
     if(current!==generation) return;
-    if(role==='sales' && id==='clients') {
-      for(let offset=0;;offset+=200) {
-        const batch=await request('/rest/v1/rpc/client_service_summaries?order=client_id&limit=200&offset='+offset);
-        services.push(...batch);if(batch.length<200) break;
-      }
-    }
     if(current!==generation) return;
-    data={leads,meetings,projects,payments,catalogue,agreements,services};
+    data={leads,meetings,projects,payments,catalogue,agreements};
     message('');
     renderWorkspace();
   } catch {
@@ -598,10 +592,6 @@ function drawClientWorkspace() {
     dial.className='dial';dial.href='tel:'+client.phone;
     row.append(dial,node('p',client.details));
     row.append(command('Book meeting',()=>startForLead('meetings','book',client.id)));
-    if(!owner) {
-      const service=data.services.find(s=>s.client_id===client.id);
-      row.append(entry(service?.package_name || 'No active package',service?[service.inclusions,service.addons].filter(Boolean).join('\n'):''));
-    }
     if(owner) {
       const history=data.agreements.filter(a=>a.client_id===client.id).sort((a,b)=>b.starts_on.localeCompare(a.starts_on));
       const active=history.find(a=>a.starts_on<=localDay());

@@ -8,7 +8,8 @@ Migration `202611250001_restrict_sales_to_prospects.sql`:
 - Restricts Sales to `call_leads.is_client = false`.
 - Preserves Owner access to all leads and clients.
 - Restricts Sales meetings to non-client prospects.
-- Enforces Owner-only access inside the SECURITY DEFINER `client_service_summaries()` function.
+- Keeps the client-summary RPC as SECURITY INVOKER so table RLS remains in force.
+- Uses the caller's permissions and existing Owner-only table RLS for `client_service_summaries()`; the function no longer needs SECURITY DEFINER privileges.
 
 Database policies are the security boundary; hiding a browser tab is only a usability measure.
 

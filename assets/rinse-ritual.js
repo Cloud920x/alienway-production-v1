@@ -532,16 +532,34 @@
   }
   document.addEventListener("keydown", function (event) {
     const modal = $(".rr-modal:not([hidden])");
+    const ops = $("#opsApp");
+    const opsOpen = ops && !ops.hidden;
     if (event.key === "Escape") {
       if (modal) closeModal();
-      else if (!$("#opsApp").hidden) closeOps();
+      else if (opsOpen) closeOps();
       else if ($("#mainNav").classList.contains("open")) { closeMenu(); $("#menuToggle").focus(); }
     }
     if (modal && event.key === "Tab") {
-      const controls = $$("button, input:not([type=hidden]), select, a[href]", modal).filter(function (node) { return !node.disabled; });
-      const first = controls[0], last = controls[controls.length-1];
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      const controls = $("button, input:not([type=hidden]), select, a[href]", modal)
+        .filter(function (node) { return !node.disabled && node.getClientRects().length > 0 && !node.closest("[hidden]"); });
+      const first = controls[0], last = controls[controls.length - 1];
+      if (!controls.length) { event.preventDefault(); modal.focus(); }
+      else if (document.activeElement === modal) { event.preventDefault(); first.focus(); }
+      else if (event.shiftKey && (document.activeElement === first || !modal.contains(document.activeElement))) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && (document.activeElement === last || !modal.contains(document.activeElement))) { event.preventDefault(); first.focus(); }
+    }
+    if (!modal && opsOpen && event.key === "Tab") {
+      const controls = $(
+        "a[href], button:not([disabled]), input:not([type=hidden]):not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])",
+        ops
+      ).filter(function (node) {
+        return node.getClientRects().length > 0 && !node.closest("[hidden]") && !node.disabled;
+      });
+      const first = controls[0], last = controls[controls.length - 1];
+      if (!controls.length) { event.preventDefault(); ops.focus(); }
+      else if (document.activeElement === ops) { event.preventDefault(); first.focus(); }
+      else if (event.shiftKey && (document.activeElement === first || !ops.contains(document.activeElement))) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && (document.activeElement === last || !ops.contains(document.activeElement))) { event.preventDefault(); first.focus(); }
     }
   });
 

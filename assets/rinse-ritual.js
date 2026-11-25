@@ -545,8 +545,8 @@
       const first = controls[0], last = controls[controls.length - 1];
       if (!controls.length) { event.preventDefault(); modal.focus(); }
       else if (document.activeElement === modal) { event.preventDefault(); first.focus(); }
-      else if (event.shiftKey && (document.activeElement === first || !modal.contains(document.activeElement))) { event.preventDefault(); last.focus(); }
-      else if (!event.shiftKey && (document.activeElement === last || !modal.contains(document.activeElement))) { event.preventDefault(); first.focus(); }
+      else if (event.shiftKey && (document.activeElement === first || !controls.includes(document.activeElement))) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && (document.activeElement === last || !controls.includes(document.activeElement))) { event.preventDefault(); first.focus(); }
     }
     if (!modal && opsOpen && event.key === "Tab") {
       const controls = $$(
@@ -558,8 +558,8 @@
       const first = controls[0], last = controls[controls.length - 1];
       if (!controls.length) { event.preventDefault(); ops.focus(); }
       else if (document.activeElement === ops) { event.preventDefault(); first.focus(); }
-      else if (event.shiftKey && (document.activeElement === first || !ops.contains(document.activeElement))) { event.preventDefault(); last.focus(); }
-      else if (!event.shiftKey && (document.activeElement === last || !ops.contains(document.activeElement))) { event.preventDefault(); first.focus(); }
+      else if (event.shiftKey && (document.activeElement === first || !controls.includes(document.activeElement))) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && (document.activeElement === last || !controls.includes(document.activeElement))) { event.preventDefault(); first.focus(); }
     }
   });
 

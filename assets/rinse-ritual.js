@@ -540,7 +540,7 @@
       else if ($("#mainNav").classList.contains("open")) { closeMenu(); $("#menuToggle").focus(); }
     }
     if (modal && event.key === "Tab") {
-      const controls = $("button, input:not([type=hidden]), select, a[href]", modal)
+      const controls = $$("button, input:not([type=hidden]), select, a[href]", modal)
         .filter(function (node) { return !node.disabled && node.getClientRects().length > 0 && !node.closest("[hidden]"); });
       const first = controls[0], last = controls[controls.length - 1];
       if (!controls.length) { event.preventDefault(); modal.focus(); }
@@ -549,7 +549,7 @@
       else if (!event.shiftKey && (document.activeElement === last || !modal.contains(document.activeElement))) { event.preventDefault(); first.focus(); }
     }
     if (!modal && opsOpen && event.key === "Tab") {
-      const controls = $(
+      const controls = $$(
         "a[href], button:not([disabled]), input:not([type=hidden]):not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])",
         ops
       ).filter(function (node) {

@@ -3,7 +3,6 @@ drop policy if exists staff_calls on public.call_leads;
 drop policy if exists call_leads_select on public.call_leads;
 drop policy if exists call_leads_insert on public.call_leads;
 drop policy if exists call_leads_update on public.call_leads;
-drop policy if exists call_leads_delete_owner on public.call_leads;
 
 create policy call_leads_select on public.call_leads
 for select to authenticated
@@ -30,15 +29,10 @@ with check (
   or (((select auth.jwt())->'app_metadata'->>'agency_role') = 'sales' and is_client is false)
 );
 
--- Deletion is Owner-only, including direct REST calls that bypass the RPC.
-create policy call_leads_delete_owner on public.call_leads
-for delete to authenticated
-using (((select auth.jwt())->'app_metadata'->>'agency_role') = 'owner');
-
--- These columns let the Owner-only RPCs operate as SECURITY INVOKER under RLS.
+-- These column grants let the Owner-only client RPC operate as SECURITY INVOKER under RLS.
+-- Sales cannot set is_client=true because the policies above reject that row state.
 grant insert(id, is_client, status) on public.call_leads to authenticated;
 grant update(is_client) on public.call_leads to authenticated;
-grant delete on public.call_leads to authenticated;
 
 -- Sales may schedule and manage meetings for prospects, not existing clients.
 drop policy if exists meetings_staff on public.agency_meetings;
@@ -65,7 +59,7 @@ with check (
   )
 );
 
--- These RPCs do not need elevated privileges; their callers are constrained by RLS.
+-- Client creation can use caller permissions because Owner RLS and column grants are sufficient.
 create or replace function public.save_agency_client(
   business_id uuid,
   business_name text default null,
@@ -101,9 +95,12 @@ $$;
 revoke all on function public.save_agency_client(uuid, text, text, text) from public, anon;
 grant execute on function public.save_agency_client(uuid, text, text, text) to authenticated;
 
+-- Intentionally SECURITY DEFINER: preserves compare-and-delete semantics and maps linked-history errors.
+-- Owner is checked before the delete; search_path is pinned and all objects are schema-qualified.
 create or replace function public.delete_business(business_id uuid, expected_updated_at timestamptz)
 returns text
 language plpgsql
+security definer
 set search_path = ''
 as $$
 begin

@@ -38,7 +38,7 @@ with check (
 -- SECURITY DEFINER bypasses table RLS, so the function enforces Owner access itself.
 create or replace function public.client_service_summaries()
 returns table(client_id uuid, package_name text, inclusions text, addons text)
-language sql stable security definer set search_path = ''
+language sql stable set search_path = ''
 as $$
   select distinct on (a.client_id) a.client_id, p.name, p.inclusions, a.addons
   from public.client_packages a

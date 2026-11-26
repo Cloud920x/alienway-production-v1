@@ -13,6 +13,7 @@ const authClient = createClient(projectUrl,publishableKey,{auth:{autoRefreshToke
 let expiryTimer;
 let mfaPending = null;
 let authEpoch = 0;
+let startupAttempt = 0;
 let authMutationQueue = Promise.resolve();
 function withAuthMutation(task) {
   const operation = authMutationQueue.catch(()=>{}).then(task);
@@ -109,6 +110,7 @@ async function request(path, method = 'GET', body, prefer) {
 function action(control, event, task) {
   control.addEventListener(event, async e => {
     e.preventDefault();
+    startupAttempt++;
     const button = e.submitter || control;
     if (button.disabled) return;
     button.disabled = true;
@@ -407,7 +409,7 @@ async function openDesk(accessToken, refreshToken) {
         access_token:accessToken,
         refresh_token:refreshToken
       });
-      if(!result.error && result.data.session) await persistAuthSession(result.data.session);
+      if(!result.error && result.data.session && epoch === authEpoch) await persistAuthSession(result.data.session);
       return result;
     });
     await abortIfSignedOut(epoch);
@@ -928,9 +930,9 @@ for(const [formId,table] of [['package-form','agency_packages'],['assign-form','
   });
 }
 if (location.hostname === 'alienway.co.za') {
-  const bootEpoch = authEpoch;
+  const bootAttempt = ++startupAttempt;
   resume().catch(error=>{
-    if(bootEpoch !== authEpoch) return;
+    if(bootAttempt !== startupAttempt) return;
     signedIn(false);
     message(error.message);
   });

@@ -1,0 +1,27 @@
+# Local environment files and secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+.secrets/
+
+# Private keys and signing material
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.mobileprovision
+
+# Local dependencies, build output and tooling state
+node_modules/
+dist/
+coverage/
+.wrangler/
+.supabase/
+
+# Operating system files
+.DS_Store
+Thumbs.db

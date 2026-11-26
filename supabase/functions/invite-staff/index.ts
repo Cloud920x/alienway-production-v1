@@ -1,4 +1,4 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.119.2";
 
 const STAFF_REDIRECT = "https://alienway.co.za/staff/";
 const ALLOWED_ORIGIN = "https://alienway.co.za";

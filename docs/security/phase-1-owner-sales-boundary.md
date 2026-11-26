@@ -6,6 +6,7 @@ The Sales workspace is for prospect calling and follow-up. Existing client recor
 ## Database enforcement
 Migration `202611250001_restrict_sales_to_prospects.sql`:
 - Splits `call_leads` policies by operation: Sales can read and manage prospects only; deletion is Owner-only.
+- Adds a database trigger that permits prospect-to-client promotion but rejects client-to-prospect demotion, including attempts to set the flag to `NULL`.
 - Preserves Owner access to all leads and clients.
 - Restricts Sales meetings to non-client prospects.
 - Converts `save_agency_client()` and `client_service_summaries()` to SECURITY INVOKER so caller permissions and RLS remain in force.
@@ -25,7 +26,9 @@ Use separate Owner and Sales accounts:
 3. Sales cannot read or create meetings linked to existing clients.
 4. Sales receives no rows from `client_service_summaries()`.
 5. Sales cannot read packages, projects, or payments, and cannot delete prospect or client records.
-6. Owner can still manage clients, agreements, packages, projects, payments, and meetings.
-7. Confirm Clients is visible to Owner and hidden from Sales.
+6. Owner can promote a prospect to a client.
+7. Owner cannot demote an existing client back to a prospect, including by setting `is_client` to `NULL`.
+8. Owner can still manage clients, agreements, packages, projects, payments, and meetings.
+9. Confirm Clients is visible to Owner and hidden from Sales.
 
 Do not merge or apply the migration until the PR is reviewed and both test accounts are ready. No production database changes are included in this branch.

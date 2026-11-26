@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Staff workspace · Alienway Production</title><link rel="stylesheet" href="calls.css?v=password2"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Staff workspace · Alienway Production</title><link rel="stylesheet" href="calls.css?v=security2"></head>
 <body><main><header><a href="../">AW / ALIENWAY PRODUCTION</a><button id="logout" hidden>Sign out</button></header>
 <h1 id="page-title">Staff sign in</h1>
 <p id="message" role="status"></p>
@@ -23,6 +23,12 @@
   <label>Choose a password (at least 12 characters)<input id="choose-password" autocapitalize="none" spellcheck="false" name="password" type="password" autocomplete="new-password" minlength="12" required></label>
   <label class="password-toggle"><input type="checkbox" aria-controls="choose-password"> Show password</label>
   <button>Save password</button><button type="button" class="cancel">Cancel</button>
+</form>
+<form id="recovery-mfa" class="security-panel" hidden>
+  <h2>Verify your authenticator</h2>
+  <p class="helper">This account has an authenticator enabled. Enter the current six-digit code before choosing a new password.</p>
+  <label>Authenticator code<input name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+  <button>Verify and continue</button><button type="button" class="cancel">Cancel</button>
 </form>
 <section id="desk" hidden>
 <nav id="tabs" aria-label="Workspace"></nav>
@@ -74,4 +80,4 @@
 </form>
 </div>
 </section>
-</section></main><script type="module" src="calls.js?v=staff-invite1"></script></body></html>
+</section></main><script type="module" src="calls.js?v=security2"></script></body></html>

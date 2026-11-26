@@ -23,7 +23,7 @@ This audit does not claim that the whole site is private: the public marketing w
 - The staff page has a `noindex` directive, but this is only an indexing hint and is not treated as an access-control mechanism.
 - This branch adds Cloudflare Pages headers for the staff path: deny framing, disable camera/microphone/geolocation, suppress referrers, prevent caching, and reinforce no-index. These are browser-hardening measures, not a substitute for Supabase Auth/RLS.
 - The dashboard content is hidden until sign-in. The client verifies the returned user's `app_metadata.agency_role` before opening the workspace.
-- The database currently contains two staff accounts: one Owner and one Sales account; no unassigned or unknown-role account was found.
+- The database currently contains two active staff accounts: one Owner and one Sales account; no unassigned or unknown-role account was found. There are zero pending staff invitations, so changing the invitation redirect will not strand an outstanding invite.
 - No MFA factors are currently enrolled.
 - Leaked-password protection is disabled on the current Supabase plan.
 

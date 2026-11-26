@@ -787,4 +787,10 @@ for(const [formId,table] of [['package-form','agency_packages'],['assign-form','
     await navigate(formId==='assign-form'?'clients':'packages');
   });
 }
-resume().catch(error=>{signedIn(false);message(error.message);});
+if (location.hostname === 'alienway.co.za' || location.hostname === 'www.alienway.co.za') {
+  resume().catch(error=>{signedIn(false);message(error.message);});
+} else {
+  signedIn(false);
+  el('login').hidden = true;
+  message('The staff workspace is available only on the official Alienway domain.');
+}

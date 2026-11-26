@@ -39,7 +39,8 @@ This audit does not claim that the whole site is private: the public marketing w
 
 ### Public function permissions
 - No anonymous execute grant was found for the client, project, or payment RPC functions.
-- One trigger-only helper, `public.touch_call_lead()`, currently inherits EXECUTE from PUBLIC. It returns `trigger` and only updates `NEW.updated_at`; it is not a normal data-returning RPC. Revoke the default execute grant as a small privilege-hygiene task in the next tracked database migration.
+- The Supabase advisor reports three SECURITY DEFINER functions callable by authenticated users. Their live definitions were inspected: `client_service_summaries()` allows only the trusted Owner/Sales app roles; `delete_business()` and `save_agency_client()` both enforce the Owner app role. All three pin `search_path` to an empty value and schema-qualify their table references. These are intentional authenticated staff APIs, not anonymous public APIs.
+- The trigger-only helper `public.touch_call_lead()` inherited EXECUTE from PUBLIC. It returns `trigger` and only updates `NEW.updated_at`; it is not a normal data-returning RPC. This PR adds a migration to revoke EXECUTE from PUBLIC, anon, and authenticated. A rolled-back transaction test confirmed an existing trigger still updates timestamps after the privilege is revoked.
 
 ## Repository and deployment notes
 - The GitHub repository is public, so source code and the public publishable Supabase key are visible. A publishable key is intended for browser use; it is not a service-role secret.

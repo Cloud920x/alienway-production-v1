@@ -55,5 +55,23 @@
 <button>Send secure invitation</button>
 </form>
 <p class="helper">Only the Owner can send invitations. Sales accounts cannot access owner-only quotes, projects, package administration or payment records.</p>
+<div class="security-panel">
+<h3>Owner account security</h3>
+<p class="helper">Staff invitations require a verified authenticator code. Use an authenticator app such as Google Authenticator or Microsoft Authenticator.</p>
+<p id="mfa-status" role="status">Checking authenticator status…</p>
+<div class="actions">
+<button type="button" id="mfa-start">Set up authenticator</button>
+<button type="button" id="mfa-challenge-start" hidden>Verify authenticator</button>
+</div>
+<div id="mfa-setup-details" hidden>
+<p>Scan this QR code. If you cannot scan it, enter the setup key manually. Keep the key private.</p>
+<img id="mfa-qr" alt="Authenticator setup QR code">
+<p>Manual setup key</p><code id="mfa-secret"></code>
+</div>
+<form id="mfa-code-form" hidden>
+<label>Six-digit authenticator code<input name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+<button>Verify and activate</button>
+</form>
+</div>
 </section>
 </section></main><script type="module" src="calls.js?v=staff-invite1"></script></body></html>

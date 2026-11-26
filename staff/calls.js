@@ -339,6 +339,10 @@ async function verifyPendingMfa(code) {
       await abortIfSignedOut(epoch);
       if(challenge.error || !challenge.data?.id) throw Error(challenge.error?.message || 'The verification request expired and a new one could not be started. Please try again.');
       mfaPending = {...pending,challengeId:challenge.data.id};
+      const codeField = pending.kind === 'recovery'
+        ? el('recovery-mfa').elements.code
+        : el('mfa-code-form').elements.code;
+      codeField.value = '';
       throw Error('That verification request expired. A fresh challenge is ready; enter the latest six-digit code.');
     }
     throw Error(error.message || 'That authenticator code could not be verified.');

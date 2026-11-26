@@ -277,6 +277,8 @@ action(el('mfa-code-form'),'submit',async()=>{
   el('mfa-code-form').reset();
   el('mfa-code-form').hidden = true;
   el('mfa-setup-details').hidden = true;
+  el('mfa-qr').removeAttribute('src');
+  el('mfa-secret').textContent = '';
   await refreshMfaStatus();
   message('MFA verified for this session. You can now send the staff invitation.');
 });

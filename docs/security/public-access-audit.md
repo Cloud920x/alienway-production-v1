@@ -27,10 +27,11 @@ This audit does not claim that the whole site is private: the public marketing w
 - Leaked-password protection is disabled on the current Supabase plan.
 
 ### Edge Function: `invite-staff`
-- The deployed function has `verify_jwt=false`, but its handler independently requires a Bearer token, validates it with `auth.getUser()`, and checks the trusted Owner role before using the server-side service-role key.
+- The deployed function currently has `verify_jwt=false`, but its handler independently requires a Bearer token, validates it with `auth.getUser()`, and checks the trusted Owner role before using the server-side service-role key.
+- This branch adds `supabase/config.toml` with `verify_jwt=true`, so the Supabase gateway will also reject missing or invalid JWTs before the handler runs.
 - The service-role key is read from `Deno.env`; no service-role key literal was found in the repository search.
 - The deployed function was found with wildcard CORS and an outdated GitHub Pages redirect. The source in this branch changes the allowed browser origin to `https://alienway.co.za` and the invitation redirect to `https://alienway.co.za/staff/`.
-- These Edge Function source changes are not live until reviewed and deployed.
+- Before deployment, confirm `https://alienway.co.za/staff/` is in Supabase Auth's allowed redirect URL list. The Edge Function source/config changes are not live until reviewed and deployed.
 
 ### Public function permissions
 - No anonymous execute grant was found for the client, project, or payment RPC functions.
@@ -43,13 +44,14 @@ This audit does not claim that the whole site is private: the public marketing w
 
 ## Remaining verification before production rollout
 
-1. Review the CORS and redirect update with CodeRabbit.
-2. Deploy the reviewed `invite-staff` function source and verify the deployed function reports the canonical Alienway origin and redirect.
-3. Test the invite endpoint with no token, an invalid token, a valid Sales token, and a valid Owner token. Expected outcomes: 401, 401, 403, and 200 (the final test should use a controlled test email and must not be run without the Owner's approval).
-4. Run an anonymous Data API smoke test against each business table and RPC; expect no data access.
-5. Revoke PUBLIC/anon EXECUTE on the trigger-only `touch_call_lead()` function through a tracked migration and confirm the trigger still updates timestamps.
-6. Enrol MFA on the Owner account and the trusted staff account, then test a fresh login and recovery path.
-7. Establish a free off-site database export routine and perform a restore drill.
+1. Review the CORS, redirect, and gateway JWT-verification update with CodeRabbit.
+2. Confirm the canonical staff redirect is allowlisted in Supabase Auth URL Configuration.
+3. Deploy the reviewed `invite-staff` function source with `verify_jwt=true` and verify the deployed function reports the canonical Alienway origin and redirect.
+4. Test the invite endpoint with no token, an invalid token, a valid Sales token, and a valid Owner token. Expected outcomes: 401, 401, 403, and 200 (the final test should use a controlled test email and must not be run without the Owner's approval).
+5. Run an anonymous Data API smoke test against each business table and RPC; expect no data access.
+6. Revoke PUBLIC/anon EXECUTE on the trigger-only `touch_call_lead()` function through a tracked migration and confirm the trigger still updates timestamps.
+7. Enrol MFA on the Owner account and the trusted staff account, then test a fresh login and recovery path.
+8. Establish a free off-site database export routine and perform a restore drill.
 
 ## Cost constraint
 

@@ -1,4 +1,5 @@
 import {projectUrl, publishableKey} from './config.js';
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.119.2';
 
 const el = id => document.getElementById(id);
 const message = words => { el('message').textContent = words; };
@@ -8,7 +9,9 @@ let offset = 0;
 let revision = 0;
 
 const sessionKey = 'alienway.staff.session';
+const authClient = createClient(projectUrl,publishableKey,{auth:{autoRefreshToken:false,persistSession:false,detectSessionInUrl:false}});
 let expiryTimer;
+let mfaPending = null;
 const passwordToggles = document.querySelectorAll('.password-toggle input');
 function syncPasswordVisibility(toggle) {
   el(toggle.getAttribute('aria-controls')).type = toggle.checked ? 'text' : 'password';
@@ -31,6 +34,7 @@ function signedIn(active) {
   if (!active) {
     clearTimeout(expiryTimer);
     sessionStorage.removeItem(sessionKey);
+    authClient.auth.signOut({scope:'local'}).catch(()=>{});
     resetWorkspace();
     token = '';
     revision++;
@@ -186,24 +190,134 @@ function checkStaff(user) {
   if (!['sales','owner'].includes(user?.app_metadata?.agency_role)) throw Error('This account needs staff access.');
 }
 
-async function openDesk(accessToken, expiresAt) {
-  token = accessToken;
+function verifiedTotp(factors) {
+  return (factors?.totp || []).find(factor => factor.status === 'verified') || null;
+}
+async function refreshMfaStatus() {
+  const [{data:aal,error:aalError},{data:factors,error:factorError}] = await Promise.all([
+    authClient.auth.mfa.getAuthenticatorAssuranceLevel(),
+    authClient.auth.mfa.listFactors()
+  ]);
+  if(aalError) throw Error(aalError.message || 'Could not check the MFA session.');
+  if(factorError) throw Error(factorError.message || 'Could not list authenticator factors.');
+  const factor = verifiedTotp(factors);
+  el('mfa-status').textContent = !factor
+    ? 'No verified authenticator is enrolled. Set one up before sending staff invitations.'
+    : aal.currentLevel === 'aal2'
+      ? 'Authenticator verified for this session. Staff invitations are unlocked.'
+      : 'Authenticator enrolled. Verify a fresh code before sending staff invitations.';
+  el('mfa-start').hidden = Boolean(factor);
+  el('mfa-challenge-start').hidden = !factor || aal.currentLevel === 'aal2';
+  return {aal,factor};
+}
+async function beginMfaEnrollment() {
+  const {data,error} = await authClient.auth.mfa.enroll({
+    factorType:'totp',
+    friendlyName:'Alienway Production Owner'
+  });
+  if(error || !data?.id || !data?.totp?.qr_code) throw Error(error?.message || 'Could not start authenticator setup.');
+  const challenge = await authClient.auth.mfa.challenge({factorId:data.id});
+  if(challenge.error || !challenge.data?.id) throw Error(challenge.error?.message || 'Could not start authenticator verification.');
+  mfaPending = {factorId:data.id,challengeId:challenge.data.id,kind:'enroll'};
+  el('mfa-qr').src = data.totp.qr_code;
+  el('mfa-secret').textContent = data.totp.secret;
+  el('mfa-setup-details').hidden = false;
+  el('mfa-code-form').hidden = false;
+  el('mfa-start').hidden = true;
+  el('mfa-challenge-start').hidden = true;
+  el('mfa-code-form').elements.code.focus();
+}
+async function beginMfaChallenge(factorId) {
+  const challenge = await authClient.auth.mfa.challenge({factorId});
+  if(challenge.error || !challenge.data?.id) throw Error(challenge.error?.message || 'Could not start authenticator verification.');
+  mfaPending = {factorId,challengeId:challenge.data.id,kind:'challenge'};
+  el('mfa-setup-details').hidden = true;
+  el('mfa-code-form').hidden = false;
+  el('mfa-start').hidden = true;
+  el('mfa-challenge-start').hidden = true;
+  el('mfa-code-form').elements.code.focus();
+}
+async function ensureAal2ForInvite() {
+  const {data:aal,error:aalError} = await authClient.auth.mfa.getAuthenticatorAssuranceLevel();
+  if(aalError) throw Error(aalError.message || 'Could not verify your security level.');
+  if(aal.currentLevel === 'aal2') return;
+  const {data:factors,error:factorError} = await authClient.auth.mfa.listFactors();
+  if(factorError) throw Error(factorError.message || 'Could not check your authenticator.');
+  const factor = verifiedTotp(factors);
+  if(!factor) {
+    await beginMfaEnrollment();
+    throw Error('Scan the QR code with an authenticator app, then enter its six-digit code below.');
+  }
+  await beginMfaChallenge(factor.id);
+  throw Error('Enter the six-digit code from your authenticator app to unlock staff invitations.');
+}
+action(el('mfa-start'),'click',async()=>{
+  await beginMfaEnrollment();
+  message('Scan the QR code with an authenticator app. Keep the setup key private.');
+});
+action(el('mfa-challenge-start'),'click',async()=>{
+  const {factor} = await refreshMfaStatus();
+  if(!factor) throw Error('Set up an authenticator first.');
+  await beginMfaChallenge(factor.id);
+  message('Enter the six-digit code from your authenticator app.');
+});
+action(el('mfa-code-form'),'submit',async()=>{
+  if(!mfaPending) throw Error('Start authenticator setup or verification first.');
+  const code = el('mfa-code-form').elements.code.value.trim();
+  const {error} = await authClient.auth.mfa.verify({
+    factorId:mfaPending.factorId,
+    challengeId:mfaPending.challengeId,
+    code
+  });
+  if(error) throw Error(error.message || 'That authenticator code could not be verified.');
+  await syncAuthSession();
+  const {data:aal,error:aalError} = await authClient.auth.mfa.getAuthenticatorAssuranceLevel();
+  if(aalError || aal.currentLevel !== 'aal2') throw Error('The code was accepted but the session did not reach MFA level. Sign in again and retry.');
+  mfaPending = null;
+  el('mfa-code-form').reset();
+  el('mfa-code-form').hidden = true;
+  el('mfa-setup-details').hidden = true;
+  await refreshMfaStatus();
+  message('MFA verified for this session. You can now send the staff invitation.');
+});
+
+async function persistAuthSession(session) {
+  if (!session?.access_token || !session?.refresh_token) throw Error('Your session needs a fresh sign-in. Please sign in again.');
+  token = session.access_token;
+  const expiresAt = (session.expires_at || (Date.now()/1000 + (session.expires_in || 3600))) * 1000;
+  sessionStorage.setItem(sessionKey, JSON.stringify({
+    accessToken:session.access_token,
+    refreshToken:session.refresh_token,
+    expiresAt
+  }));
+  clearTimeout(expiryTimer);
+  expiryTimer = setTimeout(() => {
+    signedIn(false);
+    message('Session expired. Please sign in again.');
+  }, Math.max(0,expiresAt-Date.now()));
+}
+async function syncAuthSession() {
+  const {data,error} = await authClient.auth.getSession();
+  if(error || !data.session) throw Error('Your secure session could not be refreshed. Sign in again.');
+  await persistAuthSession(data.session);
+}
+async function openDesk(accessToken, refreshToken) {
   try {
+    if (!accessToken || !refreshToken) throw Error('Please sign in again to refresh your secure session.');
+    const {data:sessionData,error:sessionError} = await authClient.auth.setSession({
+      access_token:accessToken,
+      refresh_token:refreshToken
+    });
+    if(sessionError || !sessionData.session) throw Error('Your session expired. Please sign in again.');
+    await persistAuthSession(sessionData.session);
     const user = await request('/auth/v1/user');
     checkStaff(user);
     role = user.app_metadata.agency_role;
-    if (!(expiresAt > Date.now())) throw Error('Session expired. Please sign in again.');
-    sessionStorage.setItem(sessionKey, JSON.stringify({accessToken, expiresAt}));
   } catch (error) {
     signedIn(false);
     throw error;
   }
   signedIn(true);
-  clearTimeout(expiryTimer);
-  expiryTimer = setTimeout(() => {
-    signedIn(false);
-    message('Session expired. Please sign in again.');
-  }, expiresAt - Date.now());
   await enterWorkspace();
 }
 
@@ -213,7 +327,7 @@ action(el('login'),'submit',async () => {
     email:fields.email.value.trim(), password:fields.password.value
   });
   fields.password.value = '';
-  await openDesk(auth.access_token, Date.now() + auth.expires_in * 1000);
+  await openDesk(auth.access_token, auth.refresh_token);
 });
 action(el('setup'),'click',async () => {
   el('send').elements.email.value = el('login').elements.email.value;
@@ -258,6 +372,7 @@ action(el('logout'),'click',async () => {
   try { await request('/auth/v1/logout?scope=local','POST'); } finally { signedIn(false); }
 });
 action(el('staff-invite'),'submit',async () => {
+  await ensureAal2ForInvite();
   const email = el('staff-invite').elements.email.value.trim();
   const response = await fetch(projectUrl + '/functions/v1/invite-staff', {
     method: 'POST',
@@ -284,7 +399,7 @@ async function resume() {
     return;
   }
   const saved = JSON.parse(sessionStorage.getItem(sessionKey) || 'null');
-  if (saved && saved.expiresAt > Date.now()) await openDesk(saved.accessToken,saved.expiresAt);
+  if (saved && saved.expiresAt > Date.now() && saved.refreshToken) await openDesk(saved.accessToken,saved.refreshToken);
   else signedIn(false);
 }
 
@@ -372,7 +487,7 @@ async function navigate(id,filter) {
   view = id;
   for (const section of Object.keys(titles)) el(section).hidden = section !== id;
   for (const button of el('tabs').querySelectorAll('[data-view]')) button.setAttribute('aria-pressed',String(button.dataset.view===id));
-  if (id === 'staff') { message(''); return; }
+  if (id === 'staff') { message(''); await refreshMfaStatus(); return; }
   if (id === 'calls') {
     if (filter) el('filter').value = filter;
     await refreshList();

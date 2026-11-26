@@ -928,7 +928,12 @@ for(const [formId,table] of [['package-form','agency_packages'],['assign-form','
   });
 }
 if (location.hostname === 'alienway.co.za') {
-  resume().catch(error=>{signedIn(false);message(error.message);});
+  const bootEpoch = authEpoch;
+  resume().catch(error=>{
+    if(bootEpoch !== authEpoch) return;
+    signedIn(false);
+    message(error.message);
+  });
 } else {
   signedIn(false);
   el('login').hidden = true;

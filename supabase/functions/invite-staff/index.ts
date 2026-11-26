@@ -1,7 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const STAFF_REDIRECT = "https://cloud920x.github.io/alienway-production-v1/staff/";
-const ALLOWED_ORIGIN = "https://cloud920x.github.io";
+const STAFF_REDIRECT = "https://alienway.co.za/staff/";
+const ALLOWED_ORIGIN = "https://alienway.co.za";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": ALLOWED_ORIGIN,

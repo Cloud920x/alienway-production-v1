@@ -21,6 +21,7 @@ This audit does not claim that the whole site is private: the public marketing w
 
 ### Authentication and staff access
 - The staff page has a `noindex` directive, but this is only an indexing hint and is not treated as an access-control mechanism.
+- This branch adds Cloudflare Pages headers for the staff path: deny framing, disable camera/microphone/geolocation, suppress referrers, prevent caching, and reinforce no-index. These are browser-hardening measures, not a substitute for Supabase Auth/RLS.
 - The dashboard content is hidden until sign-in. The client verifies the returned user's `app_metadata.agency_role` before opening the workspace.
 - The database currently contains two staff accounts: one Owner and one Sales account; no unassigned or unknown-role account was found.
 - No MFA factors are currently enrolled.
@@ -46,12 +47,13 @@ This audit does not claim that the whole site is private: the public marketing w
 
 1. Review the CORS, redirect, and gateway JWT-verification update with CodeRabbit.
 2. Confirm the canonical staff redirect is allowlisted in Supabase Auth URL Configuration.
-3. Deploy the reviewed `invite-staff` function source with `verify_jwt=true` and verify the deployed function reports the canonical Alienway origin and redirect.
-4. Test the invite endpoint with no token, an invalid token, a valid Sales token, and a valid Owner token. Expected outcomes: 401, 401, 403, and 200 (the final test should use a controlled test email and must not be run without the Owner's approval).
-5. Run an anonymous Data API smoke test against each business table and RPC; expect no data access.
-6. Revoke PUBLIC/anon EXECUTE on the trigger-only `touch_call_lead()` function through a tracked migration and confirm the trigger still updates timestamps.
-7. Enrol MFA on the Owner account and the trusted staff account, then test a fresh login and recovery path.
-8. Establish a free off-site database export routine and perform a restore drill.
+3. Verify the Cloudflare preview serves the new security headers on `/staff/` and `/staff/calls.js`.
+4. Deploy the reviewed `invite-staff` function source with `verify_jwt=true` and verify the deployed function reports the canonical Alienway origin and redirect.
+5. Test the invite endpoint with no token, an invalid token, a valid Sales token, and a valid Owner token. Expected outcomes: 401, 401, 403, and 200 (the final test should use a controlled test email and must not be run without the Owner's approval).
+6. Run an anonymous Data API smoke test against each business table and RPC; expect no data access.
+7. Revoke PUBLIC/anon EXECUTE on the trigger-only `touch_call_lead()` function through a tracked migration and confirm the trigger still updates timestamps.
+8. Enrol MFA on the Owner account and the trusted staff account, then test a fresh login and recovery path.
+9. Establish a free off-site database export routine and perform a restore drill.
 
 ## Cost constraint
 

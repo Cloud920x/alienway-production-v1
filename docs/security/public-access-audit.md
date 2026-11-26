@@ -31,6 +31,7 @@ This audit does not claim that the whole site is private: the public marketing w
 - The deployed function currently has `verify_jwt=false`, but its handler independently requires a Bearer token, validates it with `auth.getUser()`, and checks the trusted Owner role before using the server-side service-role key.
 - This branch adds `supabase/config.toml` with `verify_jwt=true`, so the Supabase gateway will also reject missing or invalid JWTs before the handler runs.
 - The service-role key is read from `Deno.env`; no service-role key literal was found in the repository search.
+- This branch pins the Edge Function's Supabase JS SDK import to the exact release `2.119.2` instead of floating on the major-version tag.
 - The deployed function was found with wildcard CORS and an outdated GitHub Pages redirect. The source in this branch changes the allowed browser origin to `https://alienway.co.za` and the invitation redirect to `https://alienway.co.za/staff/`.
 - Before deployment, confirm `https://alienway.co.za/staff/` is in Supabase Auth's allowed redirect URL list. The Edge Function source/config changes are not live until reviewed and deployed.
 
@@ -45,7 +46,7 @@ This audit does not claim that the whole site is private: the public marketing w
 
 ## Remaining verification before production rollout
 
-1. Review the CORS, redirect, and gateway JWT-verification update with CodeRabbit.
+1. Review the CORS, redirect, gateway JWT-verification, and pinned SDK update with CodeRabbit.
 2. Confirm the canonical staff redirect is allowlisted in Supabase Auth URL Configuration.
 3. Verify the Cloudflare preview serves the new security headers on `/staff/` and `/staff/calls.js`.
 4. Deploy the reviewed `invite-staff` function source with `verify_jwt=true` and verify the deployed function reports the canonical Alienway origin and redirect.

@@ -2,32 +2,35 @@ name: Security checks
 
 on:
   pull_request:
-    paths:
-      - "supabase/functions/**"
-      - "staff/**"
-      - ".github/workflows/security-checks.yml"
   push:
     branches: [main]
-    paths:
-      - "supabase/functions/**"
-      - "staff/**"
-      - ".github/workflows/security-checks.yml"
 
+# Keep the token read-only. This workflow only runs tests and syntax checks.
 permissions:
   contents: read
+
+concurrency:
+  group: security-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   invitation-auth-tests:
     name: Invitation authorization tests
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
       - name: Set up Deno
-        uses: denoland/setup-deno@v2
+        uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
         with:
           deno-version: v2.x
+
       - name: Check staff workspace JavaScript syntax
         run: node --input-type=module --check < staff/calls.js
+
       - name: Run invitation authorization tests
         run: deno test supabase/functions/tests/invite-staff_test.ts

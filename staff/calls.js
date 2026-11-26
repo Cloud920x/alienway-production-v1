@@ -13,13 +13,18 @@ const authClient = createClient(projectUrl,publishableKey,{auth:{autoRefreshToke
 let expiryTimer;
 let mfaPending = null;
 let authEpoch = 0;
-let localSignOutPromise = Promise.resolve();
+let authMutationQueue = Promise.resolve();
+function withAuthMutation(task) {
+  const operation = authMutationQueue.catch(()=>{}).then(task);
+  authMutationQueue = operation.catch(()=>{});
+  return operation;
+}
 function signOutLocally() {
-  localSignOutPromise = localSignOutPromise
-    .catch(()=>{})
-    .then(()=>authClient.auth.signOut({scope:'local'}))
-    .catch(()=>{});
-  return localSignOutPromise;
+  return withAuthMutation(async()=>{
+    await authClient.auth.signOut({scope:'local'}).catch(()=>{});
+    token = '';
+    sessionStorage.removeItem(sessionKey);
+  });
 }
 const passwordToggles = document.querySelectorAll('.password-toggle input');
 function syncPasswordVisibility(toggle) {
@@ -51,12 +56,7 @@ function clearMfaUi() {
   el('mfa-status').textContent = 'Sign in to check authenticator status.';
 }
 async function abortIfSignedOut(epoch) {
-  if (epoch === authEpoch) return;
-  await signOutLocally();
-  token = '';
-  sessionStorage.removeItem(sessionKey);
-  clearMfaUi();
-  throw Error('You were signed out during verification. Sign in again.');
+  if (epoch !== authEpoch) throw Error('This sign-in attempt is no longer active. Sign in again.');
 }
 function signedIn(active) {
   screen(active ? '' : 'login');
@@ -78,8 +78,10 @@ function signedIn(active) {
 }
 
 async function request(path, method = 'GET', body, prefer) {
+  const requestEpoch = authEpoch;
+  const requestToken = token;
   const headers = {apikey:publishableKey, 'Content-Type':'application/json'};
-  if (token) headers.Authorization = 'Bearer ' + token;
+  if (requestToken) headers.Authorization = 'Bearer ' + requestToken;
   if (prefer) headers.Prefer = prefer;
   const response = await fetch(projectUrl + path, {method, headers, body:JSON.stringify(body), cache:'no-store'});
   if (!response.ok && path === '/auth/v1/user' && method === 'PUT' && (response.status === 401 || response.status === 403)) {
@@ -88,7 +90,7 @@ async function request(path, method = 'GET', body, prefer) {
       throw Error('Verify your authenticator before saving a new password.');
     }
   }
-  if (response.status === 401 && token) {
+  if (response.status === 401 && requestToken && requestToken === token && requestEpoch === authEpoch) {
     signedIn(false);
     throw Error('Your session expired. Sign in again.');
   }
@@ -255,8 +257,10 @@ async function beginMfaEnrollment() {
   const {data:factors,error:listError} = await authClient.auth.mfa.listFactors();
   await abortIfSignedOut(epoch);
   if(listError) throw Error(listError.message || 'Could not check existing authenticator setup.');
-  const abandoned = (factors?.totp || []).filter(factor =>
-    factor.status === 'unverified' && factor.friendly_name === 'Alienway Production Owner'
+  const abandoned = (factors?.all || []).filter(factor =>
+    factor.factor_type === 'totp' &&
+    factor.status === 'unverified' &&
+    factor.friendly_name === 'Alienway Production Owner'
   );
   for (const factor of abandoned) {
     const {error:removeError} = await authClient.auth.mfa.unenroll({factorId:factor.id});
@@ -326,11 +330,11 @@ async function verifyPendingMfa(code) {
   if(!mfaPending) throw Error('Start authenticator setup or verification first.');
   const epoch = authEpoch;
   const pending = {...mfaPending};
-  const {error} = await authClient.auth.mfa.verify({
+  const {error} = await withAuthMutation(()=>authClient.auth.mfa.verify({
     factorId:pending.factorId,
     challengeId:pending.challengeId,
     code
-  });
+  }));
   await abortIfSignedOut(epoch);
   if(error) {
     const expired = error.code === 'challenge_expired' || error.code === 'mfa_challenge_expired' || /challenge.{0,30}expired|expired.{0,30}challenge/i.test(error.message || '');
@@ -386,32 +390,37 @@ async function persistAuthSession(session) {
   }, Math.max(0,expiresAt-Date.now()));
 }
 async function syncAuthSession() {
-  const {data,error} = await authClient.auth.getSession();
-  if(error || !data.session) throw Error('Your secure session could not be refreshed. Sign in again.');
-  await persistAuthSession(data.session);
+  return withAuthMutation(async()=>{
+    const {data,error} = await authClient.auth.getSession();
+    if(error || !data.session) throw Error('Your secure session could not be refreshed. Sign in again.');
+    await persistAuthSession(data.session);
+  });
 }
 async function openDesk(accessToken, refreshToken) {
-  const epoch = authEpoch;
+  const epoch = ++authEpoch;
   try {
     if (!accessToken || !refreshToken) throw Error('Please sign in again to refresh your secure session.');
     await signOutLocally();
     await abortIfSignedOut(epoch);
-    const {data:sessionData,error:sessionError} = await authClient.auth.setSession({
-      access_token:accessToken,
-      refresh_token:refreshToken
+    const {data:sessionData,error:sessionError} = await withAuthMutation(async()=>{
+      const result = await authClient.auth.setSession({
+        access_token:accessToken,
+        refresh_token:refreshToken
+      });
+      if(!result.error && result.data.session) await persistAuthSession(result.data.session);
+      return result;
     });
     await abortIfSignedOut(epoch);
     if(sessionError || !sessionData.session) throw Error('Your session expired. Please sign in again.');
-    await persistAuthSession(sessionData.session);
-    await abortIfSignedOut(epoch);
     const user = await request('/auth/v1/user');
     await abortIfSignedOut(epoch);
     checkStaff(user);
     role = user.app_metadata.agency_role;
   } catch (error) {
-    signedIn(false);
+    if(epoch === authEpoch) signedIn(false);
     throw error;
   }
+  await abortIfSignedOut(epoch);
   signedIn(true);
   await enterWorkspace();
 }
@@ -444,7 +453,7 @@ action(el('send'),'submit',async () => {
   el('verify').elements.token.focus();
 });
 async function choosePassword(authSession) {
-  const epoch = authEpoch;
+  const epoch = ++authEpoch;
   const accessToken = typeof authSession === 'string' ? authSession : authSession?.access_token;
   const refreshToken = typeof authSession === 'string' ? '' : authSession?.refresh_token;
   if (!accessToken || !refreshToken) throw Error('That setup session is incomplete. Request a fresh password setup email.');
@@ -454,10 +463,10 @@ async function choosePassword(authSession) {
   clearMfaUi();
   await signOutLocally();
   await abortIfSignedOut(epoch);
-  const {data:sessionData,error:sessionError} = await authClient.auth.setSession({
+  const {data:sessionData,error:sessionError} = await withAuthMutation(()=>authClient.auth.setSession({
     access_token:accessToken,
     refresh_token:refreshToken
-  });
+  }));
   await abortIfSignedOut(epoch);
   if(sessionError || !sessionData.session) throw Error('That setup session has expired. Request a fresh password setup email.');
   token = sessionData.session.access_token;
@@ -480,9 +489,10 @@ async function choosePassword(authSession) {
       }
     }
   } catch (error) {
-    signedIn(false);
+    if(epoch === authEpoch) signedIn(false);
     throw error;
   }
+  await abortIfSignedOut(epoch);
   screen('choose');
   el('choose').elements.password.focus();
 }

@@ -29,7 +29,7 @@ This audit does not claim that the whole site is private: the public marketing w
 
 ### Edge Function: `invite-staff`
 - The deployed function currently has `verify_jwt=false`, but its handler independently requires a Bearer token, validates it with `auth.getUser()`, and checks the trusted Owner role before using the server-side service-role key.
-- This branch adds `supabase/config.toml` with `verify_jwt=true`, so the Supabase gateway will also reject missing or invalid JWTs before the handler runs.
+- This branch adds `supabase/config.toml` with `verify_jwt=true` as a gateway-level defence in depth. Do not treat this setting as proof that a real user is signed in: the project publishable API key identifies the project, not the user, and gateway/API-key handling can differ by key format. The handler must still require an `Authorization: Bearer <user access token>` header and validate that exact token with `auth.getUser(accessToken)`; it does so before checking the Owner role and AAL2 claim.
 - The service-role key is read from `Deno.env`; no service-role key literal was found in the repository search.
 - The handler validates the exact Bearer token with `auth.getUser(accessToken)`, checks the trusted Owner `app_metadata` role, and then requires the signed JWT `aal` claim to equal `aal2` before constructing the service-role client.
 - The staff workspace now includes an Owner authenticator setup and challenge flow using TOTP. The invitation UI checks the current assurance level and prompts for setup or a fresh code before sending.
@@ -49,17 +49,16 @@ This audit does not claim that the whole site is private: the public marketing w
 
 ## Remaining verification before production rollout
 
-1. Review the CORS, redirect, gateway JWT-verification, pinned SDK, and AAL2 gate with CodeRabbit.
-2. Confirm the canonical staff redirect is allowlisted in Supabase Auth URL Configuration.
-3. Verify the Cloudflare preview serves the new security headers on `/staff/` and `/staff/calls.js`.
-4. Deploy the reviewed `invite-staff` function source with `verify_jwt=true` and verify the deployed function reports the canonical Alienway origin and redirect.
-5. In Staff access → Owner account security, enrol and verify a TOTP factor for the Owner account. On subsequent sign-ins, verify a fresh code before sending invitations.
-6. Test the invite endpoint with no token, an invalid token, a valid AAL1 Owner token, a valid AAL1 Sales token, and a valid AAL2 Owner token. Expected outcomes: 401, 401, 403, 403, and 200. The Sales request is rejected by the Owner-role check before the MFA check. The final test should use a controlled test email and must not be run without the Owner's approval.
-7. Run an anonymous Data API smoke test against each business table and RPC; expect no data access.
-8. Revoke PUBLIC/anon EXECUTE on the trigger-only `touch_call_lead()` function through a tracked migration and confirm the trigger still updates timestamps.
-9. Consider enrolling MFA for the Sales account as additional hardening, then test a fresh login and recovery path.
+1. Complete CodeRabbit review and run the invitation authorization tests through the repository's Deno GitHub Actions workflow.
+2. Confirm `https://alienway.co.za/staff/` is allowlisted in Supabase Auth URL Configuration.
+3. Verify the Cloudflare preview serves the new security headers on `/staff/` and `/staff/calls.js`; staff sign-in is intentionally blocked on preview hosts.
+4. Merge the reviewed staff UI to `main` and confirm Cloudflare Pages has deployed it to `https://alienway.co.za/staff/`. Do not deploy the Edge Function in this step.
+5. Sign in to the production staff workspace. In Staff access → Owner account security, enrol and verify the Owner TOTP factor. Then sign out and confirm password recovery works end-to-end: email PIN/link → authenticator challenge → choose and save a new password → sign in again.
+6. Only after the production staff UI and its MFA/recovery flow have been verified, deploy the reviewed `invite-staff` function and its `verify_jwt=true` configuration. Verify the deployed function reports the canonical Alienway origin and redirect.
+7. Test the invite endpoint with no token, an invalid token, a valid AAL1 Owner token, a valid AAL1 Sales token, and a valid AAL2 Owner token. Expected outcomes: 401, 401, 403, 403, and 200. The Sales request is rejected by the Owner-role check before the MFA check. The final test should use a controlled test email and must not be run without the Owner's approval.
+8. Apply the tracked migration that revokes PUBLIC/anon/authenticated EXECUTE on the trigger-only `touch_call_lead()` function, then re-run Supabase advisors and confirm the trigger still updates timestamps.
+9. Run an anonymous Data API smoke test against each business table and RPC; expect no data access.
 10. Establish a free off-site database export routine and perform a restore drill.
-
 ## Cost constraint
 
 No paid Supabase branch, plan upgrade, paid security tool, or other new subscription is required for the work in this report. Do not create a Supabase development branch unless the Owner explicitly approves the quoted cost.

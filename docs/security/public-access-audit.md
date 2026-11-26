@@ -53,10 +53,10 @@ This audit does not claim that the whole site is private: the public marketing w
 3. Verify the Cloudflare preview serves the new security headers on `/staff/` and `/staff/calls.js`.
 4. Deploy the reviewed `invite-staff` function source with `verify_jwt=true` and verify the deployed function reports the canonical Alienway origin and redirect.
 5. In Staff access → Owner account security, enrol and verify a TOTP factor for the Owner account. On subsequent sign-ins, verify a fresh code before sending invitations.
-6. Test the invite endpoint with no token, an invalid token, a valid AAL1 Owner token, a valid AAL2 Sales token, and a valid AAL2 Owner token. Expected outcomes: 401, 401, 403, 403, and 200. The final test should use a controlled test email and must not be run without the Owner's approval.
+6. Test the invite endpoint with no token, an invalid token, a valid AAL1 Owner token, a valid AAL1 Sales token, and a valid AAL2 Owner token. Expected outcomes: 401, 401, 403, 403, and 200. The Sales request is rejected by the Owner-role check before the MFA check. The final test should use a controlled test email and must not be run without the Owner's approval.
 7. Run an anonymous Data API smoke test against each business table and RPC; expect no data access.
 8. Revoke PUBLIC/anon EXECUTE on the trigger-only `touch_call_lead()` function through a tracked migration and confirm the trigger still updates timestamps.
-9. Enrol MFA for both staff accounts and test fresh logins and the recovery path.
+9. Consider enrolling MFA for the Sales account as additional hardening, then test a fresh login and recovery path.
 10. Establish a free off-site database export routine and perform a restore drill.
 
 ## Cost constraint

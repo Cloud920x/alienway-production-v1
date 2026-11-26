@@ -27,5 +27,7 @@ jobs:
         uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
+      - name: Check staff workspace JavaScript syntax
+        run: node --input-type=module --check < staff/calls.js
       - name: Run invitation authorization tests
         run: deno test supabase/functions/tests/invite-staff_test.ts

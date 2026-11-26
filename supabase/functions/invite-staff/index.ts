@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.119.2";
+import { canInviteStaff } from "./auth.ts";
 
 const STAFF_REDIRECT = "https://alienway.co.za/staff/";
 const ALLOWED_ORIGIN = "https://alienway.co.za";
@@ -47,13 +48,20 @@ Deno.serve(async (req: Request) => {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
-  const { data: userData, error: userError } = await caller.auth.getUser();
+  const accessToken = authorization.slice("Bearer ".length).trim();
+  const { data: userData, error: userError } = await caller.auth.getUser(accessToken);
   const owner = userData?.user;
   if (userError || !owner) {
     return reply(401, { error: "Your session has expired. Sign in again." });
   }
-  if (owner.app_metadata?.agency_role !== "owner") {
+  const agencyRole = owner.app_metadata?.agency_role;
+  if (agencyRole !== "owner") {
     return reply(403, { error: "Only the Alienway owner can invite staff." });
+  }
+  // getUser(accessToken) above validates this token with Supabase Auth.
+  // Only then is it safe to inspect its signed AAL claim for the MFA gate.
+  if (!canInviteStaff(agencyRole, accessToken)) {
+    return reply(403, { error: "Complete your MFA verification before inviting staff." });
   }
 
   let email = "";

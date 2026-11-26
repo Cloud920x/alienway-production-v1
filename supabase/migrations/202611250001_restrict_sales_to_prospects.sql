@@ -34,6 +34,29 @@ with check (
 grant insert(id, is_client, status) on public.call_leads to authenticated;
 grant update(is_client) on public.call_leads to authenticated;
 
+-- Client classification is one-way: a prospect may become a client, but a client
+-- cannot be demoted back into the Sales-visible prospect pool.
+create or replace function public.prevent_client_demotion()
+returns trigger
+language plpgsql
+set search_path = ''
+as $
+begin
+  if old.is_client is true and new.is_client is distinct from true then
+    raise exception 'Existing clients cannot be reclassified as prospects'
+      using errcode = 'check_violation';
+  end if;
+  return new;
+end;
+$;
+
+revoke all on function public.prevent_client_demotion() from public, anon, authenticated;
+drop trigger if exists prevent_client_demotion on public.call_leads;
+create trigger prevent_client_demotion
+before update of is_client on public.call_leads
+for each row
+execute function public.prevent_client_demotion();
+
 -- Sales may schedule and manage meetings for prospects, not existing clients.
 drop policy if exists meetings_staff on public.agency_meetings;
 create policy meetings_staff on public.agency_meetings

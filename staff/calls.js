@@ -443,6 +443,15 @@ function resetWorkspace() {
   }
   el('client-search').value='';
   el('client-entry').hidden=true;
+  mfaPending = null;
+  el('mfa-code-form').reset();
+  el('mfa-code-form').hidden = true;
+  el('mfa-setup-details').hidden = true;
+  el('mfa-qr').removeAttribute('src');
+  el('mfa-secret').textContent = '';
+  el('mfa-start').hidden = false;
+  el('mfa-challenge-start').hidden = true;
+  el('mfa-status').textContent = 'Sign in to check authenticator status.';
   role = '';
   el('growth').textContent='';
   generation++;

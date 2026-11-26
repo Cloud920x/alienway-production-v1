@@ -1,4 +1,5 @@
 import {projectUrl, publishableKey} from './config.js';
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.119.2';
 
 const el = id => document.getElementById(id);
 const message = words => { el('message').textContent = words; };
@@ -8,7 +9,24 @@ let offset = 0;
 let revision = 0;
 
 const sessionKey = 'alienway.staff.session';
+const authClient = createClient(projectUrl,publishableKey,{auth:{autoRefreshToken:false,persistSession:false,detectSessionInUrl:false}});
 let expiryTimer;
+let mfaPending = null;
+let authEpoch = 0;
+let startupAttempt = 0;
+let authMutationQueue = Promise.resolve();
+function withAuthMutation(task) {
+  const operation = authMutationQueue.catch(()=>{}).then(task);
+  authMutationQueue = operation.catch(()=>{});
+  return operation;
+}
+function signOutLocally() {
+  return withAuthMutation(async()=>{
+    await authClient.auth.signOut({scope:'local'}).catch(()=>{});
+    token = '';
+    sessionStorage.removeItem(sessionKey);
+  });
+}
 const passwordToggles = document.querySelectorAll('.password-toggle input');
 function syncPasswordVisibility(toggle) {
   el(toggle.getAttribute('aria-controls')).type = toggle.checked ? 'text' : 'password';
@@ -21,7 +39,25 @@ function screen(name) {
     toggle.checked = false;
     syncPasswordVisibility(toggle);
   }
-  for (const id of ['login','send','verify','choose']) el(id).hidden = id !== name;
+  for (const id of ['login','send','verify','choose','recovery-mfa']) el(id).hidden = id !== name;
+}
+function clearMfaTransient() {
+  mfaPending = null;
+  el('mfa-code-form').reset();
+  el('mfa-code-form').hidden = true;
+  el('mfa-setup-details').hidden = true;
+  el('mfa-qr').removeAttribute('src');
+  el('mfa-secret').textContent = '';
+  el('recovery-mfa').reset();
+}
+function clearMfaUi() {
+  clearMfaTransient();
+  el('mfa-start').hidden = false;
+  el('mfa-challenge-start').hidden = true;
+  el('mfa-status').textContent = 'Sign in to check authenticator status.';
+}
+async function abortIfSignedOut(epoch) {
+  if (epoch !== authEpoch) throw Error('This sign-in attempt is no longer active. Sign in again.');
 }
 function signedIn(active) {
   screen(active ? '' : 'login');
@@ -29,8 +65,11 @@ function signedIn(active) {
   el('logout').hidden = !active;
   el('login').hidden = active;
   if (!active) {
+    authEpoch++;
+    clearMfaUi();
     clearTimeout(expiryTimer);
     sessionStorage.removeItem(sessionKey);
+    void signOutLocally();
     resetWorkspace();
     token = '';
     revision++;
@@ -40,11 +79,19 @@ function signedIn(active) {
 }
 
 async function request(path, method = 'GET', body, prefer) {
+  const requestEpoch = authEpoch;
+  const requestToken = token;
   const headers = {apikey:publishableKey, 'Content-Type':'application/json'};
-  if (token) headers.Authorization = 'Bearer ' + token;
+  if (requestToken) headers.Authorization = 'Bearer ' + requestToken;
   if (prefer) headers.Prefer = prefer;
   const response = await fetch(projectUrl + path, {method, headers, body:JSON.stringify(body), cache:'no-store'});
-  if (response.status === 401 && token) {
+  if (!response.ok && path === '/auth/v1/user' && method === 'PUT' && (response.status === 401 || response.status === 403)) {
+    const details = await response.clone().json().catch(()=>({}));
+    if (details.code === 'insufficient_aal' || /insufficient.?aal/i.test(details.msg || details.message || '')) {
+      throw Error('Verify your authenticator before saving a new password.');
+    }
+  }
+  if (response.status === 401 && requestToken && requestToken === token && requestEpoch === authEpoch) {
     signedIn(false);
     throw Error('Your session expired. Sign in again.');
   }
@@ -63,6 +110,7 @@ async function request(path, method = 'GET', body, prefer) {
 function action(control, event, task) {
   control.addEventListener(event, async e => {
     e.preventDefault();
+    startupAttempt++;
     const button = e.submitter || control;
     if (button.disabled) return;
     button.disabled = true;
@@ -186,24 +234,196 @@ function checkStaff(user) {
   if (!['sales','owner'].includes(user?.app_metadata?.agency_role)) throw Error('This account needs staff access.');
 }
 
-async function openDesk(accessToken, expiresAt) {
-  token = accessToken;
-  try {
-    const user = await request('/auth/v1/user');
-    checkStaff(user);
-    role = user.app_metadata.agency_role;
-    if (!(expiresAt > Date.now())) throw Error('Session expired. Please sign in again.');
-    sessionStorage.setItem(sessionKey, JSON.stringify({accessToken, expiresAt}));
-  } catch (error) {
-    signedIn(false);
-    throw error;
+function verifiedTotp(factors) {
+  return (factors?.totp || []).find(factor => factor.status === 'verified') || null;
+}
+async function refreshMfaStatus() {
+  const [{data:aal,error:aalError},{data:factors,error:factorError}] = await Promise.all([
+    authClient.auth.mfa.getAuthenticatorAssuranceLevel(),
+    authClient.auth.mfa.listFactors()
+  ]);
+  if(aalError) throw Error(aalError.message || 'Could not check the MFA session.');
+  if(factorError) throw Error(factorError.message || 'Could not list authenticator factors.');
+  const factor = verifiedTotp(factors);
+  el('mfa-status').textContent = !factor
+    ? 'No verified authenticator is enrolled. Set one up before sending staff invitations.'
+    : aal.currentLevel === 'aal2'
+      ? 'Authenticator verified for this session. Staff invitations are unlocked.'
+      : 'Authenticator enrolled. Verify a fresh code before sending staff invitations.';
+  el('mfa-start').hidden = Boolean(factor);
+  el('mfa-challenge-start').hidden = !factor || aal.currentLevel === 'aal2';
+  return {aal,factor};
+}
+async function beginMfaEnrollment() {
+  const epoch = authEpoch;
+  const {data:factors,error:listError} = await authClient.auth.mfa.listFactors();
+  await abortIfSignedOut(epoch);
+  if(listError) throw Error(listError.message || 'Could not check existing authenticator setup.');
+  const abandoned = (factors?.all || []).filter(factor =>
+    factor.factor_type === 'totp' &&
+    factor.status === 'unverified' &&
+    factor.friendly_name === 'Alienway Production Owner'
+  );
+  for (const factor of abandoned) {
+    const {error:removeError} = await authClient.auth.mfa.unenroll({factorId:factor.id});
+    await abortIfSignedOut(epoch);
+    if(removeError) throw Error(removeError.message || 'Could not clear an unfinished authenticator setup.');
   }
-  signedIn(true);
+  const {data,error} = await authClient.auth.mfa.enroll({
+    factorType:'totp',
+    friendlyName:'Alienway Production Owner'
+  });
+  await abortIfSignedOut(epoch);
+  if(error || !data?.id || !data?.totp?.qr_code) throw Error(error?.message || 'Could not start authenticator setup.');
+  const challenge = await authClient.auth.mfa.challenge({factorId:data.id});
+  await abortIfSignedOut(epoch);
+  if(challenge.error || !challenge.data?.id) throw Error(challenge.error?.message || 'Could not start authenticator verification.');
+  mfaPending = {factorId:data.id,challengeId:challenge.data.id,kind:'enroll'};
+  el('mfa-qr').src = data.totp.qr_code;
+  el('mfa-secret').textContent = data.totp.secret;
+  el('mfa-setup-details').hidden = false;
+  el('mfa-code-form').hidden = false;
+  el('mfa-start').hidden = true;
+  el('mfa-challenge-start').hidden = true;
+  el('mfa-code-form').elements.code.focus();
+}
+async function beginMfaChallenge(factorId, kind = 'challenge') {
+  const epoch = authEpoch;
+  const challenge = await authClient.auth.mfa.challenge({factorId});
+  await abortIfSignedOut(epoch);
+  if(challenge.error || !challenge.data?.id) throw Error(challenge.error?.message || 'Could not start authenticator verification.');
+  mfaPending = {factorId,challengeId:challenge.data.id,kind};
+  if (kind === 'recovery') {
+    screen('recovery-mfa');
+    el('recovery-mfa').elements.code.focus();
+    return;
+  }
+  el('mfa-setup-details').hidden = true;
+  el('mfa-code-form').hidden = false;
+  el('mfa-start').hidden = true;
+  el('mfa-challenge-start').hidden = true;
+  el('mfa-code-form').elements.code.focus();
+}
+async function ensureAal2ForInvite() {
+  const {data:aal,error:aalError} = await authClient.auth.mfa.getAuthenticatorAssuranceLevel();
+  if(aalError) throw Error(aalError.message || 'Could not verify your security level.');
+  if(aal.currentLevel === 'aal2') return;
+  const {data:factors,error:factorError} = await authClient.auth.mfa.listFactors();
+  if(factorError) throw Error(factorError.message || 'Could not check your authenticator.');
+  const factor = verifiedTotp(factors);
+  if(!factor) {
+    await beginMfaEnrollment();
+    throw Error('Scan the QR code with an authenticator app, then enter its six-digit code below.');
+  }
+  await beginMfaChallenge(factor.id);
+  throw Error('Enter the six-digit code from your authenticator app to unlock staff invitations.');
+}
+action(el('mfa-start'),'click',async()=>{
+  await beginMfaEnrollment();
+  message('Scan the QR code with an authenticator app. Keep the setup key private.');
+});
+action(el('mfa-challenge-start'),'click',async()=>{
+  const {factor} = await refreshMfaStatus();
+  if(!factor) throw Error('Set up an authenticator first.');
+  await beginMfaChallenge(factor.id);
+  message('Enter the six-digit code from your authenticator app.');
+});
+async function verifyPendingMfa(code) {
+  if(!mfaPending) throw Error('Start authenticator setup or verification first.');
+  const epoch = authEpoch;
+  const pending = {...mfaPending};
+  const {error} = await withAuthMutation(()=>authClient.auth.mfa.verify({
+    factorId:pending.factorId,
+    challengeId:pending.challengeId,
+    code
+  }));
+  await abortIfSignedOut(epoch);
+  if(error) {
+    const expired = error.code === 'challenge_expired' || error.code === 'mfa_challenge_expired' || /challenge.{0,30}expired|expired.{0,30}challenge/i.test(error.message || '');
+    if(expired) {
+      const challenge = await authClient.auth.mfa.challenge({factorId:pending.factorId});
+      await abortIfSignedOut(epoch);
+      if(challenge.error || !challenge.data?.id) throw Error(challenge.error?.message || 'The verification request expired and a new one could not be started. Please try again.');
+      mfaPending = {...pending,challengeId:challenge.data.id};
+      const codeField = pending.kind === 'recovery'
+        ? el('recovery-mfa').elements.code
+        : el('mfa-code-form').elements.code;
+      codeField.value = '';
+      throw Error('That verification request expired. A fresh challenge is ready; enter the latest six-digit code.');
+    }
+    throw Error(error.message || 'That authenticator code could not be verified.');
+  }
+  await syncAuthSession();
+  await abortIfSignedOut(epoch);
+  const {data:aal,error:aalError} = await authClient.auth.mfa.getAuthenticatorAssuranceLevel();
+  await abortIfSignedOut(epoch);
+  if(aalError || aal.currentLevel !== 'aal2') throw Error('The code was accepted but the session did not reach MFA level. Sign in again and retry.');
+  return pending.kind;
+}
+action(el('mfa-code-form'),'submit',async()=>{
+  const kind = await verifyPendingMfa(el('mfa-code-form').elements.code.value.trim());
+  if(kind === 'recovery') throw Error('Use the recovery verification form to finish setting your password.');
+  clearMfaTransient();
+  await refreshMfaStatus();
+  message('MFA verified for this session. You can now send the staff invitation.');
+});
+action(el('recovery-mfa'),'submit',async()=>{
+  const kind = await verifyPendingMfa(el('recovery-mfa').elements.code.value.trim());
+  if(kind !== 'recovery') throw Error('This verification request is no longer active. Start the password recovery process again.');
+  clearMfaTransient();
+  screen('choose');
+  el('choose').elements.password.focus();
+  message('Authenticator verified. You can now choose your new password.');
+});
+
+async function persistAuthSession(session) {
+  if (!session?.access_token || !session?.refresh_token) throw Error('Your session needs a fresh sign-in. Please sign in again.');
+  token = session.access_token;
+  const expiresAt = (session.expires_at || (Date.now()/1000 + (session.expires_in || 3600))) * 1000;
+  sessionStorage.setItem(sessionKey, JSON.stringify({
+    accessToken:session.access_token,
+    refreshToken:session.refresh_token,
+    expiresAt
+  }));
   clearTimeout(expiryTimer);
   expiryTimer = setTimeout(() => {
     signedIn(false);
     message('Session expired. Please sign in again.');
-  }, expiresAt - Date.now());
+  }, Math.max(0,expiresAt-Date.now()));
+}
+async function syncAuthSession() {
+  return withAuthMutation(async()=>{
+    const {data,error} = await authClient.auth.getSession();
+    if(error || !data.session) throw Error('Your secure session could not be refreshed. Sign in again.');
+    await persistAuthSession(data.session);
+  });
+}
+async function openDesk(accessToken, refreshToken) {
+  const epoch = ++authEpoch;
+  try {
+    if (!accessToken || !refreshToken) throw Error('Please sign in again to refresh your secure session.');
+    await signOutLocally();
+    await abortIfSignedOut(epoch);
+    const {data:sessionData,error:sessionError} = await withAuthMutation(async()=>{
+      const result = await authClient.auth.setSession({
+        access_token:accessToken,
+        refresh_token:refreshToken
+      });
+      if(!result.error && result.data.session && epoch === authEpoch) await persistAuthSession(result.data.session);
+      return result;
+    });
+    await abortIfSignedOut(epoch);
+    if(sessionError || !sessionData.session) throw Error('Your session expired. Please sign in again.');
+    const user = await request('/auth/v1/user');
+    await abortIfSignedOut(epoch);
+    checkStaff(user);
+    role = user.app_metadata.agency_role;
+  } catch (error) {
+    if(epoch === authEpoch) signedIn(false);
+    throw error;
+  }
+  await abortIfSignedOut(epoch);
+  signedIn(true);
   await enterWorkspace();
 }
 
@@ -213,7 +433,7 @@ action(el('login'),'submit',async () => {
     email:fields.email.value.trim(), password:fields.password.value
   });
   fields.password.value = '';
-  await openDesk(auth.access_token, Date.now() + auth.expires_in * 1000);
+  await openDesk(auth.access_token, auth.refresh_token);
 });
 action(el('setup'),'click',async () => {
   el('send').elements.email.value = el('login').elements.email.value;
@@ -234,19 +454,58 @@ action(el('send'),'submit',async () => {
   screen('verify');
   el('verify').elements.token.focus();
 });
-async function choosePassword(accessToken) {
-  token = accessToken;
-  try { checkStaff(await request('/auth/v1/user')); }
-  catch (error) { signedIn(false); throw error; }
+async function choosePassword(authSession) {
+  const epoch = ++authEpoch;
+  const accessToken = typeof authSession === 'string' ? authSession : authSession?.access_token;
+  const refreshToken = typeof authSession === 'string' ? '' : authSession?.refresh_token;
+  if (!accessToken || !refreshToken) throw Error('That setup session is incomplete. Request a fresh password setup email.');
+  clearTimeout(expiryTimer);
+  sessionStorage.removeItem(sessionKey);
+  token = '';
+  clearMfaUi();
+  await signOutLocally();
+  await abortIfSignedOut(epoch);
+  const {data:sessionData,error:sessionError} = await withAuthMutation(()=>authClient.auth.setSession({
+    access_token:accessToken,
+    refresh_token:refreshToken
+  }));
+  await abortIfSignedOut(epoch);
+  if(sessionError || !sessionData.session) throw Error('That setup session has expired. Request a fresh password setup email.');
+  token = sessionData.session.access_token;
+  try {
+    const recoveryUser = await request('/auth/v1/user');
+    await abortIfSignedOut(epoch);
+    checkStaff(recoveryUser);
+    const {data:factors,error:factorError} = await authClient.auth.mfa.listFactors();
+    await abortIfSignedOut(epoch);
+    if(factorError) throw Error(factorError.message || 'Could not check your authenticator before password setup.');
+    const factor = verifiedTotp(factors);
+    if(factor) {
+      const {data:aal,error:aalError} = await authClient.auth.mfa.getAuthenticatorAssuranceLevel();
+      await abortIfSignedOut(epoch);
+      if(aalError) throw Error(aalError.message || 'Could not check your recovery session security level.');
+      if(aal.currentLevel !== 'aal2') {
+        await beginMfaChallenge(factor.id,'recovery');
+        message('Your account has an authenticator. Enter its current six-digit code before choosing a new password.');
+        return;
+      }
+    }
+  } catch (error) {
+    if(epoch === authEpoch) signedIn(false);
+    throw error;
+  }
+  await abortIfSignedOut(epoch);
   screen('choose');
   el('choose').elements.password.focus();
 }
 action(el('verify'),'submit',async () => {
+  const epoch = authEpoch;
   const auth = await request('/auth/v1/verify','POST',{
     email:el('send').elements.email.value.trim(),token:el('verify').elements.token.value.trim(),type:'email'
   });
+  await abortIfSignedOut(epoch);
   el('verify').reset();
-  await choosePassword(auth.access_token);
+  await choosePassword(auth);
 });
 action(el('choose'),'submit',async () => {
   await request('/auth/v1/user','PUT',{password:el('choose').elements.password.value});
@@ -258,6 +517,7 @@ action(el('logout'),'click',async () => {
   try { await request('/auth/v1/logout?scope=local','POST'); } finally { signedIn(false); }
 });
 action(el('staff-invite'),'submit',async () => {
+  await ensureAal2ForInvite();
   const email = el('staff-invite').elements.email.value.trim();
   const response = await fetch(projectUrl + '/functions/v1/invite-staff', {
     method: 'POST',
@@ -278,13 +538,12 @@ async function resume() {
   const hash = new URLSearchParams(location.hash.slice(1));
   if (hash.has('access_token') || hash.has('error') || hash.has('error_code')) {
     history.replaceState(null,'',location.pathname + location.search);
-    signedIn(false);
     if (!hash.get('access_token')) throw Error('That email link expired. Request a fresh one.');
-    await choosePassword(hash.get('access_token'));
+    await choosePassword({access_token:hash.get('access_token'),refresh_token:hash.get('refresh_token')});
     return;
   }
   const saved = JSON.parse(sessionStorage.getItem(sessionKey) || 'null');
-  if (saved && saved.expiresAt > Date.now()) await openDesk(saved.accessToken,saved.expiresAt);
+  if (saved && saved.expiresAt > Date.now() && saved.refreshToken) await openDesk(saved.accessToken,saved.refreshToken);
   else signedIn(false);
 }
 
@@ -326,6 +585,15 @@ function resetWorkspace() {
   }
   el('client-search').value='';
   el('client-entry').hidden=true;
+  mfaPending = null;
+  el('mfa-code-form').reset();
+  el('mfa-code-form').hidden = true;
+  el('mfa-setup-details').hidden = true;
+  el('mfa-qr').removeAttribute('src');
+  el('mfa-secret').textContent = '';
+  el('mfa-start').hidden = false;
+  el('mfa-challenge-start').hidden = true;
+  el('mfa-status').textContent = 'Sign in to check authenticator status.';
   role = '';
   el('growth').textContent='';
   generation++;
@@ -372,7 +640,7 @@ async function navigate(id,filter) {
   view = id;
   for (const section of Object.keys(titles)) el(section).hidden = section !== id;
   for (const button of el('tabs').querySelectorAll('[data-view]')) button.setAttribute('aria-pressed',String(button.dataset.view===id));
-  if (id === 'staff') { message(''); return; }
+  if (id === 'staff') { message(''); await refreshMfaStatus(); return; }
   if (id === 'calls') {
     if (filter) el('filter').value = filter;
     await refreshList();
@@ -661,4 +929,15 @@ for(const [formId,table] of [['package-form','agency_packages'],['assign-form','
     await navigate(formId==='assign-form'?'clients':'packages');
   });
 }
-resume().catch(error=>{signedIn(false);message(error.message);});
+if (location.hostname === 'alienway.co.za') {
+  const bootAttempt = ++startupAttempt;
+  resume().catch(error=>{
+    if(bootAttempt !== startupAttempt) return;
+    signedIn(false);
+    message(error.message);
+  });
+} else {
+  signedIn(false);
+  el('login').hidden = true;
+  message('The staff workspace is available only on the official Alienway domain.');
+}

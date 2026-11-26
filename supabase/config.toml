@@ -1,0 +1,5 @@
+# Edge Function authentication settings.
+# The gateway rejects missing/invalid JWTs before the handler runs.
+# The handler also validates the user and Owner role before using admin credentials.
+[functions.invite-staff]
+verify_jwt = true

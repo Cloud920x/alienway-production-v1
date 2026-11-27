@@ -67,9 +67,20 @@
   }
 
   const importedIndustry = (params.get('industry') || '').trim();
-  if (importedIndustry) {
+  // Older demo links pass only a template name, or use the short retail label.
+  const demoIndustries = new Map([
+    ['Automotive', 'Automotive'],
+    ['Automotive Signature', 'Automotive'],
+    ['Automotive Medium', 'Automotive'],
+    ['Rinse Ritual', 'Automotive'],
+    ['Construction', 'Construction'],
+    ['Restaurant Website', 'Food & hospitality']
+  ]);
+  const requestedIndustry = importedIndustry || demoIndustries.get(params.get('template'));
+  const industryLabel = requestedIndustry === 'Retail' ? 'Retail & e-commerce' : requestedIndustry;
+  if (industryLabel) {
     const option = Array.from(fields.industry.options).find(item =>
-      item.value && item.textContent.trim().toLowerCase() === importedIndustry.toLowerCase()
+      item.value && item.textContent.trim().toLowerCase() === industryLabel.toLowerCase()
     );
     if (option) fields.industry.value = option.value;
   }

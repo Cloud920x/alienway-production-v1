@@ -570,7 +570,7 @@ let role = '';
 let view = 'overview';
 let generation = 0;
 let data;
-const titles = {overview:'Today',calls:'Calls',meetings:'Meetings',clients:'Clients',packages:'Packages',projects:'Projects',money:'Payments',staff:'Staff access'};
+const titles = {overview:'Today',enquiries:'Enquiries',calls:'Calls',meetings:'Meetings',clients:'Clients',packages:'Packages',projects:'Projects',money:'Payments',staff:'Staff access'};
 const stages = ['Quoted','Accepted','In build','In review','Approved','Live'];
 const money = value => new Intl.NumberFormat('en-ZA',{style:'currency',currency:'ZAR'}).format(value);
 const stamp = value => new Date(value).toLocaleString('en-ZA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
@@ -578,7 +578,7 @@ function localDay(date=new Date()) {
   return new Date(date.getTime()-date.getTimezoneOffset()*60000).toISOString().slice(0,10);
 }
 function resetWorkspace() {
-  for(const id of ['client-list','package-list']) el(id).replaceChildren();
+  for(const id of ['client-list','package-list','enquiry-list']) el(id).replaceChildren();
   for(const id of ['client-form','package-form','assign-form']) {
     const form=el(id);form.reset();delete form.dataset.id;
     for(const select of form.querySelectorAll('select')) select.replaceChildren();
@@ -640,6 +640,12 @@ async function navigate(id,filter) {
   view = id;
   for (const section of Object.keys(titles)) el(section).hidden = section !== id;
   for (const button of el('tabs').querySelectorAll('[data-view]')) button.setAttribute('aria-pressed',String(button.dataset.view===id));
+  if (id === 'enquiries') {
+    el('enquiry-list').replaceChildren();
+    el('older-enquiries').hidden = true;
+    await loadEnquiries(current);
+    return;
+  }
   if (id === 'staff') { message(''); await refreshMfaStatus(); return; }
   if (id === 'calls') {
     if (filter) el('filter').value = filter;
@@ -670,6 +676,38 @@ async function navigate(id,filter) {
     renderWorkspace();
   } catch {
     if (current===generation) message('Dashboard could not refresh. Tap Refresh to retry.');
+  }
+}
+async function loadEnquiries(current, cursor) {
+  message('Loading website enquiries…');
+  const params = new URLSearchParams({select:'id,contact_name,email,brief,created_at', order:'created_at.desc,id.desc', limit:'26'});
+  if (cursor) params.set('or', '(created_at.lt.' + cursor.created_at + ',and(created_at.eq.' + cursor.created_at + ',id.lt.' + cursor.id + '))');
+  try {
+    const rows = await request('/rest/v1/project_enquiries?' + params);
+    if (current !== generation) return;
+    const page = rows.slice(0,25);
+    for (const row of page) {
+      const card = entry(row.contact_name, stamp(row.created_at));
+      const reply = node('a', row.email);
+      reply.href = 'mailto:' + encodeURIComponent(row.email);
+      const details = node('details','');
+      const brief = node('p', row.brief);
+      brief.style.whiteSpace = 'pre-wrap';
+      details.append(node('summary','Project brief'), brief);
+      card.append(reply, details);
+      el('enquiry-list').append(card);
+    }
+    empty('enquiry-list','No website enquiries yet.');
+    const older = el('older-enquiries');
+    older.hidden = rows.length <= page.length;
+    older.onclick = async () => {
+      older.disabled = true;
+      try { await loadEnquiries(current, page[page.length - 1]); }
+      finally { older.disabled = false; }
+    };
+    message('');
+  } catch {
+    if (current === generation) message('Could not load website enquiries. Tap Refresh to retry.');
   }
 }
 async function startForLead(page,formId,leadId) {

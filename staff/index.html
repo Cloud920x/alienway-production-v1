@@ -34,6 +34,7 @@
 <nav id="tabs" aria-label="Workspace"></nav>
 <section id="overview" hidden><div class="hero"><div><small id="workdate"></small><h2 id="hero-title"></h2><p id="priority"></p><button id="primary"></button></div><div class="monogram" aria-hidden="true">AW</div></div>
 <div class="metrics" id="metrics"></div><div class="columns"><section><h2>Coming up</h2><div id="agenda"></div></section><section><h2>Call outcomes</h2><div id="pipeline"></div><p id="growth"></p></section></div></section>
+<section id="enquiries" hidden><h2>Website enquiries</h2><p>Project briefs submitted through Start Project, newest first.</p><div id="enquiry-list"></div><button type="button" id="older-enquiries" hidden>Show older enquiries</button></section>
 <section id="calls" hidden><h2>Business call list</h2><p class="helper">Start with the first business. After the call, choose an outcome or schedule a callback.</p><button type="button" id="jump-add">Add a business ↓</button>
 <div class="bar"><label>Show businesses<select id="filter"><option value="new">New businesses</option><option value="queue" selected>To call now</option><option value="callback">All callbacks</option><option value="approved">Interested</option><option value="declined">Not interested</option></select></label><button id="refresh">Refresh</button></div><div id="list"></div><button hidden id="more">Show more businesses</button><details id="add-panel"><summary>Add a business</summary><form id="add"><label>Business name<input name="business" maxlength="160" required></label><label>Contact number<input name="phone" type="tel" required></label><label>Business details<textarea name="details" rows="3" maxlength="2000" placeholder="Contact person, industry and what to discuss"></textarea></label><button>Save business</button></form></details></section>
 <section id="meetings" hidden><h2>Meetings</h2><details><summary>Schedule meeting</summary><form id="book">
@@ -80,4 +81,4 @@
 </form>
 </div>
 </section>
-</section></main><script type="module" src="calls.js?v=security2"></script></body></html>
+</section></main><script type="module" src="calls.js?v=website-enquiries"></script></body></html>

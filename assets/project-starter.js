@@ -268,13 +268,16 @@
 
     if (importedContext) lines.push('', 'SELECTED WEBSITE / DEMO CONTEXT', importedContext);
     lines.push('', 'PROJECT DETAILS', fields.message.value.trim());
-    lines.push('', 'Sent via the Alienway Production project starter.');
+    lines.push('', 'Prepared via Alienway Production’s project starter.');
     return lines.join('\n');
   }
 
-  form.addEventListener('submit', event => {
+  let pendingRequest;
+  let sending = false;
+  form.addEventListener('submit', async event => {
     event.preventDefault();
 
+    if (sending) return;
     for (let step = 0; step < panels.length; step += 1) {
       if (!validateStep(step)) {
         renderStep(step, false);
@@ -289,13 +292,35 @@
 
     const body = buildEnquiry();
     enquiryText.value = body;
-    fallback.hidden = false;
-    status.textContent = 'Your project enquiry is prepared. Your email app should open with the details ready — nothing is sent by this website.';
-    const subject = 'New Alienway Production project enquiry';
-    const mailto = 'mailto:alienway920@gmail.com?subject=' +
-      encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-
-    window.location.href = mailto;
+    sending = true;
+    const locked = Array.from(form.elements).filter(control => !control.disabled);
+    locked.forEach(control => { control.disabled = true; });
+    fallback.hidden = true;
+    status.textContent = 'Sending your enquiry…';
+    try {
+      if (!pendingRequest || pendingRequest.body !== body) {
+        pendingRequest = {id: crypto.randomUUID(), body};
+      }
+      const {projectUrl, publishableKey} = await import('../staff/config.js');
+      const response = await fetch(projectUrl + '/rest/v1/rpc/submit_project_enquiry', {
+        method: 'POST',
+        headers: {apikey: publishableKey, 'Content-Type': 'application/json'},
+        body: JSON.stringify({request_id: pendingRequest.id, contact_name: fields.name.value.trim(),
+          email: fields.email.value.trim(), brief: body}),
+        signal: AbortSignal.timeout(15000)
+      });
+      if (!response.ok) throw new Error('Submission not confirmed');
+      form.querySelector('.builder-actions').hidden = true;
+      status.textContent = 'Enquiry received. Our team will follow up at ' + fields.email.value.trim() + '.';
+      status.tabIndex = -1;
+      status.focus();
+    } catch {
+      locked.forEach(control => { control.disabled = false; });
+      fallback.hidden = false;
+      status.textContent = 'We could not confirm receipt. Try again or copy your enquiry and email it to alienway920@gmail.com.';
+    } finally {
+      sending = false;
+    }
   });
 
   copyButton.addEventListener('click', async () => {
@@ -303,7 +328,7 @@
     try {
       if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error('Clipboard unavailable');
       await navigator.clipboard.writeText(body);
-      status.textContent = 'Copied. Paste your enquiry into an email to alienway920@gmail.com. Nothing has been sent yet.';
+      status.textContent = 'Copied. Paste your enquiry into an email to alienway920@gmail.com.';
     } catch (error) {
       enquiryText.focus();
       enquiryText.select();

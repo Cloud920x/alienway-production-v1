@@ -35,6 +35,7 @@
 
   const fields = {
     name: form.elements.namedItem('name'),
+    phone: form.elements.namedItem('phone'),
     email: form.elements.namedItem('email'),
     business: form.elements.namedItem('business'),
     message: form.elements.namedItem('message'),
@@ -159,6 +160,10 @@
         showError(2, 'Enter a valid email address so we can get back to you.', fields.email);
         return false;
       }
+      if (!/^\+?[0-9]{7,15}$/.test(fields.phone.value.replace(/[ ()-]/g, ''))) {
+        showError(2, 'Enter a cell phone number with 7 to 15 digits.', fields.phone);
+        return false;
+      }
     }
 
     return true;
@@ -263,7 +268,8 @@
       'Investment range: ' + (selectedBudget || 'Open conversation'),
       '',
       'Client name: ' + fields.name.value.trim(),
-      'Email: ' + fields.email.value.trim()
+      'Email: ' + fields.email.value.trim(),
+      'Cell: ' + fields.phone.value.trim()
     ];
 
     if (importedContext) lines.push('', 'SELECTED WEBSITE / DEMO CONTEXT', importedContext);
@@ -306,12 +312,12 @@
         method: 'POST',
         headers: {apikey: publishableKey, 'Content-Type': 'application/json'},
         body: JSON.stringify({request_id: pendingRequest.id, contact_name: fields.name.value.trim(),
-          email: fields.email.value.trim(), brief: body}),
+          email: fields.email.value.trim(), phone: fields.phone.value.replace(/[ ()-]/g, ''), brief: body}),
         signal: AbortSignal.timeout(15000)
       });
       if (!response.ok) throw new Error('Submission not confirmed');
       form.querySelector('.builder-actions').hidden = true;
-      status.textContent = 'Enquiry received. Our team will follow up at ' + fields.email.value.trim() + '.';
+      status.textContent = 'Enquiry received. Our team can now call or email you about your project.';
       status.tabIndex = -1;
       status.focus();
     } catch {

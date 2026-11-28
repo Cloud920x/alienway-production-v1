@@ -255,60 +255,76 @@ async function refreshMfaStatus() {
   el('mfa-challenge-start').hidden = !factor || aal.currentLevel === 'aal2';
   return {aal,factor};
 }
-async function beginMfaEnrollment() {
-  const epoch = authEpoch;
-  const {data:factors,error:listError} = await authClient.auth.mfa.listFactors();
-  await abortIfSignedOut(epoch);
-  if(listError) throw Error(listError.message || 'Could not check existing authenticator setup.');
-  const abandoned = (factors?.all || []).filter(factor =>
-    factor.factor_type === 'totp' &&
-    factor.status === 'unverified' &&
-    factor.friendly_name === 'Alienway Production Owner'
-  );
-  for (const factor of abandoned) {
-    const {error:removeError} = await authClient.auth.mfa.unenroll({factorId:factor.id});
-    await abortIfSignedOut(epoch);
-    if(removeError) throw Error(removeError.message || 'Could not clear an unfinished authenticator setup.');
-  }
-  const {data,error} = await authClient.auth.mfa.enroll({
-    factorType:'totp',
-    friendlyName:'Alienway Production Owner'
+let mfaOperationPromise = null;
+function runMfaOperation(task) {
+  if(mfaOperationPromise) return mfaOperationPromise;
+  const operation = Promise.resolve().then(task);
+  let shared;
+  shared = operation.finally(() => {
+    if(mfaOperationPromise === shared) mfaOperationPromise = null;
   });
-  await abortIfSignedOut(epoch);
-  if(error || !data?.id || !data?.totp?.qr_code) throw Error(error?.message || 'Could not start authenticator setup.');
-  const challenge = await authClient.auth.mfa.challenge({factorId:data.id});
-  await abortIfSignedOut(epoch);
-  if(challenge.error || !challenge.data?.id) throw Error(challenge.error?.message || 'Could not start authenticator verification.');
-  mfaPending = {factorId:data.id,challengeId:challenge.data.id,kind:'enroll'};
-  el('mfa-qr').src = data.totp.qr_code;
-  el('mfa-secret').textContent = data.totp.secret;
-  el('mfa-setup-details').hidden = false;
-  el('mfa-code-form').hidden = false;
-  el('mfa-start').hidden = true;
-  el('mfa-challenge-start').hidden = true;
-  el('mfa-code-form').elements.code.focus();
+  mfaOperationPromise = shared;
+  return shared;
 }
-async function beginMfaChallenge(factorId, kind = 'challenge') {
-  const epoch = authEpoch;
-  const challenge = await authClient.auth.mfa.challenge({factorId});
-  await abortIfSignedOut(epoch);
-  if(challenge.error || !challenge.data?.id) throw Error(challenge.error?.message || 'Could not start authenticator verification.');
-  mfaPending = {factorId,challengeId:challenge.data.id,kind};
-  if (kind === 'recovery') {
-    screen('recovery-mfa');
-    el('recovery-mfa').elements.code.focus();
-    return;
-  }
-  el('mfa-setup-details').hidden = true;
-  el('mfa-code-form').hidden = false;
-  el('mfa-start').hidden = true;
-  el('mfa-challenge-start').hidden = true;
-  el('mfa-code-form').elements.code.focus();
+function beginMfaEnrollment() {
+  return runMfaOperation(async () => {
+    const epoch = authEpoch;
+    const {data:factors,error:listError} = await authClient.auth.mfa.listFactors();
+    await abortIfSignedOut(epoch);
+    if(listError) throw Error(listError.message || 'Could not check existing authenticator setup.');
+    const abandoned = (factors?.all || []).filter(factor =>
+      factor.factor_type === 'totp' &&
+      factor.status === 'unverified' &&
+      factor.friendly_name === 'Alienway Production Owner'
+    );
+    for (const factor of abandoned) {
+      const {error:removeError} = await authClient.auth.mfa.unenroll({factorId:factor.id});
+      await abortIfSignedOut(epoch);
+      if(removeError) throw Error(removeError.message || 'Could not clear an unfinished authenticator setup.');
+    }
+    const {data,error} = await authClient.auth.mfa.enroll({
+      factorType:'totp',
+      friendlyName:'Alienway Production Owner'
+    });
+    await abortIfSignedOut(epoch);
+    if(error || !data?.id || !data?.totp?.qr_code) throw Error(error?.message || 'Could not start authenticator setup.');
+    const challenge = await authClient.auth.mfa.challenge({factorId:data.id});
+    await abortIfSignedOut(epoch);
+    if(challenge.error || !challenge.data?.id) throw Error(challenge.error?.message || 'Could not start authenticator verification.');
+    mfaPending = {factorId:data.id,challengeId:challenge.data.id,kind:'enroll'};
+    el('mfa-qr').src = data.totp.qr_code;
+    el('mfa-secret').textContent = data.totp.secret;
+    el('mfa-setup-details').hidden = false;
+    el('mfa-code-form').hidden = false;
+    el('mfa-start').hidden = true;
+    el('mfa-challenge-start').hidden = true;
+    el('mfa-code-form').elements.code.focus();
+  });
+}
+function beginMfaChallenge(factorId, kind = 'challenge') {
+  return runMfaOperation(async () => {
+    const epoch = authEpoch;
+    const challenge = await authClient.auth.mfa.challenge({factorId});
+    await abortIfSignedOut(epoch);
+    if(challenge.error || !challenge.data?.id) throw Error(challenge.error?.message || 'Could not start authenticator verification.');
+    mfaPending = {factorId,challengeId:challenge.data.id,kind};
+    if (kind === 'recovery') {
+      screen('recovery-mfa');
+      el('recovery-mfa').elements.code.focus();
+      return;
+    }
+    el('mfa-setup-details').hidden = true;
+    el('mfa-code-form').hidden = false;
+    el('mfa-start').hidden = true;
+    el('mfa-challenge-start').hidden = true;
+    el('mfa-code-form').elements.code.focus();
+  });
 }
 let ownerAal2GatePromise = null;
 async function requireOwnerAal2(requested = generation) {
-  if(ownerAal2GatePromise) {
-    const existing = await ownerAal2GatePromise;
+  const existingGate = ownerAal2GatePromise;
+  if(existingGate) {
+    const existing = await existingGate;
     if(requested !== generation) return false;
     if(existing) return true;
     if(mfaPending && ['enroll','challenge'].includes(mfaPending.kind)) {
@@ -318,6 +334,10 @@ async function requireOwnerAal2(requested = generation) {
       }
       message('Complete the authenticator code already shown to unlock Owner-only records.');
       return false;
+    }
+    // Another waiter may already have started the replacement gate.
+    if(ownerAal2GatePromise && ownerAal2GatePromise !== existingGate) {
+      return requireOwnerAal2(requested);
     }
   }
   const task = (async() => {

@@ -680,7 +680,7 @@ async function navigate(id,filter) {
 }
 async function loadEnquiries(current, cursor) {
   message('Loading website enquiries…');
-  const params = new URLSearchParams({select:'id,contact_name,email,brief,created_at', order:'created_at.desc,id.desc', limit:'26'});
+  const params = new URLSearchParams({select:'id,contact_name,email,phone,contacted,brief,created_at', order:'created_at.desc,id.desc', limit:'26'});
   if (cursor) params.set('or', '(created_at.lt.' + cursor.created_at + ',and(created_at.eq.' + cursor.created_at + ',id.lt.' + cursor.id + '))');
   try {
     const rows = await request('/rest/v1/project_enquiries?' + params);
@@ -694,7 +694,32 @@ async function loadEnquiries(current, cursor) {
       const brief = node('p', row.brief);
       brief.style.whiteSpace = 'pre-wrap';
       details.append(node('summary','Project brief'), brief);
-      card.append(reply, details);
+      card.append(reply);
+      if (row.phone) {
+        const call = node('a', row.phone);
+        call.href = 'tel:' + row.phone;
+        card.append(call);
+      }
+      const status = node('p', row.contacted ? 'Contacted' : 'New');
+      card.append(status, details);
+      if (!row.contacted) {
+        const mark = node('button', 'Mark as contacted');
+        mark.type = 'button';
+        mark.onclick = async () => {
+          mark.disabled = true;
+          try {
+            const saved = await request('/rest/v1/project_enquiries?id=eq.' + row.id + '&select=contacted',
+              'PATCH', {contacted:true}, 'return=representation');
+            if (saved?.[0]?.contacted !== true) throw Error('Enquiry no longer available');
+            status.textContent = 'Contacted';
+            mark.remove();
+          } catch {
+            if (current === generation) message('Could not confirm the change. Refresh the enquiry list.');
+            mark.disabled = false;
+          }
+        };
+        card.append(mark);
+      }
       el('enquiry-list').append(card);
     }
     empty('enquiry-list','No website enquiries yet.');

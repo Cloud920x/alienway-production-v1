@@ -692,7 +692,7 @@ async function loadEnquiries(current, cursor) {
       reply.href = 'mailto:' + encodeURIComponent(row.email);
       const details = node('details','');
       const brief = node('p', row.brief);
-      brief.style.whiteSpace = 'pre-wrap';
+      brief.classList.add('pre-wrap');
       details.append(node('summary','Project brief'), brief);
       card.append(reply);
       if (row.phone) {

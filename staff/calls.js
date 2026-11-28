@@ -305,26 +305,32 @@ async function beginMfaChallenge(factorId, kind = 'challenge') {
   el('mfa-challenge-start').hidden = true;
   el('mfa-code-form').elements.code.focus();
 }
-async function requireOwnerAal2() {
+async function requireOwnerAal2(requested = generation) {
   const {data:aal,error:aalError} = await authClient.auth.mfa.getAuthenticatorAssuranceLevel();
   if(aalError) throw Error(aalError.message || 'Could not verify your security level.');
+  if(requested !== generation) return false;
   if(aal.currentLevel === 'aal2') return true;
   const {data:factors,error:factorError} = await authClient.auth.mfa.listFactors();
   if(factorError) throw Error(factorError.message || 'Could not check your authenticator.');
+  if(requested !== generation) return false;
   const factor = verifiedTotp(factors);
-  if(view !== 'staff') await navigate('staff');
+  if(view !== 'staff') {
+    await navigate('staff',undefined,requested);
+    if(requested !== generation) return false;
+  }
   if(!factor) {
     await beginMfaEnrollment();
+    if(requested !== generation) return false;
     message('Set up your authenticator and enter its six-digit code to unlock Owner-only records.');
   } else {
     await beginMfaChallenge(factor.id);
+    if(requested !== generation) return false;
     message('Enter your six-digit authenticator code to unlock Owner-only records.');
   }
   return false;
 }
 async function ensureAal2ForInvite() {
-  if(await requireOwnerAal2()) return;
-  throw Error('Complete authenticator verification in the Owner account security panel, then retry the invitation.');
+  return requireOwnerAal2();
 }
 action(el('mfa-start'),'click',async()=>{
   await beginMfaEnrollment();
@@ -525,7 +531,7 @@ action(el('logout'),'click',async () => {
   try { await request('/auth/v1/logout?scope=local','POST'); } finally { signedIn(false); }
 });
 action(el('staff-invite'),'submit',async () => {
-  await ensureAal2ForInvite();
+  if (!(await ensureAal2ForInvite())) return;
   const email = el('staff-invite').elements.email.value.trim();
   const response = await fetch(projectUrl + '/functions/v1/invite-staff', {
     method: 'POST',
@@ -642,12 +648,14 @@ async function allRows(table,columns='*') {
     if (batch.length < 200) return rows;
   }
 }
-async function navigate(id,filter) {
+async function navigate(id,filter,requestGeneration) {
   if (!role || (['packages','projects','money','staff'].includes(id) && role!=='owner')) return;
+  const current = requestGeneration ?? ++generation;
   if (role === 'owner' && ['overview','clients','packages','projects','money'].includes(id)) {
-    if (!(await requireOwnerAal2())) return;
+    const allowed = await requireOwnerAal2(current);
+    if (current !== generation || !allowed) return;
   }
-  const current = ++generation;
+  if (current !== generation) return;
   view = id;
   for (const section of Object.keys(titles)) el(section).hidden = section !== id;
   for (const button of el('tabs').querySelectorAll('[data-view]')) button.setAttribute('aria-pressed',String(button.dataset.view===id));

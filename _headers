@@ -1,12 +1,12 @@
 # Baseline browser hardening for the public site and staff workspace.
 # Staff access still depends on Supabase Auth, MFA and RLS.
 /*
+  X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
 /staff*
-  X-Frame-Options: DENY
   Content-Security-Policy: default-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' https://esm.sh; style-src 'self'; img-src 'self' data:; connect-src 'self' https://deqokqorcukbubirosqg.supabase.co; font-src 'self'
   Referrer-Policy: no-referrer
   Cache-Control: no-store

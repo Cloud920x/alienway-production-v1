@@ -50,6 +50,12 @@ This audit does not claim that the whole site is private: the public marketing w
 - No `.env` file or hard-coded service-role secret was found in the repository tree/search.
 - Cloudflare Pages successfully deployed the security preview branch. This does not change the production domain.
 
+## Public enquiry endpoint notes
+
+- The public enquiry endpoint is an intentionally exposed submission API. It validates contact name, email, brief length and phone format through database constraints, serializes requests per email with an advisory lock, deduplicates repeated request IDs, and limits each email to five submissions per hour.
+- This PR keeps the public `submit_project_enquiry` wrappers executable by anon/authenticated but makes them SECURITY DEFINER with an empty search path, then revokes API-role schema usage and function execution from the internal `enquiry_intake` schema. A rollback-only test confirmed the public wrapper still inserts while a direct anonymous call to the internal function is denied.
+- The enquiry endpoint's rate limit is per email, not per IP, and there is no CAPTCHA/Turnstile check yet. Consider adding Cloudflare Turnstile or edge-level abuse controls if spam becomes a problem.
+
 ## Remaining verification before production rollout
 
 1. Complete CodeRabbit reviews and keep the required GitHub security checks green for PRs #87, #88 and #89.

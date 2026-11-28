@@ -305,29 +305,59 @@ async function beginMfaChallenge(factorId, kind = 'challenge') {
   el('mfa-challenge-start').hidden = true;
   el('mfa-code-form').elements.code.focus();
 }
+let ownerAal2GatePromise = null;
 async function requireOwnerAal2(requested = generation) {
-  const {data:aal,error:aalError} = await authClient.auth.mfa.getAuthenticatorAssuranceLevel();
-  if(aalError) throw Error(aalError.message || 'Could not verify your security level.');
-  if(requested !== generation) return false;
-  if(aal.currentLevel === 'aal2') return true;
-  const {data:factors,error:factorError} = await authClient.auth.mfa.listFactors();
-  if(factorError) throw Error(factorError.message || 'Could not check your authenticator.');
-  if(requested !== generation) return false;
-  const factor = verifiedTotp(factors);
-  if(view !== 'staff') {
-    await navigate('staff',undefined,requested);
+  if(ownerAal2GatePromise) {
+    const existing = await ownerAal2GatePromise;
     if(requested !== generation) return false;
+    if(existing) return true;
+    if(mfaPending && ['enroll','challenge'].includes(mfaPending.kind)) {
+      if(view !== 'staff') {
+        await navigate('staff',undefined,requested);
+        if(requested !== generation) return false;
+      }
+      message('Complete the authenticator code already shown to unlock Owner-only records.');
+      return false;
+    }
   }
-  if(!factor) {
-    await beginMfaEnrollment();
+  const task = (async() => {
+    const {data:aal,error:aalError} = await authClient.auth.mfa.getAuthenticatorAssuranceLevel();
+    if(aalError) throw Error(aalError.message || 'Could not verify your security level.');
     if(requested !== generation) return false;
-    message('Set up your authenticator and enter its six-digit code to unlock Owner-only records.');
-  } else {
-    await beginMfaChallenge(factor.id);
+    if(aal.currentLevel === 'aal2') return true;
+    const {data:factors,error:factorError} = await authClient.auth.mfa.listFactors();
+    if(factorError) throw Error(factorError.message || 'Could not check your authenticator.');
     if(requested !== generation) return false;
-    message('Enter your six-digit authenticator code to unlock Owner-only records.');
+    const factor = verifiedTotp(factors);
+    if(mfaPending && ['enroll','challenge'].includes(mfaPending.kind)) {
+      if(view !== 'staff') {
+        await navigate('staff',undefined,requested);
+        if(requested !== generation) return false;
+      }
+      message('Complete the authenticator code already shown to unlock Owner-only records.');
+      return false;
+    }
+    if(view !== 'staff') {
+      await navigate('staff',undefined,requested);
+      if(requested !== generation) return false;
+    }
+    if(!factor) {
+      await beginMfaEnrollment();
+      if(requested !== generation) return false;
+      message('Set up your authenticator and enter its six-digit code to unlock Owner-only records.');
+    } else {
+      await beginMfaChallenge(factor.id);
+      if(requested !== generation) return false;
+      message('Enter your six-digit authenticator code to unlock Owner-only records.');
+    }
+    return false;
+  })();
+  ownerAal2GatePromise = task;
+  try {
+    return await task;
+  } finally {
+    if(ownerAal2GatePromise === task) ownerAal2GatePromise = null;
   }
-  return false;
 }
 async function ensureAal2ForInvite() {
   return requireOwnerAal2();

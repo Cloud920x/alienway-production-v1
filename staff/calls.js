@@ -128,6 +128,7 @@ function node(tag, words) {
 
 function deleteBusinessButton(business) {
   return command('Delete business', async () => {
+    if (!(await requireOwnerAal2())) return;
     if (!window.confirm('Permanently delete ' + business.business + ' and its call notes?')) return;
     const result = await request('/rest/v1/rpc/delete_business', 'POST', {
       business_id: business.id, expected_updated_at: business.updated_at
@@ -246,10 +247,10 @@ async function refreshMfaStatus() {
   if(factorError) throw Error(factorError.message || 'Could not list authenticator factors.');
   const factor = verifiedTotp(factors);
   el('mfa-status').textContent = !factor
-    ? 'No verified authenticator is enrolled. Set one up before sending staff invitations.'
+    ? 'No verified authenticator is enrolled. Set one up before opening Owner-only records or sending staff invitations.'
     : aal.currentLevel === 'aal2'
-      ? 'Authenticator verified for this session. Staff invitations are unlocked.'
-      : 'Authenticator enrolled. Verify a fresh code before sending staff invitations.';
+      ? 'Authenticator verified for this session. Owner-only records and staff invitations are unlocked.'
+      : 'Authenticator enrolled. Verify a fresh code before opening Owner-only records or sending staff invitations.';
   el('mfa-start').hidden = Boolean(factor);
   el('mfa-challenge-start').hidden = !factor || aal.currentLevel === 'aal2';
   return {aal,factor};
@@ -304,19 +305,26 @@ async function beginMfaChallenge(factorId, kind = 'challenge') {
   el('mfa-challenge-start').hidden = true;
   el('mfa-code-form').elements.code.focus();
 }
-async function ensureAal2ForInvite() {
+async function requireOwnerAal2() {
   const {data:aal,error:aalError} = await authClient.auth.mfa.getAuthenticatorAssuranceLevel();
   if(aalError) throw Error(aalError.message || 'Could not verify your security level.');
-  if(aal.currentLevel === 'aal2') return;
+  if(aal.currentLevel === 'aal2') return true;
   const {data:factors,error:factorError} = await authClient.auth.mfa.listFactors();
   if(factorError) throw Error(factorError.message || 'Could not check your authenticator.');
   const factor = verifiedTotp(factors);
+  if(view !== 'staff') await navigate('staff');
   if(!factor) {
     await beginMfaEnrollment();
-    throw Error('Scan the QR code with an authenticator app, then enter its six-digit code below.');
+    message('Set up your authenticator and enter its six-digit code to unlock Owner-only records.');
+  } else {
+    await beginMfaChallenge(factor.id);
+    message('Enter your six-digit authenticator code to unlock Owner-only records.');
   }
-  await beginMfaChallenge(factor.id);
-  throw Error('Enter the six-digit code from your authenticator app to unlock staff invitations.');
+  return false;
+}
+async function ensureAal2ForInvite() {
+  if(await requireOwnerAal2()) return;
+  throw Error('Complete authenticator verification in the Owner account security panel, then retry the invitation.');
 }
 action(el('mfa-start'),'click',async()=>{
   await beginMfaEnrollment();
@@ -365,7 +373,7 @@ action(el('mfa-code-form'),'submit',async()=>{
   if(kind === 'recovery') throw Error('Use the recovery verification form to finish setting your password.');
   clearMfaTransient();
   await refreshMfaStatus();
-  message('MFA verified for this session. You can now send the staff invitation.');
+  message('MFA verified for this session. Owner-only records and staff invitations are unlocked.');
 });
 action(el('recovery-mfa'),'submit',async()=>{
   const kind = await verifyPendingMfa(el('recovery-mfa').elements.code.value.trim());
@@ -636,6 +644,9 @@ async function allRows(table,columns='*') {
 }
 async function navigate(id,filter) {
   if (!role || (['packages','projects','money','staff'].includes(id) && role!=='owner')) return;
+  if (role === 'owner' && ['overview','clients','packages','projects','money'].includes(id)) {
+    if (!(await requireOwnerAal2())) return;
+  }
   const current = ++generation;
   view = id;
   for (const section of Object.keys(titles)) el(section).hidden = section !== id;

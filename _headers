@@ -1,5 +1,8 @@
-# Additional browser hardening for the staff workspace.
-# These headers are defense in depth; Supabase Auth and RLS remain the access boundary.
+# Baseline browser hardening for the public site and staff workspace.
+# Staff access still depends on Supabase Auth, MFA and RLS.
+/*
+  Referrer-Policy: strict-origin-when-cross-origin
+
 /staff*
   X-Frame-Options: DENY
   Content-Security-Policy: default-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' https://esm.sh; style-src 'self'; img-src 'self' data:; connect-src 'self' https://deqokqorcukbubirosqg.supabase.co; font-src 'self'

@@ -26,7 +26,7 @@ This audit does not claim that the whole site is private: the public marketing w
 - The database currently contains three active staff accounts: one Owner and two Sales accounts; no unassigned or unknown-role account was found. There are zero pending staff invitations, so the invitation redirect change does not strand an outstanding invite.
 - The Owner account has one verified TOTP factor. Neither Sales account currently has a verified TOTP factor.
 - MFA is currently enforced for staff invitations and password recovery. PR #89 adds a database-level AAL2 requirement for Owner-only packages, projects, payments, client-package assignments, and the Owner-only delete/save RPCs. Until that migration is applied, those Owner-only records still rely on the Owner role check without an AAL2 requirement.
-- Sales accounts remain password-only for shared call, meeting and enquiry workflows; decide separately whether Sales access should also require MFA.
+- Sales accounts remain password-only for shared call, meeting and enquiry workflows. The separate `client_service_summaries()` SECURITY DEFINER RPC also returns a limited projection (`client_id`, package name, inclusions and add-ons) to authenticated Owner/Sales roles without AAL2; it does not grant direct access to the Owner-only package or assignment tables. Decide separately whether Sales workflows and this summary should also require MFA.
 - Leaked-password protection is disabled on the current Supabase plan.
 
 ### Edge Function: `invite-staff`
